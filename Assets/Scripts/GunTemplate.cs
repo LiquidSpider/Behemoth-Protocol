@@ -61,19 +61,19 @@ public class GunTemplate : MonoBehaviour
         }
         switch (fMode) {
             case FireMode.Semi:
-                if (Input.GetButtonDown("Attack")) {
+                if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
                     if (fireTime > fireRate) {
                         Fire();
                     }
                 }
                 break;
             case FireMode.Burst:
-                if (Input.GetButtonDown("Attack")) {
+                if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
                     StartCoroutine(BurstFire());
                 }
                 break;
             case FireMode.Auto:
-                if (Input.GetButton("Attack")) {
+                if (Input.GetButton("Attack") || Input.GetAxis("Attack") != 0) {
                     if (fireTime > fireRate) {
                         Fire();
                     }
