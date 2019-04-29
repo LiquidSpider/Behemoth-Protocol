@@ -45,7 +45,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 4647a36d50420274dadf4162078c5507, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
-  m_Pitch: 1.2260399
+  m_Pitch: 0.91703117
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -140,4 +140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75c8a2a76211cfe40b09e63c35cf2ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTime: 1
+  maxTime: 5

@@ -14,6 +14,8 @@ public class BulletScript : MonoBehaviour
     public float lightStr = 20f;    // How bright the light component is
     public float prjSize = 0.1f;    // How large the collider is. Should be visually represented
 
+    private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,7 @@ public class BulletScript : MonoBehaviour
     void SetStats() {
         Rigidbody rb = GetComponent<Rigidbody>();
         Light light = GetComponent<Light>();
+        animator = GetComponent<Animator>();
         rb.AddForce((transform.forward) * speed);
         rb.mass = weight;
         rb.useGravity = grav;

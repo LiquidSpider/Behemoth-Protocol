@@ -39,14 +39,18 @@ public class GunTemplate : MonoBehaviour
 
     //  No need to touch these
     private int cAmmo = 0;                      // Ammo currently loaded, not used when magSize = 0
-    public float cAcc = 0f;                    // Current accuracy
+    public float cAcc = 0f;                     // Current accuracy
     private float fireTime = 0f;                // Time since last shot
     public enum FireMode { Semi, Burst, Auto }; // Fire modes, self explainatory
     public GameObject soundSrc;                 // The object that makes the sound
     private bool isBursting = false;            // Is the gun currently going through a burst of fire?
+    private bool hasFired = false;              // For semi-auto, as GetAxis is not a bool
+    private Animation animation;
 
     void Start() {
-        cAcc = minAcc;
+        cAcc = minAcc;                          // So guns don't start as accurate as the previous gun
+        fireTime = fireRate + 1;                // So guns can fire immediately on swapping
+        animation = GetComponent<Animation>();  
     }
     // Update is called once per frame
     void Update() {
@@ -62,9 +66,13 @@ public class GunTemplate : MonoBehaviour
         switch (fMode) {
             case FireMode.Semi:
                 if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
-                    if (fireTime > fireRate) {
+                    if (fireTime > fireRate && !hasFired) {
+                        hasFired = true;
                         Fire();
                     }
+                }
+                if (Input.GetAxis("Attack") < 1) {
+                    hasFired = false;
                 }
                 break;
             case FireMode.Burst:
@@ -94,7 +102,7 @@ public class GunTemplate : MonoBehaviour
             bStats.grav = pGrav;
             bStats.weight = pWeight;
         }
-        
+        animation.Play("Fire", PlayMode.StopAll);
         MakeSound(sFire, 1f);
         if (cAcc <= maxAcc) {
             cAcc += incAcc;
@@ -106,7 +114,7 @@ public class GunTemplate : MonoBehaviour
         source.clip = sFire;
         source.volume = 0.5f;
         source.pitch = Random.Range(0.75f, 1.25f);
-        GameObject oSound = Instantiate(soundSrc, barrel.transform);
+        GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
         oSound.GetComponent<TimedDestroy>().maxTime = sLength;
     }
 
