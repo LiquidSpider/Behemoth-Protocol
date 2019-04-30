@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class Crosshair : MonoBehaviour
 {
-    public GameObject notchU;
+    public GameObject notchU;			
     public GameObject notchD;
     public GameObject notchL;
     public GameObject notchR;
-    // Update is called once per frame
+    
     void Update()
     {
         GunTemplate gun = GameObject.FindGameObjectWithTag("CurrentWeapon").GetComponent<GunTemplate>();
