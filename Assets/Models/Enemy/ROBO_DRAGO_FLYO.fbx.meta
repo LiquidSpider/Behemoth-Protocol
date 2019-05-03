@@ -1,0 +1,269 @@
+fileFormatVersion: 2
+guid: c746b29f0d4f2b142878dd13e6cdcd4f
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Area
+    100002: Armature
+    100004: Bone.001
+    100006: Bone.002
+    100008: Bone.002_end
+    100010: Bone.003
+    100012: Bone.003_end
+    100014: Bone.004
+    100016: Bone.004_end
+    100018: Bone.005
+    100020: Bone.005_end
+    100022: Bone.006
+    100024: Bone.006_end
+    100026: Bone.007
+    100028: Bone.007_end
+    100030: Bone.008
+    100032: Bone.008_end
+    100034: Bone.009
+    100036: Bone.010
+    100038: Bone.010_end
+    100040: Bone.011
+    100042: Bone.012
+    100044: Bone.012_end
+    100046: Bone.013
+    100048: Bone.014
+    100050: Bone.014_end
+    100052: Bone.015
+    100054: Bone.016
+    100056: Bone.016_end
+    100058: Bone.017
+    100060: Bone.018
+    100062: Bone.018_end
+    100064: Bone.019
+    100066: Bone.020
+    100068: Bone.020_end
+    100070: Cube.000
+    100072: Cube.008
+    100074: NEKO EARS
+    100076: ORG-Bone
+    100078: ORG-Bone.001
+    100080: ORG-Bone.002
+    100082: ORG-Bone.002_end
+    100084: ORG-Bone.003
+    100086: ORG-Bone.003_end
+    100088: ORG-Bone.004
+    100090: ORG-Bone.004_end
+    100092: ORG-Bone.005
+    100094: ORG-Bone.005_end
+    100096: ORG-Bone.006
+    100098: ORG-Bone.006_end
+    100100: ORG-Bone.007
+    100102: ORG-Bone.007_end
+    100104: ORG-Bone.008
+    100106: ORG-Bone.008_end
+    100108: ORG-Bone.009
+    100110: ORG-Bone.010
+    100112: ORG-Bone.010_end
+    100114: ORG-Bone.011
+    100116: ORG-Bone.012
+    100118: ORG-Bone.012_end
+    100120: ORG-Bone.013
+    100122: ORG-Bone.014
+    100124: ORG-Bone.014_end
+    100126: ORG-Bone.015
+    100128: ORG-Bone.016
+    100130: ORG-Bone.016_end
+    100132: ORG-Bone.017
+    100134: ORG-Bone.018
+    100136: ORG-Bone.018_end
+    100138: ORG-Bone.019
+    100140: ORG-Bone.020
+    100142: ORG-Bone.020_end
+    100144: ORG-Bone_end
+    100146: rig
+    100148: //RootNode
+    100150: root
+    100152: WGT-rig_root
+    100154: WGTS_rig
+    400000: Area
+    400002: Armature
+    400004: Bone.001
+    400006: Bone.002
+    400008: Bone.002_end
+    400010: Bone.003
+    400012: Bone.003_end
+    400014: Bone.004
+    400016: Bone.004_end
+    400018: Bone.005
+    400020: Bone.005_end
+    400022: Bone.006
+    400024: Bone.006_end
+    400026: Bone.007
+    400028: Bone.007_end
+    400030: Bone.008
+    400032: Bone.008_end
+    400034: Bone.009
+    400036: Bone.010
+    400038: Bone.010_end
+    400040: Bone.011
+    400042: Bone.012
+    400044: Bone.012_end
+    400046: Bone.013
+    400048: Bone.014
+    400050: Bone.014_end
+    400052: Bone.015
+    400054: Bone.016
+    400056: Bone.016_end
+    400058: Bone.017
+    400060: Bone.018
+    400062: Bone.018_end
+    400064: Bone.019
+    400066: Bone.020
+    400068: Bone.020_end
+    400070: Cube.000
+    400072: Cube.008
+    400074: NEKO EARS
+    400076: ORG-Bone
+    400078: ORG-Bone.001
+    400080: ORG-Bone.002
+    400082: ORG-Bone.002_end
+    400084: ORG-Bone.003
+    400086: ORG-Bone.003_end
+    400088: ORG-Bone.004
+    400090: ORG-Bone.004_end
+    400092: ORG-Bone.005
+    400094: ORG-Bone.005_end
+    400096: ORG-Bone.006
+    400098: ORG-Bone.006_end
+    400100: ORG-Bone.007
+    400102: ORG-Bone.007_end
+    400104: ORG-Bone.008
+    400106: ORG-Bone.008_end
+    400108: ORG-Bone.009
+    400110: ORG-Bone.010
+    400112: ORG-Bone.010_end
+    400114: ORG-Bone.011
+    400116: ORG-Bone.012
+    400118: ORG-Bone.012_end
+    400120: ORG-Bone.013
+    400122: ORG-Bone.014
+    400124: ORG-Bone.014_end
+    400126: ORG-Bone.015
+    400128: ORG-Bone.016
+    400130: ORG-Bone.016_end
+    400132: ORG-Bone.017
+    400134: ORG-Bone.018
+    400136: ORG-Bone.018_end
+    400138: ORG-Bone.019
+    400140: ORG-Bone.020
+    400142: ORG-Bone.020_end
+    400144: ORG-Bone_end
+    400146: rig
+    400148: //RootNode
+    400150: root
+    400152: WGT-rig_root
+    400154: WGTS_rig
+    2100000: Blue
+    2100002: Lens
+    2100004: light body
+    2100006: body
+    2100008: dark body
+    2100010: No Name
+    2300000: NEKO EARS
+    2300002: WGT-rig_root
+    2300004: WGTS_rig
+    3300000: NEKO EARS
+    3300002: WGT-rig_root
+    3300004: WGTS_rig
+    4300000: WGTS_rig
+    4300002: WGT-rig_root
+    4300004: Cube.000
+    4300006: Cube.008
+    4300008: NEKO EARS
+    9500000: //RootNode
+    10800000: Area
+    13700000: Cube.000
+    13700002: Cube.008
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

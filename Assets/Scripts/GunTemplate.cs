@@ -24,6 +24,7 @@ public class GunTemplate : MonoBehaviour
     public float incAcc = 3f;                   // How much inaccuracy increases each shot
     public float handling = 1f;                 // How fast accuracy returns to minAcc between shots
     public AudioClip sFire;                     // Sound played when gun fires
+    public bool soundPitchRandom;               // Should the sound have randomized pitch? (Good for automatic weapons)
 
     //  Bullet Variables                        All variables must start with prefix 'p'
     public GameObject projectile;               // Bullet prefab, probably won't need to change   
@@ -101,19 +102,20 @@ public class GunTemplate : MonoBehaviour
             bStats.damage = damage;
             bStats.grav = pGrav;
             bStats.weight = pWeight;
+            bStats.lightStr = pLightStr;
         }
         animation.Play("Fire", PlayMode.StopAll);
-        MakeSound(sFire, 1f);
+        MakeSound(sFire, sFire.length, soundPitchRandom);
         if (cAcc <= maxAcc) {
             cAcc += incAcc;
         }
     }
 
-    void MakeSound(AudioClip sound, float sLength) {
+    void MakeSound(AudioClip sound, float sLength, bool pitchRandom) {
         AudioSource source = soundSrc.GetComponent<AudioSource>();
         source.clip = sFire;
         source.volume = 0.5f;
-        source.pitch = Random.Range(0.75f, 1.25f);
+        if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
         GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
         oSound.GetComponent<TimedDestroy>().maxTime = sLength;
     }
