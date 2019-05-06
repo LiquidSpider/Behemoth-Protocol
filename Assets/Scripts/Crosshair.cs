@@ -12,10 +12,18 @@ public class Crosshair : MonoBehaviour
     
     void Update()
     {
-        GunTemplate gun = GameObject.FindGameObjectWithTag("CurrentWeapon").GetComponent<GunTemplate>();
-        notchU.GetComponent<RectTransform>().anchoredPosition = Vector3.up * (20f + (gun.cAcc * 0.50f));
-        notchD.GetComponent<RectTransform>().anchoredPosition = Vector3.down * (20f + (gun.cAcc * 0.50f));
-        notchL.GetComponent<RectTransform>().anchoredPosition = Vector3.left * (20f + (gun.cAcc * 0.50f));
-        notchR.GetComponent<RectTransform>().anchoredPosition = Vector3.right * (20f + (gun.cAcc * 0.50f));
+        GunTemplate gun = null;
+        GameObject gunObject = GameObject.FindGameObjectWithTag("CurrentWeapon");
+
+        if (gunObject) {
+            gun = gunObject.GetComponent<GunTemplate>();
+        }
+
+        if (gun) {
+            notchU.GetComponent<RectTransform>().anchoredPosition = Vector3.up * (20f + (gun.cAcc * 0.50f));
+            notchD.GetComponent<RectTransform>().anchoredPosition = Vector3.down * (20f + (gun.cAcc * 0.50f));
+            notchL.GetComponent<RectTransform>().anchoredPosition = Vector3.left * (20f + (gun.cAcc * 0.50f));
+            notchR.GetComponent<RectTransform>().anchoredPosition = Vector3.right * (20f + (gun.cAcc * 0.50f));
+        }
     }
 }
