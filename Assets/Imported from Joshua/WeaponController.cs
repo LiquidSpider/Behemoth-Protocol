@@ -7,16 +7,21 @@ public class WeaponController : MonoBehaviour {
 	[SerializeField] private GameObject missile;
 	[SerializeField] private GameObject missileSpawnLocation;
 
+	[SerializeField] private GameObject bomb;
+
 	private Vector3 currentPosition;
 	private Vector3 previousPosition;
 
+	private float timeOfLastBomb = -2.0f;
+	private float timeBetweenBombs = 2.0f;
+
 	void Start() {
-		currentPosition = transform.position;
+		currentPosition = transform.GetChild(1).position;
 	}
 
 	void Update() {
 		previousPosition = currentPosition;
-		currentPosition = transform.position;
+		currentPosition = transform.GetChild(1).position;
 
 		if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
 			missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).transform.GetChild(0).gameObject;
@@ -27,6 +32,11 @@ public class WeaponController : MonoBehaviour {
 		} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 3) {
 			missileSpawnLocation = null;
 		}
+
+		if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {
+			timeOfLastBomb = Time.time;
+			LaunchBomb();
+		}
 	}
 
 	private void LaunchMissile() {
@@ -34,7 +44,7 @@ public class WeaponController : MonoBehaviour {
 
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
-		newMissile.transform.parent = GameObject.FindGameObjectWithTag("CurrentWeapon").transform;
+		//newMissile.transform.parent = GameObject.FindGameObjectWithTag("CurrentWeapon").transform;
 
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = currentPosition - previousPosition;
 		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
@@ -44,11 +54,13 @@ public class WeaponController : MonoBehaviour {
 		print("Missile Launched");
 	}
 
-	//private IEnumerator Fire() {
-	//	LaunchMissile();
+	private void LaunchBomb() {
+		GameObject newBomb = Instantiate(bomb);
 
-	//	yield return new WaitForSecondsRealtime(1);
+		Vector3 spawnLocation = transform.GetChild(1).position;
+		spawnLocation.y -= 1.5f;
+		newBomb.transform.position = spawnLocation;
 
-	//	StartCoroutine(Fire());
-	//}
+		newBomb.GetComponent<BombBehaviour>().Initialise(currentPosition - previousPosition);
+	}
 }

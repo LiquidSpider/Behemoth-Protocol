@@ -22,6 +22,7 @@ public class MissileBehaviour : MonoBehaviour {
 	private bool first = true;
 
 	public Vector3 playerSpeed;
+	public Vector3 movement;
 
 	public void Initialise(GameObject inputOwner, Vector3 inputTarget) {
 		launchTime = Time.time + launchTime;
@@ -35,9 +36,7 @@ public class MissileBehaviour : MonoBehaviour {
 
 		transform.rotation = Quaternion.LookRotation(positionToLookAt);
 
-		//float scaleFactor = ScaleFactor(positionToLookAt.normalized, playerSpeed.normalized);
-
-		//projectileSpeed += Vector3.Magnitude(playerSpeed); // * scaleFactor;
+		playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
 	}
 
 	public void Initialise(GameObject inputOwner) {
@@ -55,18 +54,17 @@ public class MissileBehaviour : MonoBehaviour {
 			RaycastHit hit;
 
 			if (owner.tag == "Player") {
-				if (Physics.Raycast(transform.position, transform.forward, out hit)) {
+				if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
 					target = hit.point;
 				}
 			} else if (owner.tag == "Enemy") {
 				target = player.transform.position;
 			} else {
-				target = transform.forward * 2000000;
+				target = Vector3.zero;
 			}
-		} else if ( launched && target != null ) {
+		} else if (launched && target != null) {
 			if (first) {
 				gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-				//projectileSpeed += 20f;
 				first = false;
 			}
 
@@ -77,6 +75,9 @@ public class MissileBehaviour : MonoBehaviour {
 			rotationSpeed += Time.deltaTime * 10;
 		}
 
+		//transform.position += (target - transform.position) * Time.deltaTime + (playerSpeed / projectileSpeed) * Time.deltaTime;
+		playerSpeed *= 0.95f;
+		transform.position += playerSpeed * Time.deltaTime;
 		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 	}
 

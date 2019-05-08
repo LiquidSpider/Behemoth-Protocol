@@ -339,7 +339,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &561878975
@@ -408,6 +408,7 @@ MonoBehaviour:
   missile: {fileID: 2187276436918047048, guid: 752907a7cbad4f443969e65724246899, type: 3}
   missileSpawnLocation: {fileID: 2647981504737730390, guid: c1ed780ff9e9e544b80402b3115dd706,
     type: 3}
+  bomb: {fileID: 4439440699468585553, guid: 011491dac2c9e344a8d8744553e0df08, type: 3}
 --- !u!1 &1393645265
 GameObject:
   m_ObjectHideFlags: 0

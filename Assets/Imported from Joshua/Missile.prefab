@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2187276436458770456}
   - component: {fileID: 2187276436458770457}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 534107798324717523}
   - component: {fileID: 8297192401572699112}
   - component: {fileID: 5018588106285090681}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,6 +108,7 @@ MonoBehaviour:
   variationFactor: 5
   direction: {x: 0, y: 0, z: 0}
   playerSpeed: {x: 0, y: 0, z: 0}
+  movement: {x: 0, y: 0, z: 0}
 --- !u!54 &8297192401572699112
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -229,7 +230,7 @@ GameObject:
   - component: {fileID: 2187276437120585255}
   - component: {fileID: 2187276437120585254}
   - component: {fileID: 2187276437120585241}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
