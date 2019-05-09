@@ -12,11 +12,12 @@ public class WeaponController : MonoBehaviour {
 	private Vector3 currentPosition;
 	private Vector3 previousPosition;
 
-	private float timeOfLastBomb = -2.0f;
-	private float timeBetweenBombs = 2.0f;
+	private float timeBetweenBombs = 0.01f;
+	private float timeOfLastBomb;
 
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
+		timeOfLastBomb = -timeBetweenBombs;
 	}
 
 	void Update() {

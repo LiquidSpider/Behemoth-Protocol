@@ -9,6 +9,8 @@ public class BombBehaviour : MonoBehaviour {
 
 	public void Initialise(Vector3 playerMovementDirection) {
 		movement = playerMovementDirection;
+
+		transform.parent = GameObject.FindGameObjectWithTag("BombParent").transform;
 	}
 
 	void Update() {
