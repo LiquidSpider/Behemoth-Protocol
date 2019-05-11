@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     public float cruiseLMod = 0.5f;                                     // Multiplier for look speed when cruising
     public bool isZoom = false;                                         // Is the player zooming
     [SerializeField]
-    private Vector3 cZoom = new Vector3(-1, 1, -3);                     // Where the camera is when zoomed
-    public Vector3 cUnZoom;                                             // Where it is when it's not
+    private Vector3 cZoom;                                              // Where the camera is when zoomed
+    public Vector3 cUnZoom = new Vector3(-1, 1, -3);                   // Where it is when it's not
     private float rotX = 0.0f;                                          // Current rotation, don't touch this
     private float rotY = 0.0f;                                          // Ditto
     private float uFOV;                                                 // Unzoomed FOV
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Pause")) {
             Cursor.lockState = CursorLockMode.None;
         }
-        if (Input.GetButton("Zoom") && !isCruising) {
+        if (Input.GetButton("Zoom")) {
             isZoom = true;
         } else {
             isZoom = false;
