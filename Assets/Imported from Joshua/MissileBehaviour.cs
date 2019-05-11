@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MissileBehaviour : MonoBehaviour {
 
+	public GameObject explosion;
+
 	[SerializeField] private float variationFactor = 5;
 	[SerializeField] private Vector3 direction;
 
@@ -46,7 +48,7 @@ public class MissileBehaviour : MonoBehaviour {
 	}
 
 	private void Update() {
-		projectileSpeed += 0.5f;
+		projectileSpeed += 0.25f;
 
 		if (!launched && Time.time > launchTime) {
 			launched = true;
@@ -82,6 +84,8 @@ public class MissileBehaviour : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter(Collision other) {
+		explosion = Instantiate(explosion);
+		explosion.transform.position = transform.position;
 		Destroy(gameObject);
 	}
 
@@ -94,16 +98,5 @@ public class MissileBehaviour : MonoBehaviour {
 
 
 		return Quaternion.Euler(tempRotation);
-	}
-
-	private float ScaleFactor(Vector3 inputOne, Vector3 inputTwo) {
-
-		float numerator = Vector3.Dot(inputOne, inputTwo);
-
-		if (numerator >= 0) {
-			return -1;
-		} else {
-			return 1;
-		}
 	}
 }
