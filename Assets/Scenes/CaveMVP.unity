@@ -250,6 +250,16 @@ PrefabInstance:
       propertyPath: zAmount
       value: 35
       objectReference: {fileID: 0}
+    - target: {fileID: 8388598130390698328, guid: a653cfa3f49d305468c2846635340917,
+        type: 3}
+      propertyPath: zCLerpSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388598130390698328, guid: a653cfa3f49d305468c2846635340917,
+        type: 3}
+      propertyPath: zFOV
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8388598132136976470, guid: a653cfa3f49d305468c2846635340917,
         type: 3}
       propertyPath: m_LocalPosition.x

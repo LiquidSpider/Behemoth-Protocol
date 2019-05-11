@@ -19,11 +19,16 @@ public class PlayerController : MonoBehaviour
     public bool isZoom = false;                                         // Is the player zooming
     [SerializeField]
     private Vector3 cZoom;                                              // Where the camera is when zoomed
-    public Vector3 cUnZoom = new Vector3(-1, 1, -3);                   // Where it is when it's not
+    public Vector3 cUnZoom = new Vector3(-1, 1, -3);                    // Where it is when it's not
+    private Vector3 target;                                             // Where the camera wants to be
     private float rotX = 0.0f;                                          // Current rotation, don't touch this
     private float rotY = 0.0f;                                          // Ditto
     private float uFOV;                                                 // Unzoomed FOV
-    public float zAmount;                                               // FOV adjust
+    public float zFOV = 60;                                             // Zoomed FOV
+    private float tFOV;                                                 // Target FOV
+    public float zSpeed = 1f;                                           // How long it takes to zoom
+    private float zCLerp = 0f;                                          // Current lerp time
+    public float zCLerpSpeed = 1f;                                      // Lerp speed
     
     //  Movement Vars
     public float accSpeed = 200.0f;                                     // How much force is applied each tick
@@ -70,26 +75,28 @@ public class PlayerController : MonoBehaviour
         }
         rotY = Mathf.Clamp(rotY, minY, maxY);
         transform.eulerAngles = new Vector3(rotY, rotX, 0.0f);
-        if (isZoom) {
-            cameraObj.transform.localPosition = Vector3.Slerp(cUnZoom, cZoom, 0f);
-            if (camera.fieldOfView != uFOV - zAmount) {
-                camera.fieldOfView -= (zAmount / 0.2f) * Time.deltaTime;
-            }
-        } else {
-            cameraObj.transform.localPosition = Vector3.Slerp(cZoom, cUnZoom, 0f);
-            if (camera.fieldOfView != uFOV) {
-                camera.fieldOfView += (zAmount / 0.2f) * Time.deltaTime;
-            }
+        zCLerp += Time.deltaTime;
+        if (zCLerp > zCLerpSpeed) {
+            zCLerp = zCLerpSpeed;
         }
-        camera.fieldOfView = Mathf.Clamp(camera.fieldOfView, uFOV - zAmount, uFOV);
+        float t = zCLerp / zCLerpSpeed;
+        t = Mathf.Sin(t * Mathf.PI * 0.5f);
+        camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, target, t);
+        camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, tFOV, t);
     }
     void PlayerControls() {
         if (Input.GetButtonDown("Pause")) {
             Cursor.lockState = CursorLockMode.None;
         }
         if (Input.GetButton("Zoom")) {
+            zCLerp = 0f;
+            target = cUnZoom;
+            tFOV = zFOV;
             isZoom = true;
         } else {
+            zCLerp = 0f;
+            tFOV = uFOV;
+            target = cZoom;
             isZoom = false;
         }
         if (!isDodge) {
@@ -160,5 +167,8 @@ public class PlayerController : MonoBehaviour
         rb.AddTorque(transform.right * Input.GetAxis("LeftHorizontal") * dForce);
         yield return new WaitForSeconds(dTime);
         isDodge = false;
+    }
+    void EaseIn(GameObject obj, float rate) {
+
     }
 }
