@@ -39,6 +39,14 @@ public class BulletScript : MonoBehaviour
                 var health = collision.gameObject.GetComponent<Health>();
                 health.TakeDamage(damage);
             }
+            if(collision.gameObject.transform.parent)
+            {
+                if (collision.gameObject.transform.parent.gameObject.GetComponent<Cube>())
+                {
+                    var Cube = collision.gameObject.transform.parent.gameObject.GetComponent<Cube>();
+                    Cube.TakeDamage();
+                }
+            }
             Destroy(this.gameObject);
         }
     }

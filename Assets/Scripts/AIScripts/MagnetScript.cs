@@ -10,9 +10,9 @@ public class MagnetScript : MonoBehaviour
 
     // The forces used to handle the magnetisation
     public float magnetForce;
-    public float maxMagnetSpeed;
+    private Vector3 direction;
 
-    // this objects rigib body
+    // this objects rigidbody
     private Rigidbody Rigidbody;
 
     // Start is called before the first frame update
@@ -35,13 +35,23 @@ public class MagnetScript : MonoBehaviour
             this.Rigidbody = this.gameObject.GetComponent<Rigidbody>();
         }
 
+        // Check if gravity is applied to this object
+        if(Rigidbody)
+        {
+            if(Rigidbody.useGravity)
+            {
+                Debug.Log("Note " + this.gameObject.name + " uses gravity. It may slowely fall during magnetisation.");
+            }
+
+        }
+
     }
 
     // fixed update call
     private void FixedUpdate()
     {
 
-        // call magnet method
+        // Call magnet method
         PullObject();
 
     }
@@ -49,6 +59,9 @@ public class MagnetScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // Update the direction of the pull
+        direction = -this.gameObject.transform.up;
 
 #if DEBUG
 
@@ -59,20 +72,19 @@ public class MagnetScript : MonoBehaviour
 
     }
 
-    // Handles the pull of the object
     void PullObject()
     {
 
-        // First Check if the object is close enough to reduce magnet
-        Ray ray = new Ray(this.gameObject.transform.position, -this.gameObject.transform.up);
+        // Create a ray to detect magnet below the object
+        Ray ray = new Ray(this.gameObject.transform.position, direction);
 
         // All the objects hit by the ray
         RaycastHit[] hits = Physics.RaycastAll(ray, float.PositiveInfinity);
 
         List<RaycastHit> magnetHits = new List<RaycastHit>();
-        
+
         // Find the rays that hit the object
-        for(int i = 0; i < hits.Length; i++)
+        for (int i = 0; i < hits.Length; i++)
         {
 
             if (hits[i].collider.gameObject.name == magnetObject.name)
@@ -85,9 +97,9 @@ public class MagnetScript : MonoBehaviour
 
         }
 
-        if(magnetHits.Count > 0)
+        // If there was a magnet hti
+        if (magnetHits.Count > 0)
         {
-
             RaycastHit magnet = new RaycastHit();
 
             // get the closest one
@@ -104,33 +116,31 @@ public class MagnetScript : MonoBehaviour
 
             }
 
-            // Stop adding a massive force if the object it close enough
-            if(magnet.distance > 0.5f)
-            {
+            // TODO
+            // Rotate these points around the objects position relative to the objects current rotation
+            Vector3 position1 = new Vector3(4, 0, 4);
+            Vector3 position2 = new Vector3(-4, 0, 4);
+            Vector3 position3 = new Vector3(-4, 0, -4);
+            Vector3 position4 = new Vector3(4, 0, -4);
 
-                // Check if the object is already being pulled towards at enough magnitude
-                if (Vector3.Dot(Rigidbody.velocity, -this.gameObject.transform.up) < maxMagnetSpeed)
-                {
+            position1 = this.transform.rotation * position1 + this.transform.position;
+            position2 = this.transform.rotation * position2 + this.transform.position;
+            position3 = this.transform.rotation * position3 + this.transform.position;
+            position4 = this.transform.rotation * position4 + this.transform.position;
 
-                    // Add the force to the object
-                    Rigidbody.AddForce(-this.gameObject.transform.up * magnetForce);
+            Debug.DrawRay(position1, direction, Color.green);
+            Debug.DrawRay(position2, direction, Color.red);
+            Debug.DrawRay(position3, direction, Color.yellow);
+            Debug.DrawRay(position4, direction, Color.blue);
 
-                }
+            // Add 4 forces at different positions
+            Rigidbody.AddForceAtPosition(direction * (magnetForce) * Time.deltaTime, position1);
+            Rigidbody.AddForceAtPosition(direction * (magnetForce) * Time.deltaTime, position2);
+            Rigidbody.AddForceAtPosition(direction * (magnetForce) * Time.deltaTime, position3);
+            Rigidbody.AddForceAtPosition(direction * (magnetForce) * Time.deltaTime, position4);
 
-            }
-            else
-            {
-
-                // Check if the object is already being pulled towards at enough magnitude
-                if (Vector3.Dot(Rigidbody.velocity, -this.gameObject.transform.up) < 5)
-                {
-
-                    // Add the force to the object
-                    Rigidbody.AddForce(-this.gameObject.transform.up * 100);
-
-                }
-
-            }
+            //// Add the force to the body
+            //Rigidbody.velocity += direction * magnetForce * Time.deltaTime;
 
         }
 
