@@ -53,21 +53,25 @@ public class MissileBehaviour : MonoBehaviour {
 		if (!launched && Time.time > launchTime) {
 			launched = true;
 
-			RaycastHit hit;
+			// Change the direction to where the crosshair is aiming at
+			//direction = Camera.main.transform.forward;
+			direction = owner.transform.GetChild(1).forward;
 
+		} else if (launched && target != null) {
+			if (first) {
+				gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+				first = false;
+			}
+
+			RaycastHit hit;
 			if (owner.tag == "Player") {
-				if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
+				if (Physics.Raycast(owner.transform.position, direction, out hit)) {
 					target = hit.point;
 				}
 			} else if (owner.tag == "Enemy") {
 				target = player.transform.position;
 			} else {
 				target = Vector3.zero;
-			}
-		} else if (launched && target != null) {
-			if (first) {
-				gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-				first = false;
 			}
 
 			targetRotation = Quaternion.LookRotation(target - transform.position);
@@ -78,12 +82,18 @@ public class MissileBehaviour : MonoBehaviour {
 		}
 
 		//transform.position += (target - transform.position) * Time.deltaTime + (playerSpeed / projectileSpeed) * Time.deltaTime;
+		Debug.DrawLine(transform.position, target, Color.blue);
+
 		playerSpeed *= 0.95f;
 		transform.position += playerSpeed * Time.deltaTime;
 		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 	}
 
 	private void OnCollisionEnter(Collision other) {
+		if (other.gameObject.tag == "Damageable") {
+			other.gameObject.GetComponent<Health>().TakeDamage(15);
+		}
+
 		explosion = Instantiate(explosion);
 		explosion.transform.position = transform.position;
 		Destroy(gameObject);
