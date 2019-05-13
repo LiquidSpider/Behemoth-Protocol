@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - CurrentWeapon
+  - LeftSelect
+  - MissileParent
+  - Missile
+  - BombParent
+  - ExplosionParent
   layers:
   - Default
   - TransparentFX

@@ -84,6 +84,7 @@ public class PlayerController : MonoBehaviour
         camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, target, t);
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, tFOV, t);
     }
+
     void PlayerControls() {
         if (Input.GetButtonDown("Pause")) {
             Cursor.lockState = CursorLockMode.None;
@@ -136,6 +137,7 @@ public class PlayerController : MonoBehaviour
             SwapWeapon(3);
         }
     }
+
     void AimWeapon() {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray, out RaycastHit aimPoint)) {
@@ -144,6 +146,7 @@ public class PlayerController : MonoBehaviour
             arm.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
     }
+
     void SwapWeapon(int wIndex) {
         if (wIndex < weapons.Count) {
             GameObject cWeapon = GameObject.FindGameObjectWithTag("CurrentWeapon");
@@ -153,6 +156,7 @@ public class PlayerController : MonoBehaviour
             nWeapon.transform.localRotation = Quaternion.identity;
         }
     }
+
     IEnumerator Dodge() {
         isDodge = true;
         if (Input.GetAxis("LeftHorizontal") > 0) {
