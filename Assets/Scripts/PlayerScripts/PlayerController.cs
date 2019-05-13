@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //  Components
     private Rigidbody rb;                                               // Player body
     public GameObject body;                                             // Player gameobject body
     private Animator animator;                                          // Body animator
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private float tFOV;                                                 // Target FOV
     public float zSpeed = 1f;                                           // How long it takes to zoom
     private float zCLerp = 0f;                                          // Current lerp time
-    public float zCLerpSpeed = 1f;                                      // Lerp speed
+    public float zCLerpSpeed = 1f;                                      // Lerp speed, lower = better, should never be 0
     
     //  Movement Vars
     public float accSpeed = 200.0f;                                     // How much force is applied each tick
@@ -38,13 +39,15 @@ public class PlayerController : MonoBehaviour
     private bool isCruising = false;                                    // Is the player afterburning
     public float cruiseMod = 0.10f;                                     // Multiplier for all movement except forward when cruising
     public float cruiseFwd = 5f;                                        // Multiplier for forward movement when cruising
+    private float cHoldTime = 0f;                                       // How long player has held dodge key for
+    public float cHoldThreshold = 0.5f;                                 // How long the player has to hold dodge to cruise
 
     //  Weapon vars
     public GameObject arm;                                              // Object that holds the gun
     public List<GameObject> weapons = new List<GameObject>();           // Current inventory
     public int cWweap = 0;                                              // Current weapon selected
 
-    void Start() {
+    void Start() { // Mainly component getting
         cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
         camera = cameraObj.GetComponent<Camera>();
         cZoom = cameraObj.transform.localPosition;
@@ -60,18 +63,28 @@ public class PlayerController : MonoBehaviour
         CameraMove();
         PlayerControls();
         AimWeapon();
+        //AvoidObstruction();
     }
-    void CameraMove() { 
+    void CameraMove() { // Camera controls and manipulation goes here
         if (!isCruising) {
             rotX += speedH * Input.GetAxis("RightHorizontal");
             rotY -= speedV * Input.GetAxis("RightVertical");
             rotX += speedH * Input.GetAxis("Mouse X");
             rotY -= speedV * Input.GetAxis("Mouse Y");
+            if (!isDodge) {
+                trail.time = 0.5f;
+                trail.startWidth = 0.5f;
+            }
         } else {
             rotX += speedH * Input.GetAxis("RightHorizontal") * cruiseLMod;
             rotY -= speedV * Input.GetAxis("RightVertical") * cruiseLMod;
             rotX += speedH * Input.GetAxis("Mouse X") * cruiseLMod;
             rotY -= speedV * Input.GetAxis("Mouse Y") * cruiseLMod;
+            if (!isDodge) {
+                trail.time = 2;
+                trail.startWidth = 1f;
+            }
+
         }
         rotY = Mathf.Clamp(rotY, minY, maxY);
         transform.eulerAngles = new Vector3(rotY, rotX, 0.0f);
@@ -85,8 +98,8 @@ public class PlayerController : MonoBehaviour
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, tFOV, t);
     }
 
-    void PlayerControls() {
-        if (Input.GetButtonDown("Pause")) {
+    void PlayerControls() { // Player controls and manipulation goes here
+        if (Input.GetButtonDown("Pause")) { // Release key
             Cursor.lockState = CursorLockMode.None;
         }
         if (Input.GetButton("Zoom")) {
@@ -112,18 +125,28 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * accSpeed * mods);
             rb.AddForce(transform.up * Input.GetAxis("AscDesc") * accSpeed * mods);
         }
-        if (Input.GetButtonDown("Dodge") && !isDodge) {
+        // Inputs
+        //if (Input.GetButtonDown("Dodge") && !isDodge) {
+        //    StartCoroutine(Dodge());
+        //}
+        if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
+        if (Input.GetButton("Dodge")) {
+            if (cHoldTime > cHoldThreshold) {
+                isCruising = true;
+            } else cHoldTime += Time.deltaTime;
+        }
+        if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
             StartCoroutine(Dodge());
-        }
-        if (Input.GetAxis("Cruise") > 0 && !isDodge) {
-            trail.time = 2;
-            trail.startWidth = 1f;
-            isCruising = true;
-        } else {
-            trail.time = 0.5f;
-            trail.startWidth = 0.5f;
-            isCruising = false;
-        }
+        } else if (Input.GetButtonUp("Dodge") && isCruising) isCruising = false;
+        //if (Input.GetAxis("Cruise") > 0 && !isDodge) {
+        //    trail.time = 2;
+        //    trail.startWidth = 1f;
+        //    isCruising = true;
+        //} else {
+        //    trail.time = 0.5f;
+        //    trail.startWidth = 0.5f;
+        //    isCruising = false;
+        //}
         if (Input.GetButtonDown("Weapon1")) {
             SwapWeapon(0);
         }
@@ -149,30 +172,36 @@ public class PlayerController : MonoBehaviour
 
     void SwapWeapon(int wIndex) {
         if (wIndex < weapons.Count) {
-            GameObject cWeapon = GameObject.FindGameObjectWithTag("CurrentWeapon");
-            Destroy(cWeapon);
+            foreach (GameObject cWeapon in GameObject.FindGameObjectsWithTag("CurrentWeapon")) {
+                Destroy(cWeapon);
+            }
             GameObject nWeapon = Instantiate(weapons[wIndex], arm.transform, false);
             nWeapon.transform.localPosition = Vector3.zero;
             nWeapon.transform.localRotation = Quaternion.identity;
         }
     }
 
-    IEnumerator Dodge() {
-        isDodge = true;
-        if (Input.GetAxis("LeftHorizontal") > 0) {
-            animator.SetTrigger("DodgeRight");
-        }
-        if (Input.GetAxis("LeftHorizontal") < 0) {
-            animator.SetTrigger("DodgeLeft");
-        }
-        rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
-        rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
-        rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
-        rb.AddTorque(transform.right * Input.GetAxis("LeftHorizontal") * dForce);
-        yield return new WaitForSeconds(dTime);
-        isDodge = false;
-    }
-    void EaseIn(GameObject obj, float rate) {
+    //void AvoidObstruction() {
+    //    if (Physics.Linecast(camera.transform.position, transform.position, out RaycastHit obstruction)) {
 
+    //    }
+    //}
+
+    IEnumerator Dodge() {
+        if (!isDodge) {
+            isDodge = true;
+            if (Input.GetAxis("LeftHorizontal") > 0) {
+                animator.SetTrigger("DodgeRight");
+            }
+            if (Input.GetAxis("LeftHorizontal") < 0) {
+                animator.SetTrigger("DodgeLeft");
+            }
+            rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
+            rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
+            rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
+            rb.AddTorque(transform.right * Input.GetAxis("LeftHorizontal") * dForce);
+            yield return new WaitForSeconds(dTime);
+            isDodge = false;
+        }
     }
 }
