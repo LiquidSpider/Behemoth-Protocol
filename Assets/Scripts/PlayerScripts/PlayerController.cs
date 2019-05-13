@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     public float dTime = 1f;                                            // How long the player is "dodging" for
     private bool isDodge = false;                                       // Is the player dodging
     public float dForce = 10000.0f;                                     // How much force is applied on dodge
-    private bool isCruising = false;                                    // Is the player afterburning
+    public bool isCruising = false;                                    // Is the player afterburning
     public float cruiseMod = 0.10f;                                     // Multiplier for all movement except forward when cruising
     public float cruiseFwd = 5f;                                        // Multiplier for forward movement when cruising
     private float cHoldTime = 0f;                                       // How long player has held dodge key for

@@ -64,31 +64,35 @@ public class GunTemplate : MonoBehaviour
             float handlebuffer = cAcc / minAcc * 5;
             cAcc -= (handling + handlebuffer) * Time.deltaTime;
         }
-        switch (fMode) {
-            case FireMode.Semi:
-                if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
-                    if (fireTime > fireRate && !hasFired) {
-                        hasFired = true;
-                        Fire();
-                    }
-                }
-                if (Input.GetAxis("Attack") < 1) {
-                    hasFired = false;
-                }
-                break;
-            case FireMode.Burst:
-                if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
-                    StartCoroutine(BurstFire());
-                }
-                break;
-            case FireMode.Auto:
-                if (Input.GetButton("Attack") || Input.GetAxis("Attack") != 0) {
-                    if (fireTime > fireRate) {
-                        Fire();
-                    }
-                }
-                break;
-        }
+
+		if (!GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).GetComponent<PlayerController>().isCruising) {
+			switch (fMode) {
+				case FireMode.Semi:
+					if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
+						if (fireTime > fireRate && !hasFired) {
+							hasFired = true;
+							Fire();
+						}
+					}
+					if (Input.GetAxis("Attack") < 1) {
+						hasFired = false;
+					}
+					break;
+				case FireMode.Burst:
+					if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
+						StartCoroutine(BurstFire());
+					}
+					break;
+				case FireMode.Auto:
+					if (Input.GetButton("Attack") || Input.GetAxis("Attack") != 0) {
+						if (fireTime > fireRate) {
+							Fire();
+						}
+					}
+					break;
+			}
+		}
+
     }
 
     void Fire() {

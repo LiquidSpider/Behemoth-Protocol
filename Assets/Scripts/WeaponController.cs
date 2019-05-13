@@ -24,14 +24,16 @@ public class WeaponController : MonoBehaviour {
 		previousPosition = currentPosition;
 		currentPosition = transform.GetChild(1).position;
 
-		if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
-			missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).transform.GetChild(0).gameObject;
+		if (!transform.GetChild(1).GetComponent<PlayerController>().isCruising) {
+			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
+				missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).transform.GetChild(0).gameObject;
 
-			if (Input.GetButtonDown("Attack")) {
-				LaunchMissile();
+				if (Input.GetButtonDown("Attack")) {
+					LaunchMissile();
+				}
+			} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 3) {
+				missileSpawnLocation = null;
 			}
-		} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 3) {
-			missileSpawnLocation = null;
 		}
 
 		if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {
