@@ -48,10 +48,10 @@ public class PlayerController : MonoBehaviour
     public int cWweap = 0;                                              // Current weapon selected
 
     void Start() { // Mainly component getting
-        cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
-        camera = cameraObj.GetComponent<Camera>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        cameraObj = camera.transform.parent.gameObject;
         cZoom = cameraObj.transform.localPosition;
-        uFOV = cameraObj.GetComponent<Camera>().fieldOfView;
+        uFOV = camera.GetComponent<Camera>().fieldOfView;
         rb = GetComponent<Rigidbody>();
         trail = body.GetComponent<TrailRenderer>();
         animator = body.GetComponent<Animator>();
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         CameraMove();
         PlayerControls();
         AimWeapon();
-        //AvoidObstruction();
+        AvoidObstruction();
     }
     void CameraMove() { // Camera controls and manipulation goes here
         if (!isCruising) {
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
         }
         float t = zCLerp / zCLerpSpeed;
         t = Mathf.Sin(t * Mathf.PI * 0.5f);
-        camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, target, t);
+        cameraObj.transform.localPosition = Vector3.Lerp(cameraObj.transform.localPosition, target, t);
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, tFOV, t);
     }
 
@@ -180,12 +180,14 @@ public class PlayerController : MonoBehaviour
             nWeapon.transform.localRotation = Quaternion.identity;
         }
     }
-
-    //void AvoidObstruction() {
-    //    if (Physics.Linecast(camera.transform.position, transform.position, out RaycastHit obstruction)) {
-
-    //    }
-    //}
+    void AvoidObstruction() {
+        int pLayer = 1 << 10;
+        if (Physics.Linecast(transform.position, cameraObj.transform.position, out RaycastHit obstruction)) {
+            camera.transform.position = obstruction.point;
+        } else {
+            camera.transform.localPosition = Vector3.zero;
+        }
+    }
 
     IEnumerator Dodge() {
         if (!isDodge) {
