@@ -14,6 +14,8 @@ public class BulletScript : MonoBehaviour
     public float lightStr = 20f;    // How bright the light component is
     public float prjSize = 0.1f;    // How large the collider is. Should be visually represented
 
+    public Collider[] creatorsColliders;
+
     private Animator animator;
 
     // Start is called before the first frame update
@@ -33,20 +35,46 @@ public class BulletScript : MonoBehaviour
         light.intensity = lightStr;
         light.range = lightStr;
     }
-    void OnCollisionEnter(Collision collision) {
-        if(collision.gameObject.layer != 9) { // Layer 9 is for player projectiles
-            if(collision.gameObject.GetComponent<Health>() != null) {
+
+    /// <summary>
+    /// Unity collision engine - On collision enter.
+    /// </summary>
+    /// <param name="collision">The collision occuring.</param>
+    void OnCollisionEnter(Collision collision)
+    {
+
+        // Get the index of the collider to see if it exists in the array
+        int DoesContain = System.Array.IndexOf(creatorsColliders, collision.collider);
+
+        // Check if the collision is the creators collider or another projectile
+        if(DoesContain >= 0 || collision.gameObject.layer == 9)
+        {
+
+        }
+        else
+        {
+
+            // if the object has the health script
+            if(collision.gameObject.GetComponent<Health>() != null)
+            {
+                // take damage
                 var health = collision.gameObject.GetComponent<Health>();
                 health.TakeDamage(damage);
             }
+            
+            // if the object has a parent
             if(collision.gameObject.transform.parent)
             {
+                // if that objects parent has the Cube script
                 if (collision.gameObject.transform.parent.gameObject.GetComponent<Cube>())
                 {
+                    // Take cube damage
                     var Cube = collision.gameObject.transform.parent.gameObject.GetComponent<Cube>();
-                    Cube.TakeDamage();
+                    Cube.TakeDamage(damage);
                 }
             }
+            
+            // Destroy the bullet
             Destroy(this.gameObject);
         }
     }

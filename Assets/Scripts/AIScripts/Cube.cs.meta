@@ -3,7 +3,12 @@ guid: 1db9c8dfb618cff4d9408d71462a7e1b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - weakspotMaterial: {fileID: 2100000, guid: 4f8462cb59f4d4c799f2181017b877a2, type: 2}
+  - normalMaterial: {fileID: 2100000, guid: bf66bcd57a2f54fa0837cfe8ae2119e5, type: 2}
+  - player: {instanceID: 0}
+  - level: {instanceID: 0}
+  - Iris: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -6,6 +6,14 @@ public class GunTemplate : MonoBehaviour
 {
     //  Gonna be a lot of variables here. Surely there's a way to clean it up.
 
+    // AI Gun implementation
+    public enum ControlledBy
+    {
+        player,
+        AI
+    }
+    public ControlledBy controller;
+
     //  Gun Variables
     public int magSize = 0;                     // Set to 0 for infinite ammo
     public int pellets = 1;                     // Shots fired per "bullet"
@@ -55,7 +63,16 @@ public class GunTemplate : MonoBehaviour
     }
     // Update is called once per frame
     void Update() {
-        PlayerControl(fMode);
+        
+        // Depending on who is controlling the weapon stops the gun from shooting on the attack button
+        switch(controller)
+        {
+            case ControlledBy.player:
+                PlayerControl(fMode);
+                break;
+            case ControlledBy.AI:
+                break;
+        }
     }
 
     void PlayerControl(FireMode fMode) {
@@ -95,13 +112,15 @@ public class GunTemplate : MonoBehaviour
 
     }
 
-    void Fire() {
+    public void Fire() {
         fireTime = 0;
         for (int i = 0; i < pellets; i++) {
+
             GameObject bullet = Instantiate(projectile, barrel.transform.position, barrel.transform.rotation);
             bullet.transform.Rotate(Vector3.up * (Random.Range(-cAcc, cAcc) / 10)); // Dividing by 10 so larger accuracy values can be input for balancing sake
             bullet.transform.Rotate(Vector3.left * (Random.Range(-cAcc, cAcc)) / 10);
             BulletScript bStats = bullet.GetComponent<BulletScript>();
+            bStats.creatorsColliders = GetParentColliders();
             bStats.speed = pSpeed;
             bStats.damage = damage;
             bStats.grav = pGrav;
@@ -133,5 +152,21 @@ public class GunTemplate : MonoBehaviour
             }
             isBursting = false;
         }
+    }
+
+    /// <summary>
+    /// Get all the colliders in this objects parents.
+    /// </summary>
+    /// <returns>An array of all the parents colliders.</returns>
+    private Collider[] GetParentColliders()
+    {
+
+        // Get the root parent
+        Transform parent = this.gameObject.transform.root;
+        // Get all the colliders in the object
+        Collider[] colliders = parent.GetComponentsInChildren<Collider>();
+
+        return colliders;
+
     }
 }
