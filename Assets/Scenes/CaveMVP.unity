@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.2922368, g: 0.2922368, b: 0.2922368, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -408,6 +408,10 @@ PrefabInstance:
     - target: {fileID: 348192131, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
       propertyPath: m_Name
       value: Spider (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 348192131, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 348192138, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1194,6 +1198,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spider (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 348192131, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 348192138, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -180.96
@@ -1432,6 +1440,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spider (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 348192131, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 348192138, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -134.6
@@ -1562,6 +1574,10 @@ PrefabInstance:
     - target: {fileID: 348192131, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
       propertyPath: m_Name
       value: Spider (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 348192131, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 348192138, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
       propertyPath: m_LocalPosition.x

@@ -126,7 +126,8 @@ public class GunTemplate : MonoBehaviour
             bStats.grav = pGrav;
             bStats.weight = pWeight;
             bStats.lightStr = pLightStr;
-        }
+			bullet.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+		}
         animation.Play("Fire", PlayMode.StopAll);
         MakeSound(sFire, sFire.length, soundPitchRandom);
         if (cAcc <= maxAcc) {
@@ -141,6 +142,7 @@ public class GunTemplate : MonoBehaviour
         if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
         GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
         oSound.GetComponent<TimedDestroy>().maxTime = sLength;
+		oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
     }
 
     IEnumerator BurstFire() {
