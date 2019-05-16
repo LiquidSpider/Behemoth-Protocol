@@ -124,6 +124,7 @@ MonoBehaviour:
   incAcc: 30
   handling: 30
   sFire: {fileID: 8300000, guid: 7bcb53ad44e16ed48b21cd76dd743432, type: 3}
+  soundPitchRandom: 0
   projectile: {fileID: 8170432168313451531, guid: 8ffa651664f091b4da719dbe2b3732ed,
     type: 3}
   pSpeed: 200
@@ -136,8 +137,7 @@ MonoBehaviour:
   pLightStr: 20
   pPrjSize: 0.1
   cAcc: 0
-  soundSrc: {fileID: 7196482648681402573, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24,
-    type: 3}
+  soundSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
 --- !u!111 &5494281802643396399
 Animation:
   m_ObjectHideFlags: 0

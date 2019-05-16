@@ -383,8 +383,7 @@ MonoBehaviour:
   pLightStr: 20
   pPrjSize: 0.1
   cAcc: 0
-  soundSrc: {fileID: 7196482648681402573, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24,
-    type: 3}
+  soundSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
 --- !u!111 &2769048946040902049
 Animation:
   m_ObjectHideFlags: 0
