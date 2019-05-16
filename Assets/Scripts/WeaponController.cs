@@ -11,6 +11,7 @@ public class WeaponController : MonoBehaviour {
 
 	private Vector3 currentPosition;
 	private Vector3 previousPosition;
+	public Vector3 playerSpeed;
 
 	private float timeBetweenBombs = 0.01f;
 	private float timeOfLastBomb;
@@ -23,6 +24,7 @@ public class WeaponController : MonoBehaviour {
 	void Update() {
 		previousPosition = currentPosition;
 		currentPosition = transform.GetChild(1).position;
+		playerSpeed = currentPosition - previousPosition;
 
 		if (!transform.GetChild(1).GetComponent<PlayerController>().isCruising) {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
@@ -49,10 +51,8 @@ public class WeaponController : MonoBehaviour {
 
 		//newMissile.transform.parent = GameObject.FindGameObjectWithTag("CurrentWeapon").transform;
 
-		newMissile.GetComponent<MissileBehaviour>().playerSpeed = currentPosition - previousPosition;
 		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
-
-		//newMissile.transform.parent = null;
+		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
 
 		print("Missile Launched");
 	}

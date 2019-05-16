@@ -568,7 +568,7 @@ MonoBehaviour:
   health: 200
   soundRandomPitch: 0
   death: {fileID: 8300000, guid: b8578210d69a8d0498619d95a1bf4485, type: 3}
-  sndSrc: {fileID: 7196482648681402573, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
+  sndSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
 --- !u!65 &655146653
 BoxCollider:
   m_ObjectHideFlags: 0

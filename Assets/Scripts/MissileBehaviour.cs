@@ -38,7 +38,8 @@ public class MissileBehaviour : MonoBehaviour {
 
 		transform.rotation = Quaternion.LookRotation(positionToLookAt);
 
-		playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
+		playerSpeed = owner.GetComponent<WeaponController>().playerSpeed;
+		//playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
 	}
 
 	public void Initialise(GameObject inputOwner) {
@@ -52,6 +53,9 @@ public class MissileBehaviour : MonoBehaviour {
 
 		if (!launched && Time.time > launchTime) {
 			launched = true;
+
+			direction = owner.transform.GetChild(1).transform.forward;
+			movement = transform.position;
 
 			RaycastHit hit;
 
@@ -70,17 +74,29 @@ public class MissileBehaviour : MonoBehaviour {
 				first = false;
 			}
 
+			RaycastHit hit;
+			if (owner.tag == "Player") {
+				if (Physics.Raycast(movement, direction, out hit)) {
+					target = hit.point;
+				}
+			} else if (owner.tag == "Enemy") {
+				target = player.transform.position;
+			} else {
+				target = Vector3.zero;
+			}
+
 			targetRotation = Quaternion.LookRotation(target - transform.position);
 
 			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
 			rotationSpeed += Time.deltaTime * 10;
 		}
-
-		//transform.position += (target - transform.position) * Time.deltaTime + (playerSpeed / projectileSpeed) * Time.deltaTime;
-		playerSpeed *= 0.95f;
-		transform.position += playerSpeed * Time.deltaTime;
+		
+		playerSpeed *= 0.99f;
+		transform.position += playerSpeed;
 		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
+
+		Debug.DrawLine(transform.position, target, Color.green);
 	}
 
 	private void OnCollisionEnter(Collision other) {
