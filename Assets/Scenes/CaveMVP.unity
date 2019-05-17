@@ -819,6 +819,36 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300004, guid: c1876b9b5430c964e831233b5f53e041, type: 3}
+--- !u!1 &937041272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 937041273}
+  m_Layer: 0
+  m_Name: Safe Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &937041273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937041272}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 46, y: 330, z: -167}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1008176288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,6 +1111,12 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300022, guid: c1876b9b5430c964e831233b5f53e041, type: 3}
+--- !u!1 &1330044121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9029398550774951842, guid: d67bc86e6392cbb4eb2c5efa21851313,
+    type: 3}
+  m_PrefabInstance: {fileID: 6481061405011061298}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1341981096 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100024, guid: c1876b9b5430c964e831233b5f53e041,
@@ -1297,7 +1333,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664436199}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1823,6 +1859,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyCube
       objectReference: {fileID: 0}
+    - target: {fileID: 6481061404660195155, guid: d67bc86e6392cbb4eb2c5efa21851313,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 6481061404660195152, guid: d67bc86e6392cbb4eb2c5efa21851313,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1888,5 +1929,36 @@ PrefabInstance:
       propertyPath: level
       value: 
       objectReference: {fileID: 1341981096}
+    - target: {fileID: 6481061404660195153, guid: d67bc86e6392cbb4eb2c5efa21851313,
+        type: 3}
+      propertyPath: cubeState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6481061404660195153, guid: d67bc86e6392cbb4eb2c5efa21851313,
+        type: 3}
+      propertyPath: angryBoiDecision
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6481061404660195153, guid: d67bc86e6392cbb4eb2c5efa21851313,
+        type: 3}
+      propertyPath: rotationSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6481061404660195153, guid: d67bc86e6392cbb4eb2c5efa21851313,
+        type: 3}
+      propertyPath: safePosition
+      value: 
+      objectReference: {fileID: 937041272}
+    - target: {fileID: 6481061404660195153, guid: d67bc86e6392cbb4eb2c5efa21851313,
+        type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 2187276436918047048, guid: 752907a7cbad4f443969e65724246899,
+        type: 3}
+    - target: {fileID: 6481061404660195153, guid: d67bc86e6392cbb4eb2c5efa21851313,
+        type: 3}
+      propertyPath: missileSpawnLocation
+      value: 
+      objectReference: {fileID: 1330044121}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d67bc86e6392cbb4eb2c5efa21851313, type: 3}

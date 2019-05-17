@@ -52,10 +52,13 @@ public class Cube : MonoBehaviour
     private GameObject gattling1;
     private GameObject gattling2;
     private GameObject missle1;
+    public GameObject missile;
+    public GameObject missileSpawnLocation;
 
     // public object variables
     public GameObject player;
     public GameObject level;
+    public GameObject safePosition;
 
     // Face variables
     private GameObject currentFace;
@@ -90,6 +93,13 @@ public class Cube : MonoBehaviour
     private float shotforTime;
     private float missileTimer;
     private bool fireMissileFirst;
+
+    private float radiusMovementReset;
+    private int randomDirection;
+
+    private bool sizeIncreaseFinished;
+    private Vector3 defaultSize;
+    private float startingAnimationTime;
 
     private bool _PlayerDetected = false;
     private float PlayerMissing;
@@ -145,6 +155,9 @@ public class Cube : MonoBehaviour
 
         // Set the current face to the default
         this.currentFace = defaultFace;
+
+        // Get the default size of the object
+        defaultSize = transform.localScale;
 
     }
 
@@ -338,7 +351,7 @@ public class Cube : MonoBehaviour
         this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
 
         // Run away from player
-        this.transform.position += (PlayerSpeed * 1.2f * this.transform.forward * Time.deltaTime);
+        MoveObjectDirection(this.transform.forward, 1.2f);
 
     }
 
@@ -479,9 +492,9 @@ public class Cube : MonoBehaviour
         if (fireMissileFirst)
         {
 
-            Debug.Log("Fire missile 1 of 4");
-            Debug.Log("Fire missile 2 of 4");
-            Debug.Log("Fire missile 3 of 4");
+            LaunchMissile();
+            LaunchMissile();
+            LaunchMissile();
             fireMissileFirst = false;
 
         }
@@ -491,9 +504,8 @@ public class Cube : MonoBehaviour
             // fire a missile every 3 seconds
             if (Time.time > missileTimer)
             {
-
-                Debug.Log("Fire Missile");
-
+                
+                LaunchMissile();
                 missileTimer = Time.time + 3.0f;
 
             }
@@ -501,6 +513,7 @@ public class Cube : MonoBehaviour
         }
 
         // Move within 2.5x radius of player
+        MoveWithinRadiusOfPlayer(250f, 1.5f);
 
     }
 
@@ -536,6 +549,20 @@ public class Cube : MonoBehaviour
     private void AngryBoiReposition()
     {
 
+        // Move around the object at crazy speed
+        MoveWithinRadiusOfPlayer(250, 2.5f);
+
+        // Shoot gattling at player
+        if (Time.time > shootTimer)
+        {
+
+            this.gattling1.GetComponent<GunTemplate>().Fire();
+            this.gattling2.GetComponent<GunTemplate>().Fire();
+
+            shootTimer = Time.time + 0.5f;
+
+        }
+
     }
 
     /// <summary>
@@ -549,7 +576,7 @@ public class Cube : MonoBehaviour
 
         // Handle the weapons
         // 2.5x cube away Turret Fire
-        if(distance <= 2.5 && distance > 1.5)
+        if(distance <= 250.0f && distance > 150.0f)
         {
 
             // If we've waited for the 5 second cooldown
@@ -579,6 +606,9 @@ public class Cube : MonoBehaviour
 
             }
 
+            // Handles movement
+            MoveWithinRadiusOfPlayer(250, 1.5f);
+
         }
         // 1.5x cube away Charge
         else if(distance <= 1.5)
@@ -589,11 +619,19 @@ public class Cube : MonoBehaviour
         else
         {
 
-        }
+            // fire a missile every 3 seconds
+            if (Time.time > missileTimer)
+            {
 
-        // Handles movement
-        // Look at player
-        Quaternion direction = Quaternion.LookRotation(player.transform.position - this.transform.position);
+                LaunchMissile();
+                missileTimer = Time.time + 3.0f;
+
+            }
+
+            // Handles movement
+            MoveWithinRadiusOfPlayer(250, 1.5f);
+
+        }
 
     }
 
@@ -626,7 +664,17 @@ public class Cube : MonoBehaviour
         // TODO Fix this so that the size / face / gun animations are played
         // Also add a 'safe' position to run too.
 
-        // If we're safe change the state of the cube depending on the last state
+        if(Vector3.Distance(this.transform.position, safePosition.transform.position) > 10.0f)
+        {
+            // Get the direction of the safe place
+            Quaternion direction = Quaternion.LookRotation(safePosition.transform.position - this.transform.position);
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
+
+            // Run to position
+            MoveObjectDirection(this.transform.forward, 2.5f);
+        }
+
+        // change the state of the cube depending on the last state
         switch(lastCubeState)
         {
             case CubeStates.Coward:
@@ -635,7 +683,15 @@ public class Cube : MonoBehaviour
                 currentWeakSpot.GetComponent<Renderer>().material = weakspotMaterial;
                 weakSpotBack.GetComponent<Renderer>().material = normalMaterial;
                 // update the cubes current state and reset it's decision
-                this.cubeState = CubeStates.Retaliation;
+                if(this.transform.localScale != defaultSize * 2)
+                {
+                    this.transform.localScale = Vector3.Slerp(defaultSize, defaultSize * 2, (Time.time - startingAnimationTime) / 2);
+                }
+
+                if (this.transform.localScale == defaultSize * 2 && Vector3.Distance(this.transform.position, safePosition.transform.position) < 10.0f)
+                {
+                    this.cubeState = CubeStates.Retaliation;
+                }
                 // Add the guns
 
                 break;
@@ -645,7 +701,15 @@ public class Cube : MonoBehaviour
                 currentWeakSpot.GetComponent<Renderer>().material = weakspotMaterial;
                 weakSpotBack.GetComponent<Renderer>().material = normalMaterial;
                 // Update the cubes current state and reset it's decision
-                this.cubeState = CubeStates.AngreyBoi;
+                if(this.transform.localScale != defaultSize * 4)
+                {
+                    this.transform.localScale = Vector3.Slerp(defaultSize * 2, defaultSize * 4, (Time.time - startingAnimationTime) / 2);
+                }
+
+                if (this.transform.localScale == defaultSize * 4 && Vector3.Distance(this.transform.position, safePosition.transform.position) < 10.0f)
+                {
+                    this.cubeState = CubeStates.AngreyBoi;
+                }
                 break;
             case CubeStates.AngreyBoi:
                 // update the weak point
@@ -653,8 +717,16 @@ public class Cube : MonoBehaviour
                 currentWeakSpot.GetComponent<Renderer>().material = weakspotMaterial;
                 weakSpotTop.GetComponent<Renderer>().material = normalMaterial;
                 // update the current state and reset it's decision 
-                this.cubeState = CubeStates.Coward;
-                this.cowardDecision = CowardDecisions.nothing;
+                if(this.transform.localScale != defaultSize)
+                {
+                    this.transform.localScale = Vector3.Slerp(defaultSize * 4, defaultSize, (Time.time - startingAnimationTime) / 2);
+                }
+
+                if (this.transform.localScale == defaultSize && Vector3.Distance(this.transform.position, safePosition.transform.position) < 10.0f)
+                {
+                    this.cubeState = CubeStates.Coward;
+                    this.cowardDecision = CowardDecisions.nothing;
+                }
                 break;
         }
 
@@ -801,7 +873,8 @@ public class Cube : MonoBehaviour
             }
 
             // Move the object
-            this.transform.position += (PlayerSpeed * roamSpeed * this.transform.forward * Time.deltaTime);
+            MoveObjectDirection(this.transform.forward, roamSpeed);
+
         }
 
 
@@ -819,7 +892,121 @@ public class Cube : MonoBehaviour
         this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
 
         // Run away from player
-        this.transform.position += (PlayerSpeed * speedMultiplier * -this.transform.forward * Time.deltaTime);
+        MoveObjectDirection(-this.transform.forward, speedMultiplier);
+
+    }
+
+    /// <summary>
+    /// Move around infront of the player keeping a specific distance.
+    /// </summary>
+    private void MoveWithinRadiusOfPlayer(float radius, float speedMultiplier)
+    {
+
+        // Get the current distance between the player and the cube
+        float distance = CheckPlayerDistance();
+
+        // If we're outside the radius
+        if(distance > radius)
+        {
+
+            // Move towards player
+            // Look at player
+            Quaternion direction = Quaternion.LookRotation(player.transform.position - this.transform.position);
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
+
+            // Run towards from player
+            MoveObjectDirection(this.transform.forward, speedMultiplier);
+
+
+        }
+        // We're inside the radius
+        else if(distance < radius)
+        {
+
+            // Move away from player
+            // Look at player
+            Quaternion direction = Quaternion.LookRotation(player.transform.position - this.transform.position);
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
+
+            // Move the cube
+            MoveObjectDirection(-this.transform.forward, speedMultiplier);
+
+        }
+
+        // Move a random direction for 2-4 seconds of time around the player
+        if(Time.time > radiusMovementReset)
+        {
+            radiusMovementReset = Time.time + Random.Range(2,5);
+            randomDirection = Random.Range(0, 4);
+        }
+        else
+        {
+
+            // Depending on the current direction
+            switch(randomDirection)
+            {
+                // Move up
+                case 0:
+                    MoveObjectDirection(this.transform.up, 1.5f);
+                    break;
+                // Move down
+                case 1:
+                    MoveObjectDirection(-this.transform.up, 1.5f);
+                    break;
+                // Move left
+                case 2:
+                    MoveObjectDirection(-this.transform.right, 1.5f);
+                    break;
+                // Move right
+                case 3:
+                    MoveObjectDirection(this.transform.right, 1.5f);
+                    break;
+            }
+
+        }
+
+
+    }
+
+    /// <summary>
+    /// Moves the object a direction whilst maintaining a collision free path.
+    /// </summary>
+    /// <param name="direction">The direction of movement.</param>
+    /// <param name="speedMultiplier">The speed mulitplier</param>
+    private void MoveObjectDirection(Vector3 direction, float speedMultiplier)
+    {
+        // TODO
+        Debug.DrawLine(this.transform.position, (direction.normalized * 100) + this.transform.position);
+        // Cast a ray in the direction of movement to check for collision
+        RaycastHit[] hits = Physics.RaycastAll(this.transform.position, direction, 100.0f);
+        RaycastHit hit = new RaycastHit();
+
+        if(hits.Length > 0)
+        {
+        }
+
+        for(int i = 0; i < hits.Length; i++)
+        { 
+            if(hits[i].collider.gameObject != player)
+            {
+
+                hit = hits[i];
+                break;
+
+            }
+        }
+
+        // If the ray hit an object check horizontal paths of collision normal
+        if(hit.transform != null)
+        {
+
+            var rotatedNormal = Quaternion.Euler(90, 90, 90) * hit.normal;
+            direction = Vector3.Project(direction, rotatedNormal);
+
+        }
+
+        // move the object
+        this.transform.position += (PlayerSpeed * speedMultiplier * direction * Time.deltaTime);
 
     }
 
@@ -895,7 +1082,7 @@ public class Cube : MonoBehaviour
             // Set the face of the object to being hit
             ActiveFace(hitFace);
             // Disable the updating of the current face for 0.3 seconds
-            disableFaceTimer = Time.time + 0.1f;
+            disableFaceTimer = Time.time + 0.05f;
 
             if(Health <= 0)
             {
@@ -914,13 +1101,18 @@ public class Cube : MonoBehaviour
     public void MissileHitWeakSpot(float damage)
     {
 
-        // Take daamge
-        TakeDamage(damage);
-
-        // Exeute the no health method as the cube has 0 health and the weak spot is it.
-        if (Health <= 0)
+        if(cubeState != CubeStates.Running)
         {
-            NoHealth();
+
+            // Take daamge
+            TakeDamage(damage);
+
+            // Exeute the no health method as the cube has 0 health and the weak spot is it.
+            if (Health <= 0)
+            {
+                NoHealth();
+            }
+
         }
 
     }
@@ -950,6 +1142,27 @@ public class Cube : MonoBehaviour
 
         // Run away
         this.cubeState = CubeStates.Running;
+
+        // Calculate the safe place to move too
+
+        startingAnimationTime = Time.time;
+
+    }
+
+    /// <summary>
+    /// Launches a missile at the player.
+    /// </summary>
+    private void LaunchMissile()
+    {
+
+        // Create a new missile
+        GameObject newMissile = Instantiate(missile);
+        // set it's location to the missile spawn location
+        newMissile.transform.position = this.transform.position;
+        // Set the player in the script
+        newMissile.GetComponent<MissileBehaviour>().player = player.gameObject;
+        // Create the missilebehaviour
+        newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject);
 
     }
 

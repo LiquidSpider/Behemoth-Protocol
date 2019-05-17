@@ -126,6 +126,7 @@ MonoBehaviour:
     type: 3}
   variationFactor: 5
   direction: {x: 0, y: 0, z: 0}
+  player: {fileID: 4498502439855041820, guid: b2be17ae6ce82c24b8588f1951c48771, type: 3}
   playerSpeed: {x: 0, y: 0, z: 0}
   movement: {x: 0, y: 0, z: 0}
 --- !u!54 &8297192401572699112

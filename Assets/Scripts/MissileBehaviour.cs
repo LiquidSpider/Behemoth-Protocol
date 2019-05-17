@@ -9,8 +9,8 @@ public class MissileBehaviour : MonoBehaviour {
 	[SerializeField] private float variationFactor = 5;
 	[SerializeField] private Vector3 direction;
 
-	private GameObject owner;
-	private GameObject player;
+	public GameObject owner;
+	public GameObject player;
 	private Vector3 target;
 
 	private List<Vector3> previousLocations = new List<Vector3>();
@@ -45,7 +45,7 @@ public class MissileBehaviour : MonoBehaviour {
 		launchTime = Time.time + launchTime;
 
 		owner = inputOwner;
-	}
+    }
 
 	private void Update() {
 		projectileSpeed += 0.25f;
@@ -83,13 +83,31 @@ public class MissileBehaviour : MonoBehaviour {
 		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 	}
 
-	private void OnCollisionEnter(Collision other) {
-		explosion = Instantiate(explosion);
-		explosion.transform.position = transform.position;
-		Destroy(gameObject);
-	}
+    private void OnCollisionEnter(Collision other)
+    {
 
-	private Quaternion PointForward(Quaternion inputDirection) {
+        // Get the root parent
+        Transform parent = owner.gameObject.transform.root;
+        // Get all the colliders in the object
+        Collider[] colliders = parent.GetComponentsInChildren<Collider>();
+
+        // Get the index of the collider to see if it exists in the array
+        int DoesContain = System.Array.IndexOf(colliders, other.collider);
+
+        if (DoesContain >= 0 || other.gameObject.layer == 9 || other.gameObject.name == this.gameObject.name)
+        {
+
+        }
+        else
+        {
+            explosion = Instantiate(explosion);
+            explosion.transform.position = transform.position;
+            Destroy(gameObject);
+        }
+        
+    }
+
+    private Quaternion PointForward(Quaternion inputDirection) {
 		Vector3 tempRotation = inputDirection.eulerAngles;
 
 		float tempZ = tempRotation.z;
