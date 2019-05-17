@@ -38,14 +38,14 @@ public class MissileBehaviour : MonoBehaviour {
 
 		transform.rotation = Quaternion.LookRotation(positionToLookAt);
 
-		playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
+		playerSpeed = owner.GetComponent<WeaponController>().playerSpeed;
 	}
 
 	public void Initialise(GameObject inputOwner) {
 		launchTime = Time.time + launchTime;
 
 		owner = inputOwner;
-    }
+	}
 
 	private void Update() {
 		projectileSpeed += 0.25f;
@@ -53,9 +53,12 @@ public class MissileBehaviour : MonoBehaviour {
 		if (!launched && Time.time > launchTime) {
 			launched = true;
 
-			RaycastHit hit;
-
 			if (owner.tag == "Player") {
+				RaycastHit hit;
+
+				direction = owner.transform.GetChild(1).transform.forward;
+				movement = transform.position;
+
 				if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
 					target = hit.point;
 				}
@@ -70,6 +73,18 @@ public class MissileBehaviour : MonoBehaviour {
 				first = false;
 			}
 
+			if (owner.tag == "Player") {
+				RaycastHit hit;
+
+				if (Physics.Raycast(movement, direction, out hit)) {
+					target = hit.point;
+				}
+			} else if (owner.tag == "Enemy") {
+				target = player.transform.position;
+			} else {
+				target = Vector3.zero;
+			}
+
 			targetRotation = Quaternion.LookRotation(target - transform.position);
 
 			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -77,37 +92,37 @@ public class MissileBehaviour : MonoBehaviour {
 			rotationSpeed += Time.deltaTime * 10;
 		}
 
-		//transform.position += (target - transform.position) * Time.deltaTime + (playerSpeed / projectileSpeed) * Time.deltaTime;
-		playerSpeed *= 0.95f;
-		transform.position += playerSpeed * Time.deltaTime;
+		if (owner.tag == "Player") {
+			playerSpeed *= 0.99f;
+			transform.position += playerSpeed;
+		}
+
 		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
+
+		Debug.DrawLine(transform.position, target, Color.green);
 	}
 
-    private void OnCollisionEnter(Collision other)
-    {
+	private void OnCollisionEnter(Collision other) {
 
-        // Get the root parent
-        Transform parent = owner.gameObject.transform.root;
-        // Get all the colliders in the object
-        Collider[] colliders = parent.GetComponentsInChildren<Collider>();
+		// Get the root parent
+		Transform parent = owner.gameObject.transform.root;
+		// Get all the colliders in the object
+		Collider[] colliders = parent.GetComponentsInChildren<Collider>();
 
-        // Get the index of the collider to see if it exists in the array
-        int DoesContain = System.Array.IndexOf(colliders, other.collider);
+		// Get the index of the collider to see if it exists in the array
+		int DoesContain = System.Array.IndexOf(colliders, other.collider);
 
-        if (DoesContain >= 0 || other.gameObject.layer == 9 || other.gameObject.name == this.gameObject.name)
-        {
+		if (DoesContain >= 0 || other.gameObject.layer == 9 || other.gameObject.name == this.gameObject.name) {
 
-        }
-        else
-        {
-            explosion = Instantiate(explosion);
-            explosion.transform.position = transform.position;
-            Destroy(gameObject);
-        }
-        
-    }
+		} else {
+			explosion = Instantiate(explosion);
+			explosion.transform.position = transform.position;
+			Destroy(gameObject);
+		}
 
-    private Quaternion PointForward(Quaternion inputDirection) {
+	}
+
+	private Quaternion PointForward(Quaternion inputDirection) {
 		Vector3 tempRotation = inputDirection.eulerAngles;
 
 		float tempZ = tempRotation.z;
