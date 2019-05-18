@@ -116,7 +116,13 @@ public class MissileBehaviour : MonoBehaviour {
 
 		} else {
 			explosion = Instantiate(explosion);
-			explosion.tag = "Explosion";
+
+			if (owner.tag == "Player") {
+				explosion.tag = "Explosion - Player";
+			} else {
+				explosion.tag = "Explosion - Enemy";
+			}
+
 			explosion.transform.position = transform.position;
 			Destroy(gameObject);
 		}

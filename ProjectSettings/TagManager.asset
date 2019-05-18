@@ -13,7 +13,10 @@ TagManager:
   - Damageable
   - Enemy
   - GameManager
-  - Explosion
+  - Explosion - Enemy
+  - Explosion - Player
+  - Bullet - Player
+  - Bullet - Enemy
   layers:
   - Default
   - TransparentFX

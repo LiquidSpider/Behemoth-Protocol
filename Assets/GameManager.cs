@@ -7,9 +7,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject player;
 
 	void Start() {
-
-	}
-
-	void Update() {
+		player = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject;
 	}
 }
