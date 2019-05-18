@@ -116,6 +116,7 @@ public class MissileBehaviour : MonoBehaviour {
 
 		} else {
 			explosion = Instantiate(explosion);
+			explosion.tag = "Explosion";
 			explosion.transform.position = transform.position;
 			Destroy(gameObject);
 		}

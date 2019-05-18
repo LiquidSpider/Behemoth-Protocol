@@ -12,6 +12,8 @@ TagManager:
   - ExplosionParent
   - Damageable
   - Enemy
+  - GameManager
+  - Explosion
   layers:
   - Default
   - TransparentFX

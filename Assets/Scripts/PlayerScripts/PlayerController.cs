@@ -66,7 +66,6 @@ public class PlayerController : MonoBehaviour {
 
 	private float speedDecreaseRate;
 
-
 	void Start() { // Mainly component getting
 		camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 		cameraObj = camera.transform.parent.gameObject;
@@ -241,14 +240,11 @@ public class PlayerController : MonoBehaviour {
 			SwapWeapon(0);
 		}
 		if (Input.GetButtonDown("Weapon2")) {
-			SwapWeapon(1);
-		}
-		if (Input.GetButtonDown("Weapon3")) {
 			SwapWeapon(2);
 		}
-		if (Input.GetButtonDown("Weapon4")) {
-			SwapWeapon(3);
-		}
+		//if (Input.GetButtonDown("Weapon3")) {
+		//	SwapWeapon(2);
+		//}
 	}
 
 	void AimWeapon() {

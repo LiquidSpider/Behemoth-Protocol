@@ -13,12 +13,21 @@ public class WeaponController : MonoBehaviour {
 	private Vector3 previousPosition;
 
 	public Vector3 playerSpeed;
-	private float timeBetweenBombs = 0.01f;
+
+	private float timeBetweenBombs = 1.5f;
 	private float timeOfLastBomb;
+
+	private float timeBetweenMissiles = 2f;
+	private float timeOfLastMissile;
+
+	private float timeBetweenFlares = 3f;
+	private float timeOfLastFlare;
 
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
 		timeOfLastBomb = -timeBetweenBombs;
+		timeOfLastMissile = -timeBetweenMissiles;
+		timeOfLastFlare = -timeBetweenFlares;
 	}
 
 	void Update() {
@@ -27,20 +36,27 @@ public class WeaponController : MonoBehaviour {
 		playerSpeed = currentPosition - previousPosition;
 
 		if (!transform.GetChild(1).GetComponent<PlayerController>().isCruising) {
-			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
+			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 				missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).transform.GetChild(0).gameObject;
 
-				if (Input.GetButtonDown("Attack")) {
+				if (Input.GetButtonDown("Attack") && Time.time > timeOfLastMissile + timeBetweenMissiles) {
+					timeOfLastMissile = Time.time;
 					LaunchMissile();
 				}
-			} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 3) {
+			} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
 				missileSpawnLocation = null;
 			}
-		}
 
-		if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {
-			timeOfLastBomb = Time.time;
-			LaunchBomb();
+			if (Input.GetKeyDown(KeyCode.Q) && Time.deltaTime > timeOfLastFlare + timeBetweenFlares) {
+				timeOfLastFlare = Time.time;
+				LaunchFlare();
+			}
+
+		} else {
+			if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {
+				timeOfLastBomb = Time.time;
+				LaunchBomb();
+			}
 		}
 	}
 
@@ -63,5 +79,9 @@ public class WeaponController : MonoBehaviour {
 		newBomb.transform.position = spawnLocation;
 
 		newBomb.GetComponent<BombBehaviour>().Initialise(currentPosition - previousPosition);
+	}
+
+	private void LaunchFlare() {
+		print("Flare Launched");
 	}
 }
