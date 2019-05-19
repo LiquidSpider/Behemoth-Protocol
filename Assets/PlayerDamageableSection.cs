@@ -8,7 +8,7 @@ public class PlayerDamageableSection : MonoBehaviour {
 		if (other.gameObject.transform.tag == "Explosion - Enemy") {
 			Transform parent = transform.root;
 
-			parent.GetComponent<PlayerHealth>().TakeDamage(100);
+			parent.GetComponent<PlayerHealth>().TakeDamage(100, other.gameObject);
 		}
 	}
 }

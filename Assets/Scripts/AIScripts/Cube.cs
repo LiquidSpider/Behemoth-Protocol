@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
+	public GameObject enemies;
 
     // Enum creation
     public enum CubeStates
@@ -492,9 +493,9 @@ public class Cube : MonoBehaviour
         if (fireMissileFirst)
         {
 
-            LaunchMissile();
-            LaunchMissile();
-            LaunchMissile();
+            //LaunchMissile();
+            //LaunchMissile();
+            //LaunchMissile();
             fireMissileFirst = false;
 
         }
@@ -1127,7 +1128,8 @@ public class Cube : MonoBehaviour
         switch(this.cubeState)
         {
             case CubeStates.Coward:
-                Health = 700;
+				enemies.SetActive(true);
+				Health = 700;
                 break;
             case CubeStates.Retaliation:
                 Health = 1000;

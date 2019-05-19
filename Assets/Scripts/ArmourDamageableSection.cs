@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDamageableSection : MonoBehaviour {
+public class ArmourDamageableSection : MonoBehaviour {
 
 	private Material mainMaterial;
 	public Material changedMaterial;
@@ -34,33 +34,33 @@ public class EnemyDamageableSection : MonoBehaviour {
 				materialMode = 0;
 			}
 		}
+
+		changedMaterial.color = DetermineColour();
 	}
 
 	private void OnCollisionEnter(Collision other) {
 		if (other.gameObject.transform.tag == "Explosion - Player") {
-			int childNum = gameObject.transform.GetSiblingIndex();
+			transform.parent.GetComponent<ArmourHealth>().TakeDamage(100, other.gameObject);
 
-			Transform parent = transform.root.GetChild(childNum);
+			//Transform parent = transform.root;
 
-			parent.GetComponent<EnemyHealth>().TakeDamage(200, other.gameObject);
+			//parent.GetComponent<EnemyHealth>().TakeDamage(200, other.gameObject);
 		}
 
 		if (other.gameObject.transform.tag == "Bullet - Player") {
-			int childNum = gameObject.transform.GetSiblingIndex();
+			transform.parent.GetComponent<ArmourHealth>().TakeDamage(10, other.gameObject);
 
-			Transform parent = transform.root.GetChild(childNum);
+			//Transform parent = transform.root;
 
-			parent.GetComponent<EnemyHealth>().TakeDamage(10);
+			//parent.GetComponent<EnemyHealth>().TakeDamage(10);
 		}
 
 		changedMaterial.color = DetermineColour();
 	}
 
 	private Color DetermineColour() {
-		int childNum = gameObject.transform.GetSiblingIndex();
-
-		float HP = transform.root.GetChild(childNum).GetComponent<EnemyHealth>().HP;
-		float maxHP = transform.root.GetChild(childNum).GetComponent<EnemyHealth>().maxHP;
+		float HP = transform.parent.GetComponent<ArmourHealth>().HP;
+		float maxHP = transform.parent.GetComponent<ArmourHealth>().maxHP;
 
 		float temp = HP / maxHP;
 		Color tempColour = new Color();

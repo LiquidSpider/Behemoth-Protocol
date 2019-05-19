@@ -67,8 +67,6 @@ public class WeaponController : MonoBehaviour {
 
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = currentPosition - previousPosition;
 		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
-
-		print("Missile Launched");
 	}
 
 	private void LaunchBomb() {
