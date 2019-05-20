@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
 	public GameObject enemies;
+	public GameObject infoText;
 
     // Enum creation
     public enum CubeStates
@@ -493,10 +494,10 @@ public class Cube : MonoBehaviour
         if (fireMissileFirst)
         {
 
-            //LaunchMissile();
-            //LaunchMissile();
-            //LaunchMissile();
-            fireMissileFirst = false;
+			LaunchMissile();
+			LaunchMissile();
+			LaunchMissile();
+			fireMissileFirst = false;
 
         }
         else
@@ -1129,14 +1130,17 @@ public class Cube : MonoBehaviour
         {
             case CubeStates.Coward:
 				enemies.SetActive(true);
+				infoText.SetActive(true);
 				Health = 700;
                 break;
             case CubeStates.Retaliation:
                 Health = 1000;
                 break;
             case CubeStates.AngreyBoi:
-                Health = 500;
-                break;
+				GameOver();
+				break;
+                //Health = 500;
+                //break;
         }
 
         // Store the current state when switching
@@ -1146,7 +1150,6 @@ public class Cube : MonoBehaviour
         this.cubeState = CubeStates.Running;
 
         // Calculate the safe place to move too
-
         startingAnimationTime = Time.time;
 
     }
@@ -1161,11 +1164,16 @@ public class Cube : MonoBehaviour
         GameObject newMissile = Instantiate(missile);
         // set it's location to the missile spawn location
         newMissile.transform.position = this.transform.position;
+		newMissile.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
         // Set the player in the script
         newMissile.GetComponent<MissileBehaviour>().player = player.gameObject;
         // Create the missilebehaviour
         newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject);
 
     }
+
+	private void GameOver() {
+		Destroy(gameObject);
+	}
 
 }

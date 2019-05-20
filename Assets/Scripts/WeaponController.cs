@@ -67,6 +67,8 @@ public class WeaponController : MonoBehaviour {
 
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = currentPosition - previousPosition;
 		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
+
+		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 750) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(500);
 	}
 
 	private void LaunchBomb() {

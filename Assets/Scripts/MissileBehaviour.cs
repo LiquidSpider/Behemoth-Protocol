@@ -50,65 +50,73 @@ public class MissileBehaviour : MonoBehaviour {
 	}
 
 	private void Update() {
-		projectileSpeed += 0.25f;
+		if (owner == null) {
+			explosion = Instantiate(explosion);
+			explosion.tag = "Explosion - Enemy";
+			explosion.transform.position = transform.position;
+			Destroy(gameObject);
+		} else {
 
-		if (!launched && Time.time > launchTime) {
-			launched = true;
+			projectileSpeed += 0.25f;
+
+			if (!launched && Time.time > launchTime) {
+				launched = true;
+
+				if (owner.tag == "Player") {
+					RaycastHit hit;
+
+					direction = owner.transform.GetChild(1).transform.forward;
+					movement = transform.position;
+
+					if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
+						target = hit.point;
+					}
+				} else if (owner.tag == "Enemy") {
+					target = player.transform.position;
+				} else {
+					target = Vector3.zero;
+				}
+			} else if (launched && target != null) {
+				if (first) {
+					gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+					first = false;
+				}
+
+				if (owner.tag == "Player" || movementDirection == true) {
+					RaycastHit hit;
+
+					if (Physics.Raycast(movement, direction, out hit)) {
+						target = hit.point;
+					}
+				} else if (owner.tag == "Enemy") {
+					if (Vector3.Magnitude(transform.position - player.transform.position) < 15.0f) {
+						movementDirection = true;
+
+						direction = transform.forward;
+						movement = transform.position;
+					}
+
+					target = player.transform.position;
+				} else {
+					target = Vector3.zero;
+				}
+
+				targetRotation = Quaternion.LookRotation(target - transform.position);
+
+				transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+				rotationSpeed += Time.deltaTime * 10;
+			}
 
 			if (owner.tag == "Player") {
-				RaycastHit hit;
-
-				direction = owner.transform.GetChild(1).transform.forward;
-				movement = transform.position;
-
-				if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
-					target = hit.point;
-				}
-			} else if (owner.tag == "Enemy") {
-				target = player.transform.position;
-			} else {
-				target = Vector3.zero;
-			}
-		} else if (launched && target != null) {
-			if (first) {
-				gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-				first = false;
+				playerSpeed *= 0.99f;
+				transform.position += playerSpeed;
 			}
 
-			if (owner.tag == "Player" || movementDirection == true) {
-				RaycastHit hit;
+			transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 
-				if (Physics.Raycast(movement, direction, out hit)) {
-					target = hit.point;
-				}
-			} else if (owner.tag == "Enemy") {
-				if (Vector3.Magnitude(transform.position - player.transform.position) < 15.0f) {
-					movementDirection = true;
-
-					direction = transform.forward;
-					movement = transform.position;
-				}
-
-				target = player.transform.position;
-			} else {
-				target = Vector3.zero;
-			}
-
-			targetRotation = Quaternion.LookRotation(target - transform.position);
-
-			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-			rotationSpeed += Time.deltaTime * 10;
+			Debug.DrawLine(transform.position, target, Color.green);
 		}
-
-		if (owner.tag == "Player") {
-			playerSpeed *= 0.99f;
-			transform.position += playerSpeed;
-		}
-
-		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
-
-		Debug.DrawLine(transform.position, target, Color.green);
 	}
 
 	private void OnCollisionEnter(Collision other) {

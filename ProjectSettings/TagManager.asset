@@ -18,6 +18,9 @@ TagManager:
   - Bullet - Player
   - Bullet - Enemy
   - PlayerHealthBar
+  - Environment
+  - Drone
+  - PlayerBatteryBar
   layers:
   - Default
   - TransparentFX

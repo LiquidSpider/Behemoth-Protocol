@@ -102,8 +102,12 @@ public class GunTemplate : MonoBehaviour
 					break;
 				case FireMode.Auto:
 					if (Input.GetButton("Attack") || Input.GetAxis("Attack") != 0) {
-						if (fireTime > fireRate) {
-							Fire();
+						if (transform.root.GetComponent<PlayerHealth>().battery > 50) {
+							if (fireTime > fireRate) {
+								Fire();
+
+								transform.root.GetComponent<PlayerHealth>().UseBattery(10);
+							}
 						}
 					}
 					break;
