@@ -590,7 +590,6 @@ MonoBehaviour:
   soundRandomPitch: 0
   death: {fileID: 8300000, guid: b8578210d69a8d0498619d95a1bf4485, type: 3}
   sndSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
-  changedMaterial: {fileID: 2100000, guid: 7603b488089794646901cdfc9a31f5c0, type: 2}
 --- !u!65 &655146653
 BoxCollider:
   m_ObjectHideFlags: 0

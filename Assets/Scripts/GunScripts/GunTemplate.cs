@@ -147,7 +147,7 @@ public class GunTemplate : MonoBehaviour
         GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
         oSound.GetComponent<TimedDestroy>().maxTime = sLength;
 		oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-	}
+    }
 
     IEnumerator BurstFire() {
         if (!isBursting) {

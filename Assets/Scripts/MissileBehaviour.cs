@@ -41,6 +41,7 @@ public class MissileBehaviour : MonoBehaviour {
 		transform.rotation = Quaternion.LookRotation(positionToLookAt);
 
 		playerSpeed = owner.GetComponent<WeaponController>().playerSpeed;
+		//playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
 	}
 
 	public void Initialise(GameObject inputOwner) {
@@ -59,14 +60,26 @@ public class MissileBehaviour : MonoBehaviour {
 
 			projectileSpeed += 0.25f;
 
-			if (!launched && Time.time > launchTime) {
-				launched = true;
+			direction = owner.transform.GetChild(1).transform.forward;
+			movement = transform.position;
+
+			RaycastHit hit;
 
 				if (owner.tag == "Player") {
 					RaycastHit hit;
 
-					direction = owner.transform.GetChild(1).transform.forward;
-					movement = transform.position;
+			RaycastHit hit;
+			if (owner.tag == "Player") {
+				if (Physics.Raycast(movement, direction, out hit)) {
+					target = hit.point;
+				}
+			} else if (owner.tag == "Enemy") {
+				target = player.transform.position;
+			} else {
+				target = Vector3.zero;
+			}
+
+			targetRotation = Quaternion.LookRotation(target - transform.position);
 
 					if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
 						target = hit.point;
@@ -82,15 +95,15 @@ public class MissileBehaviour : MonoBehaviour {
 					first = false;
 				}
 
-				if (owner.tag == "Player" || movementDirection == true) {
-					RaycastHit hit;
+			rotationSpeed += Time.deltaTime * 10;
+		}
+		
+		playerSpeed *= 0.99f;
+		transform.position += playerSpeed;
+		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 
-					if (Physics.Raycast(movement, direction, out hit)) {
-						target = hit.point;
-					}
-				} else if (owner.tag == "Enemy") {
-					if (Vector3.Magnitude(transform.position - player.transform.position) < 15.0f) {
-						movementDirection = true;
+		Debug.DrawLine(transform.position, target, Color.green);
+	}
 
 						direction = transform.forward;
 						movement = transform.position;

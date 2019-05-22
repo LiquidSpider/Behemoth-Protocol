@@ -11,6 +11,7 @@ public class WeaponController : MonoBehaviour {
 
 	private Vector3 currentPosition;
 	private Vector3 previousPosition;
+	public Vector3 playerSpeed;
 
 	public Vector3 playerSpeed;
 
@@ -65,10 +66,12 @@ public class WeaponController : MonoBehaviour {
 
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
-		newMissile.GetComponent<MissileBehaviour>().playerSpeed = currentPosition - previousPosition;
-		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
+		//newMissile.transform.parent = GameObject.FindGameObjectWithTag("CurrentWeapon").transform;
 
-		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 750) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(500);
+		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
+		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
+
+		print("Missile Launched");
 	}
 
 	private void LaunchBomb() {
