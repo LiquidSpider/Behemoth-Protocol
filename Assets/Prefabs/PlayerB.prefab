@@ -259,6 +259,8 @@ MonoBehaviour:
   missileSpawnLocation: {fileID: 2647981504737730390, guid: c1ed780ff9e9e544b80402b3115dd706,
     type: 3}
   bomb: {fileID: 4439440699468585553, guid: 011491dac2c9e344a8d8744553e0df08, type: 3}
+  flare: {fileID: 1107021511137200191, guid: 22e99024f74f1864ca7cbdc963a2ac3a, type: 3}
+  playerSpeed: {x: 0, y: 0, z: 0}
 --- !u!1 &4498502440561986986
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +723,7 @@ Transform:
   - {fileID: 5334423240519690236}
   - {fileID: 5334423240095633769}
   - {fileID: 5334423241884791539}
+  - {fileID: 620106241160970231}
   m_Father: {fileID: 4498502439855041823}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -836,3 +839,33 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5376402270245736167}
   m_Enabled: 1
+--- !u!1 &8015165253611200300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 620106241160970231}
+  m_Layer: 0
+  m_Name: Flare Parent
+  m_TagString: FlareParent
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &620106241160970231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8015165253611200300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5334423240765985611}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

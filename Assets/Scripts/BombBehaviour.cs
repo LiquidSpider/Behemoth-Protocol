@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class BombBehaviour : MonoBehaviour {
 
-	private float fallFactor = -9.81f / 10;
-	private Vector3 movement;
+	private float fallFactor = -9.81f;
 
 	public GameObject explosion;
 
 	public void Initialise(Vector3 playerMovementDirection) {
-		movement = playerMovementDirection;
-
 		transform.parent = GameObject.FindGameObjectWithTag("BombParent").transform;
 	}
 
 	void Update() {
-		movement.y += fallFactor * Time.deltaTime;
-
-		gameObject.transform.position += movement;
+		gameObject.transform.position += new Vector3(0, fallFactor * Time.deltaTime * 3, 0);
 
 		if (gameObject.transform.position.y < -10) {
 			Destroy(gameObject);

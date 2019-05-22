@@ -9,6 +9,8 @@ public class WeaponController : MonoBehaviour {
 
 	[SerializeField] private GameObject bomb;
 
+	[SerializeField] private GameObject flare;
+
 	private Vector3 currentPosition;
 	private Vector3 previousPosition;
 	public Vector3 playerSpeed;
@@ -19,7 +21,7 @@ public class WeaponController : MonoBehaviour {
 	private float timeBetweenMissiles = 2f;
 	private float timeOfLastMissile;
 
-	private float timeBetweenFlares = 3f;
+	private float timeBetweenFlares = 0.5f;
 	private float timeOfLastFlare;
 
 	void Start() {
@@ -46,7 +48,7 @@ public class WeaponController : MonoBehaviour {
 				missileSpawnLocation = null;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Q) && Time.deltaTime > timeOfLastFlare + timeBetweenFlares) {
+			if (Input.GetKeyDown(KeyCode.Q) && Time.time > timeOfLastFlare + timeBetweenFlares) {
 				timeOfLastFlare = Time.time;
 				LaunchFlare();
 			}
@@ -64,10 +66,9 @@ public class WeaponController : MonoBehaviour {
 
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
-		//newMissile.transform.parent = GameObject.FindGameObjectWithTag("CurrentWeapon").transform;
-
 		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
+		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.cyan;
 
 		print("Missile Launched");
 	}
@@ -79,10 +80,19 @@ public class WeaponController : MonoBehaviour {
 		spawnLocation.y -= 1.5f;
 		newBomb.transform.position = spawnLocation;
 
-		newBomb.GetComponent<BombBehaviour>().Initialise(currentPosition - previousPosition);
+		newBomb.GetComponent<BombBehaviour>().Initialise(Vector3.zero);
 	}
 
 	private void LaunchFlare() {
-		print("Flare Launched");
+		for (int i = 1; i <= 2; i++) {
+			GameObject newFlare = Instantiate(flare);
+
+			Vector3 spawnLocation = transform.GetChild(1).position;
+			spawnLocation.y -= 1.5f;
+			spawnLocation += transform.right * Mathf.Pow(-1, i);
+			newFlare.transform.position = spawnLocation;
+
+			//newFlare.GetComponent<FlareBehaviour>().Initialise(transform.right * Mathf.Pow(-1, i));
+		}
 	}
 }
