@@ -28,6 +28,7 @@ public class BombBehaviour : MonoBehaviour {
 	private void OnCollisionEnter (Collision other) {
 		explosion = Instantiate(explosion);
 		explosion.transform.position = transform.position;
+		explosion.tag = "Explosion - Player";
 		Destroy(gameObject);
 	}
 }
