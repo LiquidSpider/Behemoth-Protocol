@@ -66,6 +66,8 @@ public class BulletScript : MonoBehaviour {
 					// Take cube damage
 					var Cube = collision.gameObject.transform.parent.gameObject.GetComponent<Cube>();
 					Cube.TakeDamage(damage);
+                    var ui = GameObject.FindGameObjectWithTag("UI");
+                    if (ui) ui.GetComponent<UISounds>().HitMarker();
 				}
 			}
 
