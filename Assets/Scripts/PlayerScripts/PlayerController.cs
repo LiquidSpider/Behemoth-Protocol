@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
 	public float dForce = 10000.0f;                                     // How much force is applied on dodge
 	public bool isCruising = false;                                    // Is the player afterburning
 	public float cruiseMod = 0.10f;                                     // Multiplier for all movement except forward when cruising
-	public float cruiseFwd = 5f;                                        // Multiplier for forward movement when cruising
+	public float cruiseFwd = 2f;                                        // Multiplier for forward movement when cruising
 	private float cHoldTime = 0f;                                       // How long player has held dodge key for
 	public float cHoldThreshold = 0.5f;                                 // How long the player has to hold dodge to cruise
 
@@ -123,11 +123,20 @@ public class PlayerController : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None;
 		}
 
-		if (Input.GetButton("Zoom")) {
-			zCLerp = 0f;
-			target = cUnZoom;
-			tFOV = zFOV;
-			isZoom = true;
+		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500) {
+			if (Input.GetButton("Zoom")) {
+				zCLerp = 0f;
+				target = cUnZoom;
+				tFOV = zFOV;
+				isZoom = true;
+
+				gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(7);
+			} else {
+				zCLerp = 0f;
+				tFOV = uFOV;
+				target = cZoom;
+				isZoom = false;
+			}
 		} else {
 			zCLerp = 0f;
 			tFOV = uFOV;
@@ -186,14 +195,21 @@ public class PlayerController : MonoBehaviour {
 			timeHoldingSpace = Mathf.Max(0, timeHoldingSpace - speedDecreaseRate);
 		}
 
+
 		if (!isDodge) {
+			Vector3 movementDirection = new Vector3(0, 0, 0);
+			
+
 			float mods = 1f;
+
 			if (isCruising) {
 				mods = cruiseMod;
 
-				transform.position += transform.forward * accSpeed * cruiseFwd * Time.deltaTime / flightSpeedScaleFactor;
+				if (gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
+					bool moved = CheckMovement(transform.forward * accSpeed * cruiseFwd * Time.deltaTime / flightSpeedScaleFactor);
 
-				//rb.AddForce(transform.forward * accSpeed * cruiseFwd);
+					if (moved) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(10);
+				}
 			} else {
 				mods = 1f;
 
@@ -202,26 +218,56 @@ public class PlayerController : MonoBehaviour {
 
 				float factorFB = timeHoldingW - timeHoldingS;
 
-				transform.position += factorFB * transform.forward * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor; // * Input.GetAxis("LeftVertical")
-
-				//rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * accSpeed * mods);
+				CheckMovement(factorFB * transform.forward * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
 			}
 
 			timeHoldingA = Mathf.Min(1f, timeHoldingA);
 			timeHoldingD = Mathf.Min(1f, timeHoldingD);
+			float factorLR = Mathf.Sin(timeHoldingD * Mathf.PI / 4) - Mathf.Sin(timeHoldingA * Mathf.PI / 4);
+			CheckMovement(factorLR * transform.right * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
 
 			timeHoldingCtrl = Mathf.Min(1f, timeHoldingCtrl);
 			timeHoldingSpace = Mathf.Min(1f, timeHoldingSpace);
-
-			float factorLR = Mathf.Sin(timeHoldingD * Mathf.PI / 4) - Mathf.Sin(timeHoldingA * Mathf.PI / 4);
 			float factorUP = timeHoldingSpace - timeHoldingCtrl;
+			CheckMovement(factorUP * transform.up * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
+
+			//float mods = 1f;
+
+			//if (isCruising) {
+			//	mods = cruiseMod;
+
+			//	movementDirection += transform.forward * accSpeed * cruiseFwd * Time.deltaTime / flightSpeedScaleFactor;
+
+			//} else {
+			//	mods = 1f;
+
+			//	timeHoldingW = Mathf.Min(1f, timeHoldingW);
+			//	timeHoldingS = Mathf.Min(1f, timeHoldingS);
+
+			//	float factorFB = timeHoldingW - timeHoldingS;
+
+			//	movementDirection += factorFB * transform.forward * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
+			//}
+
+			//timeHoldingA = Mathf.Min(1f, timeHoldingA);
+			//timeHoldingD = Mathf.Min(1f, timeHoldingD);
+
+			//timeHoldingCtrl = Mathf.Min(1f, timeHoldingCtrl);
+			//timeHoldingSpace = Mathf.Min(1f, timeHoldingSpace);
+
+			//float factorLR = Mathf.Sin(timeHoldingD * Mathf.PI / 4) - Mathf.Sin(timeHoldingA * Mathf.PI / 4);
+			//float factorUP = timeHoldingSpace - timeHoldingCtrl;
 
 
-			transform.position += factorLR * transform.right * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor; //* Input.GetAxis("LeftHorizontal")
-			transform.position += factorUP * transform.up * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor; // * Input.GetAxis("AscDesc")
+			//movementDirection += factorLR * transform.right * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
+			//movementDirection += factorUP * transform.up * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
 
-			//rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * accSpeed * mods);
-			//rb.AddForce(transform.up * Input.GetAxis("AscDesc") * accSpeed * mods);
+			//RaycastHit hit;
+			//bool hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
+			//if (hitObject && hit.collider.gameObject.transform.root.gameObject.tag != "Player") {
+			//	movementDirection = Vector3.zero;
+			//}
+			//transform.position += movementDirection;
 		}
 
 		// Inputs
@@ -245,6 +291,19 @@ public class PlayerController : MonoBehaviour {
 		//if (Input.GetButtonDown("Weapon3")) {
 		//	SwapWeapon(2);
 		//}
+	}
+
+	private bool CheckMovement(Vector3 movementDirection) {
+		RaycastHit hit;
+		bool hitObject;
+
+		hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
+		if (!hitObject || hit.collider.gameObject.transform.root.gameObject.tag == "Player") {
+			transform.position += movementDirection;
+			return true;
+		}
+
+		return false;
 	}
 
 	void AimWeapon() {

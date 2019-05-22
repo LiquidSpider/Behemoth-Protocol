@@ -352,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79584fcda96b16c49aa58c15377fe41a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: 0
   magSize: 0
   pellets: 1
   fireRate: 0.05
@@ -366,7 +367,7 @@ MonoBehaviour:
   fireForce: 2
   weight: 1
   minAcc: 1
-  maxAcc: 30
+  maxAcc: 10
   incAcc: 10
   handling: 1
   sFire: {fileID: 8300000, guid: 4647a36d50420274dadf4162078c5507, type: 3}

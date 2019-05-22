@@ -27,10 +27,10 @@ public class WeaponSelect : MonoBehaviour {
 			gameObject.GetComponent<Image>().sprite = left2;
 		}
 
-		if (Input.GetButtonDown("Weapon3")) {
-			previousWeaponNumber = weaponNumber;
-			weaponNumber = -1;
-			gameObject.GetComponent<Image>().sprite = left3;
-		}
+		//if (Input.GetButtonDown("Weapon3")) {
+		//	previousWeaponNumber = weaponNumber;
+		//	weaponNumber = -1;
+		//	gameObject.GetComponent<Image>().sprite = left3;
+		//}
 	}
 }
