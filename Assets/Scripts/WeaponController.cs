@@ -13,8 +13,6 @@ public class WeaponController : MonoBehaviour {
 	private Vector3 previousPosition;
 	public Vector3 playerSpeed;
 
-	public Vector3 playerSpeed;
-
 	private float timeBetweenBombs = 1.5f;
 	private float timeOfLastBomb;
 

@@ -60,26 +60,14 @@ public class MissileBehaviour : MonoBehaviour {
 
 			projectileSpeed += 0.25f;
 
-			direction = owner.transform.GetChild(1).transform.forward;
-			movement = transform.position;
-
-			RaycastHit hit;
+			if (!launched && Time.time > launchTime) {
+				launched = true;
 
 				if (owner.tag == "Player") {
 					RaycastHit hit;
 
-			RaycastHit hit;
-			if (owner.tag == "Player") {
-				if (Physics.Raycast(movement, direction, out hit)) {
-					target = hit.point;
-				}
-			} else if (owner.tag == "Enemy") {
-				target = player.transform.position;
-			} else {
-				target = Vector3.zero;
-			}
-
-			targetRotation = Quaternion.LookRotation(target - transform.position);
+					direction = owner.transform.GetChild(1).transform.forward;
+					movement = transform.position;
 
 					if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
 						target = hit.point;
@@ -95,15 +83,15 @@ public class MissileBehaviour : MonoBehaviour {
 					first = false;
 				}
 
-			rotationSpeed += Time.deltaTime * 10;
-		}
-		
-		playerSpeed *= 0.99f;
-		transform.position += playerSpeed;
-		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
+				if (owner.tag == "Player" || movementDirection == true) {
+					RaycastHit hit;
 
-		Debug.DrawLine(transform.position, target, Color.green);
-	}
+					if (Physics.Raycast(movement, direction, out hit)) {
+						target = hit.point;
+					}
+				} else if (owner.tag == "Enemy") {
+					if (Vector3.Magnitude(transform.position - player.transform.position) < 15.0f) {
+						movementDirection = true;
 
 						direction = transform.forward;
 						movement = transform.position;
