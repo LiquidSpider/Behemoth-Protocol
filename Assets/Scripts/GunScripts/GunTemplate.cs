@@ -144,7 +144,8 @@ public class GunTemplate : MonoBehaviour
         GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
         AudioSource source = oSound.GetComponent<AudioSource>();
         source.clip = sFire;
-        source.volume = 0.5f;
+        source.volume = 0.6f;
+        source.spatialBlend = 0;
         source.rolloffMode = AudioRolloffMode.Logarithmic;
         if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
         oSound.GetComponent<TimedDestroy>().maxTime = sLength;

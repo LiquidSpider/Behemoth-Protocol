@@ -24,14 +24,11 @@ public class BulletScript : MonoBehaviour {
 
 	void SetStats() {
 		Rigidbody rb = GetComponent<Rigidbody>();
-		Light light = GetComponent<Light>();
 		animator = GetComponent<Animator>();
 		rb.AddForce(( transform.forward ) * speed);
 		rb.mass = weight;
 		rb.useGravity = grav;
 		rb.drag = weight * 0.01f;
-		light.intensity = lightStr;
-		light.range = lightStr;
 	}
 
 	/// <summary>

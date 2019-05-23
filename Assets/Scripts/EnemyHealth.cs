@@ -9,12 +9,6 @@ public class EnemyHealth : MonoBehaviour {
 
 	private List<GameObject> damageTakenFrom = new List<GameObject>();
 
-
-	public Vector3 startingPosition;
-	private bool backupCalled = false;
-	private float flySpeed = 100;
-
-
 	private void Start() {
 		maxHP = HP;
 	}

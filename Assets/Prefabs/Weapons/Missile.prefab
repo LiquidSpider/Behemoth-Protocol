@@ -52,7 +52,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2187276436458770459}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 453b9508c06fc0a419433f8932e205f3, type: 3}
   m_Name: 
@@ -4946,7 +4946,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6779550540439275264}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4976,7 +4976,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 1.5
+  m_Time: 2
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -4984,22 +4984,40 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.002538071
-        value: 0.5028248
-        inSlope: 0
-        outSlope: 0
+        time: 0
+        value: 0.100042775
+        inSlope: 3.185034
+        outSlope: 3.185034
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.081967205
       - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
+        time: 0.12549084
+        value: 0.5457835
+        inSlope: 1.6207733
+        outSlope: 1.6207733
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 1
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.37326947
+        value: 0.64295846
+        inSlope: -1.3599088
+        outSlope: -1.3599088
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.9771704
+        outWeight: 0.32863474
+      - serializedVersion: 3
+        time: 1
+        value: 0.013885498
+        inSlope: 0.10303214
+        outSlope: 0.10303214
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.46239838
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

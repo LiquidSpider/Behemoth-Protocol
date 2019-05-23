@@ -5,8 +5,7 @@ using UnityEngine;
 public class MissileBehaviour : MonoBehaviour {
 
 	public GameObject explosion;
-
-	[SerializeField] private float variationFactor = 5;
+	
 	[SerializeField] private Vector3 direction;
 
 	public GameObject owner;
@@ -58,7 +57,7 @@ public class MissileBehaviour : MonoBehaviour {
 			Destroy(gameObject);
 		} else {
 
-			projectileSpeed += 0.25f;
+			projectileSpeed += 0.75f;
 
 			if (!launched && Time.time > launchTime) {
 				launched = true;
