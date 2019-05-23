@@ -128,6 +128,8 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 0}
   owner: {fileID: 0}
   player: {fileID: 4498502439855041820, guid: b2be17ae6ce82c24b8588f1951c48771, type: 3}
+  sndsrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
+  sExplosion: {fileID: 8300000, guid: a34658111f5cd8246b93da9384b19866, type: 3}
   playerSpeed: {x: 0, y: 0, z: 0}
   movement: {x: 0, y: 0, z: 0}
 --- !u!54 &8297192401572699112

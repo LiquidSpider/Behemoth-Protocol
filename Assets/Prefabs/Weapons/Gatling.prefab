@@ -368,8 +368,8 @@ MonoBehaviour:
   weight: 1
   minAcc: 1
   maxAcc: 10
-  incAcc: 10
-  handling: 1
+  incAcc: 5
+  handling: 2
   sFire: {fileID: 8300000, guid: 4647a36d50420274dadf4162078c5507, type: 3}
   soundPitchRandom: 0
   projectile: {fileID: 8170432168313451531, guid: 8ffa651664f091b4da719dbe2b3732ed,

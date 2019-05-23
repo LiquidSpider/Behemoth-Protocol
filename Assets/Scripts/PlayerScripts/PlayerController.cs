@@ -308,7 +308,8 @@ public class PlayerController : MonoBehaviour {
 
 	void AimWeapon() {
 		Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-		if (Physics.Raycast(ray, out RaycastHit aimPoint)) {
+        var layerMask = ~((1 << 9 | 1 << 10));
+		if (Physics.Raycast(ray, out RaycastHit aimPoint, layerMask)) {
 			arm.transform.LookAt(aimPoint.point);
 		} else {
 			arm.transform.localEulerAngles = new Vector3(0, 0, 0);

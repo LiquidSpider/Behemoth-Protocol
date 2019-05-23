@@ -54,10 +54,15 @@ public class BulletScript : MonoBehaviour {
 
 			// if the object has the health script
 			if (collision.gameObject.GetComponent<Health>() != null) {
-				// take damage
-				var health = collision.gameObject.GetComponent<Health>();
+                // take damage
+                GameObject ui = GameObject.FindGameObjectWithTag("UI");
+                ui.GetComponent<UISounds>().HitMarker();
+                Debug.Log("Bullet hit enemy");
+                var health = collision.gameObject.GetComponent<Health>();
 				health.TakeDamage(damage);
-			}
+                // play hit sound
+                
+            }
 
 			// if the object has a parent
 			if (collision.gameObject.transform.parent) {
@@ -66,10 +71,10 @@ public class BulletScript : MonoBehaviour {
 					// Take cube damage
 					var Cube = collision.gameObject.transform.parent.gameObject.GetComponent<Cube>();
 					Cube.TakeDamage(damage);
-
+                    // play hit sound
                     var ui = GameObject.FindGameObjectWithTag("UI");
-                    if (ui) ui.GetComponent<UISounds>().HitMarker();
-				}
+                    ui.GetComponent<UISounds>().HitMarker();
+                }
 			}
 
 			// Destroy the bullet

@@ -6,13 +6,15 @@ public class ExplosionBehaviour : MonoBehaviour {
 
 	private float timeOfExplosion;
 	private float explosionTime = 0.8f;
-
+    public GameObject sndsrc;
+    public AudioClip sExplosion;
 	private float fadeStartTime = -1;
 	private float fadeTime = 2f;
 
 	void Start() {
 		transform.parent = GameObject.FindGameObjectWithTag("ExplosionParent").transform;
 		timeOfExplosion = Time.time;
+        MakeSound(sExplosion, true);
 	}
 	
 	void Update() {
@@ -34,4 +36,18 @@ public class ExplosionBehaviour : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
+    void MakeSound(AudioClip sound, bool pitchRandom)
+    {
+        Vector3 pos = transform.position;
+        GameObject oSound = Instantiate(sndsrc, pos, Quaternion.identity);
+        AudioSource source = oSound.GetComponent<AudioSource>();
+        source.clip = sExplosion;
+        source.volume = 0.5f;
+        if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
+        oSound.GetComponent<TimedDestroy>().maxTime = source.clip.length;
+        oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+        source.volume = 0.7f;
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.Play();
+    }
 }

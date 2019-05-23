@@ -3,7 +3,12 @@ guid: fbd959c4d22978d43b7a61e1eea6c686
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - missile: {instanceID: 0}
+  - missileSpawnLocation: {instanceID: 0}
+  - bomb: {instanceID: 0}
+  - soundSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
+  - sFire: {fileID: 8300000, guid: ab1cc6d48d3b90946a8d99e384b7a14a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

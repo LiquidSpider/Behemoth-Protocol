@@ -13,7 +13,10 @@ public class WeaponController : MonoBehaviour {
 	private Vector3 previousPosition;
 	public Vector3 playerSpeed;
 
-	private float timeBetweenBombs = 1.5f;
+    public GameObject soundSrc;                 // The object that makes the sound
+    public AudioClip sFire;                     // Sound played when gun fires
+
+    private float timeBetweenBombs = 1.5f;
 	private float timeOfLastBomb;
 
 	private float timeBetweenMissiles = 2f;
@@ -61,7 +64,7 @@ public class WeaponController : MonoBehaviour {
 
 	private void LaunchMissile() {
 		GameObject newMissile = Instantiate(missile);
-
+        MakeSound(sFire, false);
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
 		//newMissile.transform.parent = GameObject.FindGameObjectWithTag("CurrentWeapon").transform;
@@ -85,4 +88,16 @@ public class WeaponController : MonoBehaviour {
 	private void LaunchFlare() {
 		print("Flare Launched");
 	}
+    void MakeSound(AudioClip sound, bool pitchRandom)
+    {
+        GameObject oSound = Instantiate(soundSrc, missileSpawnLocation.transform.position, Quaternion.identity);
+        AudioSource source = oSound.GetComponent<AudioSource>();
+        source.clip = sFire;
+        source.volume = 0.75f;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
+        if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
+        oSound.GetComponent<TimedDestroy>().maxTime = source.clip.length;
+        oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+        source.Play();
+    }
 }

@@ -123,6 +123,7 @@ public class GunTemplate : MonoBehaviour
             GameObject bullet = Instantiate(projectile, barrel.transform.position, barrel.transform.rotation);
             bullet.transform.Rotate(Vector3.up * (Random.Range(-cAcc, cAcc) / 10)); // Dividing by 10 so larger accuracy values can be input for balancing sake
             bullet.transform.Rotate(Vector3.left * (Random.Range(-cAcc, cAcc)) / 10);
+            bullet.layer = 9;
             BulletScript bStats = bullet.GetComponent<BulletScript>();
             bStats.creatorsColliders = GetParentColliders();
             bStats.speed = pSpeed;
@@ -140,11 +141,12 @@ public class GunTemplate : MonoBehaviour
     }
 
     void MakeSound(AudioClip sound, float sLength, bool pitchRandom) {
-        AudioSource source = soundSrc.GetComponent<AudioSource>();
+        GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
+        AudioSource source = oSound.GetComponent<AudioSource>();
         source.clip = sFire;
         source.volume = 0.5f;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
         if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
-        GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
         oSound.GetComponent<TimedDestroy>().maxTime = sLength;
 		oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
     }

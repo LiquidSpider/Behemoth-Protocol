@@ -139,8 +139,7 @@ public class MissileBehaviour : MonoBehaviour {
 			} else {
 				explosion.tag = "Explosion - Enemy";
 			}
-
-			explosion.transform.position = transform.position;
+            explosion.transform.position = transform.position;
 			Destroy(gameObject);
 		}
 
@@ -158,4 +157,5 @@ public class MissileBehaviour : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
+    
 }
