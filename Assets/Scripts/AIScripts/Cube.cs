@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-	public GameObject enemies;
 	public GameObject infoText;
 
     // Enum creation
@@ -1129,7 +1128,6 @@ public class Cube : MonoBehaviour
         switch(this.cubeState)
         {
             case CubeStates.Coward:
-				enemies.SetActive(true);
 				infoText.SetActive(true);
 				Health = 700;
                 break;

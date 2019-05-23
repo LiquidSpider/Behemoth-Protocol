@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MissileBehaviour : MonoBehaviour {
 
@@ -26,6 +27,8 @@ public class MissileBehaviour : MonoBehaviour {
 	public Vector3 movement;
 
 	private bool movementDirection = false;
+
+	public GameObject dot;
 
 	public void Initialise(GameObject inputOwner, Vector3 inputTarget) {
 		launchTime = Time.time + launchTime;
@@ -56,7 +59,6 @@ public class MissileBehaviour : MonoBehaviour {
 			explosion.transform.position = transform.position;
 			Destroy(gameObject);
 		} else {
-
 			projectileSpeed += 0.75f;
 
 			if (!launched && Time.time > launchTime) {
@@ -116,6 +118,12 @@ public class MissileBehaviour : MonoBehaviour {
 			transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 
 			Debug.DrawLine(transform.position, target, Color.green);
+
+			if (owner.tag == "Enemy") {
+				if (Vector3.Dot(( player.transform.position - transform.position ).normalized, transform.forward) > 0) {
+					dot.GetComponent<RectTransform>().localPosition = Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+				}
+			}
 		}
 	}
 
@@ -137,6 +145,7 @@ public class MissileBehaviour : MonoBehaviour {
 				explosion.tag = "Explosion - Player";
 			} else {
 				explosion.tag = "Explosion - Enemy";
+				Destroy(dot.gameObject);
 			}
             explosion.transform.position = transform.position;
 			Destroy(gameObject);
