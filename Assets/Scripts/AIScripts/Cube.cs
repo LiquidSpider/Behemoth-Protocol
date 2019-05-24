@@ -1166,7 +1166,7 @@ public class Cube : MonoBehaviour
         // Set the player in the script
         newMissile.GetComponent<MissileBehaviour>().player = player.gameObject;
         // Create the missilebehaviour
-        newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject);
+        newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, null);
 
     }
 

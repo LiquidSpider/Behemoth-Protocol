@@ -46,10 +46,21 @@ public class MissileBehaviour : MonoBehaviour {
 		//playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
 	}
 
-	public void Initialise(GameObject inputOwner) {
+	public void Initialise(GameObject inputOwner, GameObject spawner) {
 		launchTime = Time.time + launchTime;
 
-		owner = inputOwner;
+        owner = inputOwner;
+
+        // make sure spawner exists
+        if (spawner)
+        {
+            GameObject head = spawner.transform.GetChild(0).transform.GetChild(0).gameObject;
+            GameObject tail = spawner.transform.GetChild(0).transform.GetChild(1).gameObject;
+
+            Vector3 positionToLookAt = head.transform.position - tail.transform.position;
+
+            transform.rotation = Quaternion.LookRotation(positionToLookAt);
+        }
 	}
 
 	private void Update() {
