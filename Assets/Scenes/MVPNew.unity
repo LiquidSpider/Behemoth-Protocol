@@ -376,6 +376,11 @@ PrefabInstance:
       propertyPath: cruiseFwd
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4498502439780055198, guid: b2be17ae6ce82c24b8588f1951c48771,
+        type: 3}
+      propertyPath: arm
+      value: 
+      objectReference: {fileID: 1975824116}
     - target: {fileID: 5334423240735077760, guid: b2be17ae6ce82c24b8588f1951c48771,
         type: 3}
       propertyPath: soundSrc
@@ -4700,6 +4705,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 7603b488089794646901cdfc9a31f5c0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9646b9da569463a468b8694968dd06cb, type: 3}
+--- !u!1 &1975824116 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4498502439703263205, guid: b2be17ae6ce82c24b8588f1951c48771,
+    type: 3}
+  m_PrefabInstance: {fileID: 128718944}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1981451236
 GameObject:
   m_ObjectHideFlags: 0
