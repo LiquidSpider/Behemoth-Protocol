@@ -120,8 +120,18 @@ public class MissileBehaviour : MonoBehaviour {
 			Debug.DrawLine(transform.position, target, Color.green);
 
 			if (owner.tag == "Enemy") {
-				if (Vector3.Dot(( player.transform.position - transform.position ).normalized, transform.forward) > 0) {
-					dot.GetComponent<RectTransform>().localPosition = Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+				if (Vector3.Dot(transform.position - Camera.main.transform.position, Camera.main.transform.forward) > 0) {
+					dot.SetActive(true);
+					Vector3 position = Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+
+					if (position.magnitude > 500) {
+						dot.GetComponent<RectTransform>().localPosition = ( Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0) ).normalized * 500;
+					} else {
+						dot.GetComponent<RectTransform>().localPosition = Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+					}
+				} else {
+					dot.SetActive(false);
+					//dot.GetComponent<RectTransform>().localPosition = ( Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0) ).normalized * -500;
 				}
 			}
 		}
@@ -159,6 +169,7 @@ public class MissileBehaviour : MonoBehaviour {
 				explosion.tag = "Explosion - Player";
 			} else {
 				explosion.tag = "Explosion - Enemy";
+				Destroy(dot.gameObject);
 			}
 
 			explosion.transform.position = transform.position;
