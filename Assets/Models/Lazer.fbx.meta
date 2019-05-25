@@ -1,71 +1,14 @@
 fileFormatVersion: 2
-guid: c1876b9b5430c964e831233b5f53e041
+guid: 36b893253e4544c8b87f8488532967a5
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Cone.005
-    100002: Cone.010
-    100004: Cone.011
-    100006: Cone.012
-    100008: Cone.013
-    100010: Cone.014
-    100012: Cone.015
-    100014: Cube.002
-    100016: Cube.003
-    100018: Cube.004
-    100020: Cube.005
-    100022: Level
-    100024: //RootNode
-    400000: Cone.005
-    400002: Cone.010
-    400004: Cone.011
-    400006: Cone.012
-    400008: Cone.013
-    400010: Cone.014
-    400012: Cone.015
-    400014: Cube.002
-    400016: Cube.003
-    400018: Cube.004
-    400020: Cube.005
-    400022: Level
-    400024: //RootNode
-    2100000: No Name
-    2300000: Cone.005
-    2300002: Cone.010
-    2300004: Cone.011
-    2300006: Cone.012
-    2300008: Cone.013
-    2300010: Cone.014
-    2300012: Cone.015
-    2300014: Cube.002
-    2300016: Cube.003
-    2300018: Cube.004
-    2300020: Cube.005
-    2300022: Level
-    3300000: Cone.005
-    3300002: Cone.010
-    3300004: Cone.011
-    3300006: Cone.012
-    3300008: Cone.013
-    3300010: Cone.014
-    3300012: Cone.015
-    3300014: Cube.002
-    3300016: Cube.003
-    3300018: Cube.004
-    3300020: Cube.005
-    3300022: Level
-    4300000: Cone.015
-    4300002: Cone.014
-    4300004: Cone.013
-    4300006: Cone.012
-    4300008: Cone.011
-    4300010: Cone.010
-    4300012: Cone.005
-    4300014: Cube.005
-    4300016: Cube.004
-    4300018: Cube.003
-    4300020: Cube.002
-    4300022: Level
+    100000: //RootNode
+    400000: //RootNode
+    2100000: LaserMat
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Laser
   externalObjects: {}
   materials:
     importMaterials: 1

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MissileBehaviour : MonoBehaviour {
 
@@ -27,6 +28,8 @@ public class MissileBehaviour : MonoBehaviour {
 
 	private bool movementDirection = false;
 
+	public GameObject dot;
+
 	public void Initialise(GameObject inputOwner, Vector3 inputTarget) {
 		launchTime = Time.time + launchTime;
 
@@ -43,10 +46,21 @@ public class MissileBehaviour : MonoBehaviour {
 		//playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
 	}
 
-	public void Initialise(GameObject inputOwner) {
+	public void Initialise(GameObject inputOwner, GameObject spawner) {
 		launchTime = Time.time + launchTime;
 
-		owner = inputOwner;
+        owner = inputOwner;
+
+        // make sure spawner exists
+        if (spawner)
+        {
+            GameObject head = spawner.transform.GetChild(0).transform.GetChild(0).gameObject;
+            GameObject tail = spawner.transform.GetChild(0).transform.GetChild(1).gameObject;
+
+            Vector3 positionToLookAt = head.transform.position - tail.transform.position;
+
+            transform.rotation = Quaternion.LookRotation(positionToLookAt);
+        }
 	}
 
 	private void Update() {
@@ -56,7 +70,6 @@ public class MissileBehaviour : MonoBehaviour {
 			explosion.transform.position = transform.position;
 			Destroy(gameObject);
 		} else {
-
 			projectileSpeed += 0.75f;
 
 			if (!launched && Time.time > launchTime) {
@@ -116,6 +129,22 @@ public class MissileBehaviour : MonoBehaviour {
 			transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 
 			Debug.DrawLine(transform.position, target, Color.green);
+
+			if (owner.tag == "Enemy") {
+				if (Vector3.Dot(transform.position - Camera.main.transform.position, Camera.main.transform.forward) > 0) {
+					dot.SetActive(true);
+					Vector3 position = Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+
+					if (position.magnitude > 500) {
+						dot.GetComponent<RectTransform>().localPosition = ( Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0) ).normalized * 500;
+					} else {
+						dot.GetComponent<RectTransform>().localPosition = Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+					}
+				} else {
+					dot.SetActive(false);
+					//dot.GetComponent<RectTransform>().localPosition = ( Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0) ).normalized * -500;
+				}
+			}
 		}
 	}
 
@@ -137,6 +166,7 @@ public class MissileBehaviour : MonoBehaviour {
 				explosion.tag = "Explosion - Player";
 			} else {
 				explosion.tag = "Explosion - Enemy";
+				Destroy(dot.gameObject);
 			}
             explosion.transform.position = transform.position;
 			Destroy(gameObject);
@@ -150,6 +180,7 @@ public class MissileBehaviour : MonoBehaviour {
 				explosion.tag = "Explosion - Player";
 			} else {
 				explosion.tag = "Explosion - Enemy";
+				Destroy(dot.gameObject);
 			}
 
 			explosion.transform.position = transform.position;

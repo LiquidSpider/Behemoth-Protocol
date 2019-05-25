@@ -1,0 +1,625 @@
+fileFormatVersion: 2
+guid: f182cabb20bd947ac997459e758423dd
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armour
+    100002: Armour1
+    100004: Armour11
+    100006: Armour12
+    100008: Armour13
+    100010: Armour14
+    100012: Armour15
+    100014: Armour16
+    100016: Armour2
+    100018: Armour3
+    100020: Armour4
+    100022: Armour5
+    100024: Armour6
+    100026: Armour_Leg_Back
+    100028: Armour_Leg_Back 1
+    100030: Armour_Leg_Front
+    100032: Armour_Leg_Front 1
+    100034: Back
+    100036: Back_Controller
+    100038: Backe
+    100040: Backe_Controller
+    100042: Backer
+    100044: Backer_Controller1
+    100046: BackLast
+    100048: BackLast_Controller
+    100050: Elbow
+    100052: Elbow 1
+    100054: Elbow 2
+    100056: Elbow 3
+    100058: Fore
+    100060: Fore 1
+    100062: Fore 2
+    100064: Fore 3
+    100066: Forearm
+    100068: Forearm 1
+    100070: Forearm 2
+    100072: Forearm 3
+    100074: Forearm_Controller
+    100076: Forearm_Controller 1
+    100078: Forearm_Controller1
+    100080: Forearm_Controller2
+    100082: Front
+    100084: Front_Controller
+    100086: Fronte
+    100088: Fronte_Controller
+    100090: Fronter
+    100092: Fronter_Controller
+    100094: FrontLast
+    100096: FrontLast_Controller
+    100098: Hand
+    100100: Hand 1
+    100102: Hand 2
+    100104: Hand 3
+    100106: Hand 4
+    100108: Hand 5
+    100110: Hand 6
+    100112: Hand 7
+    100114: Hand_Controller
+    100116: Hand_Controller 1
+    100118: Hand_Controller1
+    100120: Hand_Controller2
+    100122: Head
+    100124: Head2
+    100126: Head_Controller
+    100128: Head_Controller 1
+    100130: Leg
+    100132: Leg1
+    100134: Leg1_Controller
+    100136: Leg1_Controller1
+    100138: Leg2
+    100140: Leg3
+    100142: Leg_Controller
+    100144: Leg_Controller1
+    100146: pCone1
+    100148: pCone1 1
+    100150: pCone1 2
+    100152: pCone1 3
+    100154: pCone2
+    100156: pCone2 1
+    100158: pCone2 2
+    100160: pCone2 3
+    100162: pCone3
+    100164: pCone3 1
+    100166: pCone3 2
+    100168: pCone3 3
+    100170: pCone4
+    100172: pCone4 1
+    100174: pCone4 2
+    100176: pCone4 3
+    100178: //RootNode
+    100180: Salamander_Body2_2
+    100182: Salamander_Body_1
+    100184: Salamander_Body_Leg_1
+    100186: Salamander_Body_Leg_2
+    100188: Salamander_Connector_1
+    100190: Salamander_Connector_2
+    100192: Salamander_Connector_3
+    100194: Salamander_Connector_4
+    100196: Salamander_Connector_5
+    100198: Salamander_Controller
+    100200: Salamander_Goddamn_nightmare
+    100202: Salamander_Head_1
+    100204: Salamander_Head_2
+    100206: Shoulder
+    100208: Shoulder 1
+    100210: Shoulder 2
+    100212: Shoulder 3
+    100214: Small_Armour1
+    100216: Small_Armour1 1
+    100218: Small_Armour1 2
+    100220: Small_Armour1 3
+    100222: Small_Armour2
+    100224: Small_Armour2 1
+    100226: Small_Armour2 2
+    100228: Small_Armour2 3
+    100230: Small_Armour3
+    100232: Small_Armour3 1
+    100234: Small_Armour3 2
+    100236: Small_Armour3 3
+    100238: Small_Armour4
+    100240: Small_Armour4 1
+    100242: Small_Armour4 2
+    100244: Small_Armour4 3
+    100246: Small_Armour5
+    100248: Small_Armour5 1
+    100250: Small_Armour5 2
+    100252: Small_Armour5 3
+    100254: Tail
+    100256: Tail 1
+    100258: Tail_Connector
+    100260: TailS_Contoller1
+    100262: TailStart
+    100264: TailStart_Contoller
+    100266: Upper
+    100268: Upper 1
+    100270: Upper 2
+    100272: Upper 3
+    400000: Armour
+    400002: Armour1
+    400004: Armour11
+    400006: Armour12
+    400008: Armour13
+    400010: Armour14
+    400012: Armour15
+    400014: Armour16
+    400016: Armour2
+    400018: Armour3
+    400020: Armour4
+    400022: Armour5
+    400024: Armour6
+    400026: Armour_Leg_Back
+    400028: Armour_Leg_Back 1
+    400030: Armour_Leg_Front
+    400032: Armour_Leg_Front 1
+    400034: Back
+    400036: Back_Controller
+    400038: Backe
+    400040: Backe_Controller
+    400042: Backer
+    400044: Backer_Controller1
+    400046: BackLast
+    400048: BackLast_Controller
+    400050: Elbow
+    400052: Elbow 1
+    400054: Elbow 2
+    400056: Elbow 3
+    400058: Fore
+    400060: Fore 1
+    400062: Fore 2
+    400064: Fore 3
+    400066: Forearm
+    400068: Forearm 1
+    400070: Forearm 2
+    400072: Forearm 3
+    400074: Forearm_Controller
+    400076: Forearm_Controller 1
+    400078: Forearm_Controller1
+    400080: Forearm_Controller2
+    400082: Front
+    400084: Front_Controller
+    400086: Fronte
+    400088: Fronte_Controller
+    400090: Fronter
+    400092: Fronter_Controller
+    400094: FrontLast
+    400096: FrontLast_Controller
+    400098: Hand
+    400100: Hand 1
+    400102: Hand 2
+    400104: Hand 3
+    400106: Hand 4
+    400108: Hand 5
+    400110: Hand 6
+    400112: Hand 7
+    400114: Hand_Controller
+    400116: Hand_Controller 1
+    400118: Hand_Controller1
+    400120: Hand_Controller2
+    400122: Head
+    400124: Head2
+    400126: Head_Controller
+    400128: Head_Controller 1
+    400130: Leg
+    400132: Leg1
+    400134: Leg1_Controller
+    400136: Leg1_Controller1
+    400138: Leg2
+    400140: Leg3
+    400142: Leg_Controller
+    400144: Leg_Controller1
+    400146: pCone1
+    400148: pCone1 1
+    400150: pCone1 2
+    400152: pCone1 3
+    400154: pCone2
+    400156: pCone2 1
+    400158: pCone2 2
+    400160: pCone2 3
+    400162: pCone3
+    400164: pCone3 1
+    400166: pCone3 2
+    400168: pCone3 3
+    400170: pCone4
+    400172: pCone4 1
+    400174: pCone4 2
+    400176: pCone4 3
+    400178: //RootNode
+    400180: Salamander_Body2_2
+    400182: Salamander_Body_1
+    400184: Salamander_Body_Leg_1
+    400186: Salamander_Body_Leg_2
+    400188: Salamander_Connector_1
+    400190: Salamander_Connector_2
+    400192: Salamander_Connector_3
+    400194: Salamander_Connector_4
+    400196: Salamander_Connector_5
+    400198: Salamander_Controller
+    400200: Salamander_Goddamn_nightmare
+    400202: Salamander_Head_1
+    400204: Salamander_Head_2
+    400206: Shoulder
+    400208: Shoulder 1
+    400210: Shoulder 2
+    400212: Shoulder 3
+    400214: Small_Armour1
+    400216: Small_Armour1 1
+    400218: Small_Armour1 2
+    400220: Small_Armour1 3
+    400222: Small_Armour2
+    400224: Small_Armour2 1
+    400226: Small_Armour2 2
+    400228: Small_Armour2 3
+    400230: Small_Armour3
+    400232: Small_Armour3 1
+    400234: Small_Armour3 2
+    400236: Small_Armour3 3
+    400238: Small_Armour4
+    400240: Small_Armour4 1
+    400242: Small_Armour4 2
+    400244: Small_Armour4 3
+    400246: Small_Armour5
+    400248: Small_Armour5 1
+    400250: Small_Armour5 2
+    400252: Small_Armour5 3
+    400254: Tail
+    400256: Tail 1
+    400258: Tail_Connector
+    400260: TailS_Contoller1
+    400262: TailStart
+    400264: TailStart_Contoller
+    400266: Upper
+    400268: Upper 1
+    400270: Upper 2
+    400272: Upper 3
+    2100000: lambert1
+    2300000: Armour
+    2300002: Armour1
+    2300004: Armour11
+    2300006: Armour12
+    2300008: Armour13
+    2300010: Armour14
+    2300012: Armour15
+    2300014: Armour16
+    2300016: Armour2
+    2300018: Armour3
+    2300020: Armour4
+    2300022: Armour5
+    2300024: Armour6
+    2300026: Armour_Leg_Back
+    2300028: Armour_Leg_Back 1
+    2300030: Armour_Leg_Front
+    2300032: Armour_Leg_Front 1
+    2300034: Elbow
+    2300036: Elbow 1
+    2300038: Elbow 2
+    2300040: Elbow 3
+    2300042: Fore
+    2300044: Fore 1
+    2300046: Fore 2
+    2300048: Fore 3
+    2300050: Hand 4
+    2300052: Hand 5
+    2300054: Hand 6
+    2300056: Hand 7
+    2300058: pCone1
+    2300060: pCone1 1
+    2300062: pCone1 2
+    2300064: pCone1 3
+    2300066: pCone2
+    2300068: pCone2 1
+    2300070: pCone2 2
+    2300072: pCone2 3
+    2300074: pCone3
+    2300076: pCone3 1
+    2300078: pCone3 2
+    2300080: pCone3 3
+    2300082: pCone4
+    2300084: pCone4 1
+    2300086: pCone4 2
+    2300088: pCone4 3
+    2300090: Salamander_Body2_2
+    2300092: Salamander_Body_1
+    2300094: Salamander_Body_Leg_1
+    2300096: Salamander_Body_Leg_2
+    2300098: Salamander_Connector_1
+    2300100: Salamander_Connector_2
+    2300102: Salamander_Connector_3
+    2300104: Salamander_Connector_4
+    2300106: Salamander_Connector_5
+    2300108: Salamander_Head_1
+    2300110: Salamander_Head_2
+    2300112: Shoulder
+    2300114: Shoulder 1
+    2300116: Shoulder 2
+    2300118: Shoulder 3
+    2300120: Small_Armour1
+    2300122: Small_Armour1 1
+    2300124: Small_Armour1 2
+    2300126: Small_Armour1 3
+    2300128: Small_Armour2
+    2300130: Small_Armour2 1
+    2300132: Small_Armour2 2
+    2300134: Small_Armour2 3
+    2300136: Small_Armour3
+    2300138: Small_Armour3 1
+    2300140: Small_Armour3 2
+    2300142: Small_Armour3 3
+    2300144: Small_Armour4
+    2300146: Small_Armour4 1
+    2300148: Small_Armour4 2
+    2300150: Small_Armour4 3
+    2300152: Small_Armour5
+    2300154: Small_Armour5 1
+    2300156: Small_Armour5 2
+    2300158: Small_Armour5 3
+    2300160: Tail 1
+    2300162: Tail_Connector
+    2300164: Upper
+    2300166: Upper 1
+    2300168: Upper 2
+    2300170: Upper 3
+    3300000: Armour
+    3300002: Armour1
+    3300004: Armour11
+    3300006: Armour12
+    3300008: Armour13
+    3300010: Armour14
+    3300012: Armour15
+    3300014: Armour16
+    3300016: Armour2
+    3300018: Armour3
+    3300020: Armour4
+    3300022: Armour5
+    3300024: Armour6
+    3300026: Armour_Leg_Back
+    3300028: Armour_Leg_Back 1
+    3300030: Armour_Leg_Front
+    3300032: Armour_Leg_Front 1
+    3300034: Elbow
+    3300036: Elbow 1
+    3300038: Elbow 2
+    3300040: Elbow 3
+    3300042: Fore
+    3300044: Fore 1
+    3300046: Fore 2
+    3300048: Fore 3
+    3300050: Hand 4
+    3300052: Hand 5
+    3300054: Hand 6
+    3300056: Hand 7
+    3300058: pCone1
+    3300060: pCone1 1
+    3300062: pCone1 2
+    3300064: pCone1 3
+    3300066: pCone2
+    3300068: pCone2 1
+    3300070: pCone2 2
+    3300072: pCone2 3
+    3300074: pCone3
+    3300076: pCone3 1
+    3300078: pCone3 2
+    3300080: pCone3 3
+    3300082: pCone4
+    3300084: pCone4 1
+    3300086: pCone4 2
+    3300088: pCone4 3
+    3300090: Salamander_Body2_2
+    3300092: Salamander_Body_1
+    3300094: Salamander_Body_Leg_1
+    3300096: Salamander_Body_Leg_2
+    3300098: Salamander_Connector_1
+    3300100: Salamander_Connector_2
+    3300102: Salamander_Connector_3
+    3300104: Salamander_Connector_4
+    3300106: Salamander_Connector_5
+    3300108: Salamander_Head_1
+    3300110: Salamander_Head_2
+    3300112: Shoulder
+    3300114: Shoulder 1
+    3300116: Shoulder 2
+    3300118: Shoulder 3
+    3300120: Small_Armour1
+    3300122: Small_Armour1 1
+    3300124: Small_Armour1 2
+    3300126: Small_Armour1 3
+    3300128: Small_Armour2
+    3300130: Small_Armour2 1
+    3300132: Small_Armour2 2
+    3300134: Small_Armour2 3
+    3300136: Small_Armour3
+    3300138: Small_Armour3 1
+    3300140: Small_Armour3 2
+    3300142: Small_Armour3 3
+    3300144: Small_Armour4
+    3300146: Small_Armour4 1
+    3300148: Small_Armour4 2
+    3300150: Small_Armour4 3
+    3300152: Small_Armour5
+    3300154: Small_Armour5 1
+    3300156: Small_Armour5 2
+    3300158: Small_Armour5 3
+    3300160: Tail 1
+    3300162: Tail_Connector
+    3300164: Upper
+    3300166: Upper 1
+    3300168: Upper 2
+    3300170: Upper 3
+    4300000: Salamander_Connector_3
+    4300002: Armour3
+    4300004: Salamander_Body_1
+    4300006: Armour11
+    4300008: Armour12
+    4300010: Armour13
+    4300012: Salamander_Connector_2
+    4300014: Armour2
+    4300016: Salamander_Body_Leg_1
+    4300018: Armour_Leg_Front
+    4300020: Armour_Leg_Back
+    4300022: Shoulder
+    4300024: Upper
+    4300026: Small_Armour1
+    4300028: Small_Armour2
+    4300030: Elbow
+    4300032: Fore
+    4300034: Small_Armour3
+    4300036: Small_Armour4
+    4300038: Small_Armour5
+    4300040: Hand
+    4300042: pCone1
+    4300044: pCone2
+    4300046: pCone3
+    4300048: pCone4
+    4300050: Shoulder
+    4300052: Upper
+    4300054: Small_Armour1
+    4300056: Small_Armour2
+    4300058: Elbow
+    4300060: Fore
+    4300062: Small_Armour5
+    4300064: Small_Armour4
+    4300066: Small_Armour3
+    4300068: Hand
+    4300070: pCone1
+    4300072: pCone2
+    4300074: pCone3
+    4300076: pCone4
+    4300078: Salamander_Connector_1
+    4300080: Armour1
+    4300082: Salamander_Head_1
+    4300084: Armour
+    4300086: Salamander_Body2_2
+    4300088: Armour14
+    4300090: Armour15
+    4300092: Armour16
+    4300094: Salamander_Connector_4
+    4300096: Armour4
+    4300098: Salamander_Body_Leg_2
+    4300100: Armour_Leg_Back
+    4300102: Armour_Leg_Front
+    4300104: Shoulder
+    4300106: Small_Armour2
+    4300108: Small_Armour1
+    4300110: Upper
+    4300112: Elbow
+    4300114: Fore
+    4300116: Small_Armour3
+    4300118: Small_Armour4
+    4300120: Small_Armour5
+    4300122: Hand
+    4300124: pCone1
+    4300126: pCone2
+    4300128: pCone3
+    4300130: pCone4
+    4300132: Shoulder
+    4300134: Upper
+    4300136: Small_Armour1
+    4300138: Small_Armour2
+    4300140: Elbow
+    4300142: Fore
+    4300144: Small_Armour5
+    4300146: Small_Armour4
+    4300148: Small_Armour3
+    4300150: pCone1
+    4300152: pCone2
+    4300154: pCone3
+    4300156: pCone4
+    4300158: Hand
+    4300160: Salamander_Connector_5
+    4300162: Armour5
+    4300164: Salamander_Head_2
+    4300166: Armour6
+    4300168: Tail_Connector
+    4300170: Tail
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

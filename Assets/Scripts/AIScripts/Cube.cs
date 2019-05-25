@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-	public GameObject enemies;
 	public GameObject infoText;
 
     // Enum creation
@@ -1129,7 +1128,6 @@ public class Cube : MonoBehaviour
         switch(this.cubeState)
         {
             case CubeStates.Coward:
-				enemies.SetActive(true);
 				infoText.SetActive(true);
 				Health = 700;
                 break;
@@ -1168,7 +1166,7 @@ public class Cube : MonoBehaviour
         // Set the player in the script
         newMissile.GetComponent<MissileBehaviour>().player = player.gameObject;
         // Create the missilebehaviour
-        newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject);
+        newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, null);
 
     }
 
