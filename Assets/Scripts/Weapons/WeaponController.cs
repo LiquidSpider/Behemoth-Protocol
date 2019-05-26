@@ -15,10 +15,10 @@ public class WeaponController : MonoBehaviour {
 	private Vector3 previousPosition;
 	public Vector3 playerSpeed;
 
-    public GameObject soundSrc;                 // The object that makes the sound
-    public AudioClip sFire;                     // Sound played when gun fires
+	public GameObject soundSrc;                 // The object that makes the sound
+	public AudioClip sFire;                     // Sound played when gun fires
 
-    private float timeBetweenBombs = 1.5f;
+	private float timeBetweenBombs = 1.5f;
 	private float timeOfLastBomb;
 
 	private float timeBetweenMissiles = 2f;
@@ -41,20 +41,22 @@ public class WeaponController : MonoBehaviour {
 
 		if (!transform.GetChild(1).GetComponent<PlayerController>().isCruising) {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
-				missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).transform.GetChild(0).gameObject;
+				if (gameObject.GetComponent<PlayerHealth>().battery > 1000) {
+					if (Input.GetButtonDown("Attack") && Time.time > timeOfLastMissile + timeBetweenMissiles) {
+						missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
 
-				if (Input.GetButtonDown("Attack") && Time.time > timeOfLastMissile + timeBetweenMissiles) {
-					timeOfLastMissile = Time.time;
-					LaunchMissile();
+						timeOfLastMissile = Time.time;
+						LaunchMissile();
+					}
 				}
 			} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
 				missileSpawnLocation = null;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Q) && Time.time > timeOfLastFlare + timeBetweenFlares) {
-				timeOfLastFlare = Time.time;
-				LaunchFlare();
-			}
+			//if (Input.GetKeyDown(KeyCode.Q) && Time.time > timeOfLastFlare + timeBetweenFlares) {
+			//	timeOfLastFlare = Time.time;
+			//	LaunchFlare();
+			//}
 
 		} else {
 			if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {
@@ -66,14 +68,14 @@ public class WeaponController : MonoBehaviour {
 
 	private void LaunchMissile() {
 		GameObject newMissile = Instantiate(missile);
-        MakeSound(sFire, false);
+		MakeSound(sFire, false);
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
 		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
 		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.cyan;
 
-		print("Missile Launched");
+		gameObject.GetComponent<PlayerHealth>().UseBattery(1500);
 	}
 
 	private void LaunchBomb() {
@@ -98,17 +100,16 @@ public class WeaponController : MonoBehaviour {
 			//newFlare.GetComponent<FlareBehaviour>().Initialise(transform.right * Mathf.Pow(-1, i));
 		}
 	}
-    void MakeSound(AudioClip sound, bool pitchRandom) 
-    {
-        GameObject oSound = Instantiate(soundSrc, missileSpawnLocation.transform.position, Quaternion.identity);
-        AudioSource source = oSound.GetComponent<AudioSource>();
-        source.clip = sFire;
-        source.volume = 0.75f;
-        source.rolloffMode = AudioRolloffMode.Logarithmic;
-        source.spatialBlend = 0;
-        if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
-        oSound.GetComponent<TimedDestroy>().maxTime = source.clip.length;
-        oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-        source.Play();
-    }
+	void MakeSound(AudioClip sound, bool pitchRandom) {
+		GameObject oSound = Instantiate(soundSrc, missileSpawnLocation.transform.position, Quaternion.identity);
+		AudioSource source = oSound.GetComponent<AudioSource>();
+		source.clip = sFire;
+		source.volume = 0.75f;
+		source.rolloffMode = AudioRolloffMode.Logarithmic;
+		source.spatialBlend = 0;
+		if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
+		oSound.GetComponent<TimedDestroy>().maxTime = source.clip.length;
+		oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+		source.Play();
+	}
 }

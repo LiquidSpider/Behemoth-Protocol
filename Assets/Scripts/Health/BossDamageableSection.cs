@@ -18,18 +18,19 @@ public class BossDamageableSection : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (Input.GetMouseButtonDown(1) && materialMode == 0) {
-			timeOfScan = Time.time;
-			scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.position) / 500f;
-			materialMode = 1;
-		}
-
-		if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {
-			changedMaterial.color = DetermineColour();
-			gameObject.GetComponent<MeshRenderer>().material = changedMaterial;
-			materialMode = 2;
-		} else if (materialMode == 2) {
-			if (!Input.GetMouseButton(1)) {
+		if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.root.gameObject.GetComponent<PlayerHealth>().isScanning) {
+			if (materialMode == 0) {
+				timeOfScan = Time.time;
+				scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.position) / 500f;
+				materialMode = 1;
+			}
+			if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {
+				changedMaterial.color = DetermineColour();
+				gameObject.GetComponent<MeshRenderer>().material = changedMaterial;
+				materialMode = 2;
+			}
+		} else {
+			if (materialMode != 0) {
 				gameObject.GetComponent<MeshRenderer>().material = mainMaterial;
 				materialMode = 0;
 			}

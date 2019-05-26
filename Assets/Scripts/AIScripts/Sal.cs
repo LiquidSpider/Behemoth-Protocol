@@ -318,10 +318,10 @@ public class Sal : MonoBehaviour
                 
                 RaycastHit hit;
                 Physics.Raycast(gatlingGuns[gatlingShooter].gameObject.transform.position, gatlingGuns[gatlingShooter].gameObject.transform.forward, out hit, 5.0f);
-                if(hit.collider)
-                {
-                    Debug.Log(hit.collider.gameObject.name);
-                }
+                //if(hit.collider)
+                //{
+                //    Debug.Log(hit.collider.gameObject.name);
+                //}
 
                 if (Array.IndexOf(colliders, hit.collider) < 0)
                     gatlingGuns[gatlingShooter].Fire();
@@ -353,11 +353,12 @@ public class Sal : MonoBehaviour
     /// </summary>
     private void LaunchMissile(GameObject spawner)
     {
+		int spawnLoc = UnityEngine.Random.Range(5, 11);
 
         // Create a new missile
         GameObject newMissile = Instantiate(missile);
         // set it's location to the missile spawn location
-        newMissile.transform.position = this.transform.position;
+        newMissile.transform.position = transform.GetChild(spawnLoc).position;
         // Set the player in the script
         newMissile.GetComponent<MissileBehaviour>().player = player.gameObject;
         // Create the missilebehaviour

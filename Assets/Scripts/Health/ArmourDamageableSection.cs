@@ -18,49 +18,40 @@ public class ArmourDamageableSection : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (Input.GetMouseButtonDown(1) && materialMode == 0) {
-			timeOfScan = Time.time;
-			scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.position) / 500f;
-			materialMode = 1;
-		}
-
-		if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {
-			changedMaterial.color = DetermineColour();
-			gameObject.GetComponent<MeshRenderer>().material = changedMaterial;
-			materialMode = 2;
-		} else if (materialMode == 2) {
-			if (!Input.GetMouseButton(1)) {
+		if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.root.gameObject.GetComponent<PlayerHealth>().isScanning) {
+			if (materialMode == 0) {
+				timeOfScan = Time.time;
+				scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.position) / 500f;
+				materialMode = 1;
+			}
+			if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {
+				changedMaterial.color = DetermineColour();
+				gameObject.GetComponent<MeshRenderer>().material = changedMaterial;
+				materialMode = 2;
+			}
+		} else {
+			if (materialMode != 0) {
 				gameObject.GetComponent<MeshRenderer>().material = mainMaterial;
 				materialMode = 0;
 			}
 		}
-
-		changedMaterial.color = DetermineColour();
 	}
 
 	private void OnCollisionEnter(Collision other) {
 		if (other.gameObject.transform.tag == "Explosion - Player") {
-			transform.parent.GetComponent<ArmourHealth>().TakeDamage(100, other.gameObject);
-
-			//Transform parent = transform.root;
-
-			//parent.GetComponent<EnemyHealth>().TakeDamage(200, other.gameObject);
+			GetComponent<ArmourHealth>().TakeDamage(100, other.gameObject);
 		}
 
 		if (other.gameObject.transform.tag == "Bullet - Player") {
-			transform.parent.GetComponent<ArmourHealth>().TakeDamage(10, other.gameObject);
-
-			//Transform parent = transform.root;
-
-			//parent.GetComponent<EnemyHealth>().TakeDamage(10);
+			GetComponent<ArmourHealth>().TakeDamage(10, other.gameObject);
 		}
 
 		changedMaterial.color = DetermineColour();
 	}
 
 	private Color DetermineColour() {
-		float HP = transform.parent.GetComponent<ArmourHealth>().HP;
-		float maxHP = transform.parent.GetComponent<ArmourHealth>().maxHP;
+		float HP = GetComponent<ArmourHealth>().HP;
+		float maxHP = GetComponent<ArmourHealth>().maxHP;
 
 		float temp = HP / maxHP;
 		Color tempColour = new Color();

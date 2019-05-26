@@ -10,6 +10,10 @@ public class MenuControls : MonoBehaviour {
 		SceneManager.LoadScene(1);
 	}
 
+	public void MainMenuClicked() {
+		SceneManager.LoadScene(0); 
+	}
+
 	public void QuitClicked() {
 		Application.Quit();
 	}

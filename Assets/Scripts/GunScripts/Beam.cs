@@ -79,7 +79,7 @@ public class Beam : MonoBehaviour
                     // Take damage per tickrate
                     if (Time.time > damageTime)
                     {
-                        Debug.Log("Damaging " + other.gameObject.name);
+                        //Debug.Log("Damaging " + other.gameObject.name);
                         other.gameObject.GetComponent<PlayerDamageableSection>().TakeDamage(damage, null);
                         damageTime = Time.time + damageTickRate;
                     }

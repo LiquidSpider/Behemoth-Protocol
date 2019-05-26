@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 
 
 	// Josh Addition for Displacement Movement
-	private float flightSpeedScaleFactor = 5;
+	private float flightSpeedScaleFactor = 6f;
 
 	private float startTimeHoldingW = -1;
 	private float startTimeHoldingA = -1;
@@ -120,9 +120,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void PlayerControls() { // Player controls and manipulation goes here
-		if (Input.GetButtonDown("Pause")) { // Release key
-			Cursor.lockState = CursorLockMode.None;
-		}
+		//if (Input.GetButtonDown("Pause")) { // Release key
+		//	Cursor.lockState = CursorLockMode.None;
+		//	Cursor.visible = true;
+		//}
 
 		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500) {
 			if (Input.GetButton("Zoom")) {
@@ -131,7 +132,7 @@ public class PlayerController : MonoBehaviour {
 				tFOV = zFOV;
 				isZoom = true;
 
-				gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(7);
+				gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50 * Time.deltaTime);
 			} else {
 				zCLerp = 0f;
 				tFOV = uFOV;

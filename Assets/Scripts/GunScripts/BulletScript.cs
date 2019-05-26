@@ -54,7 +54,7 @@ public class BulletScript : MonoBehaviour {
                 // take damage
                 GameObject ui = GameObject.FindGameObjectWithTag("UI");
                 ui.GetComponent<UISounds>().HitMarker();
-                Debug.Log("Bullet hit enemy");
+                //Debug.Log("Bullet hit enemy");
                 var health = collision.gameObject.GetComponent<Health>();
 				health.TakeDamage(damage);
                 // play hit sound
@@ -65,7 +65,7 @@ public class BulletScript : MonoBehaviour {
             if(collision.gameObject.GetComponent<PlayerDamageableSection>())
             {
 
-                Debug.Log("Hit player");
+                //Debug.Log("Hit player");
                 collision.gameObject.GetComponent<PlayerDamageableSection>().TakeDamage(damage, this.gameObject);
 
             }

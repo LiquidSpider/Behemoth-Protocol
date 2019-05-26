@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossHealth : MonoBehaviour {
 
-	public float HP = 1000;
+	public float HP = 3000;
 	public float maxHP;
 
 	private List<GameObject> damageTakenFrom = new List<GameObject>();
@@ -14,30 +14,25 @@ public class BossHealth : MonoBehaviour {
 	}
 
 	public void TakeDamage(float damage) {
-		gameObject.GetComponent<Cube>().TakeDamage(damage);
+		HP -= damage;
 
-		//HP -= damage;
-
-		//if (HP <= 0) {
-		//	Die();
-		//}
+		if (HP <= 0) {
+			Die();
+		}
 	}
 
 	public void TakeDamage(float damage, GameObject explosion) {
 		if (!damageTakenFrom.Contains(explosion)) {
-			damageTakenFrom.Add(explosion);
+			HP -= damage;
 
-			gameObject.GetComponent<Cube>().TakeDamage(damage);
-
-			//HP -= damage;
-
-			//if (HP <= 0) {
-			//	Die();
-			//}
+			if (HP <= 0) {
+				Die();
+			}
 		}
 	}
 
 	private void Die() {
-		Destroy(gameObject);
+		//Destroy(gameObject);
+		GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().PlayerWin();
 	}
 }
