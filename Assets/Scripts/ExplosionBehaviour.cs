@@ -10,6 +10,8 @@ public class ExplosionBehaviour : MonoBehaviour {
     public AudioClip sExplosion;
 	private float fadeStartTime = -1;
 	private float fadeTime = 2f;
+    public float sMinDist = 1f;     // Distance at which sound is loudest
+    public float sMaxDist = 500f;   // Distance at which sound is inaudible
 
 	void Start() {
 		transform.parent = GameObject.FindGameObjectWithTag("ExplosionParent").transform;
@@ -42,12 +44,14 @@ public class ExplosionBehaviour : MonoBehaviour {
         GameObject oSound = Instantiate(sndsrc, pos, Quaternion.identity);
         AudioSource source = oSound.GetComponent<AudioSource>();
         source.clip = sExplosion;
-        source.volume = 0.5f;
+        source.volume = 1;
+        source.minDistance = sMinDist;
+        source.maxDistance = sMaxDist;
         if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
         oSound.GetComponent<TimedDestroy>().maxTime = source.clip.length;
         oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
         source.volume = 0.7f;
-        source.rolloffMode = AudioRolloffMode.Linear;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
         source.Play();
     }
 }

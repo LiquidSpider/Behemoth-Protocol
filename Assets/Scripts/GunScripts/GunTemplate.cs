@@ -33,6 +33,10 @@ public class GunTemplate : MonoBehaviour
     public float handling = 1f;                 // How fast accuracy returns to minAcc between shots
     public AudioClip sFire;                     // Sound played when gun fires
     public bool soundPitchRandom;               // Should the sound have randomized pitch? (Good for automatic weapons)
+    public bool spatialise;                     // False = 2d sound, True = 3d sound
+    public float sFireVol = 1f;                 // Fire volume
+    public float sFireMinDist = 1f;             // Within this distance, sound is as loud as it can get
+    public float sFireMaxDist = 500f;           // Outside this distance, sound can no longer be heard
 
     //  Bullet Variables                        All variables must start with prefix 'p'
     public GameObject projectile;               // Bullet prefab, probably won't need to change   
@@ -134,21 +138,24 @@ public class GunTemplate : MonoBehaviour
 			bullet.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
 		}
         animation.Play("Fire", PlayMode.StopAll);
-        MakeSound(sFire, sFire.length, soundPitchRandom);
+        MakeSound(sFire, sFireVol, sFireMinDist, sFireMaxDist, soundPitchRandom, spatialise);
         if (cAcc <= maxAcc) {
             cAcc += incAcc;
         }
     }
 
-    void MakeSound(AudioClip sound, float sLength, bool pitchRandom) {
+    void MakeSound(AudioClip sound, float volume, float minDist, float maxDist, bool pitchRandom, bool spatial) {
         GameObject oSound = Instantiate(soundSrc, barrel.transform.position, barrel.transform.rotation);
         AudioSource source = oSound.GetComponent<AudioSource>();
         source.clip = sFire;
         source.volume = 0.6f;
-        source.spatialBlend = 0;
+        if (spatial) source.spatialBlend = 1;
+        else source.spatialBlend = 0;
+        source.minDistance = minDist;
+        source.maxDistance = maxDist;
         source.rolloffMode = AudioRolloffMode.Logarithmic;
         if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
-        oSound.GetComponent<TimedDestroy>().maxTime = sLength;
+        oSound.GetComponent<TimedDestroy>().maxTime = source.clip.length;
 		oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
     }
 
