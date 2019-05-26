@@ -27,6 +27,7 @@ public class Sal : MonoBehaviour
     public int gatlingMaxAmmo = 30;
     public float gatlingCooldown = 3.0f;
     public float gatlingShootPerSecond = 0.5f;
+    private int gatlingShooter;
 
     // Missiles
     private MissileLauncher[] missileLaunchers;
@@ -314,24 +315,28 @@ public class Sal : MonoBehaviour
             // shoot gattlings
             if (Time.time > gatlingShootTimer)
             {
-
-                foreach (GunTemplate gattlingGun in gatlingGuns)
+                
+                RaycastHit hit;
+                Physics.Raycast(gatlingGuns[gatlingShooter].gameObject.transform.position, gatlingGuns[gatlingShooter].gameObject.transform.forward, out hit, 5.0f);
+                if(hit.collider)
                 {
+                    Debug.Log(hit.collider.gameObject.name);
+                }
 
-                    RaycastHit hit;
-                    Physics.Raycast(gattlingGun.gameObject.transform.position, gattlingGun.gameObject.transform.forward, out hit, 5.0f);
-                    if(hit.collider)
-                    {
-                        Debug.Log(hit.collider.gameObject.name);
-                    }
+                if (Array.IndexOf(colliders, hit.collider) < 0)
+                    gatlingGuns[gatlingShooter].Fire();
 
-                    if (Array.IndexOf(colliders, hit.collider) < 0)
-                        gattlingGun.Fire();
-                    
+                if (gatlingShooter >= gatlingGuns.Length - 1)
+                {
+                    gatlingShooter = 0;
+                }
+                else
+                {
+                    gatlingShooter++;
                 }
 
                 // Remove this ammo from ammobank
-                if(gatlingAmmo > 0)
+                if (gatlingAmmo > 0)
                     gatlingAmmo--;
 
                 // wait per shot

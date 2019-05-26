@@ -6700,6 +6700,16 @@ PrefabInstance:
       propertyPath: rotationSpeed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8659171341853675564, guid: 05838d54681e5475b9a14083730adc55,
+        type: 3}
+      propertyPath: gatlingShootPerSecond
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8659171341853675564, guid: 05838d54681e5475b9a14083730adc55,
+        type: 3}
+      propertyPath: gatlingMaxAmmo
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 7354042911935411197, guid: 05838d54681e5475b9a14083730adc55,
         type: 3}
       propertyPath: m_IsActive
