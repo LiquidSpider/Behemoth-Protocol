@@ -94,6 +94,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sndsrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
   sExplosion: {fileID: 8300000, guid: a34658111f5cd8246b93da9384b19866, type: 3}
+  sMinDist: 200
+  sMaxDist: 2000
 --- !u!135 &6127964963944004408
 SphereCollider:
   m_ObjectHideFlags: 0

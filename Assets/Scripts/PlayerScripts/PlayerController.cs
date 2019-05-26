@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;                                               // Player body
 	public GameObject body;                                             // Player gameobject body
 	private Animator animator;                                          // Body animator
-	private TrailRenderer trail;                                        // Trail renderer in player body
+	//private TrailRenderer trail;                                        // Trail renderer in player body
 																		//  Camera Vars
 	private GameObject cameraObj;                                       // The camera object
 	private Camera camera;                                              // The camera component
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour {
 		cZoom = cameraObj.transform.localPosition;
 		uFOV = camera.GetComponent<Camera>().fieldOfView;
 		rb = GetComponent<Rigidbody>();
-		trail = body.GetComponent<TrailRenderer>();
+		//trail = body.GetComponent<TrailRenderer>();
 		animator = body.GetComponent<Animator>();
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
@@ -92,19 +92,19 @@ public class PlayerController : MonoBehaviour {
 			rotY -= speedV * Input.GetAxis("RightVertical");
 			rotX += speedH * Input.GetAxis("Mouse X");
 			rotY -= speedV * Input.GetAxis("Mouse Y");
-			if (!isDodge) {
-				trail.time = 0.5f;
-				trail.startWidth = 0.5f;
-			}
+			//if (!isDodge) {
+			//	trail.time = 0.5f;
+			//	trail.startWidth = 0.5f;
+			//}
 		} else {
 			rotX += speedH * Input.GetAxis("RightHorizontal") * cruiseLMod;
 			rotY -= speedV * Input.GetAxis("RightVertical") * cruiseLMod;
 			rotX += speedH * Input.GetAxis("Mouse X") * cruiseLMod;
 			rotY -= speedV * Input.GetAxis("Mouse Y") * cruiseLMod;
-			if (!isDodge) {
-				trail.time = 2;
-				trail.startWidth = 1f;
-			}
+			//if (!isDodge) {
+			//	trail.time = 2;
+			//	trail.startWidth = 1f;
+			//}
 
 		}
 		rotY = Mathf.Clamp(rotY, minY, maxY);
@@ -301,10 +301,11 @@ public class PlayerController : MonoBehaviour {
 		hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
 		if (!hitObject || hit.collider.gameObject.transform.root.gameObject.tag == "Player") {
 			transform.position += movementDirection;
+            animator.SetBool("IsMoving", true);
 			return true;
 		}
-
-		return false;
+        animator.SetBool("IsMoving", false);
+        return false;
 	}
 
 	void AimWeapon() {
@@ -338,10 +339,10 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator Dodge() {
 		if (!isDodge) {
 			isDodge = true;
-			if (Input.GetAxis("LeftHorizontal") > 0) {
+			if (Input.GetKey("d")) {
 				animator.SetTrigger("DodgeRight");
 			}
-			if (Input.GetAxis("LeftHorizontal") < 0) {
+			if (Input.GetKey("a")) {
 				animator.SetTrigger("DodgeLeft");
 			}
 			rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
