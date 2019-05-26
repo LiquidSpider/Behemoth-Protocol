@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour {
 		trail = body.GetComponent<TrailRenderer>();
 		animator = body.GetComponent<Animator>();
 		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 	}
 
 

@@ -130,7 +130,7 @@ public class Sal : MonoBehaviour
 
             }
 
-            Debug.Log(pathways);
+            //Debug.Log(pathways);
 
             // Make sure there is a path
             if(pathways.Count > 0)
