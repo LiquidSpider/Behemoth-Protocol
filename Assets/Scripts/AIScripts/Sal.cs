@@ -58,6 +58,9 @@ public class Sal : MonoBehaviour
     }
     public float headRotationSpeed = 5.0f;
     private GameObject beam;
+    private bool startedShooting;
+    private float startedShootingTime;
+    private float RotationIncrease = 1.0f;
 
     // body parts
     public List<GameObject> bodyParts;
@@ -65,9 +68,12 @@ public class Sal : MonoBehaviour
     private GameObject currentBodyPart;
     private GameObject previousBodyPart;
     private float maxTime = 100.0f;
+    private Collider[] colliders;
 
     public float BeamCheckCooldown;
     private float beamCheckTimer;
+
+    private LayerMask IngoreLayer = ~(1 << 2 | 1 << 9 | 1 << 12);
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +88,9 @@ public class Sal : MonoBehaviour
         head = this.gameObject.transform.GetChild(4).gameObject;
 
         beamCheckTimer = Time.time + BeamCheckCooldown;
+
+        // Get all of this objects colliders
+        colliders = this.transform.root.GetComponentsInChildren<Collider>();
 
     }
 
@@ -270,11 +279,9 @@ public class Sal : MonoBehaviour
         {
 
             Quaternion direction = Quaternion.LookRotation(player.transform.position - gatlingGun.gameObject.transform.position);
-            gatlingGun.transform.rotation = Quaternion.Lerp(gatlingGun.gameObject.transform.rotation, direction, 10.0f * Time.deltaTime);
+            gatlingGun.transform.rotation = Quaternion.Lerp(gatlingGun.gameObject.transform.rotation, direction, 50.0f * Time.deltaTime);
 
         }
-
-        // Reload
 
         if(Time.time > missileShootTimer)
         {
@@ -311,8 +318,16 @@ public class Sal : MonoBehaviour
                 foreach (GunTemplate gattlingGun in gatlingGuns)
                 {
 
-                    gattlingGun.Fire();
+                    RaycastHit hit;
+                    Physics.Raycast(gattlingGun.gameObject.transform.position, gattlingGun.gameObject.transform.forward, out hit, 5.0f);
+                    if(hit.collider)
+                    {
+                        Debug.Log(hit.collider.gameObject.name);
+                    }
 
+                    if (Array.IndexOf(colliders, hit.collider) < 0)
+                        gattlingGun.Fire();
+                    
                 }
 
                 // Remove this ammo from ammobank
@@ -351,17 +366,21 @@ public class Sal : MonoBehaviour
     private void ShootBeam()
     {
 
-        // make the head look at the player
-        Quaternion direction = Quaternion.LookRotation(player.transform.position - head.gameObject.transform.position);
-        head.transform.rotation = Quaternion.Lerp(head.gameObject.transform.rotation, direction, headRotationSpeed * Time.deltaTime);
+        // once we started shooting
+        if(!startedShooting)
+        {
+            startedShooting = true;
+            startedShootingTime = Time.time;
+        }
 
-        if(CheckFacingPlayer())
+        if(CheckFacingPlayer() || facingPlayer)
         {
 
             // if we aren't already facing the player.
             if(!facingPlayer)
             {
                 facingPlayer = true;
+                RotationIncrease = 1.0f;
             }
 
             // Shoot for 3 seconds to charge
@@ -369,13 +388,15 @@ public class Sal : MonoBehaviour
             {
                 shootBeam = false;
                 facingPlayer = false;
+                RotationIncrease = 1.0f;
+                startedShooting = false;
             }
             else
             { 
                 // Shoot the beam until it hits an object
                 RaycastHit hit;
 
-                if (Physics.SphereCast(beamStart.transform.position, 10.0f, head.transform.forward, out hit))
+                if (Physics.SphereCast(beamStart.transform.position, 3.0f, head.transform.forward, out hit, Mathf.Infinity, IngoreLayer))
                 {
 
                     if (hit.collider)
@@ -404,6 +425,17 @@ public class Sal : MonoBehaviour
             }
 
         }
+        else
+        {
+
+            // Increase head rotation speed until we find the player
+            RotationIncrease += (Time.time - startedShootingTime) / 5.0f;
+
+        }
+
+        // make the head look at the player
+        Quaternion direction = Quaternion.LookRotation(player.transform.position - head.gameObject.transform.position);
+        head.transform.rotation = Quaternion.Lerp(head.gameObject.transform.rotation, direction, headRotationSpeed * RotationIncrease * Time.deltaTime);
 
     }
 

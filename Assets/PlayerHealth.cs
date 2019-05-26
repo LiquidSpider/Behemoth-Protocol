@@ -18,7 +18,12 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (HP < 1000) {
+
+        // Stop battery from going into negative
+        if (battery < 0)
+            battery = 0;
+
+        if (HP < 1000) {
 			HP += 0.5f;
 			battery -= 5;
 
@@ -30,22 +35,45 @@ public class PlayerHealth : MonoBehaviour {
 			battery += 1f;
 			GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().fillAmount = battery / 10000f;
 		}
+
 	}
 
-	public void TakeDamage(float damage, GameObject explosion) {
-		if (!TakenDamageFrom.Contains(explosion)) {
-			TakenDamageFrom.Add(explosion);
+    public void TakeDamage(float damage, GameObject explosion) {
 
-			HP -= damage;
+        // Check if this object should only take damage once
+        if(explosion)
+        {
 
-			if (HP <= 0 && !critDamageTaken) {
-				critDamageTaken = true;
-			} else if (HP <= 0 && critDamageTaken) {
-				Die();
-			}
-		}
+            if (!TakenDamageFrom.Contains(explosion))
+            {
+                TakenDamageFrom.Add(explosion);
 
-		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = battery / 1000f;
+                HP -= damage;
+                if (HP < 0)
+                    HP = 0;
+            }
+
+        }
+        else // beam damage
+        {
+
+            HP -= damage;
+            if (HP < 0)
+                HP = 0;
+
+        }
+
+        // Check health and handle accordingly
+        if (HP <= 0 && !critDamageTaken)
+        {
+            critDamageTaken = true;
+        }
+        else if (HP <= 0 && critDamageTaken)
+        {
+            Die();
+        }
+
+        GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = battery / 1000f;
 	}
 
 	public void UseBattery(float reduction) {

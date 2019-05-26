@@ -11,4 +11,17 @@ public class PlayerDamageableSection : MonoBehaviour {
 			parent.GetComponent<PlayerHealth>().TakeDamage(100, other.gameObject);
 		}
 	}
+
+    /// <summary>
+    /// Handles bullet and beam damage on the player.
+    /// </summary>
+    /// <param name="damage">Amount of damage taking.</param>
+    public void TakeDamage(float damage, GameObject damageSource)
+    {
+
+        Debug.Log("Dealing Damage to player");
+        transform.root.GetComponent<PlayerHealth>().TakeDamage(damage, damageSource);
+
+    }
+
 }
