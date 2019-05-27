@@ -19,6 +19,8 @@ public class Sal : MonoBehaviour
     // player
     public GameObject player;
 
+    private bool FinishedStartingPath = false;
+
     // Gattling Guns
     private GunTemplate[] gatlingGuns;
     private float gatlingShootTimer;
@@ -162,28 +164,101 @@ public class Sal : MonoBehaviour
     void Update()
     {
 
-        if(!shootBeam)
-        {
-            MoveAroundPathWay();
-            ShootPlayer();   
-        }
-        else
-        {        
-            ShootBeam();
-        }
-
-        // Wait for beam cool downbefore checking to shoot beam.
-        if (Time.time > beamCheckTimer)
+        if(FinishedStartingPath)
         {
 
-            // Randomly Check whether to shoot beam
-            if (UnityEngine.Random.Range(0, 500) <= 1)
+            if (!shootBeam)
+            {
+                MoveAroundPathWay();
+                ShootPlayer();
+            }
+            else
+            {
+                ShootBeam();
+            }
+
+            // Wait for beam cool downbefore checking to shoot beam.
+            if (Time.time > beamCheckTimer)
             {
 
-                shootBeam = true;
-                beamCheckTimer = Time.time + BeamCheckCooldown;
+                // Randomly Check whether to shoot beam
+                if (UnityEngine.Random.Range(0, 500) <= 1)
+                {
+
+                    shootBeam = true;
+                    beamCheckTimer = Time.time + BeamCheckCooldown;
+
+                }
 
             }
+
+        }
+        else
+        {
+
+            StartingAnimation();
+
+        }
+
+    }
+
+    /// <summary>
+    /// Performs the starting animation.
+    /// </summary>
+    private void StartingAnimation()
+    {
+
+        if(currentPath == null)
+        {
+            currentPath = paths[0];
+            CheckPath();
+        }
+
+        // If we're not at the current path
+        if (Vector3.Distance(currentMoveTo.transform.position, bodyParts[0].transform.position) > 10.0f)
+        {
+
+            Quaternion direction = Quaternion.LookRotation(currentMoveTo.transform.position - bodyParts[0].transform.position, currentMoveTo.transform.up);
+            bodyParts[0].transform.rotation = Quaternion.Lerp(bodyParts[0].transform.rotation, direction, rotationSpeed * Time.deltaTime);
+
+            bodyParts[0].transform.position += bodyParts[0].transform.forward * Time.deltaTime * speed;
+
+
+            // Move body parts with it
+            for (int i = 1; i < bodyParts.Count; i++)
+            {
+
+                currentBodyPart = bodyParts[i];
+                previousBodyPart = bodyParts[i - 1];
+
+                // Get the distance between thos object and it's parent
+                float distance = Vector3.Distance(previousBodyPart.transform.position, currentBodyPart.transform.position);
+
+                // The new position is to be the position of the parent infront of it.
+                Vector3 newPosition = previousBodyPart.transform.position;
+
+                // Calcalate the speed if the time it takes is the distance to travel at the speed;
+                float T = Time.deltaTime * distance / bodyPartDistances[i] * speed;
+
+                // Lock speed
+                if (T > maxTime)
+                    T = maxTime;
+
+                currentBodyPart.transform.position = Vector3.Slerp(currentBodyPart.transform.position, newPosition, T);
+                currentBodyPart.transform.rotation = Quaternion.Slerp(currentBodyPart.transform.rotation, previousBodyPart.transform.rotation, T);
+
+            }
+
+        }
+        else
+        {
+
+            // Increment the path
+            pathIndex++;
+            // Check finished
+            FinishedStartingPath = FinishedPath();
+            // Check the path for next path
+            CheckPath();
 
         }
 
@@ -199,8 +274,8 @@ public class Sal : MonoBehaviour
         //if (currentPath == null)
 		if (pathIndex == 0)
         {
-			// get a random path
-            int i = UnityEngine.Random.Range(0, paths.Count - 1);
+			// get a random path - Do not get the first path
+            int i = UnityEngine.Random.Range(1, paths.Count - 1);
             currentPath = paths[i];
             CheckPath();
         }
@@ -267,6 +342,22 @@ public class Sal : MonoBehaviour
             // reset the current path
             //currentPath = null;
             pathIndex = 0;
+        }
+    }
+
+    /// <summary>
+    /// Check if we've finished the path
+    /// </summary>
+    /// <returns>True if we finished</returns>
+    private bool FinishedPath()
+    {
+        if (pathIndex < currentPath.pathways.Count)
+        {
+            return false;
+        }
+        else
+        { 
+            return true;
         }
     }
 
