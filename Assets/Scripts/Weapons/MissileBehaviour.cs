@@ -43,6 +43,8 @@ public class MissileBehaviour : MonoBehaviour {
 		transform.rotation = Quaternion.LookRotation(positionToLookAt);
 
 		playerSpeed = owner.GetComponent<WeaponController>().playerSpeed;
+
+		launchTime = 0.1f;
 		//playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
 	}
 

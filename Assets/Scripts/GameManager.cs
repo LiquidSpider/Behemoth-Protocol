@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -64,24 +65,32 @@ public class GameManager : MonoBehaviour {
 		gamePaused = true;
 		gameOver = true;
 		pauseMenu.SetActive(true);
+		pauseMenu.transform.GetChild(1).gameObject.SetActive(true);
 
 		Time.timeScale = 0;
 		Cursor.visible = true;
 
 		SetStuff(true);
 		Cursor.lockState = CursorLockMode.None;
+
+		Destroy(player.transform.GetChild(1).GetChild(3).gameObject);
+		Destroy(player.transform.GetChild(1).GetChild(0).gameObject);
+		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = 0;
 	}
 
 	public void PlayerWin() {
 		gamePaused = false;
 		gameOver = true;
 		pauseMenu.SetActive(true);
+		pauseMenu.transform.GetChild(0).gameObject.SetActive(true);
 
 		Time.timeScale = 0;
 		Cursor.visible = true;
 
 		SetStuff(true);
 		Cursor.lockState = CursorLockMode.None;
+
+		Destroy(salamander);
 	}
 
 	private void SetStuff(bool swapTo) {
@@ -92,7 +101,7 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<PlayerHealth>().enabled = !swapTo;
 		player.transform.GetChild(1).GetComponent<PlayerController>().enabled = !swapTo;
 		player.transform.GetChild(1).GetChild(0).GetComponent<Animator>().enabled = !swapTo;
-		player.transform.GetChild(2).gameObject.SetActive(!swapTo);
+		//player.transform.GetChild(2).gameObject.SetActive(!swapTo);
 		salamander.GetComponent<Sal>().enabled = !swapTo;
 
 		for (int i = 0; i < smallerEnemies.transform.childCount; i++) {

@@ -21,7 +21,7 @@ public class BossDamageableSection : MonoBehaviour {
 		if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.root.gameObject.GetComponent<PlayerHealth>().isScanning) {
 			if (materialMode == 0) {
 				timeOfScan = Time.time;
-				scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.position) / 500f;
+				scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.GetChild(1).position) / 450f;
 				materialMode = 1;
 			}
 			if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {

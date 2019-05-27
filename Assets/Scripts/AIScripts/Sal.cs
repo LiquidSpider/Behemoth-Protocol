@@ -196,9 +196,10 @@ public class Sal : MonoBehaviour
     {
 
         // If we don't have a path
-        if (currentPath == null)
+        //if (currentPath == null)
+		if (pathIndex == 0)
         {
-            // get a random path
+			// get a random path
             int i = UnityEngine.Random.Range(0, paths.Count - 1);
             currentPath = paths[i];
             CheckPath();
@@ -264,7 +265,7 @@ public class Sal : MonoBehaviour
         else
         {
             // reset the current path
-            currentPath = null;
+            //currentPath = null;
             pathIndex = 0;
         }
     }

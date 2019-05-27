@@ -50,11 +50,18 @@ public class PlayerHealth : MonoBehaviour {
 			else UseBattery(10);
 		}
 
+		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
+		GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().fillAmount = battery / maxB;
+	}
+
+	public void UseBattery(float reduction) {
+		battery -= reduction;
+		//GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().fillAmount = battery / maxB;
 	}
 
 	private void TakeDamage(float damage) {
 		HP -= damage;
-		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
+		//GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
 	}
 
 	public void TakeDamage(float damage, GameObject explosion) {
@@ -86,13 +93,7 @@ public class PlayerHealth : MonoBehaviour {
 			Die();
 		}
 
-		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
-	}
-
-	public void UseBattery(float reduction) {
-		battery -= reduction;
-
-		GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().fillAmount = battery / maxB;
+		//GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
 	}
 
 	private void Die() {
