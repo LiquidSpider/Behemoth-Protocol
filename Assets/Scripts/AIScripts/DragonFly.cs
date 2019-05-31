@@ -19,8 +19,10 @@ public class DragonFly : MonoBehaviour
     public Transform player;
 
     // Movement speeds
-    public float speed;
-    public float rotationSpeed;
+    public float defaultSpeed;
+    public float defaultRotationSpeed;
+    private float speed;
+    private float rotationSpeed;
 
     // Object Size
     private Vector3 objectSize;
@@ -36,6 +38,8 @@ public class DragonFly : MonoBehaviour
     // Children colliders
     private Collider[] colliders;
 
+    public GameObject rubbishPile;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +50,15 @@ public class DragonFly : MonoBehaviour
 
         this.colliders = this.GetComponentsInChildren<Collider>();
 
+        this.speed = defaultSpeed;
+        this.rotationSpeed = rotationSpeed;
+
+    }
+
+    private void FixedUpdate()
+    {
+        // Check for surrounding objects
+        CheckSurroundings();
     }
 
     // Update is called once per frame
@@ -55,10 +68,11 @@ public class DragonFly : MonoBehaviour
         // Check if we should follow the player
         CheckPlayer();
 
-        if (FollowingPlayer)
+        if (FollowingPlayer && moveToPosition == Vector3.zero)
             FollowPlayer();
         else
             RandomlyMoveWithinBounds();
+
 
     }
 
@@ -99,14 +113,14 @@ public class DragonFly : MonoBehaviour
         {
 
             // if we're going to collide
-            if (GoingToCollide(this.transform.forward))
-            {
-                randomMovementTimer = Time.time - 1.0f;
-            }
-            else
-            {
+            //if (GoingToCollide(this.transform.forward))
+            //{
+            //    randomMovementTimer = Time.time - 1.0f;
+            //}
+            //else
+            //{
                 this.transform.position += this.transform.forward * Time.deltaTime * speed;
-            }
+            //}
 
         }
 
@@ -149,15 +163,15 @@ public class DragonFly : MonoBehaviour
                     break;
             }
 
-            // if we're going to collide
-            if (GoingToCollide(movementDirection))
-            {
-                randomMovementTimer = Time.time - 1.0f;
-            }
-            else
-            {
+            //// if we're going to collide
+            //if (GoingToCollide(movementDirection))
+            //{
+            //    randomMovementTimer = Time.time - 1.0f;
+            //}
+            //else
+            //{
                 this.transform.position += movementDirection * Time.deltaTime * speed;
-            }
+            //}
 
         }
 
@@ -197,15 +211,15 @@ public class DragonFly : MonoBehaviour
                 Quaternion direction = Quaternion.LookRotation(moveToPosition - this.transform.position);
                 this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
 
-                // if we're going to collide
-                if (GoingToCollide(this.transform.forward))
-                {
-                    moveToPosition = Vector3.zero; // Reset movement
-                }
-                else
-                {
+                //// if we're going to collide
+                //if (GoingToCollide(this.transform.forward))
+                //{
+                //    moveToPosition = Vector3.zero; // Reset movement
+                //}
+                //else
+                //{
                     this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                }
+                //}
 
             }
 
@@ -216,31 +230,112 @@ public class DragonFly : MonoBehaviour
     // Stop movement
     private void OnCollisionEnter(Collision collision)
     {
-        
-        if(Array.IndexOf(colliders, collision.collider) < 0)
+        // if the object is the salamander
+        if (collision.collider.gameObject.transform.root.gameObject.layer == 12)
         {
-            randomMovementTimer = Time.time - 1;
-            moveToPosition = Vector3.zero;
+            Debug.Log("disabling colliders");
+            this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = false;
         }
 
     }
 
-    /// <summary>
-    /// Determines if we're going to run into anything in this direction.
-    /// </summary>
-    /// <returns><c>true</c>, if we run into anything, <c>false</c> otherwise.</returns>
-    /// <param name="direction">Direction.</param>
-    private bool GoingToCollide(Vector3 direction)
+    private void OnCollisionExit(Collision collision)
     {
-
-        if (Physics.Raycast(this.transform.position, direction, 2.0f, 11))
+        // if the object is the salamander
+        if (collision.collider.gameObject.transform.root.gameObject.layer == 12)
         {
-            return true;
+            Debug.Log("enabling colliders");
+            this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    ///// <summary>
+    ///// Determines if we're going to run into anything in this direction.
+    ///// </summary>
+    ///// <returns><c>true</c>, if we run into anything, <c>false</c> otherwise.</returns>
+    ///// <param name="direction">Direction.</param>
+    //private bool GoingToCollide(Vector3 direction)
+    //{
+
+    //    if (Physics.Raycast(this.transform.position, direction, 2.0f, 11))
+    //    {
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
+
+    /// <summary>
+    /// Check the surroundings for object
+    /// </summary>
+    private void CheckSurroundings()
+    {
+        
+        RaycastHit hit;
+
+        if (Physics.BoxCast(this.transform.position, new Vector3(7.5f, 7.5f, 7.5f), transform.forward, out hit, transform.rotation, 5.0f))
+        {
+
+            // if the object is not in the projectile layer or ignore layer or isn't this object
+            if((hit.collider.gameObject.layer != 9 && hit.collider.gameObject.layer != 2 && hit.collider.gameObject.transform.root != this.gameObject.transform.root))
+            {
+
+                if (hit.collider.gameObject.transform.root.gameObject.layer == 12)
+                {
+                    Debug.Log("disable collider");
+                    this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = false;
+                }
+                else
+                {
+                    if (this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled == false)
+                    {
+                        this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
+                    }
+                }
+
+                Debug.Log(this.name + " Moving away from " + hit.collider.name);
+                moveToPosition = transform.position + hit.normal * 20.0f;
+                randomMovementTimer = Time.time - 1;
+                speed = 150.0f;
+                rotationSpeed = 50.0f;
+
+            }
+            else
+            {
+
+                if (this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled == false)
+                {
+                    this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
+                }
+                speed = defaultSpeed;
+                rotationSpeed = defaultRotationSpeed;
+
+            }
+
         }
         else
         {
-            return false;
+
+            if (this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled == false)
+            {
+                this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
+            }
+            speed = defaultSpeed;
+            rotationSpeed = defaultRotationSpeed;
+
         }
+
+    }
+
+    // On Destroy(this) event.
+    private void OnDestroy()
+    {
+
+        // create a rubbish pile.
+        Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
+
     }
 
 #if DEBUG
@@ -251,6 +346,14 @@ public class DragonFly : MonoBehaviour
         cubeColor.a /= 2;
         Gizmos.color = cubeColor;
         Gizmos.DrawCube(startingPosition, boundsSize * 2);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Color color = Color.green;
+        color.a /= 2;
+        Gizmos.color = color;
+        Gizmos.DrawWireCube(this.transform.position + transform.forward * 0.1f, new Vector3(30, 30, 30));
     }
 
 #endif

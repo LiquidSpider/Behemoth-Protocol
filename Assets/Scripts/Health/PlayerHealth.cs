@@ -36,7 +36,7 @@ public class PlayerHealth : MonoBehaviour {
 		}
 
 		if (battery < maxB) {
-			UseBattery( -(10000f / 10f) * Time.deltaTime );
+			AddBattery( (10000f / 10f) * Time.deltaTime );
 		}
 		
 		if (Input.GetMouseButtonDown(1)) {
@@ -58,6 +58,25 @@ public class PlayerHealth : MonoBehaviour {
 		battery -= reduction;
 		//GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().fillAmount = battery / maxB;
 	}
+
+    /// <summary>
+    /// Adds an amount to the battery.
+    /// </summary>
+    /// <param name="amount">Amount to add.</param>
+    public void AddBattery(float amount)
+    {
+
+        // ensure we don't over max the battery amount
+        if(this.battery + amount >= maxB)
+        {
+            battery = maxB;
+        }
+        else
+        {
+            battery += amount;
+        }
+
+    }
 
 	private void TakeDamage(float damage) {
 		HP -= damage;

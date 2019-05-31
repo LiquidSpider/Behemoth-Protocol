@@ -22,6 +22,7 @@ public class EnemyDamageableSection : MonoBehaviour {
 			parent.GetComponent<EnemyHealth>().TakeDamage(10);
 		}
 
-		parent.GetChild(1).GetComponent<ShowHealth>().DamageTaken();
+        if(other.collider.gameObject.layer != 13)
+		    parent.GetChild(1).GetComponent<ShowHealth>().DamageTaken();
 	}
 }

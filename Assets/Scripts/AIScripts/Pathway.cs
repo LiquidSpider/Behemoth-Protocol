@@ -22,5 +22,10 @@ public class Pathway : MonoBehaviour
         Gizmos.color = colour;
         //Gizmos.DrawLine(this.transform.position, (this.transform.up * 10.0f).normalized + this.transform.position);
         Gizmos.DrawRay(this.transform.position, this.transform.up * 10.0f);
+
+        //RaycastHit hit;
+        //Physics.Raycast(transform.position, -transform.up, out hit, 1000.0f);
+        //Debug.Log(hit.distance);
+
     }
 }

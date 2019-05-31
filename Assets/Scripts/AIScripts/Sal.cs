@@ -10,16 +10,18 @@ public class Sal : MonoBehaviour
     private List<Path> paths;
     private Path currentPath;
     private GameObject currentMoveTo;
-    private int pathIndex = 0;
+    public bool assignedAPath;
+    public int pathIndex;
 
     // Enemy variables
     public float speed;
+    public float bodyPartSpeed;
     public float rotationSpeed;
 
     // player
     public GameObject player;
 
-    private bool FinishedStartingPath = false;
+    public bool FinishedStartingPath = false;
 
     // Gattling Guns
     private GunTemplate[] gatlingGuns;
@@ -70,7 +72,7 @@ public class Sal : MonoBehaviour
     public List<float> bodyPartDistances;
     private GameObject currentBodyPart;
     private GameObject previousBodyPart;
-    private float maxTime = 100.0f;
+    private float maxTime = 10000.0f;
     private Collider[] colliders;
 
     public float BeamCheckCooldown;
@@ -94,6 +96,8 @@ public class Sal : MonoBehaviour
 
         // Get all of this objects colliders
         colliders = this.transform.root.GetComponentsInChildren<Collider>();
+
+        assignedAPath = false;
 
     }
 
@@ -145,7 +149,7 @@ public class Sal : MonoBehaviour
             //Debug.Log(pathways);
 
             // Make sure there is a path
-            if(pathways.Count > 0)
+            if (pathways.Count > 0)
             {
 
                 // Create the path
@@ -162,19 +166,31 @@ public class Sal : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    { 
 
-        if(FinishedStartingPath)
+        // Debug
+        if (!player.gameObject || !player.transform.root.gameObject.activeSelf)
+            shootBeam = false;
+
+        if (FinishedStartingPath)
         {
 
             if (!shootBeam)
             {
                 MoveAroundPathWay();
-                ShootPlayer();
+                // Debug
+                if (player.gameObject && player.transform.root.gameObject.activeSelf)
+                {
+                    ShootPlayer();
+                }
             }
             else
             {
-                ShootBeam();
+                // Debug
+                if (player.gameObject && player.transform.root.gameObject.activeSelf)
+                {
+                    ShootBeam();
+                }
             }
 
             // Wait for beam cool downbefore checking to shoot beam.
@@ -208,14 +224,14 @@ public class Sal : MonoBehaviour
     private void StartingAnimation()
     {
 
-        if(currentPath == null)
+        if (currentPath == null)
         {
             currentPath = paths[0];
             CheckPath();
         }
 
         // If we're not at the current path
-        if (Vector3.Distance(currentMoveTo.transform.position, bodyParts[0].transform.position) > 10.0f)
+        if (Vector3.Distance(currentMoveTo.transform.position, bodyParts[0].transform.position) > 15.0f)
         {
 
             Quaternion direction = Quaternion.LookRotation(currentMoveTo.transform.position - bodyParts[0].transform.position, currentMoveTo.transform.up);
@@ -231,28 +247,26 @@ public class Sal : MonoBehaviour
                 currentBodyPart = bodyParts[i];
                 previousBodyPart = bodyParts[i - 1];
 
-                // Get the distance between thos object and it's parent
+                // Get the distance between this object and it's parent
                 float distance = Vector3.Distance(previousBodyPart.transform.position, currentBodyPart.transform.position);
-
+                               
                 // The new position is to be the position of the parent infront of it.
                 Vector3 newPosition = previousBodyPart.transform.position;
 
                 // Calcalate the speed if the time it takes is the distance to travel at the speed;
-                float T = Time.deltaTime * distance / bodyPartDistances[i] * speed;
+                float T = Time.deltaTime * distance / bodyPartDistances[i] * bodyPartSpeed;
 
                 // Lock speed
-                if (T > maxTime)
-                    T = maxTime;
+                T = Mathf.Clamp(T, 0, 0.5f);
 
-                currentBodyPart.transform.position = Vector3.Slerp(currentBodyPart.transform.position, newPosition, T);
-                currentBodyPart.transform.rotation = Quaternion.Slerp(currentBodyPart.transform.rotation, previousBodyPart.transform.rotation, T);
+                currentBodyPart.transform.position = Vector3.Lerp(currentBodyPart.transform.position, newPosition, T);
+                currentBodyPart.transform.rotation = Quaternion.Lerp(currentBodyPart.transform.rotation, previousBodyPart.transform.rotation, T);
 
             }
 
         }
         else
         {
-
             // Increment the path
             pathIndex++;
             // Check finished
@@ -271,12 +285,12 @@ public class Sal : MonoBehaviour
     {
 
         // If we don't have a path
-        //if (currentPath == null)
-		if (pathIndex == 0)
+        if (!assignedAPath)
         {
-			// get a random path - Do not get the first path
-            int i = UnityEngine.Random.Range(1, paths.Count - 1);
+            // get a random path - Do not get the first path
+            int i = UnityEngine.Random.Range(1, paths.Count);
             currentPath = paths[i];
+            assignedAPath = true;
             CheckPath();
         }
 
@@ -288,7 +302,6 @@ public class Sal : MonoBehaviour
             bodyParts[0].transform.rotation = Quaternion.Lerp(bodyParts[0].transform.rotation, direction, rotationSpeed * Time.deltaTime);
 
             bodyParts[0].transform.position += bodyParts[0].transform.forward * Time.deltaTime * speed;
-
 
             // Move body parts with it
             for (int i = 1; i < bodyParts.Count; i++)
@@ -319,7 +332,7 @@ public class Sal : MonoBehaviour
         else
         {
 
-            // Increment the path
+            // Increment to the next path
             pathIndex++;
             // Check the path for next path
             CheckPath();
@@ -333,14 +346,14 @@ public class Sal : MonoBehaviour
     /// </summary>
     private void CheckPath()
     {
-        if(pathIndex < currentPath.pathways.Count)
+        if (pathIndex < currentPath.pathways.Count)
         {
             currentMoveTo = currentPath.pathways[pathIndex];
         }
         else
         {
             // reset the current path
-            //currentPath = null;
+            assignedAPath = false;
             pathIndex = 0;
         }
     }
@@ -356,7 +369,7 @@ public class Sal : MonoBehaviour
             return false;
         }
         else
-        { 
+        {
             return true;
         }
     }
@@ -376,9 +389,9 @@ public class Sal : MonoBehaviour
 
         }
 
-        if(Time.time > missileShootTimer)
+        if (Time.time > missileShootTimer)
         {
-         
+
             // Shoot Missiles
             foreach (MissileLauncher missileLauncher in missileLaunchers)
             {
@@ -401,13 +414,13 @@ public class Sal : MonoBehaviour
         }
 
         // Don't shoot if reloading
-        if(Time.time > gatlineReloadTimer)
+        if (Time.time > gatlineReloadTimer)
         {
-         
+
             // shoot gattlings
             if (Time.time > gatlingShootTimer)
             {
-                
+
                 RaycastHit hit;
                 Physics.Raycast(gatlingGuns[gatlingShooter].gameObject.transform.position, gatlingGuns[gatlingShooter].gameObject.transform.forward, out hit, 5.0f);
                 //if(hit.collider)
@@ -445,7 +458,7 @@ public class Sal : MonoBehaviour
     /// </summary>
     private void LaunchMissile(GameObject spawner)
     {
-		int spawnLoc = UnityEngine.Random.Range(5, 11);
+        int spawnLoc = UnityEngine.Random.Range(5, 11);
 
         // Create a new missile
         GameObject newMissile = Instantiate(missile);
@@ -465,17 +478,17 @@ public class Sal : MonoBehaviour
     {
 
         // once we started shooting
-        if(!startedShooting)
+        if (!startedShooting)
         {
             startedShooting = true;
             startedShootingTime = Time.time;
         }
 
-        if(CheckFacingPlayer() || facingPlayer)
+        if (CheckFacingPlayer() || facingPlayer)
         {
 
             // if we aren't already facing the player.
-            if(!facingPlayer)
+            if (!facingPlayer)
             {
                 facingPlayer = true;
                 RotationIncrease = 1.0f;
@@ -490,7 +503,7 @@ public class Sal : MonoBehaviour
                 startedShooting = false;
             }
             else
-            { 
+            {
                 // Shoot the beam until it hits an object
                 RaycastHit hit;
 
@@ -543,7 +556,7 @@ public class Sal : MonoBehaviour
     public bool CheckFacingPlayer()
     {
 
-        if(Vector3.Dot(bodyParts[0].transform.forward, (player.transform.position - bodyParts[0].transform.position).normalized) > 0.999f)
+        if (Vector3.Dot(bodyParts[0].transform.forward, (player.transform.position - bodyParts[0].transform.position).normalized) > 0.999f)
         {
             return true;
         }
