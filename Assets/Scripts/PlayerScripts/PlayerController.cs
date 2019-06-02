@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour {
 		animator = body.GetComponent<Animator>();
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+        SwapWeapon(0);
 	}
 
 
@@ -277,35 +278,33 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetButton("Dodge")) {
 			if (cHoldTime > cHoldThreshold) {
 				isCruising = true;
+                animator.SetBool("IsBoosting", true);
 			} else cHoldTime += Time.deltaTime;
 		}
 
-		if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
-			StartCoroutine(Dodge());
-		} else if (Input.GetButtonUp("Dodge") && isCruising) isCruising = false;
+        if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold)
+        {
+            StartCoroutine(Dodge());
+        }
+        else if (Input.GetButtonUp("Dodge") && isCruising)
+        {
+            isCruising = false;
+            animator.SetBool("IsBoosting", false);
+        }
 
-		if (Input.GetButtonDown("Weapon1")) {
-			SwapWeapon(0);
-		}
-		if (Input.GetButtonDown("Weapon2")) {
-			SwapWeapon(2);
-		}
-		//if (Input.GetButtonDown("Weapon3")) {
-		//	SwapWeapon(2);
-		//}
+        if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);
+		if (Input.GetButtonDown("Weapon2")) SwapWeapon(2);
+        //if (Input.GetButtonDown("Weapon3")) SwapWeapon(3);
 	}
 
 	private bool CheckMovement(Vector3 movementDirection) {
 		RaycastHit hit;
 		bool hitObject;
-
-		hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
+        hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
 		if (!hitObject || hit.collider.gameObject.transform.root.gameObject.tag == "Player") {
 			transform.position += movementDirection;
-            animator.SetBool("IsMoving", true);
 			return true;
 		}
-        animator.SetBool("IsMoving", false);
         return false;
 	}
 
@@ -340,18 +339,17 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator Dodge() {
 		if (!isDodge) {
 			isDodge = true;
-			if (Input.GetKey("d")) {
-				animator.SetTrigger("DodgeRight");
-			}
-			if (Input.GetKey("a")) {
-				animator.SetTrigger("DodgeLeft");
-			}
-			rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
+			if (Input.GetKey("d")) animator.SetTrigger("DodgeRight");
+			if (Input.GetKey("a")) animator.SetTrigger("DodgeLeft");
+            if (Input.GetKey("w")) animator.SetTrigger("DodgeForward");
+            rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
 			rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
 			rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
-			rb.AddTorque(transform.right * Input.GetAxis("LeftHorizontal") * dForce);
 			yield return new WaitForSeconds(dTime);
 			isDodge = false;
-		}
+            animator.ResetTrigger("DodgeRight");
+            animator.ResetTrigger("DodgeLeft");
+            animator.ResetTrigger("DodgeForward");
+        }
 	}
 }
