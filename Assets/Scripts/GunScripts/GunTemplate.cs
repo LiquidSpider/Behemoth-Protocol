@@ -110,7 +110,7 @@ public class GunTemplate : MonoBehaviour
 							if (fireTime > fireRate) {
 								Fire();
 
-								transform.root.GetComponent<PlayerHealth>().UseBattery(30);
+								transform.root.GetComponent<PlayerHealth>().UseBattery(50 * fireRate);
 							}
 						}
 					}

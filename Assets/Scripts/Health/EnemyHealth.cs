@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour {
 
-	public float HP = 1000;
+	public float HP = 250;
 	public float maxHP;
 
 	private List<GameObject> damageTakenFrom = new List<GameObject>();
@@ -35,6 +35,5 @@ public class EnemyHealth : MonoBehaviour {
 
 	private void Die() {
 		Destroy(gameObject);
-		//gameObject.SetActive(false);
 	}
 }

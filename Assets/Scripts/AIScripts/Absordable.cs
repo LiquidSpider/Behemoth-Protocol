@@ -23,7 +23,7 @@ public class Absordable : MonoBehaviour
         // ignore this objects layer
         ignoreLayer = this.gameObject.layer;
 
-        player = GameObject.FindObjectOfType<PlayerController>().gameObject;
+        player = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject;
 
     }
 
@@ -50,7 +50,7 @@ public class Absordable : MonoBehaviour
         // if the player is in the sphere
         if (Array.IndexOf(colliders, player.GetComponent<Collider>()) >= 0)
         {
-            Debug.Log("moving towards player");
+            //Debug.Log("moving towards player");
             MoveToPlayer();
             this.GetComponent<Rigidbody>().useGravity = false;
         }

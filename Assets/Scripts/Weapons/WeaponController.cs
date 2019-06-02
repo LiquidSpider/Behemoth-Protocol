@@ -27,6 +27,14 @@ public class WeaponController : MonoBehaviour {
 	private float timeBetweenFlares = 0.5f;
 	private float timeOfLastFlare;
 
+
+	private bool missileLock = false;
+	private float timeOfLock;
+	private float timeForUnlock = 2f;
+	private GameObject missileTarget;
+
+
+
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
 		timeOfLastBomb = -timeBetweenBombs;
@@ -64,6 +72,27 @@ public class WeaponController : MonoBehaviour {
 				LaunchBomb();
 			}
 		}
+
+
+		RaycastHit hit;
+		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit)) {
+			if (hit.collider.gameObject.tag != "Environment") {
+				missileLock = true;
+
+				missileTarget = hit.collider.gameObject;
+
+				timeOfLock = Time.time;
+			} else {
+				if (timeOfLock + timeForUnlock > Time.time) {
+					missileLock = false;
+					missileTarget = null;
+				}
+			}
+
+
+		}
+
+
 	}
 
 	private void LaunchMissile() {
@@ -71,11 +100,14 @@ public class WeaponController : MonoBehaviour {
 		MakeSound(sFire, false);
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
-		newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
+		if (missileLock) newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, missileTarget.gameObject, missileLock);
+		else newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
+
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
 		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.cyan;
 
-		gameObject.GetComponent<PlayerHealth>().UseBattery(1500);
+		gameObject.GetComponent<PlayerHealth>().UseBattery(1000);
+
 	}
 
 	private void LaunchBomb() {

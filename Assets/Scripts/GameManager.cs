@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!gameOver && Input.GetKeyDown(KeyCode.P)) {
+		if (!gameOver && (Input.GetKeyDown(KeyCode.P) || Input.GetButtonDown("Pause"))) {
 			if (gamePaused) {
 				gamePaused = false;
 				pauseMenu.SetActive(false);

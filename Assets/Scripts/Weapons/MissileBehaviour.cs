@@ -30,6 +30,9 @@ public class MissileBehaviour : MonoBehaviour {
 
 	public GameObject dot;
 
+	private GameObject playerLockTarget;
+	private bool playerMissileLock;
+
 	public void Initialise(GameObject inputOwner, Vector3 inputTarget) {
 		launchTime = Time.time + launchTime;
 
@@ -47,6 +50,27 @@ public class MissileBehaviour : MonoBehaviour {
 		launchTime = 0.1f;
 		//playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject.GetComponent<Rigidbody>().velocity;
 	}
+
+	public void Initialise(GameObject inputOwner, GameObject inputTarget, bool missileLock) {
+		launchTime = Time.time + launchTime;
+
+		owner = inputOwner;
+
+		GameObject head = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).transform.GetChild(0).gameObject;
+		GameObject tail = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).transform.GetChild(1).gameObject;
+
+		Vector3 positionToLookAt = head.transform.position - tail.transform.position;
+
+		transform.rotation = Quaternion.LookRotation(positionToLookAt);
+
+		playerSpeed = owner.GetComponent<WeaponController>().playerSpeed;
+
+		launchTime = 0.1f;
+
+		playerLockTarget = inputTarget;
+		playerMissileLock = missileLock;
+	}
+
 
 	public void Initialise(GameObject inputOwner, GameObject spawner) {
 		launchTime = Time.time + launchTime;
@@ -84,13 +108,17 @@ public class MissileBehaviour : MonoBehaviour {
 					launched = true;
 
 					if (owner.tag == "Player") {
-						RaycastHit hit;
+						if (!playerMissileLock) {
+							RaycastHit hit;
 
-						direction = owner.transform.GetChild(1).transform.forward;
-						movement = transform.position;
+							direction = owner.transform.GetChild(1).transform.forward;
+							movement = transform.position;
 
-						if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
-							target = hit.point;
+							if (Physics.Raycast(transform.position, owner.transform.GetChild(1).transform.forward, out hit)) {
+								target = hit.point;
+							}
+						} else {
+							target = playerLockTarget.transform.position;
 						}
 					} else if (owner.tag == "Enemy") {
 						target = player.transform.position;
@@ -104,10 +132,21 @@ public class MissileBehaviour : MonoBehaviour {
 					}
 
 					if (owner.tag == "Player" || movementDirection == true) {
-						RaycastHit hit;
+						if (!playerMissileLock) {
+							RaycastHit hit;
 
-						if (Physics.Raycast(movement, direction, out hit)) {
-							target = hit.point;
+							if (Physics.Raycast(movement, direction, out hit)) {
+								target = hit.point;
+							}
+						} else {
+							if (Vector3.Magnitude(transform.position - playerLockTarget.transform.position) < 15.0f) {
+								movementDirection = true;
+
+								direction = transform.forward;
+								movement = transform.position;
+							}
+						
+							target = playerLockTarget.transform.position;
 						}
 					} else if (owner.tag == "Enemy") {
 						if (Vector3.Magnitude(transform.position - player.transform.position) < 15.0f) {
@@ -138,7 +177,7 @@ public class MissileBehaviour : MonoBehaviour {
 
 				Debug.DrawLine(transform.position, target, Color.green);
 
-				if (owner.tag == "Enemy") {
+				if (owner.tag == "Enemy" && dot) {
 					if (Vector3.Dot(transform.position - Camera.main.transform.position, Camera.main.transform.forward) > 0) {
 						dot.SetActive(true);
 						Vector3 position = Camera.main.WorldToScreenPoint(transform.position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0);

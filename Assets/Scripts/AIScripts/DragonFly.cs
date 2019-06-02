@@ -284,7 +284,7 @@ public class DragonFly : MonoBehaviour
 
                 if (hit.collider.gameObject.transform.root.gameObject.layer == 12)
                 {
-                    Debug.Log("disable collider");
+                    //Debug.Log("disable collider");
                     this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = false;
                 }
                 else
@@ -295,7 +295,7 @@ public class DragonFly : MonoBehaviour
                     }
                 }
 
-                Debug.Log(this.name + " Moving away from " + hit.collider.name);
+                //Debug.Log(this.name + " Moving away from " + hit.collider.name);
                 moveToPosition = transform.position + hit.normal * 20.0f;
                 randomMovementTimer = Time.time - 1;
                 speed = 150.0f;

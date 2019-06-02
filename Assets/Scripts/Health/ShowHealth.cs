@@ -9,15 +9,10 @@ public class ShowHealth : MonoBehaviour {
 
 	private int materialMode = 0;
 
-
-	private int childNum;
-
 	void Start() {
 		gameObject.GetComponent<MeshRenderer>().enabled = false;
 		gameObject.GetComponent<MeshRenderer>().material = new Material(gameObject.GetComponent<MeshRenderer>().material);
 		gameObject.GetComponent<MeshRenderer>().material.color = DetermineColour();
-
-		childNum = gameObject.transform.parent.GetSiblingIndex();
 	}
 
 	private void Update() {
@@ -39,8 +34,8 @@ public class ShowHealth : MonoBehaviour {
 	}
 
 	private Color DetermineColour() {
-		float HP = transform.root.GetChild(childNum).GetComponent<EnemyHealth>().HP;
-		float maxHP = transform.root.GetChild(childNum).GetComponent<EnemyHealth>().maxHP;
+		float HP = transform.parent.GetComponent<EnemyHealth>().HP;
+		float maxHP = transform.parent.GetComponent<EnemyHealth>().maxHP;
 
 		float temp = HP / maxHP;
 		Color tempColour = new Color();

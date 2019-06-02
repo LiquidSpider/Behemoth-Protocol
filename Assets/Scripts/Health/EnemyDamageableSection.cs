@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDamageableSection : MonoBehaviour {
-
-	private int childNum;
+	
 	private Transform parent;
 
 	private void Start() {
-		childNum = gameObject.transform.parent.GetSiblingIndex();
-		parent = transform.root.GetChild(childNum);
+		parent = gameObject.transform.parent.parent;
 	}
 
 	private void OnCollisionEnter(Collision other) {

@@ -28,16 +28,16 @@ public class PlayerHealth : MonoBehaviour {
 		if (HP < maxHP) {
 			if (HP < maxB / 10f) {
 				TakeDamage(-1f);
-				UseBattery(30);
+				UseBattery(100 * Time.deltaTime);
 			} else {
 				TakeDamage(-0.5f);
-				UseBattery(15);
+				UseBattery(50 * Time.deltaTime);
 			}
 		}
 
-		if (battery < maxB) {
-			AddBattery( (10000f / 10f) * Time.deltaTime );
-		}
+		//if (battery < maxB) {
+		//	AddBattery( (10000f / 10f) * Time.deltaTime );
+		//}
 		
 		if (Input.GetMouseButtonDown(1)) {
 			isScanning = true;
@@ -47,7 +47,7 @@ public class PlayerHealth : MonoBehaviour {
 
 		if (isScanning) {
 			if (battery < 500) isScanning = false;
-			else UseBattery(10);
+			else UseBattery(60 * Time.deltaTime);
 		}
 
 		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;

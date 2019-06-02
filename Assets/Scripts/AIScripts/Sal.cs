@@ -462,8 +462,10 @@ public class Sal : MonoBehaviour
 
         // Create a new missile
         GameObject newMissile = Instantiate(missile);
-        // set it's location to the missile spawn location
-        newMissile.transform.position = transform.GetChild(spawnLoc).position;
+		// Scale up
+		newMissile.transform.localScale = new Vector3(2, 2, 2);
+		// set it's location to the missile spawn location
+		newMissile.transform.position = transform.GetChild(spawnLoc).position;
         // Set the player in the script
         newMissile.GetComponent<MissileBehaviour>().player = player.gameObject;
         // Create the missilebehaviour

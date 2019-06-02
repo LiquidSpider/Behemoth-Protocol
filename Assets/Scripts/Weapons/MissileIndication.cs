@@ -17,7 +17,7 @@ public class MissileIndication : MonoBehaviour {
 		GameObject[] missiles = GameObject.FindGameObjectsWithTag("Missile");
 
 		foreach (GameObject missile in missiles) {
-			if (missile.GetComponent<MissileBehaviour>().owner.tag == "Enemy" && !hasADot.Contains(missile)) {
+			if (missile && missile.GetComponent<MissileBehaviour>().owner.tag == "Enemy" && !hasADot.Contains(missile)) {
 				GameObject newDot = Instantiate(dot);
 				newDot.transform.SetParent(gameObject.transform);
 				newDot.GetComponent<RectTransform>().position = Camera.main.WorldToViewportPoint(missile.transform.position);
