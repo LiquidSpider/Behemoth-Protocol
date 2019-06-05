@@ -27,5 +27,13 @@ public class MissileIndication : MonoBehaviour {
 				hasADot.Add(missile);
 			}
 		}
+
+		List<GameObject> tempHasADot = new List<GameObject>();
+		foreach (GameObject missile in hasADot) {
+			if (missile) {
+				tempHasADot.Add(missile);
+			}
+		}
+		hasADot = tempHasADot;
 	}
 }

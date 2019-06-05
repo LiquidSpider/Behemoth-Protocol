@@ -88,6 +88,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void CameraMove() { // Camera controls and manipulation goes here
+		if (!Input.GetKey(KeyCode.LeftShift)) {
+			isCruising = false;
+			animator.SetBool("IsBoosting", false);
+		}
+
 		if (!isCruising) {
 			rotX += speedH * Input.GetAxis("RightHorizontal");
 			rotY -= speedV * Input.GetAxis("RightVertical");
@@ -276,7 +281,7 @@ public class PlayerController : MonoBehaviour {
 		// Inputs
 		if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
 		if (Input.GetButton("Dodge")) {
-			if (cHoldTime > cHoldThreshold) {
+			if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
 				isCruising = true;
                 animator.SetBool("IsBoosting", true);
 			} else cHoldTime += Time.deltaTime;
@@ -286,7 +291,7 @@ public class PlayerController : MonoBehaviour {
         {
             StartCoroutine(Dodge());
         }
-        else if (Input.GetButtonUp("Dodge") && isCruising)
+        else if (Input.GetButtonUp("Dodge") && isCruising && gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500)
         {
             isCruising = false;
             animator.SetBool("IsBoosting", false);

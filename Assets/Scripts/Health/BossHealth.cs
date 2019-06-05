@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossHealth : MonoBehaviour {
 
-	public float HP = 4000;
+	public float HP = 5000;
 	public float maxHP;
 
 	private List<GameObject> damageTakenFrom = new List<GameObject>();

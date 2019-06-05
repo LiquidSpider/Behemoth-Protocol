@@ -16,6 +16,15 @@ public class GameManager : MonoBehaviour {
 
 	private Quaternion cameraRotation;
 
+	public GameObject promptMenu;
+	private float timeSetActive = 0;
+	private bool dispMissileDamage = false;
+
+	//public GameObject dragonfly;
+	//public GameObject dragonflies;
+	//private Vector3[] positions;
+	//public float[] timeDestroyed = new float[] { -1, -1, -1, -1 };
+
 	void Start() {
 		gamePaused = false;
 		pauseMenu.SetActive(false);
@@ -26,6 +35,11 @@ public class GameManager : MonoBehaviour {
 
 		SetStuff(false);
 		Cursor.lockState = CursorLockMode.Locked;
+
+		//positions = new Vector3[dragonflies.transform.childCount];
+		//for (int i = 0; i < dragonflies.transform.childCount; i++) {
+		//	positions[i] = dragonflies.transform.GetChild(i).transform.position;
+		//}
 	}
 
 	void Update() {
@@ -58,6 +72,21 @@ public class GameManager : MonoBehaviour {
 		if (gamePaused || gameOver) {
 			Camera.main.transform.rotation = cameraRotation;
 		}
+
+		if (salamander && salamander.GetComponent<BossHealth>().HP <= 100 && !dispMissileDamage) {
+			dispMissileDamage = true;
+			timeSetActive = Time.time;
+			promptMenu.transform.GetChild(2).GetComponent<Text>().text = "Good job, now finish it with a missile (2)";
+			promptMenu.SetActive(true);
+		}
+
+		if (timeSetActive + 3 < Time.time) {
+			promptMenu.SetActive(false);
+		}
+
+		//if (dragonflies.transform.childCount < positions.Length) {
+
+		//}
 	}
 
 

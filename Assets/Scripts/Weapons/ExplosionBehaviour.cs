@@ -31,7 +31,7 @@ public class ExplosionBehaviour : MonoBehaviour {
 
 				GetComponent<MeshRenderer>().material.color = old;
 			} else {
-				float scaleFactor = Time.time - timeOfExplosion;
+				float scaleFactor = (Time.time - timeOfExplosion) * Time.timeScale;
 				transform.localScale += new Vector3(scaleFactor, scaleFactor, scaleFactor);
 			}
 		} else {

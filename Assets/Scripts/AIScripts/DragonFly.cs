@@ -335,6 +335,7 @@ public class DragonFly : MonoBehaviour
 
         // create a rubbish pile.
         Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
+		//GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().timeDestroyed[transform.GetSiblingIndex()] = Time.time;
 
     }
 
