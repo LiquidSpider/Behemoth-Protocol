@@ -30,7 +30,7 @@ public class MissileBehaviour : MonoBehaviour {
 
 	public GameObject dot;
 
-	private GameObject playerLockTarget;
+	[SerializeField] private GameObject playerLockTarget;
 	private bool playerMissileLock;
 
 	public void Initialise(GameObject inputOwner, Vector3 inputTarget) {

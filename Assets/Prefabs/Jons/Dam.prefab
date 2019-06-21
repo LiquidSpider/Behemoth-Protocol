@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1142711590373524963}
   - component: {fileID: 6522945749318022069}
   - component: {fileID: 569161729779588113}
+  - component: {fileID: 381506130582652488}
   m_Layer: 0
   m_Name: Dam
   m_TagString: Environment
@@ -77,3 +78,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &381506130582652488
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387194088305327963}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 206e5190da2a3a647b99f50b09145cb3, type: 3}

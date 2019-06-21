@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 5819138405988924914}
   - component: {fileID: 2873091997712094820}
   - component: {fileID: 996190014}
+  - component: {fileID: 6283366806701890276}
   m_Layer: 0
   m_Name: Legs
   m_TagString: Enemy
@@ -153,6 +154,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   giantBehave: {fileID: 996190008}
   health: 6000
+--- !u!64 &6283366806701890276
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996190009}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300010, guid: 49a39171b13c7e242a24b91500787b79, type: 3}
 --- !u!1 &996190010
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +179,7 @@ GameObject:
   - component: {fileID: 8720359907785788421}
   - component: {fileID: 5532701681292550088}
   - component: {fileID: 5185156371641224608}
+  - component: {fileID: 5977257231062376155}
   m_Layer: 0
   m_Name: Body1
   m_TagString: Enemy
@@ -230,6 +246,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &5977257231062376155
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996190010}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300002, guid: 49a39171b13c7e242a24b91500787b79, type: 3}
 --- !u!1 &996190011
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,6 +272,7 @@ GameObject:
   - component: {fileID: 4925186806933991624}
   - component: {fileID: 2085333618941708607}
   - component: {fileID: 996190015}
+  - component: {fileID: 4038059505325527548}
   m_Layer: 0
   m_Name: ArmR
   m_TagString: Enemy
@@ -322,6 +353,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   giantBehave: {fileID: 996190008}
   health: 7000
+--- !u!64 &4038059505325527548
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996190011}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300008, guid: 49a39171b13c7e242a24b91500787b79, type: 3}
 --- !u!1 &996190012
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,6 +379,7 @@ GameObject:
   - component: {fileID: 1982867783144130368}
   - component: {fileID: 6896494484478127931}
   - component: {fileID: 996190016}
+  - component: {fileID: 2615206528107160299}
   m_Layer: 0
   m_Name: ArmL
   m_TagString: Enemy
@@ -414,6 +460,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   giantBehave: {fileID: 996190008}
   health: 7000
+--- !u!64 &2615206528107160299
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996190012}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 49a39171b13c7e242a24b91500787b79, type: 3}
 --- !u!1 &2801455985712758353
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,9 +485,10 @@ GameObject:
   - component: {fileID: 676482570132779974}
   - component: {fileID: 1867580232779768137}
   - component: {fileID: 4565317740636839842}
+  - component: {fileID: 1733805591180067951}
   m_Layer: 0
   m_Name: Left
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,6 +552,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &1733805591180067951
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2801455985712758353}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300006, guid: 49a39171b13c7e242a24b91500787b79, type: 3}
 --- !u!1 &5153460191295626861
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,9 +577,10 @@ GameObject:
   - component: {fileID: 564796360310955931}
   - component: {fileID: 8900257810949407225}
   - component: {fileID: 8977463769190906869}
+  - component: {fileID: 737406060493463613}
   m_Layer: 0
   m_Name: Right
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -568,6 +644,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &737406060493463613
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5153460191295626861}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300004, guid: 49a39171b13c7e242a24b91500787b79, type: 3}
 --- !u!1 &8689043607273121690
 GameObject:
   m_ObjectHideFlags: 0

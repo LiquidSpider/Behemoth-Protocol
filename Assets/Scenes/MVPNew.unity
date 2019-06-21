@@ -2622,6 +2622,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dam
       objectReference: {fileID: 0}
+    - target: {fileID: 7387194088305327963, guid: b2bf33d867324954883c4169e5981db8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1142711590373524963, guid: b2bf33d867324954883c4169e5981db8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4169,7 +4174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 352049165, guid: 907b63f87c2dcac43aebc87e94618cd4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 352049166, guid: 907b63f87c2dcac43aebc87e94618cd4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9123,6 +9128,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GiantPath
       objectReference: {fileID: 0}
+    - target: {fileID: 8603790143608720919, guid: 8cb3bfbad371b354395332aa1bda5860,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8603790143608720918, guid: 8cb3bfbad371b354395332aa1bda5860,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9246,7 +9256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1348984142
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9576,7 +9586,7 @@ PrefabInstance:
     - target: {fileID: 8659171341853675567, guid: 05838d54681e5475b9a14083730adc55,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8659171341853675535, guid: 05838d54681e5475b9a14083730adc55,
         type: 3}
@@ -11181,7 +11191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1471048016
 Transform:
   m_ObjectHideFlags: 0
@@ -15284,6 +15294,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Giant_MockUp
       objectReference: {fileID: 0}
+    - target: {fileID: 996190008, guid: 2fef5336f3e8cb04684f5b86f8078205, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2095488605416581261, guid: 2fef5336f3e8cb04684f5b86f8078205,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16874,7 +16888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1215345985446123652
 Transform:
   m_ObjectHideFlags: 0
@@ -21269,7 +21283,7 @@ PrefabInstance:
     - target: {fileID: 4565325564905723622, guid: 23e4b5c66fe421c4b89cddb9c797c52c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4565325564905723623, guid: 23e4b5c66fe421c4b89cddb9c797c52c,
         type: 3}
