@@ -128,8 +128,8 @@ public class GameManager : MonoBehaviour {
 
 		player.GetComponent<WeaponController>().enabled = !swapTo;
 		player.GetComponent<PlayerHealth>().enabled = !swapTo;
-		player.transform.GetChild(1).GetComponent<PlayerController>().enabled = !swapTo;
-		player.transform.GetChild(1).GetChild(0).GetComponent<Animator>().enabled = !swapTo;
+		player.GetComponentInChildren<PlayerController>().enabled = !swapTo;
+		player.transform.GetChild(0).GetChild(0).GetComponent<Animator>().enabled = !swapTo;
 		//player.transform.GetChild(2).gameObject.SetActive(!swapTo);
 		salamander.GetComponent<Sal>().enabled = !swapTo;
 

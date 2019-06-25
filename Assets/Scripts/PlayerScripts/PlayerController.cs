@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
 	private Camera camera;                                              // The camera component
 	public float speedH = 2.0f;                                         // Sensitivity horizontal
 	public float speedV = 2.0f;                                         // Sensitivity vertical
-	public float maxY = 89.9f;                                          // Clamps player's vertical angle betwwen this
+	public float maxY = 89.9f;                                          // Clamps player's vertical angle between this
 	public float minY = -89.9f;                                         // And this
 	public float cruiseLMod = 0.5f;                                     // Multiplier for look speed when cruising
 	public bool isZoom = false;                                         // Is the player zooming
@@ -314,7 +314,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void AimWeapon() {
-		Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+		Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         var layerMask = ~((1 << 9 | 1 << 10));
 		if (Physics.Raycast(ray, out RaycastHit aimPoint, layerMask)) {
 			arm.transform.LookAt(aimPoint.point);

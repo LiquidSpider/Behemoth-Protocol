@@ -47,7 +47,7 @@ public class WeaponController : MonoBehaviour {
 		currentPosition = transform.GetChild(1).position;
 		playerSpeed = currentPosition - previousPosition;
 
-		if (!transform.GetChild(1).GetComponent<PlayerController>().isCruising) {
+		if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 1000) {
 					if (Input.GetButtonDown("Attack") && Time.time > timeOfLastMissile + timeBetweenMissiles) {

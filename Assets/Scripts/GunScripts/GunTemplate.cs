@@ -86,7 +86,7 @@ public class GunTemplate : MonoBehaviour
             cAcc -= (handling + handlebuffer) * Time.deltaTime;
         }
 
-		if (!GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).GetComponent<PlayerController>().isCruising) {
+		if (!GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<PlayerController>().isCruising) {
 			switch (fMode) {
 				case FireMode.Semi:
 					if (Input.GetButtonDown("Attack") || Input.GetAxis("Attack") != 0) {
