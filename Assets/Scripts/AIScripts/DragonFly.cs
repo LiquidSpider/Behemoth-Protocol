@@ -53,6 +53,8 @@ public class DragonFly : MonoBehaviour
         this.speed = defaultSpeed;
         this.rotationSpeed = rotationSpeed;
 
+        player = GameObject.FindWithTag("Player").transform;
+
     }
 
     private void FixedUpdate()

@@ -23,6 +23,16 @@ public class giantBehaviour : MonoBehaviour
 	bool legsSafe = true;
 	float legDamagedTime = 0;
 
+	public GameObject player;
+	public float angleToPlayer = 0.0f;
+
+	public GameObject[] DFspawners = new GameObject[4];
+
+	public GameObject missile;
+	public GameObject[] missileLaunchers = new GameObject[2];
+	public List<GameObject> activeLaunchers = new List<GameObject>();
+	private float launchTime = 0.0f;
+
 
     // Start is called before the first frame update
     void Start() {
@@ -30,10 +40,16 @@ public class giantBehaviour : MonoBehaviour
         getMoveDistance();
         currentTarget = pathway[targetIndex];
 
+        //player = GameObject.FindWithTag("Player");
+
     }
 
     // Update is called once per frame
     void Update() {
+    	myself = this.gameObject;
+    	locatePlayer();
+    	fireMissiles();
+
     	//Giant will move along path to target, unless legs are damaged
     	if(legsSafe) {
 	        moveToTarget();
@@ -113,8 +129,49 @@ public class giantBehaviour : MonoBehaviour
 		    	Legs.GetComponent<legsBehaviour>().legsFixed();
     		}
     	//if no arms are operational, don't do anything here
+    		//Although here it should do something else (in another script or later on)
     	} else {
     		return;
+    	}
+    }
+
+    void locatePlayer() {
+    	float xToPlayer = player.transform.GetChild(0).position.x - myself.transform.position.x;
+    	float zToPlayer = player.transform.GetChild(0).position.z - myself.transform.position.z;
+    	Debug.Log(xToPlayer + " " + zToPlayer);
+
+    	angleToPlayer = (Mathf.Atan(zToPlayer/xToPlayer) - myself.transform.rotation.y)*Mathf.Rad2Deg;
+
+    	//Assign missiles and turrents to be 'awake' based on where player is
+    	//Missile launchers being assigned
+    	if(angleToPlayer > 10.0f && angleToPlayer < 170.0f) {
+    		//The player is in front of the giant so make the front launchers active
+    		int launchNum = missileLaunchers[1].transform.childCount;
+    		activeLaunchers = new List<GameObject>();
+    		for(int i = 0; i < launchNum; i++) {
+	    		activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
+	    	}
+    	} else if(angleToPlayer < -10.0f && angleToPlayer > -170.0f) {
+    		//The player is behind the giant so make the front launchers active
+    		int launchNum = missileLaunchers[0].transform.childCount;
+    		activeLaunchers = new List<GameObject>();
+    		for(int i = 0; i < launchNum; i++) {
+	    		activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
+	    	}
+    	} else {
+    		activeLaunchers = new List<GameObject>();
+    	}
+    }
+
+    //Put in the script for firing missiles here
+    void fireMissiles() {
+    	launchTime += Time.deltaTime;
+
+    	if(launchTime > 10.0f) {
+    		launchTime = 0.0f;
+    		foreach(GameObject launcher in activeLaunchers) {
+    			launcher.GetComponent<missileLaunch>().fire();
+    		}
     	}
     }
 }

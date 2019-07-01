@@ -3861,7 +3861,7 @@ PrefabInstance:
     - target: {fileID: 8603790143608720918, guid: 8cb3bfbad371b354395332aa1bda5860,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8603790143608720918, guid: 8cb3bfbad371b354395332aa1bda5860,
         type: 3}
@@ -6436,7 +6436,7 @@ PrefabInstance:
     - target: {fileID: 2095488605416581261, guid: 2fef5336f3e8cb04684f5b86f8078205,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2095488605416581261, guid: 2fef5336f3e8cb04684f5b86f8078205,
         type: 3}
@@ -6477,6 +6477,10 @@ PrefabInstance:
       propertyPath: pathway.Array.data[5]
       value: 
       objectReference: {fileID: 1327643854}
+    - target: {fileID: 996190013, guid: 2fef5336f3e8cb04684f5b86f8078205, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 4498502439831713148}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fef5336f3e8cb04684f5b86f8078205, type: 3}
 --- !u!1001 &2094198125

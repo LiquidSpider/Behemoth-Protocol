@@ -1406,5 +1406,7 @@ MonoBehaviour:
   CheckRadius: 100
   FollowingPlayer: 0
   player: {fileID: 0}
-  speed: 50
-  rotationSpeed: 10
+  defaultSpeed: 0
+  defaultRotationSpeed: 0
+  rubbishPile: {fileID: 4565325564905723622, guid: 23e4b5c66fe421c4b89cddb9c797c52c,
+    type: 3}
