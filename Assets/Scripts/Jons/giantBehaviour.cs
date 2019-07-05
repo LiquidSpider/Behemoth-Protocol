@@ -23,8 +23,10 @@ public class giantBehaviour : MonoBehaviour
 	bool legsSafe = true;
 	float legDamagedTime = 0;
 
+	//Variables to track where the player is located easily
 	public GameObject player;
-	public float angleToPlayer = 0.0f;
+	public float distToFront = 0.0f;
+	public float distToBack = 0.0f;
 
 	public GameObject[] DFspawners = new GameObject[4];
 
@@ -136,30 +138,31 @@ public class giantBehaviour : MonoBehaviour
     }
 
     void locatePlayer() {
-    	float xToPlayer = player.transform.GetChild(0).position.x - myself.transform.position.x;
-    	float zToPlayer = player.transform.GetChild(0).position.z - myself.transform.position.z;
-    	Debug.Log(xToPlayer + " " + zToPlayer);
+    	//Calc distance to determine which missiles to launch
+    	distToFront = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[0].transform.position);
+    	distToBack = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[1].transform.position);
+    	//Debug.Log(distToFront + " " + distToBack);
 
-    	angleToPlayer = (Mathf.Atan(zToPlayer/xToPlayer) - myself.transform.rotation.y)*Mathf.Rad2Deg;
 
     	//Assign missiles and turrents to be 'awake' based on where player is
     	//Missile launchers being assigned
-    	if(angleToPlayer > 10.0f && angleToPlayer < 170.0f) {
-    		//The player is in front of the giant so make the front launchers active
-    		int launchNum = missileLaunchers[1].transform.childCount;
+    	if(Mathf.Sqrt((distToBack - distToFront)*(distToBack - distToFront)) < 15.0f) {
+    		//When the player is near the sides of the machine
     		activeLaunchers = new List<GameObject>();
-    		for(int i = 0; i < launchNum; i++) {
-	    		activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
-	    	}
-    	} else if(angleToPlayer < -10.0f && angleToPlayer > -170.0f) {
+    	} else if(distToFront > distToBack) {
     		//The player is behind the giant so make the front launchers active
     		int launchNum = missileLaunchers[0].transform.childCount;
     		activeLaunchers = new List<GameObject>();
     		for(int i = 0; i < launchNum; i++) {
 	    		activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
 	    	}
-    	} else {
+    	} else if(distToBack > distToFront) {
+    		//The player is in front of the giant so make the front launchers active
+    		int launchNum = missileLaunchers[1].transform.childCount;
     		activeLaunchers = new List<GameObject>();
+    		for(int i = 0; i < launchNum; i++) {
+	    		activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
+	    	}
     	}
     }
 

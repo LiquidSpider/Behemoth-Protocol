@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponController : MonoBehaviour {
 
@@ -21,8 +22,10 @@ public class WeaponController : MonoBehaviour {
 	private float timeBetweenBombs = 1.5f;
 	private float timeOfLastBomb;
 
-	private float timeBetweenMissiles = 2f;
+	private float timeBetweenMissiles = 10f;
 	private float timeOfLastMissile;
+
+	private float timeOfLastMissile2;
 
 	private float timeBetweenFlares = 0.5f;
 	private float timeOfLastFlare;
@@ -39,6 +42,7 @@ public class WeaponController : MonoBehaviour {
 		currentPosition = transform.GetChild(1).position;
 		timeOfLastBomb = -timeBetweenBombs;
 		timeOfLastMissile = -timeBetweenMissiles;
+		timeOfLastMissile2 = -timeBetweenMissiles;
 		timeOfLastFlare = -timeBetweenFlares;
 	}
 
@@ -47,14 +51,30 @@ public class WeaponController : MonoBehaviour {
 		currentPosition = transform.GetChild(1).position;
 		playerSpeed = currentPosition - previousPosition;
 
+		if (Time.time < timeOfLastMissile + timeBetweenMissiles) {
+			gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
+			GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+		}
+		if (Time.time < timeOfLastMissile2 + timeBetweenMissiles) {
+			gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
+			GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile2 + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+		}
+
 		if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
-				if (gameObject.GetComponent<PlayerHealth>().battery > 1000) {
-					if (Input.GetButtonDown("Attack") && Time.time > timeOfLastMissile + timeBetweenMissiles) {
-						missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
+				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
+					if (Input.GetButtonDown("Attack")) {
+						if (Time.time > timeOfLastMissile + timeBetweenMissiles) {
+							missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
 
-						timeOfLastMissile = Time.time;
-						LaunchMissile();
+							timeOfLastMissile = Time.time;
+							LaunchMissile();
+						} else if (Time.time > timeOfLastMissile2 + timeBetweenMissiles) {
+							missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
+
+							timeOfLastMissile2 = Time.time;
+							LaunchMissile();
+						}
 					}
 				}
 			} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
@@ -106,7 +126,7 @@ public class WeaponController : MonoBehaviour {
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
 		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.cyan;
 
-		gameObject.GetComponent<PlayerHealth>().UseBattery(1000);
+		
 
 	}
 
