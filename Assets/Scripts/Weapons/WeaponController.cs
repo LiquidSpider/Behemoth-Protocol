@@ -24,11 +24,14 @@ public class WeaponController : MonoBehaviour {
 
 	private float timeBetweenMissiles = 10f;
 	private float timeOfLastMissile;
-
 	private float timeOfLastMissile2;
 
-	private float timeBetweenFlares = 0.5f;
+	private float timeBetweenFlares = 5f;
 	private float timeOfLastFlare;
+	private float timeOfLastFlare2;
+	private float timeOfLastFlare3;
+	private float timeOfLastFlare4;
+	private float timeOfLastFlare5;
 
 
 	private bool missileLock = false;
@@ -43,7 +46,12 @@ public class WeaponController : MonoBehaviour {
 		timeOfLastBomb = -timeBetweenBombs;
 		timeOfLastMissile = -timeBetweenMissiles;
 		timeOfLastMissile2 = -timeBetweenMissiles;
+
 		timeOfLastFlare = -timeBetweenFlares;
+		timeOfLastFlare2 = -timeBetweenFlares;
+		timeOfLastFlare3 = -timeBetweenFlares;
+		timeOfLastFlare4 = -timeBetweenFlares;
+		timeOfLastFlare5 = -timeBetweenFlares;
 	}
 
 	void Update() {
@@ -51,13 +59,39 @@ public class WeaponController : MonoBehaviour {
 		currentPosition = transform.GetChild(1).position;
 		playerSpeed = currentPosition - previousPosition;
 
-		if (Time.time < timeOfLastMissile + timeBetweenMissiles) {
-			gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-			GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
-		}
-		if (Time.time < timeOfLastMissile2 + timeBetweenMissiles) {
-			gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-			GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile2 + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+		//Things should not recharge if the battery is too low
+		if(gameObject.GetComponent<PlayerHealth>().battery > 500) {
+			// Take energy away from the battery if the missiles have been used (and recharge the missiles)
+			if (Time.time < timeOfLastMissile + timeBetweenMissiles) {
+				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+			}
+			if (Time.time < timeOfLastMissile2 + timeBetweenMissiles) {
+				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile2 + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+			}
+
+			// Same as above (Missiles) But for Flares
+			if (Time.time < timeOfLastFlare + timeBetweenFlares) {
+				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(2).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare + timeBetweenFlares - Time.time) / timeBetweenFlares;
+			}
+			if (Time.time < timeOfLastFlare2 + timeBetweenFlares) {
+				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(3).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare2 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+			}
+			if (Time.time < timeOfLastFlare3 + timeBetweenFlares) {
+				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(4).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare3 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+			}
+			if (Time.time < timeOfLastFlare4 + timeBetweenFlares) {
+				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(5).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare4 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+			}
+			if (Time.time < timeOfLastFlare5 + timeBetweenFlares) {
+				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare5 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+			}
 		}
 
 		if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
@@ -81,17 +115,41 @@ public class WeaponController : MonoBehaviour {
 				missileSpawnLocation = null;
 			}
 
-			//if (Input.GetKeyDown(KeyCode.Q) && Time.time > timeOfLastFlare + timeBetweenFlares) {
-			//	timeOfLastFlare = Time.time;
-			//	LaunchFlare();
-			//}
+			// Launch Flares when player presses Q, each one keeps track of whether its been fired
+			if (Input.GetKeyDown(KeyCode.Q)) {
+				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
+					if (Time.time > timeOfLastFlare + timeBetweenFlares) {
+						
+						timeOfLastFlare = Time.time;
+						LaunchFlare();
+					} else if (Time.time > timeOfLastFlare2 + timeBetweenFlares) {
 
-		} else {
+						timeOfLastFlare2 = Time.time;
+						LaunchFlare();
+					} else if (Time.time > timeOfLastFlare3 + timeBetweenFlares) {
+
+						timeOfLastFlare3 = Time.time;
+						LaunchFlare();
+					} else if (Time.time > timeOfLastFlare4 + timeBetweenFlares) {
+
+						timeOfLastFlare4 = Time.time;
+						LaunchFlare();
+					} else if (Time.time > timeOfLastFlare5 + timeBetweenFlares) {
+
+						timeOfLastFlare5 = Time.time;
+						LaunchFlare();
+					}
+				}
+			}
+
+		} 
+		// Commented out because Bombs may not be a thing anymore
+		/*else {
 			if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {
 				timeOfLastBomb = Time.time;
 				LaunchBomb();
 			}
-		}
+		} */
 
 
 		RaycastHit hit;
@@ -144,7 +202,7 @@ public class WeaponController : MonoBehaviour {
 		for (int i = 1; i <= 2; i++) {
 			GameObject newFlare = Instantiate(flare);
 
-			Vector3 spawnLocation = transform.GetChild(1).position;
+			Vector3 spawnLocation = transform.GetChild(0).position;
 			spawnLocation.y -= 1.5f;
 			spawnLocation += transform.right * Mathf.Pow(-1, i);
 			newFlare.transform.position = spawnLocation;
