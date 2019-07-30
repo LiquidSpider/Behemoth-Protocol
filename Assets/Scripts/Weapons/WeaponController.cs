@@ -8,7 +8,7 @@ public class WeaponController : MonoBehaviour {
 	[SerializeField] private GameObject missile;
 	[SerializeField] private GameObject missileSpawnLocation;
 
-	[SerializeField] private GameObject bomb;
+	//[SerializeField] private GameObject bomb;
 
 	[SerializeField] private GameObject flare;
 
@@ -19,8 +19,8 @@ public class WeaponController : MonoBehaviour {
 	public GameObject soundSrc;                 // The object that makes the sound
 	public AudioClip sFire;                     // Sound played when gun fires
 
-	private float timeBetweenBombs = 1.5f;
-	private float timeOfLastBomb;
+	//private float timeBetweenBombs = 1.5f;
+	//private float timeOfLastBomb;
 
 	private float timeBetweenMissiles = 10f;
 	private float timeOfLastMissile;
@@ -43,7 +43,7 @@ public class WeaponController : MonoBehaviour {
 
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
-		timeOfLastBomb = -timeBetweenBombs;
+		//timeOfLastBomb = -timeBetweenBombs;
 		timeOfLastMissile = -timeBetweenMissiles;
 		timeOfLastMissile2 = -timeBetweenMissiles;
 
@@ -166,11 +166,7 @@ public class WeaponController : MonoBehaviour {
 					missileTarget = null;
 				}
 			}
-
-
 		}
-
-
 	}
 
 	private void LaunchMissile() {
@@ -183,20 +179,17 @@ public class WeaponController : MonoBehaviour {
 
 		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
 		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.cyan;
-
-		
-
 	}
 
-	private void LaunchBomb() {
-		GameObject newBomb = Instantiate(bomb);
+	//private void LaunchBomb() {
+	//	GameObject newBomb = Instantiate(bomb);
 
-		Vector3 spawnLocation = transform.GetChild(1).position;
-		spawnLocation.y -= 1.5f;
-		newBomb.transform.position = spawnLocation;
+	//	Vector3 spawnLocation = transform.GetChild(1).position;
+	//	spawnLocation.y -= 1.5f;
+	//	newBomb.transform.position = spawnLocation;
 
-		newBomb.GetComponent<BombBehaviour>().Initialise(Vector3.zero);
-	}
+	//	newBomb.GetComponent<BombBehaviour>().Initialise(Vector3.zero);
+	//}
 
 	private void LaunchFlare() {
 		for (int i = 1; i <= 2; i++) {
@@ -207,9 +200,10 @@ public class WeaponController : MonoBehaviour {
 			spawnLocation += transform.right * Mathf.Pow(-1, i);
 			newFlare.transform.position = spawnLocation;
 
-			//newFlare.GetComponent<FlareBehaviour>().Initialise(transform.right * Mathf.Pow(-1, i));
+			newFlare.transform.GetChild(0).GetComponent<FlareBehaviour>().Initialise(transform.GetChild(0).right * Mathf.Pow(-1, i));
 		}
 	}
+
 	void MakeSound(AudioClip sound, bool pitchRandom) {
 		GameObject oSound = Instantiate(soundSrc, missileSpawnLocation.transform.position, Quaternion.identity);
 		AudioSource source = oSound.GetComponent<AudioSource>();

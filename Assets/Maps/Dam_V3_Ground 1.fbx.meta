@@ -1,35 +1,15 @@
 fileFormatVersion: 2
-guid: c83b1ba6afffe4b499821a2f0c2888c5
+guid: 4ab866ee40a26634c88dc1c4230450ff
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Dam
-    100002: //RootNode
-    100004: Destructible
-    100006: Ground
-    100008: Ground2
-    400000: Dam
-    400002: //RootNode
-    400004: Destructible
-    400006: Ground
-    400008: Ground2
+    100000: //RootNode
+    400000: //RootNode
     2100000: lambert1
-    2300000: Dam
-    2300002: Destructible
-    2300004: Ground
-    2300006: Ground2
-    3300000: Dam
-    3300002: Destructible
-    3300004: Ground
-    3300006: Ground2
-    4300000: Ground2
-    4300002: Dam
-    4300004: Destructible
-    4300006: Ground
-    6400000: Dam
-    6400002: Destructible
-    6400004: Ground
-    6400006: Ground2
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Ground
+    6400000: //RootNode
   externalObjects: {}
   materials:
     importMaterials: 1

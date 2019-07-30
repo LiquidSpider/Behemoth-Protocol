@@ -23,7 +23,8 @@ public class Absordable : MonoBehaviour
         // ignore this objects layer
         ignoreLayer = this.gameObject.layer;
 
-        player = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject;
+		if (GameObject.FindGameObjectWithTag("Player"))
+			player = GameObject.FindGameObjectWithTag("Player").transform.GetChild(1).gameObject;
 
     }
 

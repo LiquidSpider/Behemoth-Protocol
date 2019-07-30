@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviour {
 
 	private void Start() {
 		maxHP = HP;
-		maxB = battery; 
+		maxB = battery;
 	}
 
 	private void Update() {
@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour {
 		//if (battery < maxB) {
 		//	AddBattery( (10000f / 10f) * Time.deltaTime );
 		//}
-		
+
 		if (Input.GetMouseButtonDown(1)) {
 			isScanning = true;
 		} else if (Input.GetMouseButtonUp(1)) {
@@ -59,27 +59,31 @@ public class PlayerHealth : MonoBehaviour {
 		//GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().fillAmount = battery / maxB;
 	}
 
-    /// <summary>
-    /// Adds an amount to the battery.
-    /// </summary>
-    /// <param name="amount">Amount to add.</param>
-    public void AddBattery(float amount)
-    {
+	/// <summary>
+	/// Adds an amount to the battery.
+	/// </summary>
+	/// <param name="amount">Amount to add.</param>
+	public void AddBattery(float amount) {
 
-        // ensure we don't over max the battery amount
-        if(this.battery + amount >= maxB)
-        {
-            battery = maxB;
-        }
-        else
-        {
-            battery += amount;
-        }
+		// ensure we don't over max the battery amount
+		if (this.battery + amount >= maxB) {
+			battery = maxB;
+		} else {
+			battery += amount;
+		}
 
-    }
+	}
 
 	private void TakeDamage(float damage) {
-		HP -= damage;
+
+		if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
+			HP -= damage * 0.5f;
+			UseBattery(damage * 0.5f);
+		} else {
+			HP -= damage;
+		}
+
+		
 		//GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
 	}
 
@@ -91,23 +95,44 @@ public class PlayerHealth : MonoBehaviour {
 			if (!TakenDamageFrom.Contains(explosion)) {
 				TakenDamageFrom.Add(explosion);
 
-				HP -= damage;
-				if (HP < 0)
-					HP = 0;
+				if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
+					HP -= damage * 0.5f;
+					UseBattery(damage * 0.5f);
+				} else {
+					HP -= damage;
+				}
+
+				if (HP < 0) HP = 0;
 			}
 
-		} else // beam damage
-		  {
+		} else {
+			// Beam Damage
 
-			HP -= damage;
-			if (HP < 0)
-				HP = 0;
+			if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
+				HP -= damage * 0.5f;
+				UseBattery(damage * 0.5f);
+			} else {
+				HP -= damage;
+			}
+
+			if (HP < 0) HP = 0;
 
 		}
 
 		// Check health and handle accordingly
 		if (HP <= 0 && !critDamageTaken) {
 			critDamageTaken = true;
+
+
+
+
+
+			// --------------------------------------------------------------------------------------------------- Navigator Prompt Here 
+
+
+
+
+
 		} else if (HP <= 0 && critDamageTaken) {
 			Die();
 		}

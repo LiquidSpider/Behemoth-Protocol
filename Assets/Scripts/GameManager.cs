@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour {
 	private float timeSetActive = 0;
 	private bool dispMissileDamage = false;
 
+	public Text framesCounter;
+
 	//public GameObject dragonfly;
 	//public GameObject dragonflies;
 	//private Vector3[] positions;
@@ -43,6 +45,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
+		if (!gamePaused && Time.time % 1 < 0.02f) framesCounter.text = Mathf.Round( 1f / Time.deltaTime ).ToString();
+
 		if (!gameOver && (Input.GetKeyDown(KeyCode.P) || Input.GetButtonDown("Pause"))) {
 			if (gamePaused) {
 				gamePaused = false;
@@ -131,11 +135,11 @@ public class GameManager : MonoBehaviour {
 		player.GetComponentInChildren<PlayerController>().enabled = !swapTo;
 		player.transform.GetChild(0).GetChild(0).GetComponent<Animator>().enabled = !swapTo;
 		//player.transform.GetChild(2).gameObject.SetActive(!swapTo);
-		salamander.GetComponent<Sal>().enabled = !swapTo;
+		//salamander.GetComponent<Sal>().enabled = !swapTo;
 
-		for (int i = 0; i < smallerEnemies.transform.childCount; i++) {
-			smallerEnemies.transform.GetChild(i).GetComponent<DragonFly>().enabled = !swapTo;
-		}
+		//for (int i = 0; i < smallerEnemies.transform.childCount; i++) {
+		//	smallerEnemies.transform.GetChild(i).GetComponent<DragonFly>().enabled = !swapTo;
+		//}
 
 		Cursor.visible = swapTo;
 	}

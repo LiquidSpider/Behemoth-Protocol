@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;                                               // Player body
 	public GameObject body;                                             // Player gameobject body
 	private Animator animator;                                          // Body animator
-	//private TrailRenderer trail;                                        // Trail renderer in player body
+																		//private TrailRenderer trail;                                        // Trail renderer in player body
 																		//  Camera Vars
 	private GameObject cameraObj;                                       // The camera object
 	private Camera camera;                                              // The camera component
@@ -50,19 +50,22 @@ public class PlayerController : MonoBehaviour {
 	// Josh Addition for Displacement Movement
 	private float flightSpeedScaleFactor = 6f;
 
-	private float startTimeHoldingW = -1;
-	private float startTimeHoldingA = -1;
-	private float startTimeHoldingS = -1;
-	private float startTimeHoldingD = -1;
-	private float startTimeHoldingCtrl = -1;
-	private float startTimeHoldingSpace = -1;
+	private float maxVelocity = 1000f;
+	private bool flightStopped = false;
 
-	private float timeHoldingW = 0;
-	private float timeHoldingA = 0;
-	private float timeHoldingS = 0;
-	private float timeHoldingD = 0;
-	private float timeHoldingCtrl = 0;
-	private float timeHoldingSpace = 0;
+	//private float startTimeHoldingW = -1;
+	//private float startTimeHoldingA = -1;
+	//private float startTimeHoldingS = -1;
+	//private float startTimeHoldingD = -1;
+	//private float startTimeHoldingCtrl = -1;
+	//private float startTimeHoldingSpace = -1;
+
+	//private float timeHoldingW = 0;
+	//private float timeHoldingA = 0;
+	//private float timeHoldingS = 0;
+	//private float timeHoldingD = 0;
+	//private float timeHoldingCtrl = 0;
+	//private float timeHoldingSpace = 0;
 
 	private float speedDecreaseRate;
 
@@ -76,7 +79,7 @@ public class PlayerController : MonoBehaviour {
 		animator = body.GetComponent<Animator>();
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-        SwapWeapon(0);
+		SwapWeapon(0);
 	}
 
 
@@ -88,11 +91,14 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void CameraMove() { // Camera controls and manipulation goes here
+
+		// Deactivate Cruise Mod if button not pressed
 		if (!Input.GetKey(KeyCode.LeftShift)) {
 			isCruising = false;
 			animator.SetBool("IsBoosting", false);
 		}
 
+		// Camera Movement based on cruising
 		if (!isCruising) {
 			rotX += speedH * Input.GetAxis("RightHorizontal");
 			rotY -= speedV * Input.GetAxis("RightVertical");
@@ -126,11 +132,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void PlayerControls() { // Player controls and manipulation goes here
-		//if (Input.GetButtonDown("Pause")) { // Release key
-		//	Cursor.lockState = CursorLockMode.None;
-		//	Cursor.visible = true;
-		//}
+							//if (Input.GetButtonDown("Pause")) { // Release key
+							//	Cursor.lockState = CursorLockMode.None;
+							//	Cursor.visible = true;
+							//}
 
+		// Scanning
 		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500) {
 			if (Input.GetButton("Zoom")) {
 				zCLerp = 0f;
@@ -152,170 +159,91 @@ public class PlayerController : MonoBehaviour {
 			isZoom = false;
 		}
 
-		// Scale the factor of the flight speed based on how long the buttom has be held for
-		speedDecreaseRate = Time.deltaTime * 3;
 
-		if (Input.GetKey(KeyCode.W)) {
-			if (startTimeHoldingW == -1) startTimeHoldingW = Time.time;
-			timeHoldingW = timeHoldingW + Time.time - startTimeHoldingW;
-		} else {
-			startTimeHoldingW = -1;
-			timeHoldingW = Mathf.Max(0, timeHoldingW - speedDecreaseRate);
+
+
+
+
+		// Movement
+		// Check the inputs for which are being used
+		if (!flightStopped) {
+			float speedFactor = accSpeed;
+			if (isCruising) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50f * Time.deltaTime);
+			if (isCruising) rb.AddForce(transform.forward * speedFactor * cruiseFwd);
+
+			if (Input.GetKey(KeyCode.W)) rb.AddForce(transform.forward * speedFactor);
+			if (Input.GetKey(KeyCode.S)) rb.AddForce(-transform.forward * speedFactor);
+			if (Input.GetKey(KeyCode.D)) rb.AddForce(transform.right * speedFactor);
+			if (Input.GetKey(KeyCode.A)) rb.AddForce(-transform.right * speedFactor);
+			if (Input.GetKey(KeyCode.Space)) rb.AddForce(transform.up * speedFactor);
+			if (Input.GetKey(KeyCode.LeftControl)) rb.AddForce(-transform.up * speedFactor);
+
+			// Change the max velocity
+			if (rb.velocity.magnitude > maxVelocity) rb.velocity = rb.velocity.normalized * maxVelocity;
+
 		}
 
-		if (Input.GetKey(KeyCode.A)) {
-			if (startTimeHoldingA == -1) startTimeHoldingA = Time.time;
-			timeHoldingA = timeHoldingA + Time.time - startTimeHoldingA;
-		} else {
-			startTimeHoldingA = -1;
-			timeHoldingA = Mathf.Max(0, timeHoldingA - speedDecreaseRate);
-		}
-
-		if (Input.GetKey(KeyCode.S)) {
-			if (startTimeHoldingS == -1) startTimeHoldingS = Time.time;
-			timeHoldingS = timeHoldingS + Time.time - startTimeHoldingS;
-		} else {
-			startTimeHoldingS = -1;
-			timeHoldingS = Mathf.Max(0, timeHoldingS - speedDecreaseRate);
-		}
-
-		if (Input.GetKey(KeyCode.D)) {
-			if (startTimeHoldingD == -1) startTimeHoldingD = Time.time;
-			timeHoldingD = timeHoldingD + Time.time - startTimeHoldingD;
-		} else {
-			startTimeHoldingD = -1;
-			timeHoldingD = Mathf.Max(0, timeHoldingD - speedDecreaseRate);
-		}
-
-		if (Input.GetKey(KeyCode.LeftControl)) {
-			if (startTimeHoldingCtrl == -1) startTimeHoldingCtrl = Time.time;
-			timeHoldingCtrl = timeHoldingCtrl + Time.time - startTimeHoldingCtrl;
-		} else {
-			startTimeHoldingCtrl = -1;
-			timeHoldingCtrl = Mathf.Max(0, timeHoldingCtrl - speedDecreaseRate);
-		}
-
-		if (Input.GetKey(KeyCode.Space)) {
-			if (startTimeHoldingSpace == -1) startTimeHoldingSpace = Time.time;
-			timeHoldingSpace = timeHoldingSpace + Time.time - startTimeHoldingSpace;
-		} else {
-			startTimeHoldingSpace = -1;
-			timeHoldingSpace = Mathf.Max(0, timeHoldingSpace - speedDecreaseRate);
-		}
+		// Check if the player can move in that direction
 
 
-		if (!isDodge) {
-			Vector3 movementDirection = new Vector3(0, 0, 0);
 
 
-			float mods = 1f;
-
-			if (isCruising) {
-				mods = cruiseMod;
-
-				if (gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
-					bool moved = CheckMovement(transform.forward * accSpeed * cruiseFwd * Time.deltaTime / flightSpeedScaleFactor);
-
-					if (moved) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(10);
-				}
-			} else {
-				mods = 1f;
-
-				timeHoldingW = Mathf.Min(1f, timeHoldingW);
-				timeHoldingS = Mathf.Min(1f, timeHoldingS);
-
-				float factorFB = timeHoldingW - timeHoldingS;
-
-				CheckMovement(factorFB * transform.forward * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
-			}
-
-			timeHoldingA = Mathf.Min(1f, timeHoldingA);
-			timeHoldingD = Mathf.Min(1f, timeHoldingD);
-			float factorLR = Mathf.Sin(timeHoldingD * Mathf.PI / 4) - Mathf.Sin(timeHoldingA * Mathf.PI / 4);
-			CheckMovement(factorLR * transform.right * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
-
-			timeHoldingCtrl = Mathf.Min(1f, timeHoldingCtrl);
-			timeHoldingSpace = Mathf.Min(1f, timeHoldingSpace);
-			float factorUP = timeHoldingSpace - timeHoldingCtrl;
-			CheckMovement(factorUP * transform.up * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
-
-			//float mods = 1f;
-
-			//if (isCruising) {
-			//	mods = cruiseMod;
-
-			//	movementDirection += transform.forward * accSpeed * cruiseFwd * Time.deltaTime / flightSpeedScaleFactor;
-
-			//} else {
-			//	mods = 1f;
-
-			//	timeHoldingW = Mathf.Min(1f, timeHoldingW);
-			//	timeHoldingS = Mathf.Min(1f, timeHoldingS);
-
-			//	float factorFB = timeHoldingW - timeHoldingS;
-
-			//	movementDirection += factorFB * transform.forward * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
-			//}
-
-			//timeHoldingA = Mathf.Min(1f, timeHoldingA);
-			//timeHoldingD = Mathf.Min(1f, timeHoldingD);
-
-			//timeHoldingCtrl = Mathf.Min(1f, timeHoldingCtrl);
-			//timeHoldingSpace = Mathf.Min(1f, timeHoldingSpace);
-
-			//float factorLR = Mathf.Sin(timeHoldingD * Mathf.PI / 4) - Mathf.Sin(timeHoldingA * Mathf.PI / 4);
-			//float factorUP = timeHoldingSpace - timeHoldingCtrl;
-
-
-			//movementDirection += factorLR * transform.right * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
-			//movementDirection += factorUP * transform.up * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
-
-			//RaycastHit hit;
-			//bool hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
-			//if (hitObject && hit.collider.gameObject.transform.root.gameObject.tag != "Player") {
-			//	movementDirection = Vector3.zero;
-			//}
-			//transform.position += movementDirection;
-		}
-
-		// Inputs
+		// Inputs - Dodge/Afterburners
 		if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
 		if (Input.GetButton("Dodge")) {
 			if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
 				isCruising = true;
-                animator.SetBool("IsBoosting", true);
+				animator.SetBool("IsBoosting", true);
 			} else cHoldTime += Time.deltaTime;
 		}
 
-        if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold)
-        {
-            StartCoroutine(Dodge());
-        }
-        else if (Input.GetButtonUp("Dodge") && isCruising && gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500)
-        {
-            isCruising = false;
-            animator.SetBool("IsBoosting", false);
-        }
 
-        if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);
+
+
+
+
+
+
+
+		// This looks like it might be doing something strange
+		if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
+			StartCoroutine(Dodge());
+		} else if ((Input.GetButtonUp("Dodge") && isCruising) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
+			isCruising = false;
+			animator.SetBool("IsBoosting", false);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+		// Weapon Select
+		if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);
 		if (Input.GetButtonDown("Weapon2")) SwapWeapon(2);
-        //if (Input.GetButtonDown("Weapon3")) SwapWeapon(3);
+		if (Input.GetButtonDown("Weapon3")) SwapWeapon(3);
 	}
 
 	private bool CheckMovement(Vector3 movementDirection) {
 		RaycastHit hit;
 		bool hitObject;
-        hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
+		hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
 		if (!hitObject || hit.collider.gameObject.transform.root.gameObject.tag == "Player") {
 			transform.position += movementDirection;
 			return true;
 		}
-        return false;
+		return false;
 	}
 
 	void AimWeapon() {
 		Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        var layerMask = ~((1 << 9 | 1 << 10));
+		var layerMask = ~((1 << 9 | 1 << 10));
 		if (Physics.Raycast(ray, out RaycastHit aimPoint, layerMask)) {
 			arm.transform.LookAt(aimPoint.point);
 		} else {
@@ -346,15 +274,184 @@ public class PlayerController : MonoBehaviour {
 			isDodge = true;
 			if (Input.GetKey("d")) animator.SetTrigger("DodgeRight");
 			if (Input.GetKey("a")) animator.SetTrigger("DodgeLeft");
-            if (Input.GetKey("w")) animator.SetTrigger("DodgeForward");
-            rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
+			if (Input.GetKey("w")) animator.SetTrigger("DodgeForward");
+			rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
 			rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
 			rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
 			yield return new WaitForSeconds(dTime);
 			isDodge = false;
-            animator.ResetTrigger("DodgeRight");
-            animator.ResetTrigger("DodgeLeft");
-            animator.ResetTrigger("DodgeForward");
-        }
+			animator.ResetTrigger("DodgeRight");
+			animator.ResetTrigger("DodgeLeft");
+			animator.ResetTrigger("DodgeForward");
+		}
+	}
+
+	private void OnCollisionEnter(Collision other) {
+		if (other.collider.gameObject.tag == "RedZone") {
+			// Stop Flying
+
+			StartCoroutine(stopFlying());
+		}
+	}
+
+	private IEnumerator stopFlying() {
+		flightStopped = true;
+		Debug.Log("Warning: Engines cut to avoid detection");
+
+		StartCoroutine(fall(Time.time));
+
+		yield return new WaitForSeconds(3);
+
+		flightStopped = false;
+	}
+
+	private IEnumerator fall(float startFallTime) {
+		rb.AddForce(-Vector3.up * 1750f * Mathf.Pow(startFallTime - Time.time, 2));
+		yield return new WaitForSeconds(Time.deltaTime);
+
+		if (flightStopped) {
+			StartCoroutine(fall(startFallTime));
+		}
+	}
+
+	private void OnTriggerEnter(Collider collider) {
+		if (collider.gameObject.tag == "OrangeZon") {
+			Debug.Log("Warning: Approaching 'No Fly' Zone");
+		}
 	}
 }
+
+
+
+
+
+// Removed Code from before the re-implementation of Sebastiens force movement
+// Feel free to ignore this
+
+
+
+//// Scale the factor of the flight speed based on how long the buttom has be held for
+//speedDecreaseRate = Time.deltaTime * 3;
+
+//if (Input.GetKey(KeyCode.W)) {
+//	if (startTimeHoldingW == -1) startTimeHoldingW = Time.time;
+//	timeHoldingW = timeHoldingW + Time.time - startTimeHoldingW;
+//} else {
+//	startTimeHoldingW = -1;
+//	timeHoldingW = Mathf.Max(0, timeHoldingW - speedDecreaseRate);
+//}
+
+//if (Input.GetKey(KeyCode.A)) {
+//	if (startTimeHoldingA == -1) startTimeHoldingA = Time.time;
+//	timeHoldingA = timeHoldingA + Time.time - startTimeHoldingA;
+//} else {
+//	startTimeHoldingA = -1;
+//	timeHoldingA = Mathf.Max(0, timeHoldingA - speedDecreaseRate);
+//}
+
+//if (Input.GetKey(KeyCode.S)) {
+//	if (startTimeHoldingS == -1) startTimeHoldingS = Time.time;
+//	timeHoldingS = timeHoldingS + Time.time - startTimeHoldingS;
+//} else {
+//	startTimeHoldingS = -1;
+//	timeHoldingS = Mathf.Max(0, timeHoldingS - speedDecreaseRate);
+//}
+
+//if (Input.GetKey(KeyCode.D)) {
+//	if (startTimeHoldingD == -1) startTimeHoldingD = Time.time;
+//	timeHoldingD = timeHoldingD + Time.time - startTimeHoldingD;
+//} else {
+//	startTimeHoldingD = -1;
+//	timeHoldingD = Mathf.Max(0, timeHoldingD - speedDecreaseRate);
+//}
+
+//if (Input.GetKey(KeyCode.LeftControl)) {
+//	if (startTimeHoldingCtrl == -1) startTimeHoldingCtrl = Time.time;
+//	timeHoldingCtrl = timeHoldingCtrl + Time.time - startTimeHoldingCtrl;
+//} else {
+//	startTimeHoldingCtrl = -1;
+//	timeHoldingCtrl = Mathf.Max(0, timeHoldingCtrl - speedDecreaseRate);
+//}
+
+//if (Input.GetKey(KeyCode.Space)) {
+//	if (startTimeHoldingSpace == -1) startTimeHoldingSpace = Time.time;
+//	timeHoldingSpace = timeHoldingSpace + Time.time - startTimeHoldingSpace;
+//} else {
+//	startTimeHoldingSpace = -1;
+//	timeHoldingSpace = Mathf.Max(0, timeHoldingSpace - speedDecreaseRate);
+//}
+
+
+//if (!isDodge) {
+//	Vector3 movementDirection = new Vector3(0, 0, 0);
+
+
+//	float mods = 1f;
+
+//	if (isCruising) {
+//		mods = cruiseMod;
+
+//		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
+//			bool moved = CheckMovement(transform.forward * accSpeed * cruiseFwd * Time.deltaTime / flightSpeedScaleFactor);
+
+//			if (moved) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(10);
+//		}
+//	} else {
+//		mods = 1f;
+
+//		timeHoldingW = Mathf.Min(1f, timeHoldingW);
+//		timeHoldingS = Mathf.Min(1f, timeHoldingS);
+
+//		float factorFB = timeHoldingW - timeHoldingS;
+
+//		CheckMovement(factorFB * transform.forward * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
+//	}
+
+//	timeHoldingA = Mathf.Min(1f, timeHoldingA);
+//	timeHoldingD = Mathf.Min(1f, timeHoldingD);
+//	float factorLR = Mathf.Sin(timeHoldingD * Mathf.PI / 4) - Mathf.Sin(timeHoldingA * Mathf.PI / 4);
+//	CheckMovement(factorLR * transform.right * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
+
+//	timeHoldingCtrl = Mathf.Min(1f, timeHoldingCtrl);
+//	timeHoldingSpace = Mathf.Min(1f, timeHoldingSpace);
+//	float factorUP = timeHoldingSpace - timeHoldingCtrl;
+//	CheckMovement(factorUP * transform.up * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor);
+
+//	//float mods = 1f;
+
+//	//if (isCruising) {
+//	//	mods = cruiseMod;
+
+//	//	movementDirection += transform.forward * accSpeed * cruiseFwd * Time.deltaTime / flightSpeedScaleFactor;
+
+//	//} else {
+//	//	mods = 1f;
+
+//	//	timeHoldingW = Mathf.Min(1f, timeHoldingW);
+//	//	timeHoldingS = Mathf.Min(1f, timeHoldingS);
+
+//	//	float factorFB = timeHoldingW - timeHoldingS;
+
+//	//	movementDirection += factorFB * transform.forward * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
+//	//}
+
+//	//timeHoldingA = Mathf.Min(1f, timeHoldingA);
+//	//timeHoldingD = Mathf.Min(1f, timeHoldingD);
+
+//	//timeHoldingCtrl = Mathf.Min(1f, timeHoldingCtrl);
+//	//timeHoldingSpace = Mathf.Min(1f, timeHoldingSpace);
+
+//	//float factorLR = Mathf.Sin(timeHoldingD * Mathf.PI / 4) - Mathf.Sin(timeHoldingA * Mathf.PI / 4);
+//	//float factorUP = timeHoldingSpace - timeHoldingCtrl;
+
+
+//	//movementDirection += factorLR * transform.right * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
+//	//movementDirection += factorUP * transform.up * accSpeed * mods * Time.deltaTime / flightSpeedScaleFactor;
+
+//	//RaycastHit hit;
+//	//bool hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
+//	//if (hitObject && hit.collider.gameObject.transform.root.gameObject.tag != "Player") {
+//	//	movementDirection = Vector3.zero;
+//	//}
+//	//transform.position += movementDirection;
+//}
