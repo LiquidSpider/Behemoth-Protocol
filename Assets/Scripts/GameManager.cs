@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
 	public GameObject player;
-	//public GameObject smallerEnemies;
+	public GameObject salamander;
+	public GameObject smallerEnemies;
 
 	private bool gamePaused;
 	public GameObject pauseMenu;
@@ -19,11 +20,7 @@ public class GameManager : MonoBehaviour {
 	private float timeSetActive = 0;
 	private bool dispMissileDamage = false;
 
-<<<<<<< Updated upstream
 	public Text framesCounter;
-=======
-    public GameObject[] dragonFlies;
->>>>>>> Stashed changes
 
 	//public GameObject dragonfly;
 	//public GameObject dragonflies;
@@ -76,18 +73,16 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-        dragonFlies = GameObject.FindGameObjectsWithTag("DragonFly");
-
-        if (gamePaused || gameOver) {
+		if (gamePaused || gameOver) {
 			Camera.main.transform.rotation = cameraRotation;
 		}
 
-		//if (salamander && salamander.GetComponent<BossHealth>().HP <= 100 && !dispMissileDamage) {
-		//	dispMissileDamage = true;
-		//	timeSetActive = Time.time;
-		//	promptMenu.transform.GetChild(2).GetComponent<Text>().text = "Good job, now finish it with a missile (2)";
-		//	promptMenu.SetActive(true);
-		//}
+		if (salamander && salamander.GetComponent<BossHealth>().HP <= 100 && !dispMissileDamage) {
+			dispMissileDamage = true;
+			timeSetActive = Time.time;
+			promptMenu.transform.GetChild(2).GetComponent<Text>().text = "Good job, now finish it with a missile (2)";
+			promptMenu.SetActive(true);
+		}
 
 		if (timeSetActive + 3 < Time.time) {
 			promptMenu.SetActive(false);
@@ -128,7 +123,7 @@ public class GameManager : MonoBehaviour {
 		SetStuff(true);
 		Cursor.lockState = CursorLockMode.None;
 
-		//Destroy(salamander);
+		Destroy(salamander);
 	}
 
 	private void SetStuff(bool swapTo) {

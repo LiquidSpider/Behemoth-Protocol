@@ -35,20 +35,6 @@ public class giantBehaviour : MonoBehaviour
 	public List<GameObject> activeLaunchers = new List<GameObject>();
 	private float launchTime = 0.0f;
 
-    // Lazer Variables
-    public bool _shootLazer;
-    private bool shootLazer {
-        get { return _shootLazer; }
-        set { if (value == true && _shootLazer != value) { timerLazerStart = Time.time; } _shootLazer = value; } }
-    public bool _shootingLazer;
-    private bool shootingLazer { 
-        get { return _shootingLazer; }
-        set { if (value == true && _shootingLazer != value) { timerLazerShootStart = Time.time; } _shootingLazer = value; } }
-    public float lazerWindUpTime;
-    public float lazerShootTime;
-    public float lazerCooldownTime;
-    public float timerLazerShootStart;
-    public float timerLazerStart;
 
     // Start is called before the first frame update
     void Start() {
@@ -65,7 +51,7 @@ public class giantBehaviour : MonoBehaviour
     	myself = this.gameObject;
     	locatePlayer();
     	fireMissiles();
-               
+
     	//Giant will move along path to target, unless legs are damaged
     	if(legsSafe) {
 	        moveToTarget();
@@ -74,26 +60,6 @@ public class giantBehaviour : MonoBehaviour
 	    } else {
 	    	//In here will be the 'last ditch effort' or whatever
 	    }
-
-        CheckWeaponConditions();
-
-        if (shootLazer)
-            ShootLazers();
-
-    }
-
-    /// <summary>
-    /// Runs the conditions to determine which attack is being used.
-    /// </summary>
-    private void CheckWeaponConditions()
-    {
-
-        // Lazer
-        if(timerLazerStart <= Time.time - lazerCooldownTime)
-        { 
-            shootLazer = true;
-        }
-
     }
 
     // getPathLength retreives the total distance to Giant has to move, in order to calculate how much it needs to move each frame
@@ -210,38 +176,5 @@ public class giantBehaviour : MonoBehaviour
     			launcher.GetComponent<missileLaunch>().fire();
     		}
     	}
-    }
-
-    /// <summary>
-    /// Shoots lazers from the specified location.
-    /// </summary>
-    private void ShootLazers()
-    {
-        // wait the 2 second windup
-        if(timerLazerStart <= Time.time - lazerWindUpTime)
-        {
-            // we can begin shooting
-            if (!shootingLazer)
-            {
-                shootingLazer = true;
-            }
-
-            if (timerLazerShootStart >= Time.time - lazerShootTime)
-            {
-                // shoot the lazer
-                Debug.Log("Shooting Lazer");
-            }
-            else
-            {
-                // stop shooting
-                shootLazer = false;
-                shootingLazer = false;
-            }
-
-        }
-        else
-        {
-            // play windup sound
-        }
     }
 }
