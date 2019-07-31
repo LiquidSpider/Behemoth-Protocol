@@ -22,12 +22,14 @@ public class GameManager : MonoBehaviour {
 
 	public Text framesCounter;
 
-	//public GameObject dragonfly;
-	//public GameObject dragonflies;
-	//private Vector3[] positions;
-	//public float[] timeDestroyed = new float[] { -1, -1, -1, -1 };
+    public List<GameObject> dragonFlies;
 
-	void Start() {
+    //public GameObject dragonfly;
+    //public GameObject dragonflies;
+    //private Vector3[] positions;
+    //public float[] timeDestroyed = new float[] { -1, -1, -1, -1 };
+
+    void Start() {
 		gamePaused = false;
 		pauseMenu.SetActive(false);
 
@@ -73,7 +75,9 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-		if (gamePaused || gameOver) {
+        dragonFlies = new List<GameObject>(GameObject.FindGameObjectsWithTag("DragonFly"));
+
+        if (gamePaused || gameOver) {
 			Camera.main.transform.rotation = cameraRotation;
 		}
 

@@ -6,358 +6,465 @@ using UnityEngine;
 public class DragonFly : MonoBehaviour
 {
 
-    // the starting position of the dragon fly
-    private Vector3 startingPosition;
-
-    // The size of the bounds it can move within
-    public Vector3 boundsSize = new Vector3(50.0f, 50.0f, 50.0f);
-    public float FollowRadius = 50.0f;
-    public float CheckRadius = 100.0f;
-    // Determines whether to follow the player or not.
-    public bool FollowingPlayer = false;
     // Player position variable
     public Transform player;
+    // Children colliders
+    private Collider[] colliders;
+    public Rigidbody body;
+    public GameObject rubbishPile;
+
+    // Dragon fly Behaviour enum
+    public enum DragonFlyBehaviour
+    {
+        idle,
+        Attacking,
+        Kamikaze
+    }
+    public DragonFlyBehaviour currentDragonFlyBehaviour;
 
     // Movement speeds
     public float defaultSpeed;
     public float defaultRotationSpeed;
-    private float speed;
-    private float rotationSpeed;
+    public float targetRadius;
+    public float maxVelocity;
+    private float sqrMaxVelocity;
 
-    // Object Size
-    private Vector3 objectSize;
+    // boid variables
+    public float cohesionForce;
+    public float cohesionDistance;
+    public float seperationDistance;
+    public float seperationForce;
+    public float alignmentStrength;
+    public Boolean applyCohesion;
+    public Boolean applySeperation;
+    public Boolean applyAlignment;
+    public Boolean flyTowardsTarget;
 
-    // the position to move to inside the box
-    private Vector3 moveToPosition;
-
-    // the random movement Timer
-    private float randomMovementTimer;
-    // the current direction of random movement
-    private float randomMovement;
-
-    // Children colliders
-    private Collider[] colliders;
-
-    public GameObject rubbishPile;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        this.startingPosition = this.transform.position;
-        this.objectSize = this.gameObject.transform.GetChild(0).transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().bounds.max;
-        //this.boundsSize -= objectSize;
-
+        // On spawn setup the collider list
         this.colliders = this.GetComponentsInChildren<Collider>();
-
-        this.speed = defaultSpeed;
-        this.rotationSpeed = rotationSpeed;
-
-        player = GameObject.FindWithTag("Player").transform;
-
+        // Get the player object
+        player = GameObject.FindWithTag("Player").transform.GetChild(0).transform;
+        // Get the game manager
+        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        // Get the objects rigidbody.
+        if(body == null)
+            body = this.GetComponent<Rigidbody>();
+        // Setup state
+        this.currentDragonFlyBehaviour = DragonFlyBehaviour.idle;
     }
-
-    private void FixedUpdate()
+    
+    /// <summary>
+    /// Called once the object and all other objects have been initialised.
+    /// </summary>
+    private void Awake()
     {
-        // Check for surrounding objects
-        CheckSurroundings();
+        sqrMaxVelocity = maxVelocity * maxVelocity;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // maintain the boid behaviour;
+        if (currentDragonFlyBehaviour != DragonFlyBehaviour.Kamikaze)
+            BoidBehaviour();
 
-        // Check if we should follow the player
-        CheckPlayer();
-
-        if (FollowingPlayer && moveToPosition == Vector3.zero)
-            FollowPlayer();
-        else
-            RandomlyMoveWithinBounds();
-
-
+        switch(currentDragonFlyBehaviour)
+        {
+            case DragonFlyBehaviour.idle:
+                Idle();
+                break;
+            case DragonFlyBehaviour.Attacking:
+                Attacking();
+                // check if we should kamikaze
+                BoidsLeft();
+                break;
+            case DragonFlyBehaviour.Kamikaze:
+                Kamikaze();
+                break;
+        }
     }
 
     /// <summary>
-    /// Checks the distance from the player.
+    /// Checks the left over number of boids and determines if we should kamikaze.
     /// </summary>
-    private void CheckPlayer()
+    private void BoidsLeft()
     {
-
-        // if the player is within the range then tell the fly to follow the player
-        if (CheckDistance(player.position) < CheckRadius)
+        if(gameManager.dragonFlies.Count <= 2)
         {
-            FollowingPlayer = true;
+            currentDragonFlyBehaviour = DragonFlyBehaviour.Kamikaze;
+        }
+    }
+
+    /// <summary>
+    /// Called every fixed frame.
+    /// </summary>
+    private void FixedUpdate()
+    {
+        // Clamp the velocity of this object to keep a maximum speed.
+        if(body.velocity.sqrMagnitude > sqrMaxVelocity)
+        {
+            // Given the direction of the objects current velocity multiply it by the maximum speed.
+            body.velocity = body.velocity.normalized * maxVelocity;
+        }
+    }
+
+    /// <summary>
+    /// The idle state of the dragonfly.
+    /// </summary>
+    private void Idle()
+    {
+        // Do nothing
+    }
+
+    /// <summary>
+    /// The attacking state of the dragonfly.
+    /// </summary>
+    private void Attacking()
+    {
+        // if we're outside of the range.
+        if (flyTowardsTarget)
+        {   
+            if (Vector3.Distance(transform.position, player.transform.position) > targetRadius)
+                MoveTowardsTarget(player.transform.position);
+            else
+            {
+                // Rotate towards the target.
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position), Mathf.Min(defaultRotationSpeed * Time.deltaTime, 1));
+            }
+        }
+    }
+
+    /// <summary>
+    /// The kamikaze state of the dragonfly.
+    /// </summary>
+    private void Kamikaze()
+    {
+        MoveTowardsTarget(player.transform.position);
+    }
+
+    #region BoidBehaviour
+
+    /// <summary>
+    /// performs the boid algorithm for this dragon fly inside it's group.
+    /// </summary>
+    private void BoidBehaviour()
+    {
+        // The three vectors which perform the boid behaviour.
+        if(applySeperation)
+        {
+            Seperation();
         }
 
+        if(applyAlignment)
+        {
+            Alignment();
+        }
+
+        if(applyCohesion)
+        {
+            Cohesion();
+        }
     }
 
     /// <summary>
-    /// Checks the distance from this object and target.
+    /// For all the boids maintain a seperation distance.
     /// </summary>
-    /// <returns>The distance.</returns>
-    /// <param name="position">Position.</param>
-    private float CheckDistance(Vector3 position)
+    /// <returns></returns>
+    private void Seperation()
     {
+        Vector3 seperation = Vector3.zero;
+        int counter = 0;
 
-        return Vector3.Distance(this.transform.position, position);
+        foreach(GameObject boid in gameManager.dragonFlies)
+        {
+            if(boid != this)
+            {
+                float distance = Vector3.Distance(this.transform.position, boid.transform.position);
+                if ((distance > 0) && (distance < seperationDistance))
+                {
+                    Vector3 direction = (this.transform.position - boid.transform.position);
+                    direction = Vector3.Normalize(direction);
+                    direction = direction * (seperationForce);
+                    seperation += direction;
+                    counter++;
+                }
+            }
+        }
 
+        if(counter > 0)
+        { 
+            seperation = seperation * (1.0f / counter);
+             this.body.AddForce(seperation);
+        }
+    }
+
+    /// <summary>
+    /// For all the boids average the direction.
+    /// </summary>
+    /// <returns></returns>
+    private void Alignment()
+    {
+        Vector3 alignment = Vector3.zero;
+        //Vector3 speed = Vector3.zero;
+        int counter = 0;
+
+        foreach(GameObject boid in gameManager.dragonFlies)
+        {
+            if(boid != this)
+            {
+                float distance = Vector3.Distance(this.transform.position, boid.transform.position);
+                // Only calculate if withing range.
+                if((distance > 0) && (distance < cohesionDistance))
+                {
+                    //speed = boid.GetComponent<DragonFly>().body.velocity;
+                    alignment = boid.transform.forward;
+                    counter++;
+                }
+            }
+        }
+
+        if(counter > 0)
+        {
+            //speed = speed * (1.0f / counter);
+            //speed = Vector3.Normalize(speed) * alignmentStrength;
+            alignment = alignment * (1.0f / counter);
+            alignment = Vector3.Normalize(alignment);
+            Quaternion rotation = Quaternion.Euler(alignment);
+
+            // rotate towards average direction.
+            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, rotation, alignmentStrength);
+            // meed average velocity.
+        }
+    }
+
+    /// <summary>
+    /// For all the boids average the position and steer towards that position.
+    /// </summary>
+    /// <returns></returns>
+    private void Cohesion()
+    {
+        Vector3 cohesion = Vector3.zero;
+        int counter = 0;
+
+        foreach(GameObject boid in gameManager.dragonFlies)
+        {
+            if(boid != this)
+            {
+                float distance = Vector3.Distance(this.transform.position, boid.transform.position);
+                if((distance > 0) && (distance < cohesionDistance))
+                {
+                    cohesion += boid.transform.position;
+                    counter++;
+                }
+            }
+        }
+        
+        if(counter > 0)
+        {
+            cohesion = cohesion * (1.0f / (counter));
+            // pull towards position
+            cohesion = (cohesion - this.transform.position).normalized;
+            cohesion *= cohesionForce;
+            this.body.AddForce(cohesion);
+        }
+    }
+
+    ///// <summary>
+    ///// Controls the positioning on this dragon fly incomparison to the others.
+    ///// </summary>
+    //private void BoidBehaviour()
+    //{
+    //    Vector3 alignment = this.transform.forward;
+    //    Vector3 seperation = Vector3.zero;
+    //    Vector3 cohesion = this.transform.position;
+
+    //    foreach(GameObject boid in gameManager.dragonFlies)
+    //    {
+    //        if (boid != this)
+    //        {
+    //            seperation += GetSeparationVector(boid.transform);
+    //            alignment += boid.GetComponent<Rigidbody>().velocity;
+    //            cohesion += boid.transform.position;
+    //        }
+    //    }
+
+    //    alignment /= gameManager.dragonFlies.Length - 1;
+    //    alignment = alignment.normalized;
+    //    cohesion /= gameManager.dragonFlies.Length - 1;
+    //    cohesion = (cohesion - this.transform.position).normalized;
+
+    //    // calculate rotation.
+    //    Vector3 direction = alignment + seperation + cohesion;
+    //    Quaternion rotation = Quaternion.FromToRotation(this.transform.forward, direction.normalized);
+
+    //    // Apply the rotation.
+    //    if (rotation != this.transform.rotation)
+    //    {
+    //        this.transform.rotation = Quaternion.Slerp(rotation, this.transform.rotation, Mathf.Exp(-this.defaultRotationSpeed * Time.deltaTime));
+    //    }        
+    //}
+
+    //// Caluculates the separation vector with a target.
+    //Vector3 GetSeparationVector(Transform target)
+    //{
+    //    Vector3 diff = this.transform.position - target.transform.position;
+    //    float scaler = Mathf.Clamp01(1.0f - diff.magnitude / this.seperationDistance);
+    //    return diff * (scaler / diff.magnitude);
+    //}
+
+    #endregion
+
+    /// <summary>
+    /// Moves the target towards the position using relative forces.
+    /// </summary>
+    /// <param name="position"></param>
+    private void MoveTowardsTarget(Vector3 position)
+    {
+        // If kamikaze mode triple speed and ignore distance
+        if(this.currentDragonFlyBehaviour == DragonFlyBehaviour.Kamikaze)
+        {
+            // rotate towards target.
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(position - transform.position), Mathf.Min(defaultRotationSpeed * 20 * Time.deltaTime, 1));
+            // add forward momemtum.
+            body.AddForce(this.transform.forward * defaultSpeed * 60.0f * Time.deltaTime);
+        }
+        else
+        {
+            // rotate towards target.
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(position - transform.position), Mathf.Min(defaultRotationSpeed * Time.deltaTime, 1));
+            // add forward momemtum.
+            body.AddForce(this.transform.forward * defaultSpeed * 20.0f * Time.deltaTime);
+        }
     }
 
     /// <summary>
     /// Follows the player.
     /// </summary>
-    private void FollowPlayer()
-    {
+    //private void FollowPlayer()
+    //{
 
-        // Stay within radius of the player
-        if (CheckDistance(player.transform.position) > FollowRadius)
-        {
+    //    // Stay within radius of the player
+    //    if (CheckDistance(player.transform.position) > FollowRadius)
+    //    {
 
-            // if we're going to collide
-            //if (GoingToCollide(this.transform.forward))
-            //{
-            //    randomMovementTimer = Time.time - 1.0f;
-            //}
-            //else
-            //{
-                this.transform.position += this.transform.forward * Time.deltaTime * speed;
-            //}
+    //        // if we're going to collide
+    //        //if (GoingToCollide(this.transform.forward))
+    //        //{
+    //        //    randomMovementTimer = Time.time - 1.0f;
+    //        //}
+    //        //else
+    //        //{
+    //            this.transform.position += this.transform.forward * Time.deltaTime * speed;
+    //        //}
 
-        }
+    //    }
 
-        // always look at the player
-        Quaternion direction = Quaternion.LookRotation(player.position - transform.position);
-        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
+    //    // always look at the player
+    //    Quaternion direction = Quaternion.LookRotation(player.position - transform.position);
+    //    this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
 
 
-        // Move around randomly
-        if (Time.time > randomMovementTimer)
-        {
-            randomMovementTimer += Time.time + UnityEngine.Random.Range(2, 5);
-            randomMovement = UnityEngine.Random.Range(0, 5);
-        }
-        else
-        {
+    //    // Move around randomly
+    //    if (Time.time > randomMovementTimer)
+    //    {
+    //        randomMovementTimer += Time.time + UnityEngine.Random.Range(2, 5);
+    //        randomMovement = UnityEngine.Random.Range(0, 5);
+    //    }
+    //    else
+    //    {
 
-            Vector3 movementDirection = Vector3.zero;
+    //        Vector3 movementDirection = Vector3.zero;
 
-            switch (randomMovement)
-            {
-                case 0:
-                    // do nothing
-                    break;
-                case 1:
-                    // move up
-                    movementDirection = this.transform.up;
-                    break;
-                case 2:
-                    // move down
-                    movementDirection = -this.transform.up;
-                    break;
-                case 3:
-                    // move right
-                    movementDirection = this.transform.right;
-                    break;
-                case 4:
-                    // move left
-                    movementDirection = -this.transform.right;
-                    break;
-            }
+    //        switch (randomMovement)
+    //        {
+    //            case 0:
+    //                // do nothing
+    //                break;
+    //            case 1:
+    //                // move up
+    //                movementDirection = this.transform.up;
+    //                break;
+    //            case 2:
+    //                // move down
+    //                movementDirection = -this.transform.up;
+    //                break;
+    //            case 3:
+    //                // move right
+    //                movementDirection = this.transform.right;
+    //                break;
+    //            case 4:
+    //                // move left
+    //                movementDirection = -this.transform.right;
+    //                break;
+    //        }
 
-            //// if we're going to collide
-            //if (GoingToCollide(movementDirection))
-            //{
-            //    randomMovementTimer = Time.time - 1.0f;
-            //}
-            //else
-            //{
-                this.transform.position += movementDirection * Time.deltaTime * speed;
-            //}
+    //        //// if we're going to collide
+    //        //if (GoingToCollide(movementDirection))
+    //        //{
+    //        //    randomMovementTimer = Time.time - 1.0f;
+    //        //}
+    //        //else
+    //        //{
+    //            this.transform.position += movementDirection * Time.deltaTime * speed;
+    //        //}
 
-        }
+    //    }
 
-    }
+    //}
 
-    /// <summary>
-    /// Randomly the move within bounds.
-    /// </summary>
-    private void RandomlyMoveWithinBounds()
-    {
-
-        // if we don't have a moveTo position
-        if (moveToPosition == Vector3.zero)
-        {
-            
-            // Assign a moveTo position within the bounds
-            float randomX = UnityEngine.Random.Range(startingPosition.x - boundsSize.x, startingPosition.x + boundsSize.x);
-            float randomY = UnityEngine.Random.Range(startingPosition.y - boundsSize.y, startingPosition.y + boundsSize.y);
-            float randomZ = UnityEngine.Random.Range(startingPosition.z - boundsSize.z, startingPosition.z + boundsSize.z);
-
-            moveToPosition = new Vector3(randomX, randomY, randomZ);
-
-        }
-        // We have a moveTo position
-        else
-        {
-
-            // Check if we're at the position
-            if (CheckDistance(moveToPosition) < 2.0f)
-            {
-                moveToPosition = Vector3.zero;
-            }
-            else
-            {
-
-                // Move to the position
-                Quaternion direction = Quaternion.LookRotation(moveToPosition - this.transform.position);
-                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
-
-                //// if we're going to collide
-                //if (GoingToCollide(this.transform.forward))
-                //{
-                //    moveToPosition = Vector3.zero; // Reset movement
-                //}
-                //else
-                //{
-                    this.transform.position += this.transform.forward * Time.deltaTime * speed;
-                //}
-
-            }
-
-        }
-
-    }
-
-    // Stop movement
     private void OnCollisionEnter(Collision collision)
     {
-        // if the object is the salamander
-        if (collision.collider.gameObject.transform.root.gameObject.layer == 12)
+        // if we're kamikazeing and the player is the collider.
+        if(currentDragonFlyBehaviour == DragonFlyBehaviour.Kamikaze)
         {
-            Debug.Log("disabling colliders");
-            this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = false;
+            // Blowup
+            if (collision.collider.gameObject.tag == "Player")
+                Destroy(this.gameObject);
         }
+
+        // damage section.
+        if (collision.gameObject.transform.tag == "Explosion - Player")
+        {
+            this.GetComponent<EnemyHealth>().TakeDamage(200, collision.gameObject);
+        }
+
+        if (collision.gameObject.transform.tag == "Bullet - Player")
+        {
+            this.GetComponent<EnemyHealth>().TakeDamage(10);
+        }
+
+        if (collision.collider.gameObject.layer != 13)
+            this.transform.GetChild(1).GetComponent<ShowHealth>().DamageTaken();
 
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        // if the object is the salamander
-        if (collision.collider.gameObject.transform.root.gameObject.layer == 12)
-        {
-            Debug.Log("enabling colliders");
-            this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
-        }
-    }
-
-    ///// <summary>
-    ///// Determines if we're going to run into anything in this direction.
-    ///// </summary>
-    ///// <returns><c>true</c>, if we run into anything, <c>false</c> otherwise.</returns>
-    ///// <param name="direction">Direction.</param>
-    //private bool GoingToCollide(Vector3 direction)
-    //{
-
-    //    if (Physics.Raycast(this.transform.position, direction, 2.0f, 11))
-    //    {
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-    //}
-
-    /// <summary>
-    /// Check the surroundings for object
-    /// </summary>
-    private void CheckSurroundings()
-    {
-        
-        RaycastHit hit;
-
-        if (Physics.BoxCast(this.transform.position, new Vector3(7.5f, 7.5f, 7.5f), transform.forward, out hit, transform.rotation, 5.0f))
-        {
-
-            // if the object is not in the projectile layer or ignore layer or isn't this object
-            if((hit.collider.gameObject.layer != 9 && hit.collider.gameObject.layer != 2 && hit.collider.gameObject.transform.root != this.gameObject.transform.root))
-            {
-
-                if (hit.collider.gameObject.transform.root.gameObject.layer == 12)
-                {
-                    //Debug.Log("disable collider");
-                    this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = false;
-                }
-                else
-                {
-                    if (this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled == false)
-                    {
-                        this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
-                    }
-                }
-
-                //Debug.Log(this.name + " Moving away from " + hit.collider.name);
-                moveToPosition = transform.position + hit.normal * 20.0f;
-                randomMovementTimer = Time.time - 1;
-                speed = 150.0f;
-                rotationSpeed = 50.0f;
-
-            }
-            else
-            {
-
-                if (this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled == false)
-                {
-                    this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
-                }
-                speed = defaultSpeed;
-                rotationSpeed = defaultRotationSpeed;
-
-            }
-
-        }
-        else
-        {
-
-            if (this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled == false)
-            {
-                this.transform.GetChild(0).transform.GetChild(0).GetComponent<Collider>().enabled = true;
-            }
-            speed = defaultSpeed;
-            rotationSpeed = defaultRotationSpeed;
-
-        }
-
     }
 
     // On Destroy(this) event.
     private void OnDestroy()
     {
-
         // create a rubbish pile.
         Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
-		//GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().timeDestroyed[transform.GetSiblingIndex()] = Time.time;
-
+        // remove self from the game manager
+        if( gameManager.dragonFlies.Contains(this.gameObject))
+        {
+            try
+            {
+                gameManager.dragonFlies.Remove(this.gameObject);
+            }catch(Exception e)
+            {                
+            }
+        }
     }
 
 #if DEBUG
-
-    private void OnDrawGizmosSelected()
-    {
-        Color cubeColor = Color.yellow;
-        cubeColor.a /= 2;
-        Gizmos.color = cubeColor;
-        Gizmos.DrawCube(startingPosition, boundsSize * 2);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Color color = Color.green;
-        color.a /= 2;
-        Gizmos.color = color;
-        Gizmos.DrawWireCube(this.transform.position + transform.forward * 0.1f, new Vector3(30, 30, 30));
-    }
 
 #endif
 

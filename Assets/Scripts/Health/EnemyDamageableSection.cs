@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class EnemyDamageableSection : MonoBehaviour {
 	
-	private Transform parent;
+	public Transform parent;
 
 	private void Start() {
-		parent = gameObject.transform.parent.parent;
+        if(parent == null)
+		    parent = gameObject.transform.parent.parent;
 	}
 
 	private void OnCollisionEnter(Collision other) {
@@ -17,7 +18,7 @@ public class EnemyDamageableSection : MonoBehaviour {
 		}
 
 		if (other.gameObject.transform.tag == "Bullet - Player") {
-			parent.GetComponent<EnemyHealth>().TakeDamage(10);
+            parent.GetComponent<EnemyHealth>().TakeDamage(10);
 		}
 
         if(other.collider.gameObject.layer != 13)

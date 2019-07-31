@@ -9,7 +9,7 @@ public class ShieldBehaviour : MonoBehaviour {
 
 
 	void Start() {
-		shield.SetActive(false);
+		//shield.SetActive(false);
 		shieldActive = false;
 	}
 	
