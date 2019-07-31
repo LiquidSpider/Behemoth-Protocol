@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponController : MonoBehaviour {
+public class NewWeaponController : MonoBehaviour {
 
 	[SerializeField] private GameObject missile;
 	[SerializeField] private GameObject missileSpawnLocation;
-
-	//[SerializeField] private GameObject bomb;
-
 	[SerializeField] private GameObject flare;
 
 	private Vector3 currentPosition;
@@ -18,9 +15,6 @@ public class WeaponController : MonoBehaviour {
 
 	public GameObject soundSrc;                 // The object that makes the sound
 	public AudioClip sFire;                     // Sound played when gun fires
-
-	//private float timeBetweenBombs = 1.5f;
-	//private float timeOfLastBomb;
 
 	private float timeBetweenMissiles = 10f;
 	private float timeOfLastMissile;
@@ -43,7 +37,7 @@ public class WeaponController : MonoBehaviour {
 
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
-		//timeOfLastBomb = -timeBetweenBombs;
+
 		timeOfLastMissile = -timeBetweenMissiles;
 		timeOfLastMissile2 = -timeBetweenMissiles;
 
@@ -55,11 +49,7 @@ public class WeaponController : MonoBehaviour {
 	}
 
 	void Update() {
-		previousPosition = currentPosition;
-		currentPosition = transform.GetChild(1).position;
-		playerSpeed = currentPosition - previousPosition;
-
-		//playerSpeed = transform.GetChild(0).GetComponent<Rigidbody>().velocity * Time.deltaTime;
+		playerSpeed = transform.GetChild(0).GetComponent<Rigidbody>().velocity * Time.deltaTime;
 
 		//Things should not recharge if the battery is too low
 		if(gameObject.GetComponent<PlayerHealth>().battery > 500) {
@@ -100,16 +90,18 @@ public class WeaponController : MonoBehaviour {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 					if (Input.GetButtonDown("Attack")) {
-						if (Time.time > timeOfLastMissile + timeBetweenMissiles) {
-							missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
+						if (TargetInSight(Camera.main.transform.forward, Camera.main.transform.position)) {
+							if (Time.time > timeOfLastMissile + timeBetweenMissiles) {
+								missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
 
-							timeOfLastMissile = Time.time;
-							LaunchMissile();
-						} else if (Time.time > timeOfLastMissile2 + timeBetweenMissiles) {
-							missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
+								timeOfLastMissile = Time.time;
+								LaunchMissile();
+							} else if (Time.time > timeOfLastMissile2 + timeBetweenMissiles) {
+								missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
 
-							timeOfLastMissile2 = Time.time;
-							LaunchMissile();
+								timeOfLastMissile2 = Time.time;
+								LaunchMissile();
+							}
 						}
 					}
 				}
@@ -144,53 +136,44 @@ public class WeaponController : MonoBehaviour {
 				}
 			}
 
-		} 
-		// Commented out because Bombs may not be a thing anymore
-		/*else {
-			if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {
-				timeOfLastBomb = Time.time;
-				LaunchBomb();
-			}
-		} */
-
-		RaycastHit hit;
-		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit)) {
-			if (hit.collider.gameObject.tag != "Environment") {
-				missileLock = true;
-
-				missileTarget = hit.collider.gameObject;
-
-				timeOfLock = Time.time;
-			} else {
-				if (timeOfLock + timeForUnlock > Time.time) {
-					missileLock = false;
-					missileTarget = null;
-				}
-			}
 		}
+
+		//// Missile Lock Check Code
+		//RaycastHit hit;
+		//if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit)) {
+		//	if (hit.collider.gameObject.tag != "Environment") {
+		//		missileLock = true;
+
+		//		missileTarget = hit.collider.gameObject;
+
+		//		timeOfLock = Time.time;
+		//	} else {
+		//		if (timeOfLock + timeForUnlock > Time.time) {
+		//			missileLock = false;
+		//			missileTarget = null;
+		//		}
+		//	}
+		//}
 	}
+
+	private RaycastHit hit;
 
 	private void LaunchMissile() {
 		GameObject newMissile = Instantiate(missile);
 		MakeSound(sFire, false);
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
-		if (missileLock) newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, missileTarget.gameObject, missileLock);
-		else newMissile.GetComponent<MissileBehaviour>().Initialise(gameObject, Camera.main.transform.position);
-
-		newMissile.GetComponent<MissileBehaviour>().playerSpeed = playerSpeed;
+		newMissile.GetComponent<PlayerMissileBehaviour>().Initialise(hit);
 		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.cyan;
 	}
 
-	//private void LaunchBomb() {
-	//	GameObject newBomb = Instantiate(bomb);
+	public bool TargetInSight(Vector3 inputAffineSpaceDirection, Vector3 inputAffineSpaceOffset) {
+		if (Physics.Raycast(inputAffineSpaceOffset, inputAffineSpaceDirection, out hit)) {
+			return true;
+		}
 
-	//	Vector3 spawnLocation = transform.GetChild(1).position;
-	//	spawnLocation.y -= 1.5f;
-	//	newBomb.transform.position = spawnLocation;
-
-	//	newBomb.GetComponent<BombBehaviour>().Initialise(Vector3.zero);
-	//}
+		return false;
+	}
 
 	private void LaunchFlare() {
 		for (int i = 1; i <= 2; i++) {

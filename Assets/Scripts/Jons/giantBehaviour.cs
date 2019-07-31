@@ -269,7 +269,7 @@ public class giantBehaviour : MonoBehaviour
             if (timerLazerShootStart >= Time.time - lazerShootTime)
             {
                 // shoot the lazer
-                Debug.Log("Shooting Lazer");
+                //Debug.Log("Shooting Lazer");
             }
             else
             {

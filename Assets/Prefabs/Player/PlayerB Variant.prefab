@@ -106,6 +106,7 @@ MonoBehaviour:
   HP: 2000
   isScanning: 0
   battery: 10000
+  maxB: 0
 --- !u!114 &4498502439831713149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +121,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shield: {fileID: 564681730809392888}
   shieldActive: 0
+--- !u!114 &4001442076899185275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71284694406847883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae68176c52837d46b8d69c5634c6cce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missile: {fileID: 2187276436918047048, guid: 5557b99cfe7b8a54c8527c4c8807a984, type: 3}
+  missileSpawnLocation: {fileID: 2647981504737730390, guid: c1ed780ff9e9e544b80402b3115dd706,
+    type: 3}
+  flare: {fileID: 1107021511137200191, guid: 22e99024f74f1864ca7cbdc963a2ac3a, type: 3}
+  playerSpeed: {x: 0, y: 0, z: 0}
+  soundSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
+  sFire: {fileID: 8300000, guid: ab1cc6d48d3b90946a8d99e384b7a14a, type: 3}
 --- !u!136 &57975790
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -246,6 +266,17 @@ PrefabInstance:
       propertyPath: sFire
       value: 
       objectReference: {fileID: 8300000, guid: ab1cc6d48d3b90946a8d99e384b7a14a, type: 3}
+    - target: {fileID: 5334423240735077760, guid: b2be17ae6ce82c24b8588f1951c48771,
+        type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 2187276436918047048, guid: 5557b99cfe7b8a54c8527c4c8807a984,
+        type: 3}
+    - target: {fileID: 5334423240735077760, guid: b2be17ae6ce82c24b8588f1951c48771,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5334423240765985611, guid: b2be17ae6ce82c24b8588f1951c48771,
         type: 3}
       propertyPath: m_LocalPosition.x

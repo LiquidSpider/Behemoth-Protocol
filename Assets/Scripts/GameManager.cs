@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour {
 		gamePaused = swapTo;
 		pauseMenu.SetActive(swapTo);
 
-		player.GetComponent<WeaponController>().enabled = !swapTo;
+		player.GetComponent<NewWeaponController>().enabled = !swapTo;
 		player.GetComponent<PlayerHealth>().enabled = !swapTo;
 		player.GetComponentInChildren<PlayerController>().enabled = !swapTo;
 		player.transform.GetChild(0).GetChild(0).GetComponent<Animator>().enabled = !swapTo;

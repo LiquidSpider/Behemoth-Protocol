@@ -11,7 +11,11 @@ public class WeaponSelect : MonoBehaviour {
 	public Sprite left3;
 
 	public int weaponNumber = 1;
-	public int previousWeaponNumber = -1;
+	public int previousWeaponNumber = 1;
+
+	private void Start() {
+		gameObject.GetComponent<Image>().sprite = left1;
+	}
 
 	// Update is called once per frame
 	void Update() {
