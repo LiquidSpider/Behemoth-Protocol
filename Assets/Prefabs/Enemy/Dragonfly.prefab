@@ -1373,6 +1373,7 @@ Transform:
   m_Children:
   - {fileID: 4832405277998949414}
   - {fileID: 4832405278284655401}
+  - {fileID: 4464339487096470761}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1406,15 +1407,18 @@ MonoBehaviour:
   body: {fileID: 0}
   rubbishPile: {fileID: 4565325564905723622, guid: 23e4b5c66fe421c4b89cddb9c797c52c,
     type: 3}
+  shootPostion: {fileID: 8438298012593168861}
+  bullet: {fileID: 8170432168313451531, guid: 763bca23454904d4a93fac67e2cd3bc9, type: 3}
+  shootTime: 0
   currentDragonFlyBehaviour: 0
-  defaultSpeed: 1200
-  defaultRotationSpeed: 1
-  targetRadius: 100
-  maxVelocity: 1000
-  cohesionForce: 100
+  defaultSpeed: 800
+  defaultRotationSpeed: 4
+  targetRadius: 50
+  maxVelocity: 2000
+  cohesionForce: 50
   cohesionDistance: 10000
   seperationDistance: 30
-  seperationForce: 200
+  seperationForce: 250
   alignmentStrength: 0
   applyCohesion: 1
   applySeperation: 1
@@ -1436,3 +1440,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!1 &8438298012593168861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4464339487096470761}
+  m_Layer: 11
+  m_Name: ShootPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4464339487096470761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8438298012593168861}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.46, z: 4.83}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4832405278485248912}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1165,6 +1165,11 @@ PrefabInstance:
       propertyPath: HP
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 4832405277703279928, guid: 6369a3c6a2272ef4f9b2adfbacf45354,
+        type: 3}
+      propertyPath: shootTime
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6369a3c6a2272ef4f9b2adfbacf45354, type: 3}
 --- !u!1001 &215874534
@@ -1238,6 +1243,11 @@ PrefabInstance:
         type: 3}
       propertyPath: HP
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832405277703279928, guid: 6369a3c6a2272ef4f9b2adfbacf45354,
+        type: 3}
+      propertyPath: shootTime
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6369a3c6a2272ef4f9b2adfbacf45354, type: 3}
@@ -1512,7 +1522,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344834629}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3232,6 +3242,11 @@ PrefabInstance:
       propertyPath: HP
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 4832405277703279928, guid: 6369a3c6a2272ef4f9b2adfbacf45354,
+        type: 3}
+      propertyPath: shootTime
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6369a3c6a2272ef4f9b2adfbacf45354, type: 3}
 --- !u!1 &864901744
@@ -3721,6 +3736,11 @@ PrefabInstance:
         type: 3}
       propertyPath: HP
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832405277703279928, guid: 6369a3c6a2272ef4f9b2adfbacf45354,
+        type: 3}
+      propertyPath: shootTime
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6369a3c6a2272ef4f9b2adfbacf45354, type: 3}
@@ -4236,7 +4256,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299640344}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4939,6 +4959,11 @@ PrefabInstance:
       propertyPath: HP
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 4832405277703279928, guid: 6369a3c6a2272ef4f9b2adfbacf45354,
+        type: 3}
+      propertyPath: shootTime
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6369a3c6a2272ef4f9b2adfbacf45354, type: 3}
 --- !u!1001 &1548288351
@@ -5012,6 +5037,11 @@ PrefabInstance:
         type: 3}
       propertyPath: HP
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832405277703279928, guid: 6369a3c6a2272ef4f9b2adfbacf45354,
+        type: 3}
+      propertyPath: shootTime
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6369a3c6a2272ef4f9b2adfbacf45354, type: 3}

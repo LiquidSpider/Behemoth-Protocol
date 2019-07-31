@@ -13,6 +13,12 @@ public class DragonFly : MonoBehaviour
     public Rigidbody body;
     public GameObject rubbishPile;
 
+    // shooting variables
+    public GameObject shootPostion;
+    public GameObject bullet;
+    public float shootTime;
+    private float shootTimer;
+
     // Dragon fly Behaviour enum
     public enum DragonFlyBehaviour
     {
@@ -135,6 +141,7 @@ public class DragonFly : MonoBehaviour
             {
                 // Rotate towards the target.
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position), Mathf.Min(defaultRotationSpeed * Time.deltaTime, 1));
+                Shoot();
             }
         }
     }
@@ -331,91 +338,29 @@ public class DragonFly : MonoBehaviour
             // rotate towards target.
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(position - transform.position), Mathf.Min(defaultRotationSpeed * 20 * Time.deltaTime, 1));
             // add forward momemtum.
-            body.AddForce(this.transform.forward * defaultSpeed * 60.0f * Time.deltaTime);
+            body.AddForce(this.transform.forward * defaultSpeed);
         }
         else
         {
             // rotate towards target.
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(position - transform.position), Mathf.Min(defaultRotationSpeed * Time.deltaTime, 1));
             // add forward momemtum.
-            body.AddForce(this.transform.forward * defaultSpeed * 20.0f * Time.deltaTime);
+            body.AddForce(this.transform.forward * defaultSpeed);
         }
     }
-
+    
     /// <summary>
-    /// Follows the player.
+    /// Shoots towards the direction it's facing.
     /// </summary>
-    //private void FollowPlayer()
-    //{
-
-    //    // Stay within radius of the player
-    //    if (CheckDistance(player.transform.position) > FollowRadius)
-    //    {
-
-    //        // if we're going to collide
-    //        //if (GoingToCollide(this.transform.forward))
-    //        //{
-    //        //    randomMovementTimer = Time.time - 1.0f;
-    //        //}
-    //        //else
-    //        //{
-    //            this.transform.position += this.transform.forward * Time.deltaTime * speed;
-    //        //}
-
-    //    }
-
-    //    // always look at the player
-    //    Quaternion direction = Quaternion.LookRotation(player.position - transform.position);
-    //    this.transform.rotation = Quaternion.Lerp(this.transform.rotation, direction, rotationSpeed * Time.deltaTime);
-
-
-    //    // Move around randomly
-    //    if (Time.time > randomMovementTimer)
-    //    {
-    //        randomMovementTimer += Time.time + UnityEngine.Random.Range(2, 5);
-    //        randomMovement = UnityEngine.Random.Range(0, 5);
-    //    }
-    //    else
-    //    {
-
-    //        Vector3 movementDirection = Vector3.zero;
-
-    //        switch (randomMovement)
-    //        {
-    //            case 0:
-    //                // do nothing
-    //                break;
-    //            case 1:
-    //                // move up
-    //                movementDirection = this.transform.up;
-    //                break;
-    //            case 2:
-    //                // move down
-    //                movementDirection = -this.transform.up;
-    //                break;
-    //            case 3:
-    //                // move right
-    //                movementDirection = this.transform.right;
-    //                break;
-    //            case 4:
-    //                // move left
-    //                movementDirection = -this.transform.right;
-    //                break;
-    //        }
-
-    //        //// if we're going to collide
-    //        //if (GoingToCollide(movementDirection))
-    //        //{
-    //        //    randomMovementTimer = Time.time - 1.0f;
-    //        //}
-    //        //else
-    //        //{
-    //            this.transform.position += movementDirection * Time.deltaTime * speed;
-    //        //}
-
-    //    }
-
-    //}
+    private void Shoot()
+    {
+        if(shootTimer < Time.time)
+        {
+            // Shoot
+            Instantiate(bullet, shootPostion.transform.position, this.transform.rotation);
+            shootTimer = Time.time + shootTime;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
