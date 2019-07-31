@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 	//  Components
@@ -53,6 +54,10 @@ public class PlayerController : MonoBehaviour {
 	private float maxVelocity = 1000f;
 	private bool flightStopped = false;
 
+
+	public GameObject hudFrame;
+	private Color hudMainColour;
+
 	//private float startTimeHoldingW = -1;
 	//private float startTimeHoldingA = -1;
 	//private float startTimeHoldingS = -1;
@@ -80,6 +85,8 @@ public class PlayerController : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		SwapWeapon(0);
+
+		hudMainColour = hudFrame.GetComponent<Image>().color;
 	}
 
 
@@ -226,9 +233,30 @@ public class PlayerController : MonoBehaviour {
 
 		// Weapon Select
 		if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);
-		if (Input.GetButtonDown("Weapon2")) SwapWeapon(2);
-		if (Input.GetButtonDown("Weapon3")) SwapWeapon(3);
+		if (Input.GetButtonDown("Weapon2")) SwapWeapon(1);
+		if (Input.GetButtonDown("Weapon3")) SwapWeapon(2);
 	}
+
+
+	public GameObject water;
+
+	private void OnTriggerStay(Collider collider) {
+		// Vacuum
+		if (!isCruising) {
+			if (collider.gameObject.tag == "Water") {
+				if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
+					if (Input.GetButton("Attack")) {
+						if (transform.root.GetComponent<PlayerHealth>().battery < transform.root.GetComponent<PlayerHealth>().maxB * 0.95f) {
+							if (water.GetComponent<WaterBehaviour>().TakeWater(50 * Time.deltaTime)) {
+								transform.root.GetComponent<PlayerHealth>().AddBattery(100 * Time.deltaTime);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 
 	private bool CheckMovement(Vector3 movementDirection) {
 		RaycastHit hit;
@@ -261,6 +289,7 @@ public class PlayerController : MonoBehaviour {
 			nWeapon.transform.localRotation = Quaternion.identity;
 		}
 	}
+
 	void AvoidObstruction() {
 		if (Physics.Linecast(transform.position, cameraObj.transform.position, out RaycastHit obstruction)) {
 			camera.transform.position = obstruction.point;
@@ -286,14 +315,6 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void OnCollisionEnter(Collision other) {
-		if (other.collider.gameObject.tag == "RedZone") {
-			// Stop Flying
-
-			StartCoroutine(stopFlying());
-		}
-	}
-
 	private IEnumerator stopFlying() {
 		flightStopped = true;
 		Debug.Log("Warning: Engines cut to avoid detection");
@@ -302,6 +323,7 @@ public class PlayerController : MonoBehaviour {
 
 		yield return new WaitForSeconds(3);
 
+		//hudFrame.GetComponent<Image>().color = hudMainColour;
 		flightStopped = false;
 	}
 
@@ -317,7 +339,19 @@ public class PlayerController : MonoBehaviour {
 	private void OnTriggerEnter(Collider collider) {
 		if (collider.gameObject.tag == "OrangeZon") {
 			Debug.Log("Warning: Approaching 'No Fly' Zone");
+
+			hudFrame.GetComponent<Image>().color = Color.yellow;
 		}
+
+		if (collider.gameObject.tag == "RedZone") {
+			StartCoroutine(stopFlying());
+
+			hudFrame.GetComponent<Image>().color = Color.red;
+		}
+	}
+
+	private void OnTriggerExit(Collider collider) {
+		if (collider.gameObject.tag == "OrangeZon") hudFrame.GetComponent<Image>().color = hudMainColour;
 	}
 }
 

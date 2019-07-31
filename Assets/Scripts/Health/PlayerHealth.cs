@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour {
 	public bool isScanning = false;
 
 	public float battery = 10000;
-	private float maxB;
+	public float maxB;
 
 	private List<GameObject> TakenDamageFrom = new List<GameObject>();
 
@@ -52,6 +52,23 @@ public class PlayerHealth : MonoBehaviour {
 
 		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
 		GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().fillAmount = battery / maxB;
+
+
+		//  Battery Bar Colour Change
+		Color temp;
+
+		if (battery / maxB > 0.75f) {
+			temp = Color.cyan;
+		} else if (battery / maxB > 0.5f) {
+			temp = Color.green;
+		} else if (battery / maxB > 0.25f) {
+			temp = Color.yellow;
+		} else {
+			temp = Color.red;
+		}
+
+		temp.a = 100f / 255f;
+		GameObject.FindGameObjectWithTag("PlayerBatteryBar").GetComponent<Image>().color = temp;
 	}
 
 	public void UseBattery(float reduction) {
