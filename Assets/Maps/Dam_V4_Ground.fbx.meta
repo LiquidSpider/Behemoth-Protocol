@@ -1,14 +1,15 @@
 fileFormatVersion: 2
-guid: 85aa53f8b6388a740a0decb74890d7e1
+guid: 322340ec894bf044f88383c4141f4b2e
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: lambert1
+    2100000: GroundMat
+    2100002: GroundMat2
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Destructible
+    4300000: Ground
     6400000: //RootNode
   externalObjects: {}
   materials:

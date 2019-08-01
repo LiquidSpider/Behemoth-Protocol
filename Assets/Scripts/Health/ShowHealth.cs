@@ -18,7 +18,7 @@ public class ShowHealth : MonoBehaviour {
 	private void Update() {
 		if (Input.GetMouseButtonDown(1) && materialMode == 0) {
 			timeOfScan = Time.time;
-			scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.GetChild(1).position) / 250f;
+			scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.GetChild(1).position) / 1000f;
 			materialMode = 1;
 		}
 

@@ -62,55 +62,53 @@ public class WeaponController : MonoBehaviour {
 		//playerSpeed = transform.GetChild(0).GetComponent<Rigidbody>().velocity * Time.deltaTime;
 
 		//Things should not recharge if the battery is too low
-		if(gameObject.GetComponent<PlayerHealth>().battery > 500) {
+		if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 			// Take energy away from the battery if the missiles have been used (and recharge the missiles)
 			if (Time.time < timeOfLastMissile + timeBetweenMissiles) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 500 / timeBetweenMissiles ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 			}
 			if (Time.time < timeOfLastMissile2 + timeBetweenMissiles) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile2 + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 500 / timeBetweenMissiles ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile2 + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 			}
 
 			// Same as above (Missiles) But for Flares
 			if (Time.time < timeOfLastFlare + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(2).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(2).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare2 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(3).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare2 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(3).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare2 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare3 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(4).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare3 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(4).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare3 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare4 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(5).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare4 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(5).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare4 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare5 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare5 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare5 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 		}
 
 		if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
-				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
-					if (Input.GetButtonDown("Attack")) {
-						if (Time.time > timeOfLastMissile + timeBetweenMissiles) {
-							missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
+				if (Input.GetButtonDown("Attack")) {
+					if (Time.time > timeOfLastMissile + timeBetweenMissiles) {
+						missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
 
-							timeOfLastMissile = Time.time;
-							LaunchMissile();
-						} else if (Time.time > timeOfLastMissile2 + timeBetweenMissiles) {
-							missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
+						timeOfLastMissile = Time.time;
+						LaunchMissile();
+					} else if (Time.time > timeOfLastMissile2 + timeBetweenMissiles) {
+						missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
 
-							timeOfLastMissile2 = Time.time;
-							LaunchMissile();
-						}
+						timeOfLastMissile2 = Time.time;
+						LaunchMissile();
 					}
 				}
 			} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
@@ -121,7 +119,7 @@ public class WeaponController : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.Q)) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 					if (Time.time > timeOfLastFlare + timeBetweenFlares) {
-						
+
 						timeOfLastFlare = Time.time;
 						LaunchFlare();
 					} else if (Time.time > timeOfLastFlare2 + timeBetweenFlares) {
@@ -144,7 +142,7 @@ public class WeaponController : MonoBehaviour {
 				}
 			}
 
-		} 
+		}
 		// Commented out because Bombs may not be a thing anymore
 		/*else {
 			if (Input.GetKeyDown(KeyCode.B) && Time.time > timeOfLastBomb + timeBetweenBombs) {

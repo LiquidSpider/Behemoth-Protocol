@@ -28,10 +28,10 @@ public class NewWeaponController : MonoBehaviour {
 	private float timeOfLastFlare5;
 
 
-	private bool missileLock = false;
-	private float timeOfLock;
-	private float timeForUnlock = 2f;
-	private GameObject missileTarget;
+//	private bool missileLock = false;
+//	private float timeOfLock;
+//	private float timeForUnlock = 2f;
+//	private GameObject missileTarget;
 
 
 

@@ -14,6 +14,7 @@ public class missileLaunch : MonoBehaviour {
 		GameObject newMissile = Instantiate(transform.root.GetComponent<giantBehaviour>().missile);
 		newMissile.transform.position = gameObject.transform.position;
 		newMissile.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward);
-		//Debug.Log("Fire here");
+		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.red;
+		newMissile.GetComponent<EnemyMissileBehaviour>().Instantiate();
 	}
 }
