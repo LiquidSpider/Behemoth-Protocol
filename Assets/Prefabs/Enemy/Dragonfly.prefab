@@ -1409,7 +1409,7 @@ MonoBehaviour:
     type: 3}
   shootPostion: {fileID: 8438298012593168861}
   bullet: {fileID: 8170432168313451531, guid: 763bca23454904d4a93fac67e2cd3bc9, type: 3}
-  shootTime: 0
+  shootTime: 0.5
   currentDragonFlyBehaviour: 0
   defaultSpeed: 800
   defaultRotationSpeed: 4

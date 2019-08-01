@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyMissileBehaviour : MonoBehaviour {
+	
+	public GameObject explosion;
 
-	//public GameObject explosion;
+	private void Update() {
+		Destroy(gameObject.transform.root.gameObject);
+	}
 
 	//[SerializeField] private Vector3 direction;
 
