@@ -11,7 +11,17 @@ ModelImporter:
     3300000: //RootNode
     4300000: Dam
     6400000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DamMat
+    second: {fileID: 2100000, guid: e9bef4fae6c35b841b6c04721e476e76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DamMat2
+    second: {fileID: 2100000, guid: 7d4b31190b2d3d146887a56bae5be625, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
