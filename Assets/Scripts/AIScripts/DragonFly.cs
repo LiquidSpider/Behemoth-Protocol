@@ -11,6 +11,9 @@ public class DragonFly : MonoBehaviour
     // Children colliders
     private Collider[] colliders;
     public Rigidbody body;
+
+    // on destory variables
+    private bool isQuitting = false;
     public GameObject rubbishPile;
 
     // shooting variables
@@ -58,12 +61,12 @@ public class DragonFly : MonoBehaviour
         // Get the game manager
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         // Get the objects rigidbody.
-        if(body == null)
+        if (body == null)
             body = this.GetComponent<Rigidbody>();
         // Setup state
         this.currentDragonFlyBehaviour = DragonFlyBehaviour.idle;
     }
-    
+
     /// <summary>
     /// Called once the object and all other objects have been initialised.
     /// </summary>
@@ -79,7 +82,7 @@ public class DragonFly : MonoBehaviour
         if (currentDragonFlyBehaviour != DragonFlyBehaviour.Kamikaze)
             BoidBehaviour();
 
-        switch(currentDragonFlyBehaviour)
+        switch (currentDragonFlyBehaviour)
         {
             case DragonFlyBehaviour.idle:
                 Idle();
@@ -100,7 +103,7 @@ public class DragonFly : MonoBehaviour
     /// </summary>
     private void BoidsLeft()
     {
-        if(gameManager.dragonFlies.Count <= 2)
+        if (gameManager.dragonFlies.Count <= 2)
         {
             currentDragonFlyBehaviour = DragonFlyBehaviour.Kamikaze;
         }
@@ -112,11 +115,7 @@ public class DragonFly : MonoBehaviour
     private void FixedUpdate()
     {
         // Clamp the velocity of this object to keep a maximum speed.
-        if(body.velocity.sqrMagnitude > sqrMaxVelocity)
-        {
-            // Given the direction of the objects current velocity multiply it by the maximum speed.
-            body.velocity = body.velocity.normalized * maxVelocity;
-        }
+        body.velocity = Vector3.ClampMagnitude(body.velocity, maxVelocity);
     }
 
     /// <summary>
@@ -134,7 +133,7 @@ public class DragonFly : MonoBehaviour
     {
         // if we're outside of the range.
         if (flyTowardsTarget)
-        {   
+        {
             if (Vector3.Distance(transform.position, player.transform.position) > targetRadius)
                 MoveTowardsTarget(player.transform.position);
             else
@@ -162,17 +161,17 @@ public class DragonFly : MonoBehaviour
     private void BoidBehaviour()
     {
         // The three vectors which perform the boid behaviour.
-        if(applySeperation)
+        if (applySeperation)
         {
             Seperation();
         }
 
-        if(applyAlignment)
+        if (applyAlignment)
         {
             Alignment();
         }
 
-        if(applyCohesion)
+        if (applyCohesion)
         {
             Cohesion();
         }
@@ -187,9 +186,9 @@ public class DragonFly : MonoBehaviour
         Vector3 seperation = Vector3.zero;
         int counter = 0;
 
-        foreach(GameObject boid in gameManager.dragonFlies)
+        foreach (GameObject boid in gameManager.dragonFlies)
         {
-            if(boid != this)
+            if (boid != this)
             {
                 float distance = Vector3.Distance(this.transform.position, boid.transform.position);
                 if ((distance > 0) && (distance < seperationDistance))
@@ -203,10 +202,10 @@ public class DragonFly : MonoBehaviour
             }
         }
 
-        if(counter > 0)
-        { 
+        if (counter > 0)
+        {
             seperation = seperation * (1.0f / counter);
-             this.body.AddForce(seperation);
+            this.body.AddForce(seperation);
         }
     }
 
@@ -220,13 +219,13 @@ public class DragonFly : MonoBehaviour
         //Vector3 speed = Vector3.zero;
         int counter = 0;
 
-        foreach(GameObject boid in gameManager.dragonFlies)
+        foreach (GameObject boid in gameManager.dragonFlies)
         {
-            if(boid != this)
+            if (boid != this)
             {
                 float distance = Vector3.Distance(this.transform.position, boid.transform.position);
                 // Only calculate if withing range.
-                if((distance > 0) && (distance < cohesionDistance))
+                if ((distance > 0) && (distance < cohesionDistance))
                 {
                     //speed = boid.GetComponent<DragonFly>().body.velocity;
                     alignment = boid.transform.forward;
@@ -235,7 +234,7 @@ public class DragonFly : MonoBehaviour
             }
         }
 
-        if(counter > 0)
+        if (counter > 0)
         {
             //speed = speed * (1.0f / counter);
             //speed = Vector3.Normalize(speed) * alignmentStrength;
@@ -258,20 +257,20 @@ public class DragonFly : MonoBehaviour
         Vector3 cohesion = Vector3.zero;
         int counter = 0;
 
-        foreach(GameObject boid in gameManager.dragonFlies)
+        foreach (GameObject boid in gameManager.dragonFlies)
         {
-            if(boid != this)
+            if (boid != this)
             {
                 float distance = Vector3.Distance(this.transform.position, boid.transform.position);
-                if((distance > 0) && (distance < cohesionDistance))
+                if ((distance > 0) && (distance < cohesionDistance))
                 {
                     cohesion += boid.transform.position;
                     counter++;
                 }
             }
         }
-        
-        if(counter > 0)
+
+        if (counter > 0)
         {
             cohesion = cohesion * (1.0f / (counter));
             // pull towards position
@@ -280,49 +279,6 @@ public class DragonFly : MonoBehaviour
             this.body.AddForce(cohesion);
         }
     }
-
-    ///// <summary>
-    ///// Controls the positioning on this dragon fly incomparison to the others.
-    ///// </summary>
-    //private void BoidBehaviour()
-    //{
-    //    Vector3 alignment = this.transform.forward;
-    //    Vector3 seperation = Vector3.zero;
-    //    Vector3 cohesion = this.transform.position;
-
-    //    foreach(GameObject boid in gameManager.dragonFlies)
-    //    {
-    //        if (boid != this)
-    //        {
-    //            seperation += GetSeparationVector(boid.transform);
-    //            alignment += boid.GetComponent<Rigidbody>().velocity;
-    //            cohesion += boid.transform.position;
-    //        }
-    //    }
-
-    //    alignment /= gameManager.dragonFlies.Length - 1;
-    //    alignment = alignment.normalized;
-    //    cohesion /= gameManager.dragonFlies.Length - 1;
-    //    cohesion = (cohesion - this.transform.position).normalized;
-
-    //    // calculate rotation.
-    //    Vector3 direction = alignment + seperation + cohesion;
-    //    Quaternion rotation = Quaternion.FromToRotation(this.transform.forward, direction.normalized);
-
-    //    // Apply the rotation.
-    //    if (rotation != this.transform.rotation)
-    //    {
-    //        this.transform.rotation = Quaternion.Slerp(rotation, this.transform.rotation, Mathf.Exp(-this.defaultRotationSpeed * Time.deltaTime));
-    //    }        
-    //}
-
-    //// Caluculates the separation vector with a target.
-    //Vector3 GetSeparationVector(Transform target)
-    //{
-    //    Vector3 diff = this.transform.position - target.transform.position;
-    //    float scaler = Mathf.Clamp01(1.0f - diff.magnitude / this.seperationDistance);
-    //    return diff * (scaler / diff.magnitude);
-    //}
 
     #endregion
 
@@ -333,7 +289,7 @@ public class DragonFly : MonoBehaviour
     private void MoveTowardsTarget(Vector3 position)
     {
         // If kamikaze mode triple speed and ignore distance
-        if(this.currentDragonFlyBehaviour == DragonFlyBehaviour.Kamikaze)
+        if (this.currentDragonFlyBehaviour == DragonFlyBehaviour.Kamikaze)
         {
             // rotate towards target.
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(position - transform.position), Mathf.Min(defaultRotationSpeed * 20 * Time.deltaTime, 1));
@@ -348,13 +304,13 @@ public class DragonFly : MonoBehaviour
             body.AddForce(this.transform.forward * defaultSpeed);
         }
     }
-    
+
     /// <summary>
     /// Shoots towards the direction it's facing.
     /// </summary>
     private void Shoot()
     {
-        if(shootTimer < Time.time)
+        if (shootTimer < Time.time)
         {
             // Shoot
             Instantiate(bullet, shootPostion.transform.position, this.transform.rotation);
@@ -362,10 +318,14 @@ public class DragonFly : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When collider enters another collider.
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         // if we're kamikazeing and the player is the collider.
-        if(currentDragonFlyBehaviour == DragonFlyBehaviour.Kamikaze)
+        if (currentDragonFlyBehaviour == DragonFlyBehaviour.Kamikaze)
         {
             // Blowup
             if (collision.collider.gameObject.tag == "Player")
@@ -388,29 +348,34 @@ public class DragonFly : MonoBehaviour
 
     }
 
-    private void OnCollisionExit(Collision collision)
+    /// <summary>
+    /// When the application is being closed.
+    /// </summary>
+    private void OnApplicationQuit()
     {
+        isQuitting = true;
     }
 
-    // On Destroy(this) event.
+    /// <summary>
+    /// On Destroy(this) event.
+    /// </summary>
     private void OnDestroy()
     {
-        // create a rubbish pile.
-        Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
-        // remove self from the game manager
-        if( gameManager.dragonFlies.Contains(this.gameObject))
+        if (!isQuitting)
         {
-            try
+            // create a rubbish pile.
+            Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
+            // remove self from the game manager
+            if (gameManager.dragonFlies.Contains(this.gameObject))
             {
-                gameManager.dragonFlies.Remove(this.gameObject);
-            }catch(Exception e)
-            {                
+                try
+                {
+                    gameManager.dragonFlies.Remove(this.gameObject);
+                }
+                catch (Exception e)
+                {
+                }
             }
         }
     }
-
-#if DEBUG
-
-#endif
-
 }

@@ -26,7 +26,7 @@ public class rightArmBehaviour : MonoBehaviour
 
     // damaged reports to the overall AI that the arm is gone
     void damaged() {
-    	giantBehave.GetComponent<giantBehaviour>().rightArmGone();
+    	//giantBehave.GetComponent<giantBehaviour>().rightArmGone();
     }
 
 	private void OnCollisionEnter(Collision other) {

@@ -49,7 +49,7 @@ public class NewWeaponController : MonoBehaviour {
 	}
 
 	void Update() {
-		playerSpeed = transform.GetChild(0).GetComponent<Rigidbody>().velocity * Time.deltaTime;
+		playerSpeed = transform.GetComponent<Rigidbody>().velocity * Time.deltaTime;
 
 		//Things should not recharge if the battery is too low
 		if(gameObject.GetComponent<PlayerHealth>().battery > 500) {
@@ -86,7 +86,28 @@ public class NewWeaponController : MonoBehaviour {
 			}
 		}
 
-		if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
+        // If The shoot button is pressed.
+        if (Input.GetButtonDown("Attack"))
+        {
+            // if we're not cruising
+            if (!this.transform.GetComponentInChildren<PlayerController>().isCruising)
+            {
+                // If the current weapon is the vacumm
+                if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3)
+                {
+                    gameObject.GetComponent<PlayerHealth>().isVacuuming = true;
+                }
+            }
+        }
+
+        // When the shoot button is released.
+        if (Input.GetButtonUp("Attack"))
+        {
+            gameObject.GetComponent<PlayerHealth>().isVacuuming = false;
+        }
+
+        if (!transform.GetComponentInChildren<PlayerController>().isCruising)
+        {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 					if (Input.GetButtonDown("Attack")) {
@@ -109,8 +130,8 @@ public class NewWeaponController : MonoBehaviour {
 				missileSpawnLocation = null;
 			}
 
-			// Launch Flares when player presses Q, each one keeps track of whether its been fired
-			if (Input.GetKeyDown(KeyCode.Q)) {
+            // Launch Flares when player presses Q, each one keeps track of whether its been fired
+            if (Input.GetKeyDown(KeyCode.Q)) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 					if (Time.time > timeOfLastFlare + timeBetweenFlares) {
 						

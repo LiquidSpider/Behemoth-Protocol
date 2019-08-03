@@ -7,7 +7,7 @@ public class WaterAbsorption : MonoBehaviour {
 
 	private void OnTriggerStay(Collider collider) {
 		// Vacuum
-		if (!GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<PlayerController>().isCruising) {
+		if (!GameObject.FindGameObjectWithTag("Player").transform.GetComponent<PlayerController>().isCruising) {
 			if (collider.gameObject.tag == "Water") {
 				if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
 					if (Input.GetButton("Attack")) {

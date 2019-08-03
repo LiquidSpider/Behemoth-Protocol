@@ -30,6 +30,7 @@ TagManager:
   - RedZone
   - Water
   - DragonFly
+  - DragonFlyParent
   layers:
   - Default
   - TransparentFX
@@ -42,11 +43,11 @@ TagManager:
   - PostProcessing
   - Player Projectile
   - Player
-  - DragonFly
-  - Salamander
+  - Enemy
+  - Enemy Projectile
   - Rubbish
-  - 
-  - 
+  - Giant
+  - Environment
   - 
   - 
   - 

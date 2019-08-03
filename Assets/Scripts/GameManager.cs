@@ -3,148 +3,186 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
-	public GameObject player;
-	public GameObject salamander;
-	public GameObject smallerEnemies;
+    // player object
+    public GameObject player;
 
-	private bool gamePaused;
-	public GameObject pauseMenu;
+    // pause menu variables.
+    public GameObject pauseMenu;
+    private bool gamePaused;
 
-	private bool gameOver = false;
+    // win condition variables
+    private bool gameOver = false;
 
-	private Quaternion cameraRotation;
+    private Quaternion cameraRotation;
+    public GameObject promptMenu;
+    private float timeSetActive = 0;
+    private bool dispMissileDamage = false;
+    public Text framesCounter;
 
-	public GameObject promptMenu;
-	private float timeSetActive = 0;
-	private bool dispMissileDamage = false;
+    // List of dragon flies in the scene.
+    [System.NonSerialized]
+    public List<GameObject> dragonFlies = new List<GameObject>();
 
-	public Text framesCounter;
+    /// <summary>
+    /// Called when the script is enabled.
+    /// </summary>
+    void Start()
+    {
+        // initial setup of pause variables.
+        gamePaused = false;
+        pauseMenu.SetActive(false);
 
-    public List<GameObject> dragonFlies;
+        // setup time scale.
+        Time.timeScale = 1;
 
-    //public GameObject dragonfly;
-    //public GameObject dragonflies;
-    //private Vector3[] positions;
-    //public float[] timeDestroyed = new float[] { -1, -1, -1, -1 };
+        // Setup cursor.
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
-    void Start() {
-		gamePaused = false;
-		pauseMenu.SetActive(false);
+        Pause(false);
+    }
 
-		Time.timeScale = 1;
+    /// <summary>
+    /// Called when the object is initialised.
+    /// </summary>
+    private void Awake()
+    {
+        // check if we have a player.
+        if (!player)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            // if the player still isn't found. Close the game.
+            if (!player)
+            {
+                Debug.Log("Game Manager has no player and no object with the player tag exists.");
+                Application.Quit();
+            }
+        }
+    }
 
-		Cursor.visible = false;
+    /// <summary>
+    /// Called every frame.
+    /// </summary>
+	void Update()
+    {
+#if DEBUG
+        // Display the frame counter.
+        if (!gamePaused && Time.time % 1 < 0.02f)
+            framesCounter.text = Mathf.Round(1f / Time.deltaTime).ToString();
+#endif
 
-		SetStuff(false);
-		Cursor.lockState = CursorLockMode.Locked;
-
-		//positions = new Vector3[dragonflies.transform.childCount];
-		//for (int i = 0; i < dragonflies.transform.childCount; i++) {
-		//	positions[i] = dragonflies.transform.GetChild(i).transform.position;
-		//}
-	}
-
-	void Update() {
-		if (!gamePaused && Time.time % 1 < 0.02f) framesCounter.text = Mathf.Round( 1f / Time.deltaTime ).ToString();
-
-		if (!gameOver && (Input.GetKeyDown(KeyCode.P) || Input.GetButtonDown("Pause"))) {
-			if (gamePaused) {
-				gamePaused = false;
-				pauseMenu.SetActive(false);
-
-				Time.timeScale = 1;
-
-				Cursor.visible = false;
-
-				SetStuff(false);
-				Cursor.lockState = CursorLockMode.Locked;
-			} else {
-				cameraRotation = Camera.main.transform.rotation;
-
-				gamePaused = true;
-				pauseMenu.SetActive(true);
-
-				Time.timeScale = 0;
-
-				Cursor.visible = true;
-
-				SetStuff(true);
-				Cursor.lockState = CursorLockMode.None;
-			}
-		}
+        CheckPause();
 
         dragonFlies = new List<GameObject>(GameObject.FindGameObjectsWithTag("DragonFly"));
 
-        if (gamePaused || gameOver) {
-			Camera.main.transform.rotation = cameraRotation;
-		}
+        if (gamePaused || gameOver)
+        {
+            Camera.main.transform.rotation = cameraRotation;
+        }
 
-		if (salamander && salamander.GetComponent<BossHealth>().HP <= 100 && !dispMissileDamage) {
-			dispMissileDamage = true;
-			timeSetActive = Time.time;
-			promptMenu.transform.GetChild(2).GetComponent<Text>().text = "Good job, now finish it with a missile (2)";
-			promptMenu.SetActive(true);
-		}
+        if (timeSetActive + 3 < Time.time)
+        {
+            promptMenu.SetActive(false);
+        }
+    }
 
-		if (timeSetActive + 3 < Time.time) {
-			promptMenu.SetActive(false);
-		}
+    /// <summary>
+    /// Handles the check condition and execution of pausing the game.
+    /// </summary>
+    public void CheckPause()
+    {
+        if (!gameOver && (Input.GetKeyDown(KeyCode.P) || Input.GetButtonDown("Pause")))
+        {
+            if (gamePaused)
+            {
+                gamePaused = false;
+                pauseMenu.SetActive(false);
 
-		//if (dragonflies.transform.childCount < positions.Length) {
+                Time.timeScale = 1;
 
-		//}
-	}
+                Cursor.visible = false;
 
+                Pause(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                cameraRotation = Camera.main.transform.rotation;
 
-	public void PlayerLose() {
-		gamePaused = true;
-		gameOver = true;
-		pauseMenu.SetActive(true);
-		pauseMenu.transform.GetChild(1).gameObject.SetActive(true);
+                gamePaused = true;
+                pauseMenu.SetActive(true);
 
-		Time.timeScale = 0;
-		Cursor.visible = true;
+                Time.timeScale = 0;
 
-		SetStuff(true);
-		Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
 
-		Destroy(player.transform.GetChild(1).GetChild(3).gameObject);
-		Destroy(player.transform.GetChild(1).GetChild(0).gameObject);
-		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = 0;
-	}
+                Pause(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+    }
 
-	public void PlayerWin() {
-		gamePaused = false;
-		gameOver = true;
-		pauseMenu.SetActive(true);
-		pauseMenu.transform.GetChild(0).gameObject.SetActive(true);
+    /// <summary>
+    /// When the player has lost.
+    /// </summary>
+	public void PlayerLose()
+    {
+        gamePaused = true;
+        gameOver = true;
+        pauseMenu.SetActive(true);
+        pauseMenu.transform.GetChild(1).gameObject.SetActive(true);
 
-		Time.timeScale = 0;
-		Cursor.visible = true;
+        Time.timeScale = 0;
+        Cursor.visible = true;
 
-		SetStuff(true);
-		Cursor.lockState = CursorLockMode.None;
+        Pause(true);
+        Cursor.lockState = CursorLockMode.None;
 
-		Destroy(salamander);
-	}
+        Destroy(player.transform.GetChild(1).GetChild(3).gameObject);
+        Destroy(player.transform.GetChild(1).GetChild(0).gameObject);
+        GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = 0;
+    }
 
-	private void SetStuff(bool swapTo) {
-		gamePaused = swapTo;
-		pauseMenu.SetActive(swapTo);
+    /// <summary>
+    /// When the player has won.
+    /// </summary>
+	public void PlayerWin()
+    {
+        gamePaused = false;
+        gameOver = true;
+        pauseMenu.SetActive(true);
+        pauseMenu.transform.GetChild(0).gameObject.SetActive(true);
 
-		player.GetComponent<NewWeaponController>().enabled = !swapTo;
-		player.GetComponent<PlayerHealth>().enabled = !swapTo;
-		player.GetComponentInChildren<PlayerController>().enabled = !swapTo;
-		player.transform.GetChild(0).GetChild(0).GetComponent<Animator>().enabled = !swapTo;
-		//player.transform.GetChild(2).gameObject.SetActive(!swapTo);
-		//salamander.GetComponent<Sal>().enabled = !swapTo;
+        Time.timeScale = 0;
+        Cursor.visible = true;
 
-		//for (int i = 0; i < smallerEnemies.transform.childCount; i++) {
-		//	smallerEnemies.transform.GetChild(i).GetComponent<DragonFly>().enabled = !swapTo;
-		//}
+        Pause(true);
+        Cursor.lockState = CursorLockMode.None;
+    }
 
-		Cursor.visible = swapTo;
-	}
+    /// <summary>
+    /// Handles the pausing and unpausing of scripts and objects.
+    /// </summary>
+    /// <param name="swapTo"></param>
+    private void Pause(bool swapTo)
+    {
+        gamePaused = swapTo;
+        pauseMenu.SetActive(swapTo);
+
+        player.GetComponent<NewWeaponController>().enabled = !swapTo;
+        player.GetComponent<PlayerHealth>().enabled = !swapTo;
+        player.GetComponent<PlayerController>().enabled = !swapTo;
+        player.transform.GetChild(0).GetComponent<Animator>().enabled = !swapTo;
+        //player.transform.GetChild(2).gameObject.SetActive(!swapTo);
+        //salamander.GetComponent<Sal>().enabled = !swapTo;
+
+        //for (int i = 0; i < smallerEnemies.transform.childCount; i++) {
+        //	smallerEnemies.transform.GetChild(i).GetComponent<DragonFly>().enabled = !swapTo;
+        //}
+
+        Cursor.visible = swapTo;
+    }
 }

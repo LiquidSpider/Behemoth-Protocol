@@ -37,7 +37,7 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		transform.rotation = Quaternion.LookRotation(positionToLookAt);
 
 		// Find the current velocity of the missile (based on relative velocity of player)
-		playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).gameObject.GetComponent<Rigidbody>().velocity * Time.deltaTime;
+		playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.gameObject.GetComponent<Rigidbody>().velocity * Time.deltaTime;
 
 		if (inputHit.transform.root.tag == "DragonFly") {
 			targetObj = inputHit.transform.gameObject;

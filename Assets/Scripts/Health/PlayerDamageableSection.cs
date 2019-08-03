@@ -18,8 +18,7 @@ public class PlayerDamageableSection : MonoBehaviour {
     /// <param name="damage">Amount of damage taking.</param>
     public void TakeDamage(float damage, GameObject damageSource)
     {
-
-        //Debug.Log("Dealing Damage to player");
+        
         transform.root.GetComponent<PlayerHealth>().TakeDamage(damage, damageSource);
 
     }

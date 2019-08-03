@@ -13,7 +13,9 @@ public class DragonFlySpawner : MonoBehaviour
     private float cooldownTimer;
     private float spawnRateTimer;
 
+    // dragon fly variables
     public GameObject dragonFly;
+    public GameObject dragonFlyParent;
     public GameManager gameManager;
 
     private GameObject[] spawners;
@@ -35,11 +37,11 @@ public class DragonFlySpawner : MonoBehaviour
             _spawn = value;
         }
     }
-        
+
     // Start is called before the first frame update
     void Start()
     {
-       
+
     }
 
     private void Awake()
@@ -49,11 +51,11 @@ public class DragonFlySpawner : MonoBehaviour
         // Get the spawners that are children of this object.
         List<GameObject> spawnerList = new List<GameObject>();
         Transform[] children = this.transform.GetComponentsInChildren<Transform>();
-        foreach(Transform child in children)
+        foreach (Transform child in children)
         {
             if (child.gameObject.name.ToLower().Contains("spawner"))
             {
-                if(child.gameObject != this.gameObject)
+                if (child.gameObject != this.gameObject)
                     spawnerList.Add(child.gameObject);
             }
         }
@@ -71,7 +73,7 @@ public class DragonFlySpawner : MonoBehaviour
         if (spawn)
         {
             // wait the cooldown timer
-            if(cooldownTimer <= Time.time)
+            if (cooldownTimer <= Time.time)
             {
                 if (spawnRateTimer <= Time.time)
                 {
@@ -86,7 +88,7 @@ public class DragonFlySpawner : MonoBehaviour
             if (gameManager.dragonFlies.Count >= numberOfDragonFlys)
             {
                 // activate the dragon flies.
-                foreach(GameObject dragonFly in gameManager.dragonFlies)
+                foreach (GameObject dragonFly in gameManager.dragonFlies)
                 {
                     dragonFly.GetComponent<DragonFly>().flyTowardsTarget = true;
                     dragonFly.GetComponent<DragonFly>().currentDragonFlyBehaviour = DragonFly.DragonFlyBehaviour.Attacking;
@@ -117,7 +119,8 @@ public class DragonFlySpawner : MonoBehaviour
         if (counter < spawners.Length)
         {
             // spawn the dragonfly.
-            Instantiate(dragonFly, spawners[counter].transform.position, spawners[counter].transform.rotation);
+            GameObject newDragonFly = Instantiate(dragonFly, spawners[counter].transform.position, spawners[counter].transform.rotation);
+            newDragonFly.transform.SetParent(dragonFlyParent.transform);
             counter++;
         }
         else

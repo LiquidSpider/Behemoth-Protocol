@@ -26,7 +26,7 @@ public class legsBehaviour : MonoBehaviour
 
     // damaged reports to the overall AI that the legs are gone
     void damaged() {
-    	giantBehave.GetComponent<giantBehaviour>().legsGone();
+    	//giantBehave.GetComponent<giantBehaviour>().legsGone();
     }
 
     // legsFixed will reset the leg health, allowing the giant to keep moving
