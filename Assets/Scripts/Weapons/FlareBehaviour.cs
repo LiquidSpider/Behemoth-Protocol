@@ -14,6 +14,18 @@ public class FlareBehaviour : MonoBehaviour {
 		flareDropDirection = playerMovementDirection;
 
 		dropStartTime = Time.time;
+
+
+
+		GameObject[] currentEnemyMissiles = GameObject.FindGameObjectsWithTag("Missile");
+
+		foreach (GameObject missile in currentEnemyMissiles) {
+			if (missile.name == "ENEMY Missile") {
+				if (Vector3.Distance(missile.transform.position, gameObject.transform.position) < 150f) {
+					missile.GetComponent<EnemyMissileBehaviour>().Distraction(gameObject);
+				}
+			}
+		}
 	}
 
 	private void Update() {

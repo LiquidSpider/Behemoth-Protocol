@@ -247,7 +247,9 @@ public class giantBehaviour : MonoBehaviour
             launchTime = 0.0f;
             foreach (GameObject launcher in activeLaunchers)
             {
-                launcher.GetComponent<missileLaunch>().fire();
+				float r = Random.Range(0f, 1f);
+
+				if (r > 0.5f) launcher.GetComponent<missileLaunch>().fire();
             }
         }
     }

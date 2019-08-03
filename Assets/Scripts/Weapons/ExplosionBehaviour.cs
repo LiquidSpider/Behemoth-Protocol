@@ -27,7 +27,7 @@ public class ExplosionBehaviour : MonoBehaviour {
 				}
 
 				Color old = GetComponent<MeshRenderer>().material.color;
-				old.a = 1 - ((fadeStartTime - Time.time) / fadeTime);
+				old.a = 1 - (( Time.time - fadeStartTime) / fadeTime);
 
 				GetComponent<MeshRenderer>().material.color = old;
 			} else {

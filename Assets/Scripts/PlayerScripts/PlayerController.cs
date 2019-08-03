@@ -174,16 +174,22 @@ public class PlayerController : MonoBehaviour {
 		// Movement
 		// Check the inputs for which are being used
 		if (!flightStopped) {
+			if (isCruising) maxVelocity = 2500f;
+			else maxVelocity = 1000f;
+
 			float speedFactor = accSpeed;
 			if (isCruising) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50f * Time.deltaTime);
-			if (isCruising) rb.AddForce(transform.forward * speedFactor * cruiseFwd);
+			if (isCruising) rb.AddForce(rb.velocity.normalized * speedFactor * cruiseFwd);
+			if (isCruising) gameObject.transform.GetChild(0).transform.rotation = Quaternion.LookRotation(rb.velocity.normalized);
+			else gameObject.transform.GetChild(0).transform.rotation = gameObject.transform.rotation;// = Quaternion.LookRotation(rb.velocity.normalized);
 
-			if (Input.GetKey(KeyCode.W)) rb.AddForce(transform.forward * speedFactor);
-			if (Input.GetKey(KeyCode.S)) rb.AddForce(-transform.forward * speedFactor);
-			if (Input.GetKey(KeyCode.D)) rb.AddForce(transform.right * speedFactor);
-			if (Input.GetKey(KeyCode.A)) rb.AddForce(-transform.right * speedFactor);
-			if (Input.GetKey(KeyCode.Space)) rb.AddForce(transform.up * speedFactor);
-			if (Input.GetKey(KeyCode.LeftControl)) rb.AddForce(-transform.up * speedFactor);
+
+			if (Input.GetKey(KeyCode.W) && !isCruising) rb.AddForce(transform.forward * speedFactor);
+			if (Input.GetKey(KeyCode.S) && !isCruising) rb.AddForce(-transform.forward * speedFactor);
+			if (Input.GetKey(KeyCode.D) && !isCruising) rb.AddForce(transform.right * speedFactor);
+			if (Input.GetKey(KeyCode.A) && !isCruising) rb.AddForce(-transform.right * speedFactor);
+			if (Input.GetKey(KeyCode.Space) && !isCruising) rb.AddForce(transform.up * speedFactor);
+			if (Input.GetKey(KeyCode.LeftControl) && !isCruising) rb.AddForce(-transform.up * speedFactor);
 
 			// Change the max velocity
 			if (rb.velocity.magnitude > maxVelocity) rb.velocity = rb.velocity.normalized * maxVelocity;
@@ -235,26 +241,6 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);
 		if (Input.GetButtonDown("Weapon2")) SwapWeapon(1);
 		if (Input.GetButtonDown("Weapon3")) SwapWeapon(2);
-	}
-
-
-	public GameObject water;
-
-	private void OnTriggerStay(Collider collider) {
-		// Vacuum
-		if (!isCruising) {
-			if (collider.gameObject.tag == "Water") {
-				if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
-					if (Input.GetButton("Attack")) {
-						if (transform.root.GetComponent<PlayerHealth>().battery < transform.root.GetComponent<PlayerHealth>().maxB * 0.95f) {
-							if (water.GetComponent<WaterBehaviour>().TakeWater(50 * Time.deltaTime)) {
-								transform.root.GetComponent<PlayerHealth>().AddBattery(100 * Time.deltaTime);
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 

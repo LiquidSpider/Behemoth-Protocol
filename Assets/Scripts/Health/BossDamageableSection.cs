@@ -21,7 +21,7 @@ public class BossDamageableSection : MonoBehaviour {
 		if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.root.gameObject.GetComponent<PlayerHealth>().isScanning) {
 			if (materialMode == 0) {
 				timeOfScan = Time.time;
-				scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.GetChild(1).position) / 450f;
+				scanDistance = Vector3.Magnitude(transform.position - GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().player.transform.GetChild(0).position) / 1000f;
 				materialMode = 1;
 			}
 			if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {
@@ -38,12 +38,6 @@ public class BossDamageableSection : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter(Collision other) {
-		if (other.gameObject.transform.tag == "Explosion - Player") {
-			Transform parent = transform.root;
-
-			parent.GetComponent<BossHealth>().TakeDamage(200, other.gameObject);
-		}
-
 		if (other.gameObject.transform.tag == "Bullet - Player") {
 			Transform parent = transform.root;
 
@@ -51,6 +45,14 @@ public class BossDamageableSection : MonoBehaviour {
 		}
 
 		changedMaterial.color = DetermineColour();
+	}
+
+	private void OnTriggerEnter(Collider other) {
+		if (other.gameObject.transform.tag == "Explosion - Player") {
+			Transform parent = transform.root;
+
+			parent.GetComponent<BossHealth>().TakeDamage(200, other.gameObject);
+		}
 	}
 
 	private Color DetermineColour() {

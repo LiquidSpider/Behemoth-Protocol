@@ -12,6 +12,7 @@ public class missileLaunch : MonoBehaviour {
 		yield return new WaitForSeconds(WaitTime);
 
 		GameObject newMissile = Instantiate(transform.root.GetComponent<giantBehaviour>().missile);
+		newMissile.name = "ENEMY Missile";
 		newMissile.transform.position = gameObject.transform.position;
 		newMissile.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward);
 		newMissile.transform.GetChild(0).GetComponent<TrailRenderer>().material.color = Color.red;

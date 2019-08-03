@@ -107,20 +107,6 @@ MonoBehaviour:
   isScanning: 0
   battery: 10000
   maxB: 0
---- !u!114 &4498502439831713149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71284694406847883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8abdc4ee717f0a645b18e3a8cecbb693, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shield: {fileID: 564681730809392888}
-  shieldActive: 0
 --- !u!114 &4001442076899185275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,6 +126,20 @@ MonoBehaviour:
   playerSpeed: {x: 0, y: 0, z: 0}
   soundSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
   sFire: {fileID: 8300000, guid: ab1cc6d48d3b90946a8d99e384b7a14a, type: 3}
+--- !u!114 &4498502439831713149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71284694406847883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8abdc4ee717f0a645b18e3a8cecbb693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 564681730809392888}
+  shieldActive: 0
 --- !u!136 &57975790
 CapsuleCollider:
   m_ObjectHideFlags: 0
