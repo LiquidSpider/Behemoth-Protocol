@@ -182,14 +182,16 @@ public class PlayerController : MonoBehaviour {
 			if (isCruising) rb.AddForce(rb.velocity.normalized * speedFactor * cruiseFwd);
 			if (isCruising) gameObject.transform.GetChild(0).transform.rotation = Quaternion.LookRotation(rb.velocity.normalized);
 			else gameObject.transform.GetChild(0).transform.rotation = gameObject.transform.rotation;// = Quaternion.LookRotation(rb.velocity.normalized);
+            rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * accSpeed);
+            rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * accSpeed);
+            rb.AddForce(transform.up * Input.GetAxis("AscDesc") * accSpeed);
 
-
-			if (Input.GetKey(KeyCode.W) && !isCruising) rb.AddForce(transform.forward * speedFactor);
-			if (Input.GetKey(KeyCode.S) && !isCruising) rb.AddForce(-transform.forward * speedFactor);
-			if (Input.GetKey(KeyCode.D) && !isCruising) rb.AddForce(transform.right * speedFactor);
-			if (Input.GetKey(KeyCode.A) && !isCruising) rb.AddForce(-transform.right * speedFactor);
-			if (Input.GetKey(KeyCode.Space) && !isCruising) rb.AddForce(transform.up * speedFactor);
-			if (Input.GetKey(KeyCode.LeftControl) && !isCruising) rb.AddForce(-transform.up * speedFactor);
+			//if (Input.GetKey(KeyCode.W) && !isCruising) rb.AddForce(transform.forward * speedFactor);
+			//if (Input.GetKey(KeyCode.S) && !isCruising) rb.AddForce(-transform.forward * speedFactor);
+			//if (Input.GetKey(KeyCode.D) && !isCruising) rb.AddForce(transform.right * speedFactor);
+			//if (Input.GetKey(KeyCode.A) && !isCruising) rb.AddForce(-transform.right * speedFactor);
+			//if (Input.GetKey(KeyCode.Space) && !isCruising) rb.AddForce(transform.up * speedFactor);
+			//if (Input.GetKey(KeyCode.LeftControl) && !isCruising) rb.AddForce(-transform.up * speedFactor);
 
 			// Change the max velocity
 			if (rb.velocity.magnitude > maxVelocity) rb.velocity = rb.velocity.normalized * maxVelocity;
