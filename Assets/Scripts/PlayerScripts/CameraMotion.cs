@@ -6,7 +6,7 @@ public class CameraMotion : MonoBehaviour
 {
     //  Vars
     [Tooltip("How fast camera moves to player")]
-    public float mSpeed = 1f;                                           // How fast camera moves to target
+    public float mSpeed = 0.2f;                                           // How fast camera moves to target
 
     // Private vars
     private GameObject target;                                           // Camera following target
@@ -16,7 +16,7 @@ public class CameraMotion : MonoBehaviour
         Target();
     }
 
-    void Update()
+    void LateUpdate()
     {
         FollowTarget();
     }
@@ -24,9 +24,9 @@ public class CameraMotion : MonoBehaviour
     void FollowTarget()
     {
         float nSpeed = mSpeed;
-        if (target.GetComponent<PlayerController>().isCruising) nSpeed = nSpeed * 2;
-        float step = nSpeed * Vector3.Distance(transform.position, target.transform.position) * Time.deltaTime; // calculate distance to move
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step);
+        if (target.GetComponent<PlayerController>().isCruising) nSpeed = nSpeed * 1.5f;
+        Vector3 smoothPosition = Vector3.Lerp(transform.position, target.transform.position, nSpeed);
+        transform.position = smoothPosition;
         transform.rotation = target.transform.rotation;
     }
     void Target()

@@ -90,12 +90,16 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-	void Update() {
-		CameraMove();
+	void FixedUpdate() {
 		PlayerControls();
 		AimWeapon();
 		//AvoidObstruction();
 	}
+
+    void Update()
+    {
+        CameraMove();
+    }
 
 	void CameraMove() { // Camera controls and manipulation goes here
 
@@ -271,14 +275,24 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator Dodge() {
 		if (!isDodge) {
 			isDodge = true;
-			if (Input.GetKey("d")) animator.SetTrigger("DodgeRight");
-			if (Input.GetKey("a")) animator.SetTrigger("DodgeLeft");
-			if (Input.GetKey("w")) animator.SetTrigger("DodgeForward");
-			rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
+            if (FindObjectOfType<CameraMotion>())
+            {
+                CameraMotion cMotion = FindObjectOfType<CameraMotion>();
+                cMotion.mSpeed = cMotion.mSpeed * 3f;
+            }
+            if (Input.GetAxis("LeftHorizontal") > 0) animator.SetTrigger("DodgeRight");
+            if (Input.GetAxis("LeftHorizontal") < 0) animator.SetTrigger("DodgeLeft");
+            if (Input.GetAxis("LeftVertical") > 0) animator.SetTrigger("DodgeForward");
+            rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
 			rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
 			rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
 			yield return new WaitForSeconds(dTime);
-			isDodge = false;
+            if (FindObjectOfType<CameraMotion>())
+            {
+                CameraMotion cMotion = FindObjectOfType<CameraMotion>();
+                cMotion.mSpeed = cMotion.mSpeed / 3f;
+            }
+            isDodge = false;
 			animator.ResetTrigger("DodgeRight");
 			animator.ResetTrigger("DodgeLeft");
 			animator.ResetTrigger("DodgeForward");
