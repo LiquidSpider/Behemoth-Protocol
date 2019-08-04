@@ -213,31 +213,13 @@ public class PlayerController : MonoBehaviour {
 		}
 
 
-
-
-
-
-
-
-
-		// This looks like it might be doing something strange
+		// Dodge if boost button tapped instead of held
 		if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
 			StartCoroutine(Dodge());
 		} else if ((Input.GetButtonUp("Dodge") && isCruising) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
 			isCruising = false;
 			animator.SetBool("IsBoosting", false);
 		}
-
-
-
-
-
-
-
-
-
-
-
 
 		// Weapon Select
 		if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);

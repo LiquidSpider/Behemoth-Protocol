@@ -36,7 +36,7 @@ public class MissileBehaviour : MonoBehaviour {
 
 	public void Initialise(GameObject inputOwner, Vector3 inputTarget) {
         MakeSound makeSound = GetComponent<MakeSound>();
-        makeSound.Play(thrust);
+        makeSound.Play(thrust, true);
 		launchTime = Time.time + launchTime;
 
 		owner = inputOwner;

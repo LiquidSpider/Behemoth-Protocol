@@ -240,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion: {fileID: 3070066106699261732, guid: 7c6c7c0a25c368b43b59f7b0ee76312f,
     type: 3}
+  thrust: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   owner: {fileID: 0}
   player: {fileID: 4498502439855041820, guid: b2be17ae6ce82c24b8588f1951c48771, type: 3}
