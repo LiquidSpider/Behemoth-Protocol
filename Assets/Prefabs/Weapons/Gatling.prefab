@@ -1,5 +1,132 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &32427024116973841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8845073536808111247}
+  - component: {fileID: 2624645974813840654}
+  m_Layer: 0
+  m_Name: Audio Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8845073536808111247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32427024116973841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7814207385040326017}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &2624645974813840654
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32427024116973841}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 0.5
+  MaxDistance: 50
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.754
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7814207385040326016
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,6 +138,7 @@ GameObject:
   - component: {fileID: 7814207385040326017}
   - component: {fileID: 7814207385040326029}
   - component: {fileID: 2769048946040902049}
+  - component: {fileID: 1749261388113969008}
   m_Layer: 0
   m_Name: Gatling
   m_TagString: CurrentWeapon
@@ -31,6 +159,7 @@ Transform:
   m_Children:
   - {fileID: 6593920549887004367}
   - {fileID: 7814207385975018067}
+  - {fileID: 8845073536808111247}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,42 +176,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: 0
-  magSize: 0
-  pellets: 1
+  fireSounds:
+  - {fileID: 8300000, guid: 3ca0deaae6133c14ea2a213bacfa7857, type: 3}
+  - {fileID: 8300000, guid: 1c62270f9988eda4e8b152b5aa8a37c1, type: 3}
+  - {fileID: 8300000, guid: bd193e81fda1e56458850b6b98ea952d, type: 3}
+  - {fileID: 8300000, guid: a7e76c6352b72654c9509f53e68ae123, type: 3}
   fireRate: 0.05
-  fMode: 2
-  burstNum: 1
   damage: 5
-  impactForce: 20
   barrel: {fileID: 7814207385975018066}
   tracerSrc: {fileID: 2874919936438722242, guid: 698f3c60db3179b47a14a81d7130c850,
     type: 3}
-  rAmmo: 0
-  fireForce: 2
-  weight: 1
   minAcc: 1
   maxAcc: 10
   incAcc: 5
   handling: 2
-  sFire: {fileID: 8300000, guid: 4647a36d50420274dadf4162078c5507, type: 3}
-  soundPitchRandom: 0
-  spatialise: 0
-  sFireVol: 1
-  sFireMinDist: 1
-  sFireMaxDist: 500
   projectile: {fileID: 8170432168313451531, guid: 8ffa651664f091b4da719dbe2b3732ed,
     type: 3}
   pSpeed: 200
-  pDamage: 0
-  pWeight: 1
   pGrav: 1
-  pExplosive: 0
-  pExpSize: 0
-  pExpDamage: 0
   pLightStr: 20
-  pPrjSize: 0.1
   cAcc: 0
-  soundSrc: {fileID: 104, guid: 692e7725adc4cd84e8b3d7a1cb2e0d24, type: 3}
 --- !u!111 &2769048946040902049
 Animation:
   m_ObjectHideFlags: 0
@@ -99,6 +212,18 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &1749261388113969008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7814207385040326016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35455788975e9ef4990ca2a19b5f1272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7814207385975018066
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,10 +261,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7814207385040326017}
     m_Modifications:
-    - target: {fileID: 100000, guid: 7526de9c2d0e63d439df35c5c972aea8, type: 3}
-      propertyPath: m_Name
-      value: Gatling_Gun
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7526de9c2d0e63d439df35c5c972aea8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.022
@@ -183,6 +304,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 7526de9c2d0e63d439df35c5c972aea8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 7526de9c2d0e63d439df35c5c972aea8, type: 3}
+      propertyPath: m_Name
+      value: Gatling_Gun
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 7526de9c2d0e63d439df35c5c972aea8, type: 3}
       propertyPath: m_Materials.Array.data[0]

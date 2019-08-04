@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MissileBehaviour : MonoBehaviour {
 
 	public GameObject explosion;
+    public AudioClip thrust;
 
 	[SerializeField] private Vector3 direction;
 
@@ -34,6 +35,8 @@ public class MissileBehaviour : MonoBehaviour {
 	private bool playerMissileLock;
 
 	public void Initialise(GameObject inputOwner, Vector3 inputTarget) {
+        MakeSound makeSound = GetComponent<MakeSound>();
+        makeSound.Play(thrust);
 		launchTime = Time.time + launchTime;
 
 		owner = inputOwner;

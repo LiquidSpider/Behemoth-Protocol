@@ -25,7 +25,9 @@ public class CameraMotion : MonoBehaviour
 
     void FollowTarget()
     {
-        float step = mSpeed * Vector3.Distance(transform.position, target.transform.position) * Time.deltaTime; // calculate distance to move
+        float nSpeed = mSpeed;
+        if (target.GetComponent<PlayerController>().isCruising) nSpeed = nSpeed * 2;
+        float step = nSpeed * Vector3.Distance(transform.position, target.transform.position) * Time.deltaTime; // calculate distance to move
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step);
         transform.rotation = target.transform.rotation;
     }
