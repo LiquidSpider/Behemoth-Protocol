@@ -89,7 +89,7 @@ public class giantBehaviour : MonoBehaviour
 
         // setup the rotation and speed.
         rotationSpeed = 100.0f;
-        movementSpeed = 1.0f;
+        movementSpeed = 1.0f / 4f;
         pathingDistance = 1.0f;
     }
 
@@ -317,10 +317,14 @@ public class giantBehaviour : MonoBehaviour
 
         if (launchTime > 10.0f)
         {
+			float r;
+
             launchTime = 0.0f;
             foreach (GameObject launcher in activeLaunchers)
             {
-                launcher.GetComponent<missileLaunch>().fire();
+				r = Random.Range(0f, 1f);
+
+				if (r < 0.4f) launcher.GetComponent<missileLaunch>().fire();
             }
         }
     }

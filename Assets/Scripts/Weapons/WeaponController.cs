@@ -41,6 +41,10 @@ public class WeaponController : MonoBehaviour {
 
 
 
+	private bool swordInUse = false;
+	private float timeSwordAttackStart;
+
+
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
 		//timeOfLastBomb = -timeBetweenBombs;
@@ -60,6 +64,22 @@ public class WeaponController : MonoBehaviour {
 		playerSpeed = currentPosition - previousPosition;
 
 		//playerSpeed = transform.GetChild(0).GetComponent<Rigidbody>().velocity * Time.deltaTime;
+
+
+		if (swordInUse && timeSwordAttackStart + 1 < Time.time) {
+			gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", false);
+			swordInUse = false;
+		}
+
+		if (!gameObject.GetComponent<PlayerController>().isCruising) {
+			if (Input.GetKeyDown(KeyCode.F)) {
+				swordInUse = true;
+
+				gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", true);
+				timeSwordAttackStart = Time.time;
+			}
+		}
+
 
 		//Things should not recharge if the battery is too low
 		if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
@@ -96,7 +116,7 @@ public class WeaponController : MonoBehaviour {
 			}
 		}
 
-		if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
+		if (!transform.GetComponentInChildren<PlayerController>().isCruising && !swordInUse) {
 			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (Input.GetButtonDown("Attack")) {
 					if (Time.time > timeOfLastMissile + timeBetweenMissiles) {

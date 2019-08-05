@@ -27,11 +27,13 @@ public class NewWeaponController : MonoBehaviour {
 	private float timeOfLastFlare4;
 	private float timeOfLastFlare5;
 
+	private bool swordInUse = false;
+	private float timeSwordAttackStart;
 
-//	private bool missileLock = false;
-//	private float timeOfLock;
-//	private float timeForUnlock = 2f;
-//	private GameObject missileTarget;
+	//	private bool missileLock = false;
+	//	private float timeOfLock;
+	//	private float timeForUnlock = 2f;
+	//	private GameObject missileTarget;
 
 
 
@@ -175,6 +177,20 @@ public class NewWeaponController : MonoBehaviour {
 		//		}
 		//	}
 		//}
+
+		if (swordInUse && timeSwordAttackStart + 1 < Time.time) {
+			gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", false);
+			swordInUse = false;
+		}
+
+		if (!gameObject.GetComponent<PlayerController>().isCruising) {
+			if (Input.GetKeyDown(KeyCode.F)) {
+				swordInUse = true;
+
+				gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", true);
+				timeSwordAttackStart = Time.time;
+			}
+		}
 	}
 
 	private RaycastHit hit;

@@ -75,6 +75,8 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 
 		if (!launched && Time.time > launchTime) {
 			launched = true;
+
+			gameObject.GetComponent<CapsuleCollider>().enabled = true;
 		} else if (launched && !targetReached) {
 			targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
 			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);

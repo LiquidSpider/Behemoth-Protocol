@@ -15,7 +15,7 @@ public class ShieldBehaviour : MonoBehaviour {
 	
 	void Update() {
 
-		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500) {
+		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500 && !gameObject.transform.root.GetComponent<PlayerController>().isCruising) {
 			if (Input.GetKey(KeyCode.Z) && shieldActive == false) {
 				shieldActive = true;
 				shield.SetActive(true);
