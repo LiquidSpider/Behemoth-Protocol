@@ -8090,30 +8090,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a636c7ca1f21a4d81818746cf0e149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1266841970 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: d0c20e875ea913d4486b8a7fd3628173,
@@ -15595,46 +15571,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155700659049317659, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1848
-      objectReference: {fileID: 0}
-    - target: {fileID: 6155700659049317659, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -738
-      objectReference: {fileID: 0}
-    - target: {fileID: 167535681590719389, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -773
-      objectReference: {fileID: 0}
-    - target: {fileID: 4601353922503541394, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -266.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 366315113601697397, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1872
-      objectReference: {fileID: 0}
-    - target: {fileID: 731905844784987583, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1866
-      objectReference: {fileID: 0}
-    - target: {fileID: 4954395944772504315, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1872
-      objectReference: {fileID: 0}
-    - target: {fileID: 6135414769383913816, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1887
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
