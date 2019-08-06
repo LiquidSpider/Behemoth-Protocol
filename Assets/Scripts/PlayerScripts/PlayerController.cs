@@ -86,6 +86,8 @@ public class PlayerController : MonoBehaviour {
 		Cursor.visible = false;
 		SwapWeapon(0);
 
+		weapons = new List<GameObject>() { gameObject.transform.GetChild(6).gameObject, gameObject.transform.GetChild(7).gameObject, gameObject.transform.GetChild(8).gameObject };
+
 		hudMainColour = hudFrame.GetComponent<Image>().color;
 	}
 
@@ -255,13 +257,26 @@ public class PlayerController : MonoBehaviour {
 
 	void SwapWeapon(int wIndex) {
 		if (wIndex < weapons.Count) {
-			foreach (GameObject cWeapon in GameObject.FindGameObjectsWithTag("CurrentWeapon")) {
-				Destroy(cWeapon);
+			foreach (GameObject cWeapon in weapons) {
+				cWeapon.tag = "Untagged";
+				cWeapon.transform.GetComponent<Animator>().SetBool("active", false);
 			}
-			GameObject nWeapon = Instantiate(weapons[wIndex], arm.transform, false);
-			nWeapon.transform.localPosition = Vector3.zero;
-			nWeapon.transform.localRotation = Quaternion.identity;
+
+			gameObject.transform.GetChild(6 + wIndex).tag = "CurrentWeapon";
+			gameObject.transform.GetChild(6 + wIndex).GetComponent<Animator>().SetBool("active", true);
 		}
+		
+		
+		
+		
+		//if (wIndex < weapons.Count) {
+		//	foreach (GameObject cWeapon in GameObject.FindGameObjectsWithTag("CurrentWeapon")) {
+		//		Destroy(cWeapon);
+		//	}
+		//	GameObject nWeapon = Instantiate(weapons[wIndex], arm.transform, false);
+		//	nWeapon.transform.localPosition = Vector3.zero;
+		//	nWeapon.transform.localRotation = Quaternion.identity;
+		//}
 	}
 
 	void AvoidObstruction() {

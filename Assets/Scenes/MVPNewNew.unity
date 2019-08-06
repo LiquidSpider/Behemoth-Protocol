@@ -3645,6 +3645,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 519635793}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &528895077 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8135345400845436699, guid: 99fabe2e8e44bec458d595295b208bbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 5919560427308605514}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &541004519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: d0c20e875ea913d4486b8a7fd3628173,
@@ -15807,11 +15813,21 @@ PrefabInstance:
       propertyPath: hudFrame
       value: 
       objectReference: {fileID: 1561620102}
+    - target: {fileID: 7803441808545743028, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: weapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 528895077}
     - target: {fileID: 5919560426389523408, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
       propertyPath: water
       value: 
       objectReference: {fileID: 126624184}
+    - target: {fileID: 8266725198816537112, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99fabe2e8e44bec458d595295b208bbd, type: 3}
 --- !u!1 &8015165253553784652

@@ -64,10 +64,12 @@ public class GunTemplate : MonoBehaviour {
         if (!GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<PlayerController>().isCruising) {
             if (Input.GetButton("Attack") || Input.GetAxis("Attack") != 0) {
                 if (transform.root.root.GetComponent<PlayerHealth>().battery >= 150) {
-                    if (fireTime > fireRate) {
-                        Fire();
-                        transform.root.GetComponent<PlayerHealth>().UseBattery(50 * fireRate);
-                    }
+					if (fireTime > fireRate) {
+						if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 1) {
+							Fire();
+							transform.root.GetComponent<PlayerHealth>().UseBattery(50 * fireRate);
+						}
+					}
                 }
             }
         }

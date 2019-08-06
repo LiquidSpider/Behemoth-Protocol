@@ -30,6 +30,8 @@ public class NewWeaponController : MonoBehaviour {
 	private bool swordInUse = false;
 	private float timeSwordAttackStart;
 
+	private WeaponController wc;
+
 	//	private bool missileLock = false;
 	//	private float timeOfLock;
 	//	private float timeForUnlock = 2f;
@@ -48,6 +50,8 @@ public class NewWeaponController : MonoBehaviour {
 		timeOfLastFlare3 = -timeBetweenFlares;
 		timeOfLastFlare4 = -timeBetweenFlares;
 		timeOfLastFlare5 = -timeBetweenFlares;
+
+		wc = gameObject.GetComponent<WeaponController>();
 	}
 
 	void Update() {
