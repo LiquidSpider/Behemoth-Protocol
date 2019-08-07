@@ -70,8 +70,17 @@ public class BulletScript : MonoBehaviour {
 
             }
 
-			// if the object has a parent
-			if (collision.gameObject.transform.parent) {
+            // If the object is the player
+            if (collision.gameObject.GetComponent<PlayerHealth>())
+            {
+
+                Debug.Log("Hit player");
+                collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage, this.gameObject);
+
+            }
+
+            // if the object has a parent
+            if (collision.gameObject.transform.parent) {
 				// if that objects parent has the Cube script
 				if (collision.gameObject.transform.parent.gameObject.GetComponent<Cube>()) {
 					// Take cube damage
