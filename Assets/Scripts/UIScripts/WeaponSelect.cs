@@ -29,6 +29,7 @@ public class WeaponSelect : MonoBehaviour {
 		if (Input.GetButtonDown("Weapon1")) {
 			previousWeaponNumber = weaponNumber;
 			weaponNumber = 1;
+			//GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<Image>().color = Color.green;
 			//play animations here
 			weapCirc1.GetComponent<Animator>().SetBool("Active", true);
 			weapBar1.GetComponent<Animator>().SetBool("Active", true);

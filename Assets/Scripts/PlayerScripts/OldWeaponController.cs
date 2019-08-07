@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponController : MonoBehaviour {
+public class OldWeaponController : MonoBehaviour {
 
 	[SerializeField] private GameObject missile;
 	[SerializeField] private GameObject missileSpawnLocation;
@@ -117,7 +117,8 @@ public class WeaponController : MonoBehaviour {
 		}
 
 		if (!transform.GetComponentInChildren<PlayerController>().isCruising && !swordInUse) {
-			if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
+			//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
+			if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (Input.GetButtonDown("Attack")) {
 					if (Time.time > timeOfLastMissile + timeBetweenMissiles) {
 						missileSpawnLocation = GameObject.FindGameObjectWithTag("CurrentWeapon").transform.GetChild(0).GetChild(0).gameObject;
@@ -131,7 +132,8 @@ public class WeaponController : MonoBehaviour {
 						LaunchMissile();
 					}
 				}
-			} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
+			} else if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
+			//} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
 				missileSpawnLocation = null;
 			}
 

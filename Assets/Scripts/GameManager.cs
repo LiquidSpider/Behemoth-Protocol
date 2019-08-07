@@ -68,11 +68,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
 	void Update()
     {
-#if DEBUG
+//#if DEBUG
         // Display the frame counter.
         if (!gamePaused && Time.time % 1 < 0.02f)
             framesCounter.text = Mathf.Round(1f / Time.deltaTime).ToString();
-#endif
+//#endif
 
         CheckPause();
 

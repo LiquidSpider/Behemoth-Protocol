@@ -74,6 +74,10 @@ public class PlayerController : MonoBehaviour {
 
 	private float speedDecreaseRate;
 
+	void Awake() {
+		weapons = new List<GameObject>() { gameObject.transform.GetChild(2).GetChild(0).gameObject, gameObject.transform.GetChild(6).gameObject, gameObject.transform.GetChild(7).gameObject };
+	}
+
 	void Start() { // Mainly component getting
 		camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 		cameraObj = camera.transform.parent.gameObject;
@@ -86,8 +90,7 @@ public class PlayerController : MonoBehaviour {
 		Cursor.visible = false;
 		SwapWeapon(0);
 
-		weapons = new List<GameObject>() { gameObject.transform.GetChild(6).gameObject, gameObject.transform.GetChild(7).gameObject, gameObject.transform.GetChild(8).gameObject };
-
+		
 		hudMainColour = hudFrame.GetComponent<Image>().color;
 	}
 
@@ -98,10 +101,9 @@ public class PlayerController : MonoBehaviour {
 		//AvoidObstruction();
 	}
 
-    void Update()
-    {
-        CameraMove();
-    }
+	void Update() {
+		CameraMove();
+	}
 
 	void CameraMove() { // Camera controls and manipulation goes here
 
@@ -188,9 +190,9 @@ public class PlayerController : MonoBehaviour {
 			if (isCruising) rb.AddForce(rb.velocity.normalized * speedFactor * cruiseFwd);
 			if (isCruising) gameObject.transform.GetChild(0).transform.rotation = Quaternion.LookRotation(rb.velocity.normalized);
 			else gameObject.transform.GetChild(0).transform.rotation = gameObject.transform.rotation;// = Quaternion.LookRotation(rb.velocity.normalized);
-            rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * accSpeed);
-            rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * accSpeed);
-            rb.AddForce(transform.up * Input.GetAxis("AscDesc") * accSpeed);
+			rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * accSpeed);
+			rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * accSpeed);
+			rb.AddForce(transform.up * Input.GetAxis("AscDesc") * accSpeed);
 
 			//if (Input.GetKey(KeyCode.W) && !isCruising) rb.AddForce(transform.forward * speedFactor);
 			//if (Input.GetKey(KeyCode.S) && !isCruising) rb.AddForce(-transform.forward * speedFactor);
@@ -222,7 +224,7 @@ public class PlayerController : MonoBehaviour {
 		// Dodge if boost button tapped instead of held
 		if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
 			StartCoroutine(Dodge());
-		} else if ((Input.GetButtonUp("Dodge") && isCruising) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
+		} else if (( Input.GetButtonUp("Dodge") && isCruising ) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
 			isCruising = false;
 			animator.SetBool("IsBoosting", false);
 		}
@@ -262,13 +264,13 @@ public class PlayerController : MonoBehaviour {
 				cWeapon.transform.GetComponent<Animator>().SetBool("active", false);
 			}
 
-			gameObject.transform.GetChild(6 + wIndex).tag = "CurrentWeapon";
-			gameObject.transform.GetChild(6 + wIndex).GetComponent<Animator>().SetBool("active", true);
+			weapons[wIndex].tag = "CurrentWeapon";
+			weapons[wIndex].GetComponent<Animator>().SetBool("active", true);
 		}
-		
-		
-		
-		
+
+
+
+
 		//if (wIndex < weapons.Count) {
 		//	foreach (GameObject cWeapon in GameObject.FindGameObjectsWithTag("CurrentWeapon")) {
 		//		Destroy(cWeapon);
@@ -290,24 +292,22 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator Dodge() {
 		if (!isDodge) {
 			isDodge = true;
-            if (FindObjectOfType<CameraMotion>())
-            {
-                CameraMotion cMotion = FindObjectOfType<CameraMotion>();
-                cMotion.mSpeed = cMotion.mSpeed * 3f;
-            }
-            if (Input.GetAxis("LeftHorizontal") > 0) animator.SetTrigger("DodgeRight");
-            if (Input.GetAxis("LeftHorizontal") < 0) animator.SetTrigger("DodgeLeft");
-            if (Input.GetAxis("LeftVertical") > 0) animator.SetTrigger("DodgeForward");
-            rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
+			if (FindObjectOfType<CameraMotion>()) {
+				CameraMotion cMotion = FindObjectOfType<CameraMotion>();
+				cMotion.mSpeed = cMotion.mSpeed * 3f;
+			}
+			if (Input.GetAxis("LeftHorizontal") > 0) animator.SetTrigger("DodgeRight");
+			if (Input.GetAxis("LeftHorizontal") < 0) animator.SetTrigger("DodgeLeft");
+			if (Input.GetAxis("LeftVertical") > 0) animator.SetTrigger("DodgeForward");
+			rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
 			rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
 			rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
 			yield return new WaitForSeconds(dTime);
-            if (FindObjectOfType<CameraMotion>())
-            {
-                CameraMotion cMotion = FindObjectOfType<CameraMotion>();
-                cMotion.mSpeed = cMotion.mSpeed / 3f;
-            }
-            isDodge = false;
+			if (FindObjectOfType<CameraMotion>()) {
+				CameraMotion cMotion = FindObjectOfType<CameraMotion>();
+				cMotion.mSpeed = cMotion.mSpeed / 3f;
+			}
+			isDodge = false;
 			animator.ResetTrigger("DodgeRight");
 			animator.ResetTrigger("DodgeLeft");
 			animator.ResetTrigger("DodgeForward");
@@ -320,14 +320,14 @@ public class PlayerController : MonoBehaviour {
 
 		StartCoroutine(fall(Time.time));
 
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(2);
 
 		//hudFrame.GetComponent<Image>().color = hudMainColour;
 		flightStopped = false;
 	}
 
 	private IEnumerator fall(float startFallTime) {
-		rb.AddForce(-Vector3.up * 1750f * Mathf.Pow(startFallTime - Time.time, 2));
+		rb.AddForce(-Vector3.up * 750f * Mathf.Pow(startFallTime - Time.time, 2));
 		yield return new WaitForSeconds(Time.deltaTime);
 
 		if (flightStopped) {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class GunTemplate : MonoBehaviour {
     //  Gonna be a lot of variables here. Surely there's a way to clean it up.
 
@@ -62,13 +64,25 @@ public class GunTemplate : MonoBehaviour {
             cAcc -= (handling + handlebuffer) * Time.deltaTime;
         }
         if (!GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<PlayerController>().isCruising) {
-            if (Input.GetButton("Attack") || Input.GetAxis("Attack") != 0) {
-                if (transform.root.root.GetComponent<PlayerHealth>().battery >= 150) {
+			if (Input.GetButton("Attack") || Input.GetAxis("Attack") != 0) {
+				if (transform.root.root.GetComponent<PlayerHealth>().battery >= 150) {
 					if (fireTime > fireRate) {
-						if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 1) {
+
+						if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 1) {
+
+							//GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<Image>().color = Color.red;
+
 							Fire();
 							transform.root.GetComponent<PlayerHealth>().UseBattery(50 * fireRate);
 						}
+
+						//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 1) {
+
+						//	GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<Image>().color = Color.red;
+
+						//	Fire();
+						//	transform.root.GetComponent<PlayerHealth>().UseBattery(50 * fireRate);
+						//}
 					}
                 }
             }
@@ -76,7 +90,7 @@ public class GunTemplate : MonoBehaviour {
     }
 
     public void Fire() {
-        fireTime = 0;
+		fireTime = 0;
         GameObject bullet = Instantiate(projectile, barrel.transform.position, barrel.transform.rotation);
         bullet.transform.Rotate(Vector3.up * (Random.Range(-cAcc, cAcc) / 10)); // Dividing by 10 so larger accuracy values can be input for balancing sake
         bullet.transform.Rotate(Vector3.left * (Random.Range(-cAcc, cAcc)) / 10);
