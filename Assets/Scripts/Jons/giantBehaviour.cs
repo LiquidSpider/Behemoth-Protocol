@@ -89,7 +89,7 @@ public class giantBehaviour : MonoBehaviour
 
         // setup the rotation and speed.
         rotationSpeed = 100.0f;
-        movementSpeed = 1.0f / 4f;
+        movementSpeed = 1.0f / 4.0f;
         pathingDistance = 1.0f;
     }
 

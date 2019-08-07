@@ -83,6 +83,11 @@ public class BulletScript : MonoBehaviour {
                 }
 			}
 
+            if(collision.gameObject.GetComponent<BossHealth>())
+            {
+                collision.gameObject.GetComponent<BossHealth>().TakeDamage(this.damage);
+            }
+
 			// Destroy the bullet
 			Destroy(this.gameObject);
 		}

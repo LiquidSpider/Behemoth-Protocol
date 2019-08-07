@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossHealth : MonoBehaviour {
 
-	public float HP = 5000;
+	public float HP;
 	public float maxHP;
 
 	private List<GameObject> damageTakenFrom = new List<GameObject>();
@@ -16,7 +16,9 @@ public class BossHealth : MonoBehaviour {
 	public void TakeDamage(float damage) {
 		HP -= damage;
 
-		if (HP < 0) HP = 0;
+        if (HP <= 0) {
+            Die();
+        }
 	}
 
 	public void TakeDamage(float damage, GameObject explosion) {
