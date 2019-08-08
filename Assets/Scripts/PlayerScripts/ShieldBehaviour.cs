@@ -19,6 +19,7 @@ public class ShieldBehaviour : MonoBehaviour {
 			if (Input.GetKey(KeyCode.Z) && shieldActive == false) {
 				shieldActive = true;
 				shield.SetActive(true);
+				shield.transform.GetChild(0).localScale = new Vector3(0.05f, 0.05f, 0.05f);
 			} else if (Input.GetKeyUp(KeyCode.Z)) {
 				shieldActive = false;
 				shield.SetActive(false);
