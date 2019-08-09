@@ -26,6 +26,8 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 
 	private float timer = 1f;
 
+	//public GameObject missileIndicator;
+
 
 	public void Instantiate() {
 		gameObject.transform.localScale = new Vector3(10, 10, 10);
