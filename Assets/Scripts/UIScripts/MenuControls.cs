@@ -18,4 +18,7 @@ public class MenuControls : MonoBehaviour {
 		Application.Quit();
 	}
 
+	public void ResumeClicked() {
+		GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().CheckPause();
+	}
 }
