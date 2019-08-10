@@ -5462,6 +5462,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &832312607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1499483106426906345, guid: cfdb338600198294e8135cba8ddc7277,
+    type: 3}
+  m_PrefabInstance: {fileID: 2063105537100423376}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &837473013 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: c6bd101c2ed2f7043b07b914e47b1585,
@@ -8640,6 +8652,24 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 283d98ee6eee9ca48a5c74c69046a76f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7bd5a7db0fefd7f41a6e376bffaa0350, type: 3}
+--- !u!1 &1282814962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4532791737378305683, guid: cfdb338600198294e8135cba8ddc7277,
+    type: 3}
+  m_PrefabInstance: {fileID: 2063105537100423376}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1282814966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282814962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8883b596a593f1844839bc72571f6b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1283491484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16051,6 +16081,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2772170106668900976, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00048828125
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9050018640728513585, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
@@ -16287,6 +16322,11 @@ PrefabInstance:
       propertyPath: hudFrame
       value: 
       objectReference: {fileID: 1561620102}
+    - target: {fileID: 7803441808545743028, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: promptText
+      value: 
+      objectReference: {fileID: 832312607}
     - target: {fileID: 5919560426389523408, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
       propertyPath: water
@@ -16457,6 +16497,11 @@ PrefabInstance:
       propertyPath: HP
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 7803441808545743031, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: promptText
+      value: 
+      objectReference: {fileID: 832312607}
     - target: {fileID: 7928889968482943945, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
       propertyPath: m_IsActive

@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour {
 	//private float timeHoldingSpace = 0;
 
 	private float speedDecreaseRate;
+	public Text promptText;
 
 	void Awake() {
 		weapons = new List<GameObject>() { gameObject.transform.GetChild(2).GetChild(0).gameObject, gameObject.transform.GetChild(6).gameObject, gameObject.transform.GetChild(7).gameObject };
@@ -316,7 +317,9 @@ public class PlayerController : MonoBehaviour {
 
 	private IEnumerator stopFlying() {
 		flightStopped = true;
-		Debug.Log("Warning: Engines cut to avoid detection");
+
+		promptText.text = "Warning: Cutting engines to avoid detection. Prepare to fall.";
+		promptText.gameObject.transform.parent.gameObject.SetActive(true);
 
 		StartCoroutine(fall(Time.time));
 
@@ -337,15 +340,20 @@ public class PlayerController : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider collider) {
 		if (collider.gameObject.tag == "OrangeZon") {
-			Debug.Log("Warning: Approaching 'No Fly' Zone");
+			promptText.text = "Warning: Approaching 'No Fly' zone, reduce height.";
+			promptText.gameObject.transform.parent.gameObject.SetActive(true);
 
-			hudFrame.GetComponent<Image>().color = Color.yellow;
+			Color yellow  = Color.yellow;
+			yellow.a = 100f / 255f;
+			hudFrame.GetComponent<Image>().color = yellow;
 		}
 
 		if (collider.gameObject.tag == "RedZone") {
 			StartCoroutine(stopFlying());
 
-			hudFrame.GetComponent<Image>().color = Color.red;
+			Color red  = Color.red;
+			red.a = 100f / 255f;
+			hudFrame.GetComponent<Image>().color = red;
 		}
 	}
 

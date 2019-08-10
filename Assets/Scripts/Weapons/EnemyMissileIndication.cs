@@ -24,6 +24,9 @@ public class EnemyMissileIndication : MonoBehaviour {
 		screenPos = Camera.main.WorldToScreenPoint(gameObject.transform.parent.parent.position);
 		gameObject.transform.position = screenPos;
 
+		screenWidth = Camera.main.pixelWidth;
+		screenHeight = Camera.main.pixelHeight;
+
 		xScale = ( screenWidth * percentage ) / 2f;
 		yScale = ( screenHeight * percentage ) / 2f;
 	}
@@ -41,7 +44,10 @@ public class EnemyMissileIndication : MonoBehaviour {
 			if (!gameObject.GetComponent<Image>().enabled) gameObject.GetComponent<Image>().enabled = true;
 
 			if (distance < Vector3.Distance(gameObject.transform.parent.parent.position, Camera.main.transform.position)) {
-				GetComponent<Image>().color = Color.cyan;
+				Color cyan = Color.cyan;
+				cyan.a = 100f / 255f;
+				GetComponent<Image>().color = cyan;
+
 				float xFactor = Mathf.Pow((screenPos.x - (screenWidth / 2)) / xScale, 2);
 				float yFactor = Mathf.Pow((screenPos.y - (screenHeight / 2)) / yScale, 2);
 
@@ -76,7 +82,10 @@ public class EnemyMissileIndication : MonoBehaviour {
 				}
 
 			} else {
-				GetComponent<Image>().color = Color.red;
+				Color red = Color.red;
+				red.a = 100f / 255f;
+				GetComponent<Image>().color = red;
+
 				Vector2 pos = (screenPos - new Vector2(screenWidth * 0.5f, screenHeight * 0.5f)).normalized;
 
 				pos.x = pos.x * xScale + ( screenWidth / 2 );

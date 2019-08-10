@@ -21,6 +21,12 @@ public class PlayerHealth : MonoBehaviour {
 
 	private List<GameObject> TakenDamageFrom = new List<GameObject>();
 
+	public Text promptText;
+	private bool batteryLowIndication = false;
+	private bool damageTakenIndication = false;
+
+
+
 	private void Start() {
 		maxHP = HP;
 		maxB = battery;
@@ -40,6 +46,13 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (battery < 0.1f * maxB && !batteryLowIndication) {
+			batteryLowIndication = true;
+
+			promptText.text = "Your battery is low, abosorb some water using the vacuum (3) to replenish it";
+			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		} 
+
 		// Stop battery from going into negative
 		if (battery < 0) battery = 0;
 
@@ -133,6 +146,12 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	private void TakeDamage(float damage) {
+		if (!damageTakenIndication) {
+			damageTakenIndication = true;
+
+			promptText.text = "Looks like it has some pretty heavy weapons of it's own, look out for them.";
+			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		}
 
 		if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
 			HP -= damage * 0.5f;
@@ -181,15 +200,8 @@ public class PlayerHealth : MonoBehaviour {
 		if (HP <= 0 && !critDamageTaken) {
 			critDamageTaken = true;
 
-
-
-
-
-			// --------------------------------------------------------------------------------------------------- Navigator Prompt Here 
-
-
-
-
+			promptText.text = "Critical damage taken, retreat and heal.";
+			promptText.gameObject.transform.parent.gameObject.SetActive(true);
 
 		} else if (HP <= 0 && critDamageTaken) {
 			Die();
