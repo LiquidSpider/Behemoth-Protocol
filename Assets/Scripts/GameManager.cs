@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
 
 	private Quaternion cameraRotation;
 	public GameObject promptMenu;
+	public GameObject instructionsPanel;
 	private float timeSetActive = 0;
 	private bool dispMissileDamage = false;
 	public Text framesCounter;
@@ -89,6 +90,8 @@ public class GameManager : MonoBehaviour {
 	/// </summary>
 	public void CheckPause() {
 		if (gamePaused) {
+			instructionsPanel.SetActive(false);
+
 			gamePaused = false;
 			pauseMenu.SetActive(false);
 

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuControls : MonoBehaviour {
-	
+
+	public GameObject instructions;
+
 	public void StartClicked() {
 		SceneManager.LoadScene(1);
 	}
@@ -20,5 +23,13 @@ public class MenuControls : MonoBehaviour {
 
 	public void ResumeClicked() {
 		GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().CheckPause();
+	}
+
+	public void InstructionsClicked() {
+		instructions.SetActive(true);
+	}
+
+	public void CloseInstructions() {
+		instructions.SetActive(false);
 	}
 }
