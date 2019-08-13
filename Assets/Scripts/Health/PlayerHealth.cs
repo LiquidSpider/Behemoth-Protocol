@@ -25,11 +25,14 @@ public class PlayerHealth : MonoBehaviour {
 	private bool batteryLowIndication = false;
 	private bool damageTakenIndication = false;
 
+    private UISounds ui;
+
 
 
 	private void Start() {
 		maxHP = HP;
 		maxB = battery;
+        ui = FindObjectOfType<UISounds>();
 	}
 
 	/// <summary>
@@ -141,6 +144,7 @@ public class PlayerHealth : MonoBehaviour {
 			battery = maxB;
 		} else {
 			battery += amount;
+            FindObjectOfType<UISounds>().Replenish();
 		}
 
 	}
@@ -156,6 +160,7 @@ public class PlayerHealth : MonoBehaviour {
 		if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
 			HP -= damage * 0.5f;
 			UseBattery(damage * 0.5f);
+            ui.ShieldHit();
 		} else {
 			HP -= damage;
 		}
@@ -175,7 +180,8 @@ public class PlayerHealth : MonoBehaviour {
 				if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
 					HP -= damage * 0.5f;
 					UseBattery(damage * 0.5f);
-				} else {
+                    ui.ShieldHit();
+                } else {
 					HP -= damage;
 				}
 
@@ -188,7 +194,8 @@ public class PlayerHealth : MonoBehaviour {
 			if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
 				HP -= damage * 0.5f;
 				UseBattery(damage * 0.5f);
-			} else {
+                ui.ShieldHit();
+            } else {
 				HP -= damage;
 			}
 

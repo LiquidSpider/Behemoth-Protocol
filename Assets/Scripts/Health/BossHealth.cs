@@ -15,7 +15,8 @@ public class BossHealth : MonoBehaviour {
 
 	public void TakeDamage(float damage) {
 		HP -= damage;
-
+        var ui = FindObjectOfType<UISounds>();
+        ui.HitMarker();
         if (HP <= 0) {
             Die();
         }
@@ -24,8 +25,9 @@ public class BossHealth : MonoBehaviour {
 	public void TakeDamage(float damage, GameObject explosion) {
 		if (!damageTakenFrom.Contains(explosion)) {
 			HP -= damage;
-
-			if (HP <= 0) {
+            var ui = FindObjectOfType<UISounds>();
+            ui.HitMarker();
+            if (HP <= 0) {
 				Die();
 			}
 		}

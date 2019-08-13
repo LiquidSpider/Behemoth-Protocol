@@ -10,6 +10,7 @@ public class Beam : MonoBehaviour
     public float damageTickRate = 0.5f;
     private float damageTime;
     private Collider[] colliders;
+    private UISounds ui;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +51,10 @@ public class Beam : MonoBehaviour
                     {
                         other.gameObject.GetComponent<PlayerDamageableSection>().TakeDamage(damage, null);
                         damageTime = Time.time + damageTickRate;
+                        if (other.gameObject.GetComponentInChildren<ShieldBehaviour>())
+                        {
+                            if (other.gameObject.GetComponentInChildren<ShieldBehaviour>().shieldActive) ui.ShieldHit();
+                        }
                     }
 
                 }
@@ -82,6 +87,10 @@ public class Beam : MonoBehaviour
                         //Debug.Log("Damaging " + other.gameObject.name);
                         other.gameObject.GetComponent<PlayerDamageableSection>().TakeDamage(damage, null);
                         damageTime = Time.time + damageTickRate;
+                        if (other.gameObject.GetComponentInChildren<ShieldBehaviour>())
+                        {
+                            if (other.gameObject.GetComponentInChildren<ShieldBehaviour>().shieldActive) ui.ShieldHit();
+                        }
                     }
 
                 }

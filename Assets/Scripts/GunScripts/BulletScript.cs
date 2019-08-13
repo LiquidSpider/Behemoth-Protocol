@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour {
 	public float damage = 0f;       // Base damage
-	public float speed = 200f;      // How fast the projectile moves
+	public float speed = 500f;      // How fast the projectile moves
 	public float weight = 0.01f;    // Weight of the projectile for impact force
 	public bool grav = false;       // Does this projectile use gravity? Take weight into consideration
 	public bool explosive = false;  // Does this projectile do splash damage and apply splash force?

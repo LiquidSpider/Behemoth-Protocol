@@ -7,9 +7,12 @@ public class ShieldBehaviour : MonoBehaviour {
 	public GameObject shield;
 	public bool shieldActive;
 
+    private UISounds ui;
+
 
 	void Start() {
-		//shield.SetActive(false);
+        //shield.SetActive(false);
+        ui = FindObjectOfType<UISounds>();
 		shieldActive = false;
 	}
 	
@@ -20,6 +23,8 @@ public class ShieldBehaviour : MonoBehaviour {
 				shieldActive = true;
 				shield.SetActive(true);
 				shield.transform.GetChild(0).localScale = new Vector3(0.05f, 0.05f, 0.05f);
+                ui.ShieldActivate();
+                
 			} else if (Input.GetKeyUp(KeyCode.Z)) {
 				shieldActive = false;
 				shield.SetActive(false);
