@@ -27,6 +27,11 @@ public class UISounds : MonoBehaviour
     private float rtime = 0;
     private float htime = 0;
 
+
+	// For showing the hitmarker on the UI
+	public GameObject HitMarkerUI;
+
+
     private void Update()
     {
         rtime += Time.deltaTime;
@@ -35,7 +40,11 @@ public class UISounds : MonoBehaviour
 
     public void HitMarker()
     {
-        Debug.Log("Hitmarker sound was attempted");
+		//.Log("Show hitmarker on UI");
+		HitMarkerUI.SetActive(true);
+
+
+		Debug.Log("Hitmarker sound was attempted");
         sources[0].PlayOneShot(hMarkerSounds[Random.Range(0, 4)]);
     }
 
