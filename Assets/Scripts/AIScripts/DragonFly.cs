@@ -49,11 +49,22 @@ public class DragonFly : MonoBehaviour
     public Boolean applyAlignment;
     public Boolean flyTowardsTarget;
 
+    // Sound variables
+    public List<AudioClip> flyClips = new List<AudioClip>();
+    public List<AudioClip> deathClips = new List<AudioClip>();
+    public List<AudioClip> explosionClips = new List<AudioClip>();
+    private AudioSource source;
+
     private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        // On spawn get the audio source
+        source = transform.GetComponentInChildren<AudioSource>();
+        source.clip = flyClips[UnityEngine.Random.Range(0, flyClips.Count)];
+        source.loop = true;
+        source.Play();
         // On spawn setup the collider list
         this.colliders = this.GetComponentsInChildren<Collider>();
         // Get the player object
@@ -357,6 +368,44 @@ public class DragonFly : MonoBehaviour
     }
 
     /// <summary>
+    /// Create a new audio source on the current location playing the death sounds
+    /// </summary>
+    private void DeathSound()
+    {
+        // Vocal death sound
+        var dSound = new GameObject();
+        dSound.transform.position = transform.position;
+        dSound.AddComponent<AudioSource>();
+        dSound.AddComponent<TimedDestroy>();
+        dSound.GetComponent<AudioSource>().clip = deathClips[UnityEngine.Random.Range(0, deathClips.Count)];
+        dSound.GetComponent<AudioSource>().spatialBlend = 1;
+        dSound.GetComponent<AudioSource>().dopplerLevel = 0;
+        dSound.GetComponent<AudioSource>().rolloffMode = AudioRolloffMode.Logarithmic;
+        dSound.GetComponent<AudioSource>().spatialBlend = 1;
+        dSound.GetComponent<AudioSource>().minDistance = 50;
+        dSound.GetComponent<AudioSource>().maxDistance = 400;
+        dSound.GetComponent<AudioSource>().volume = 0.8f;
+        dSound.GetComponent<AudioSource>().Play();
+        dSound.GetComponent<TimedDestroy>().maxTime = dSound.GetComponent<AudioSource>().clip.length;
+
+        // Small explosion
+        var eSound = new GameObject();
+        eSound.transform.position = transform.position;
+        eSound.AddComponent<AudioSource>();
+        eSound.AddComponent<TimedDestroy>();
+        eSound.GetComponent<AudioSource>().clip = explosionClips[UnityEngine.Random.Range(0, explosionClips.Count)];
+        eSound.GetComponent<AudioSource>().spatialBlend = 1;
+        eSound.GetComponent<AudioSource>().dopplerLevel = 0;
+        eSound.GetComponent<AudioSource>().rolloffMode = AudioRolloffMode.Logarithmic;
+        eSound.GetComponent<AudioSource>().spatialBlend = 1;
+        eSound.GetComponent<AudioSource>().minDistance = 70;
+        eSound.GetComponent<AudioSource>().maxDistance = 600;
+        eSound.GetComponent<AudioSource>().volume = 1f;
+        eSound.GetComponent<AudioSource>().Play();
+        eSound.GetComponent<TimedDestroy>().maxTime = eSound.GetComponent<AudioSource>().clip.length;
+    }
+
+    /// <summary>
     /// On Destroy(this) event.
     /// </summary>
     private void OnDestroy()
@@ -365,6 +414,8 @@ public class DragonFly : MonoBehaviour
         {
             // create a rubbish pile.
             Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
+            DeathSound();
+
             // remove self from the game manager
             if (gameManager.dragonFlies.Contains(this.gameObject))
             {

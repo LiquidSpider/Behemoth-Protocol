@@ -3966,7 +3966,7 @@ RectTransform:
   m_Children:
   - {fileID: 335575010}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5485,7 +5485,7 @@ Transform:
   m_Children:
   - {fileID: 5334423240789838635}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &808443154 stripped
 GameObject:
@@ -10065,7 +10065,7 @@ PrefabInstance:
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
@@ -13204,7 +13204,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1832108183 stripped
 GameObject:
@@ -15408,7 +15408,7 @@ PrefabInstance:
     - target: {fileID: 2095488605416581261, guid: 2fef5336f3e8cb04684f5b86f8078205,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2095488605416581261, guid: 2fef5336f3e8cb04684f5b86f8078205,
         type: 3}
@@ -16614,7 +16614,7 @@ PrefabInstance:
     - target: {fileID: 7803441808545743026, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7803441808545743026, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
@@ -16820,6 +16820,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7378313598245938060, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: rolloffMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7378313598245938060, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796609801638167439, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: volmultoffset
+      value: 0.005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99fabe2e8e44bec458d595295b208bbd, type: 3}

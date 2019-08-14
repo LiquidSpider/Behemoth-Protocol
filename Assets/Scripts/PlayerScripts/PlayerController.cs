@@ -293,6 +293,7 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator Dodge() {
 		if (!isDodge) {
 			isDodge = true;
+            transform.GetComponentInChildren<PlayerThrust>().Dodge();
 			if (FindObjectOfType<CameraMotion>()) {
 				CameraMotion cMotion = FindObjectOfType<CameraMotion>();
 				cMotion.mSpeed = cMotion.mSpeed * 3f;
