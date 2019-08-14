@@ -16362,6 +16362,36 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8323071730861300448, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6161693863747285165, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3015923466089686180, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_TagString
+      value: Missile Indication
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573186501759454425, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573186501759454425, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573186501759454425, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
 --- !u!1 &4498502439908761849 stripped

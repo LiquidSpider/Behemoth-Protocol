@@ -26,8 +26,6 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 
 	private float timer = 1f;
 
-	//public GameObject missileIndicator;
-
 
 	public void Instantiate() {
 		gameObject.transform.localScale = new Vector3(10, 10, 10);
@@ -92,12 +90,12 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 	}
 
 	public void Distraction(GameObject inputFlare) {
-		Debug.Log("Distraction");
+		//Debug.Log("Distraction");
 
 		float r = Random.Range(0f, 10f);
 
 		if (r < flarDistractChance) {
-			Debug.Log("Distracted");
+			//Debug.Log("Distracted");
 			playerObj = inputFlare;
 			targetPoint = inputFlare.transform.position;
 		}
