@@ -8977,25 +8977,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 283d98ee6eee9ca48a5c74c69046a76f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7bd5a7db0fefd7f41a6e376bffaa0350, type: 3}
---- !u!1 &1282814962 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4532791737378305683, guid: cfdb338600198294e8135cba8ddc7277,
-    type: 3}
-  m_PrefabInstance: {fileID: 2063105537100423376}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1282814966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282814962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8883b596a593f1844839bc72571f6b6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  appearTime: 10
 --- !u!1001 &1283491484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16276,16 +16257,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Overlay
       objectReference: {fileID: 0}
-    - target: {fileID: 3048721473345249006, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4532791737378305683, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 449454778990464629, guid: cfdb338600198294e8135cba8ddc7277,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16391,18 +16362,7 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2772170106668900976, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 449454778990464626, guid: cfdb338600198294e8135cba8ddc7277,
-        type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 9050018640728513585, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
 --- !u!1 &4498502439908761849 stripped
 GameObject:
