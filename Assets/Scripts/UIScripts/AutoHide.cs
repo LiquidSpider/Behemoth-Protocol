@@ -5,7 +5,7 @@ using UnityEngine;
 public class AutoHide : MonoBehaviour {
 
 	private float time;
-	private float appearTime = 10.0f;
+	public float appearTime = 10.0f;
 	
 	private void OnEnable() {
 		time = Time.time;
