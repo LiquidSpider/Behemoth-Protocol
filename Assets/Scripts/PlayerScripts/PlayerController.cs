@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		SwapWeapon(0);
-
+        rotX = transform.rotation.eulerAngles.y;
 		
 		hudMainColour = hudFrame.GetComponent<Image>().color;
 	}

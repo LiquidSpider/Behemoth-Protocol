@@ -16,6 +16,9 @@ public class UISounds : MonoBehaviour
     public float hdelay = 0.2f;
     public AudioClip shieldHit;
 
+    [Tooltip("Enable/disable logging")]
+    public bool spamLogs = true;
+
 
     // Elements:
     // 0 = Hitmarker
@@ -43,8 +46,7 @@ public class UISounds : MonoBehaviour
 		//.Log("Show hitmarker on UI");
 		HitMarkerUI.SetActive(true);
 
-
-		Debug.Log("Hitmarker sound was attempted");
+        if (spamLogs) Debug.Log("Hitmarker sound was attempted");
         sources[0].PlayOneShot(hMarkerSounds[Random.Range(0, 4)]);
     }
 
