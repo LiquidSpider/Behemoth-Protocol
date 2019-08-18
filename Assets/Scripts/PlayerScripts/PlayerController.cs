@@ -294,10 +294,6 @@ public class PlayerController : MonoBehaviour {
 		if (!isDodge) {
 			isDodge = true;
             transform.GetComponentInChildren<PlayerThrust>().Dodge();
-			if (FindObjectOfType<CameraMotion>()) {
-				CameraMotion cMotion = FindObjectOfType<CameraMotion>();
-				cMotion.mSpeed = cMotion.mSpeed * 3f;
-			}
 			if (Input.GetAxis("LeftHorizontal") > 0) animator.SetTrigger("DodgeRight");
 			if (Input.GetAxis("LeftHorizontal") < 0) animator.SetTrigger("DodgeLeft");
 			if (Input.GetAxis("LeftVertical") > 0) animator.SetTrigger("DodgeForward");
@@ -305,10 +301,6 @@ public class PlayerController : MonoBehaviour {
 			rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
 			rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
 			yield return new WaitForSeconds(dTime);
-			if (FindObjectOfType<CameraMotion>()) {
-				CameraMotion cMotion = FindObjectOfType<CameraMotion>();
-				cMotion.mSpeed = cMotion.mSpeed / 3f;
-			}
 			isDodge = false;
 			animator.ResetTrigger("DodgeRight");
 			animator.ResetTrigger("DodgeLeft");

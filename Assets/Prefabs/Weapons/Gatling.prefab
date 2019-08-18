@@ -189,7 +189,7 @@ MonoBehaviour:
   tracerSrc: {fileID: 2874919936438722242, guid: 698f3c60db3179b47a14a81d7130c850,
     type: 3}
   minAcc: 1
-  maxAcc: 10
+  maxAcc: 30
   incAcc: 5
   handling: 2
   projectile: {fileID: 8170432168313451531, guid: 8ffa651664f091b4da719dbe2b3732ed,

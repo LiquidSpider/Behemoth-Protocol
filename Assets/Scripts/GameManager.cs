@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
 	private bool gamePaused;
 
 	// win condition variables
-	private bool gameOver = false;
+	public bool gameOver = false;
 
 	private Quaternion cameraRotation;
 	public GameObject promptMenu;

@@ -18,24 +18,32 @@ public class ShieldBehaviour : MonoBehaviour {
 	
 	void Update() {
 
-		if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500 && !gameObject.transform.root.GetComponent<PlayerController>().isCruising) {
-			if (Input.GetKey(KeyCode.Z) && shieldActive == false) {
-				shieldActive = true;
-				shield.SetActive(true);
-				shield.transform.GetChild(0).localScale = new Vector3(0.05f, 0.05f, 0.05f);
-                ui.ShieldActivate();
-                
-			} else if (Input.GetKeyUp(KeyCode.Z)) {
-				shieldActive = false;
-				shield.SetActive(false);
-			}
-		} else {
-			shieldActive = false;
-			shield.SetActive(false);
-		}
+        if (!FindObjectOfType<GameManager>().gameOver)
+        {
+            if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500 && !gameObject.transform.root.GetComponent<PlayerController>().isCruising)
+            {
+                if (Input.GetKey(KeyCode.Z) && shieldActive == false)
+                {
+                    shieldActive = true;
+                    shield.SetActive(true);
+                    shield.transform.GetChild(0).localScale = new Vector3(0.05f, 0.05f, 0.05f);
+                    ui.ShieldActivate();
+
+                }
+                else if (Input.GetKeyUp(KeyCode.Z))
+                {
+                    shieldActive = false;
+                    shield.SetActive(false);
+                }
+            }
+            else
+            {
+                shieldActive = false;
+                shield.SetActive(false);
+            }
 
 
-		if (shieldActive) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50f * Time.deltaTime);
-
+            if (shieldActive) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50f * Time.deltaTime);
+        }
 	}
 }

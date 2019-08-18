@@ -102,6 +102,12 @@ public class GunTemplate : MonoBehaviour {
         bStats.lightStr = pLightStr;
         bullet.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
         animation.Play("Fire", PlayMode.StopAll);
+        cAcc += incAcc;
+        CameraMotion recoil = FindObjectOfType<CameraMotion>();
+        if (recoil != null)
+        {
+            recoil.Recoil(bullet.transform.rotation.eulerAngles);
+        }
         FireSound();
     }
 

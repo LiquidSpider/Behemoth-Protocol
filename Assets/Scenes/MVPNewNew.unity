@@ -1304,8 +1304,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 189.62682, y: 151.84268, z: 27.786865}
-  m_Center: {x: -13.587975, y: 20.265488, z: 13.393433}
+  m_Size: {x: 189.62682, y: 199.81795, z: 138.80908}
+  m_Center: {x: -13.587975, y: -3.722145, z: 68.90454}
 --- !u!114 &135090618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,6 +1319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   song: 1
+  volume: 1
 --- !u!1001 &139854501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3116,7 +3117,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: a03f4b5d4b3199a4fbad131fb70164b0, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -10373,6 +10374,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 336006383559377008, guid: 4363798308be8c54eb2754fbf918be68,
+        type: 3}
+      propertyPath: minSpeed
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 336006383559377008, guid: 4363798308be8c54eb2754fbf918be68,
+        type: 3}
+      propertyPath: maxSpeed
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4363798308be8c54eb2754fbf918be68, type: 3}
@@ -21388,6 +21399,11 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1315196258971449922, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: spamLogs
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
 --- !u!1 &4498502439908761849 stripped
@@ -21822,6 +21838,11 @@ PrefabInstance:
         type: 3}
       propertyPath: volmultoffset
       value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135345400845436694, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: maxAcc
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99fabe2e8e44bec458d595295b208bbd, type: 3}

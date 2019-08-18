@@ -27,9 +27,9 @@ public class Crosshair : MonoBehaviour
         }
 
         if (gun) {
-            notchU.GetComponent<RectTransform>().anchoredPosition = oNotchU + Vector3.up * (gun.cAcc * 0.75f);
-            notchBR.GetComponent<RectTransform>().anchoredPosition = oNotchBR + Vector3.down * (gun.cAcc * 0.50f) + Vector3.right * (gun.cAcc * 0.75f);
-            notchBL.GetComponent<RectTransform>().anchoredPosition = oNotchBL + Vector3.down * (gun.cAcc * 0.50f) + Vector3.left * (gun.cAcc * 0.75f);
+            notchU.GetComponent<RectTransform>().anchoredPosition = oNotchU + Vector3.up * (gun.cAcc * 0.9f);
+            notchBR.GetComponent<RectTransform>().anchoredPosition = oNotchBR + Vector3.down * (gun.cAcc * 0.60f) + Vector3.right * (gun.cAcc * 0.9f);
+            notchBL.GetComponent<RectTransform>().anchoredPosition = oNotchBL + Vector3.down * (gun.cAcc * 0.60f) + Vector3.left * (gun.cAcc * 0.9f);
         }
     }
 }
