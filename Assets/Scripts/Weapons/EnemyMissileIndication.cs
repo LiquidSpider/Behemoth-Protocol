@@ -41,7 +41,7 @@ public class EnemyMissileIndication : MonoBehaviour {
 		if (distance <= 1000f) {
 			if (first) {
 				first = false;
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(14).gameObject.SetActive(true);
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(13).gameObject.SetActive(true);
 			}
 
 			float sFactor = (1.1f - (distance / 1000f));

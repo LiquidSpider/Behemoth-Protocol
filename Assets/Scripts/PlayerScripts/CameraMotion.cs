@@ -54,7 +54,7 @@ public class CameraMotion : MonoBehaviour
     }
     public void Recoil(Vector3 direction)
     {
-        Debug.Log("Recoil called: X" + direction.x + " Y" + direction.y);
+        //Debug.Log("Recoil called: X" + direction.x + " Y" + direction.y);
         tRotation = direction;
     }
 }

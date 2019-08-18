@@ -75,7 +75,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed359a01c982a5847b664a8d93f15f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 0.3
+  minSpeed: 0.2
+  maxSpeed: 1
 --- !u!1 &5635530800508536223
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +89,7 @@ GameObject:
   - component: {fileID: 2720673335810408121}
   - component: {fileID: 7600827525218586665}
   - component: {fileID: 336006383503045143}
+  - component: {fileID: 8026871025218444541}
   m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -140,12 +142,12 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -182,3 +184,16 @@ AudioReverbFilter:
   m_LFReference: 250
   m_ReflectionsDelay: 0
   m_ReverbPreset: 19
+--- !u!114 &8026871025218444541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5635530800508536223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 7d6b84dfecb73d443a33d2fcb6c03743, type: 2}

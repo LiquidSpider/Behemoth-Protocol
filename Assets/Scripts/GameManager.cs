@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour {
 	public GameObject pauseMenu;
 	private bool gamePaused;
 
+	public GameObject winMenu;
+	public GameObject loseMenu;
+
 	// win condition variables
 	public bool gameOver = false;
 
@@ -120,15 +123,24 @@ public class GameManager : MonoBehaviour {
 	/// When the player has lost.
 	/// </summary>
 	public void PlayerLose() {
-		gamePaused = true;
+		StartCoroutine(COLose());
+	}
+
+	private IEnumerator COLose() {
 		gameOver = true;
-		pauseMenu.SetActive(true);
+		Debug.Log("Game Over");
+
+		yield return new WaitForSeconds(2);
+
+		gamePaused = true;
+		loseMenu.SetActive(true);
 		pauseMenu.transform.GetChild(1).gameObject.SetActive(true);
 
 		Time.timeScale = 0;
 		Cursor.visible = true;
 
 		Pause(true);
+		pauseMenu.SetActive(false);
 		Cursor.lockState = CursorLockMode.None;
 
 		Destroy(player.transform.GetChild(1).GetChild(3).gameObject);
@@ -140,15 +152,24 @@ public class GameManager : MonoBehaviour {
 	/// When the player has won.
 	/// </summary>
 	public void PlayerWin() {
-		gamePaused = false;
+		StartCoroutine(COWin());
+	}
+
+	private IEnumerator COWin() {
 		gameOver = true;
-		pauseMenu.SetActive(true);
+		Debug.Log("Game Over");
+
+		yield return new WaitForSeconds(2);
+
+		gamePaused = false;
+		winMenu.SetActive(true);
 		pauseMenu.transform.GetChild(0).gameObject.SetActive(true);
 
 		Time.timeScale = 0;
 		Cursor.visible = true;
 
 		Pause(true);
+		pauseMenu.SetActive(false);
 		Cursor.lockState = CursorLockMode.None;
 	}
 

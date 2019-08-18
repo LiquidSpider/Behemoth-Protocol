@@ -75,9 +75,9 @@ public class PlayerController : MonoBehaviour {
 	private float speedDecreaseRate;
 	public Text promptText;
 
-	void Awake() {
-		weapons = new List<GameObject>() { gameObject.transform.GetChild(2).GetChild(0).gameObject, gameObject.transform.GetChild(6).gameObject, gameObject.transform.GetChild(7).gameObject };
-	}
+	//void Awake() {
+	//	weapons = new List<GameObject>() { gameObject.transform.GetChild(2).GetChild(0).gameObject, gameObject.transform.GetChild(6).gameObject, gameObject.transform.GetChild(7).gameObject };
+	//}
 
 	void Start() { // Mainly component getting
 		camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 	void FixedUpdate() {
 		PlayerControls();
 		AimWeapon();
-		//AvoidObstruction();
+		AvoidObstruction();
 	}
 
 	void Update() {
@@ -213,21 +213,23 @@ public class PlayerController : MonoBehaviour {
 
 
 		// Inputs - Dodge/Afterburners
-		if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
-		if (Input.GetButton("Dodge")) {
-			if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
-				isCruising = true;
-				animator.SetBool("IsBoosting", true);
-			} else cHoldTime += Time.deltaTime;
-		}
+		if (!flightStopped) {
+			if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
+			if (Input.GetButton("Dodge")) {
+				if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
+					isCruising = true;
+					animator.SetBool("IsBoosting", true);
+				} else cHoldTime += Time.deltaTime;
+			}
 
 
-		// Dodge if boost button tapped instead of held
-		if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
-			StartCoroutine(Dodge());
-		} else if (( Input.GetButtonUp("Dodge") && isCruising ) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
-			isCruising = false;
-			animator.SetBool("IsBoosting", false);
+			// Dodge if boost button tapped instead of held
+			if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
+				StartCoroutine(Dodge());
+			} else if (( Input.GetButtonUp("Dodge") && isCruising ) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
+				isCruising = false;
+				animator.SetBool("IsBoosting", false);
+			}
 		}
 
 		// Weapon Select
@@ -237,16 +239,16 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-	private bool CheckMovement(Vector3 movementDirection) {
-		RaycastHit hit;
-		bool hitObject;
-		hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
-		if (!hitObject || hit.collider.gameObject.transform.root.gameObject.tag == "Player") {
-			transform.position += movementDirection;
-			return true;
-		}
-		return false;
-	}
+	//private bool CheckMovement(Vector3 movementDirection) {
+	//	RaycastHit hit;
+	//	bool hitObject;
+	//	hitObject = Physics.Raycast(transform.position, movementDirection, out hit, movementDirection.magnitude);
+	//	if (!hitObject || hit.collider.gameObject.transform.root.gameObject.tag == "Player") {
+	//		transform.position += movementDirection;
+	//		return true;
+	//	}
+	//	return false;
+	//}
 
 	void AimWeapon() {
 		Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -323,7 +325,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private IEnumerator fall(float startFallTime) {
-		rb.AddForce(-Vector3.up * 750f * Mathf.Pow(startFallTime - Time.time, 2));
+		rb.AddForce(-Vector3.up * 500f * Mathf.Pow(startFallTime - Time.time, 2));
 		yield return new WaitForSeconds(Time.deltaTime);
 
 		if (flightStopped) {
