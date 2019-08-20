@@ -192,6 +192,9 @@ MonoBehaviour:
   maxAcc: 30
   incAcc: 5
   handling: 2
+  recoilxy:
+  - 3
+  - 20
   projectile: {fileID: 8170432168313451531, guid: 8ffa651664f091b4da719dbe2b3732ed,
     type: 3}
   pSpeed: 800

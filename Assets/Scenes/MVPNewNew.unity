@@ -11498,7 +11498,7 @@ PrefabInstance:
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.9606459
       objectReference: {fileID: 0}
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
@@ -11508,7 +11508,7 @@ PrefabInstance:
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.27777585
       objectReference: {fileID: 0}
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
@@ -11523,7 +11523,7 @@ PrefabInstance:
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 147.745
       objectReference: {fileID: 0}
     - target: {fileID: 336006383559377009, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
@@ -11538,6 +11538,16 @@ PrefabInstance:
     - target: {fileID: 336006383559377008, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
       propertyPath: maxSpeed
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 336006383559377008, guid: 4363798308be8c54eb2754fbf918be68,
+        type: 3}
+      propertyPath: recoilSpeed
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 336006383559377008, guid: 4363798308be8c54eb2754fbf918be68,
+        type: 3}
+      propertyPath: recenter
       value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []

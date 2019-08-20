@@ -7,6 +7,8 @@ public class CameraMotion : MonoBehaviour
     //  Vars
     public float minSpeed = 0.2f;                                           // How fast camera moves to target
     public float maxSpeed = 1;                                              // The tightest the camera can get
+    public float recenter = 0.3f;                                           // Lerp factor for readjusting from recoil
+    public float recoilSpeed = 0.3f;                                        // How fast the camera kicks up
     
 
     // Private vars
@@ -15,6 +17,7 @@ public class CameraMotion : MonoBehaviour
     private float aSpeed;                                                   // How tight the camera actually is
     private Vector3 tRotation;                                              // Target rotation
     private Vector3 rVelocity = Vector3.zero;                               // Recoil velocity
+    private float fVel = 0f;
 
     void Start()
     {
@@ -40,7 +43,7 @@ public class CameraMotion : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<PlayerController>().gameObject;
 
     }
-    void Target(GameManager nTarget)
+    void Target(GameObject nTarget)
     {
         target = nTarget.transform.gameObject;
     }
@@ -49,12 +52,16 @@ public class CameraMotion : MonoBehaviour
         tRotation = target.transform.rotation.eulerAngles;
         // Recoil part
 
-        tRotation = Vector3.SmoothDamp(tRotation, target.transform.rotation.eulerAngles, ref rVelocity, 0.5f);
+        tRotation = Vector3.SmoothDamp(tRotation, target.transform.rotation.eulerAngles, ref rVelocity, recenter);
         transform.rotation = Quaternion.Euler(tRotation);
     }
-    public void Recoil(Vector3 direction)
+    public void Recoil(float powerx, float powery)
     {
-        //Debug.Log("Recoil called: X" + direction.x + " Y" + direction.y);
-        tRotation = direction;
+
+        Vector3 nTarget = transform.eulerAngles;
+        nTarget.x -= powery;
+        nTarget.y += Random.Range(-powerx, powerx);
+        Vector3 vector = Vector3.SmoothDamp(transform.eulerAngles, nTarget, ref rVelocity, recoilSpeed);
+        transform.rotation = Quaternion.Euler(vector);
     }
 }

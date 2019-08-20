@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.UI;
 
 public class GunTemplate : MonoBehaviour {
@@ -25,6 +25,9 @@ public class GunTemplate : MonoBehaviour {
     public float incAcc = 3f;                   // How much inaccuracy increases each shot
     public float handling = 1f;                 // How fast accuracy returns to minAcc between shots
 
+    [Tooltip("Element 0 = horizontal recoil. Element 1 = vertical recoi.")]
+    public float[] recoilxy = new float[2] { 3, 10 }; //
+
     //  Bullet Variables                        All variables must start with prefix 'p'
     public GameObject projectile;               // Bullet prefab, probably won't need to change   
     public float pSpeed = 200f;                 // How fast the projectile moves
@@ -36,16 +39,30 @@ public class GunTemplate : MonoBehaviour {
     private float fireTime = 0f;                // Time since last shot
     private Animation animation;                // Fire animation
     private MakeSound makeSound;
+    private Camera camera;                      // The camera component
+
+
+
+    void OnValidate()
+    {
+        // Ensures recoilxy maintains 2 elements
+        if (recoilxy.Length != 2)
+        {
+            Debug.LogWarning("RecoilXY requires 2 fields exactly.");
+            Array.Resize(ref recoilxy, 2);
+        }
+    }
 
     void Start() {
         cAcc = minAcc;                          // So guns don't start as accurate as the previous gun
         fireTime = fireRate + 1;                // So guns can fire immediately on swapping
         animation = GetComponent<Animation>();
         makeSound = GetComponent<MakeSound>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
     // Update is called once per frame
     void Update() {
-
+        AimWeapon();
         // Depending on who is controlling the weapon stops the gun from shooting on the attack button
         switch (controller)
         {
@@ -54,6 +71,22 @@ public class GunTemplate : MonoBehaviour {
                 break;
             case ControlledBy.AI:
                 break;
+        }
+
+        
+    }
+
+    void AimWeapon()
+    {
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        //var layerMask = ~((1 << 9 | 1 << 10));
+        if (Physics.Raycast(ray, out RaycastHit aimPoint))// layerMask))
+        {
+            transform.LookAt(aimPoint.point);
+        }
+        else
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 0);
         }
     }
 
@@ -92,8 +125,8 @@ public class GunTemplate : MonoBehaviour {
     public void Fire() {
 		fireTime = 0;
         GameObject bullet = Instantiate(projectile, barrel.transform.position, barrel.transform.rotation);
-        bullet.transform.Rotate(Vector3.up * (Random.Range(-cAcc, cAcc) / 10)); // Dividing by 10 so larger accuracy values can be input for balancing sake
-        bullet.transform.Rotate(Vector3.left * (Random.Range(-cAcc, cAcc)) / 10);
+        bullet.transform.Rotate(Vector3.up * (UnityEngine.Random.Range(-cAcc, cAcc) / 10)); // Dividing by 10 so larger accuracy values can be input for balancing sake
+        bullet.transform.Rotate(Vector3.left * (UnityEngine.Random.Range(-cAcc, cAcc)) / 10);
         bullet.layer = 9;
         BulletScript bStats = bullet.GetComponent<BulletScript>();
         bStats.speed = pSpeed;
@@ -106,14 +139,14 @@ public class GunTemplate : MonoBehaviour {
         CameraMotion recoil = FindObjectOfType<CameraMotion>();
         if (recoil != null)
         {
-            recoil.Recoil(bullet.transform.rotation.eulerAngles);
+            recoil.Recoil(recoilxy[0], recoilxy[1]);
         }
         FireSound();
     }
 
     void FireSound()
     {
-        int sIndex = Random.Range(1, 5);
+        int sIndex = UnityEngine.Random.Range(1, 5);
         switch (sIndex)
         {
             case 1:
