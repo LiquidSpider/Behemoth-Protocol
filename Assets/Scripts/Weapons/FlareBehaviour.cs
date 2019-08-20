@@ -49,10 +49,19 @@ public class FlareBehaviour : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter(Collision other) {
-		if (other.collider.tag == "Environment") Destroy(transform.parent.gameObject);
+		if (other.collider.tag == "Environment") StartCoroutine(TimedDestroy());
 
 		//if (other.gameObject.tag != "Player" && other.gameObject.tag != "Flare") {
 		//	Destroy(transform.parent.gameObject);
 		//}
+	}
+
+	private IEnumerator TimedDestroy() {
+		gameObject.transform.GetChild(0).gameObject.SetActive(false);
+		gameObject.GetComponent<Light>().enabled = false;
+		gameObject.transform.GetChild(1).GetComponent<ParticleSystem>().Stop();
+
+		yield return new WaitForSeconds(6.0f);
+		Destroy(transform.parent.gameObject);
 	}
 }

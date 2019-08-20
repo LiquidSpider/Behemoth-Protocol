@@ -10146,6 +10146,26 @@ PrefabInstance:
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 19900000, guid: d8c41be67f41aa545ae053b0b927f821, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d8c41be67f41aa545ae053b0b927f821, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 13500000, guid: d8c41be67f41aa545ae053b0b927f821, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 13500000, guid: d8c41be67f41aa545ae053b0b927f821, type: 3}
+      propertyPath: m_Radius
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 13500000, guid: d8c41be67f41aa545ae053b0b927f821, type: 3}
+      propertyPath: m_Center.z
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 19800002, guid: d8c41be67f41aa545ae053b0b927f821, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 150
@@ -10189,6 +10209,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2187276436918047062}
     m_Modifications:
+    - target: {fileID: 100004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Name
+      value: missile
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10244,10 +10268,6 @@ PrefabInstance:
     - target: {fileID: 400004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 100004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Name
-      value: missile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}

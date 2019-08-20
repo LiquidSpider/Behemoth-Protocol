@@ -97,6 +97,19 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		explosion.tag = "Explosion - Player";
 		explosion.transform.position = transform.position;
 
+		ParticleSystem fire = gameObject.transform.GetChild(6).GetComponent<ParticleSystem>();
+		ParticleSystem glow = gameObject.transform.GetChild(6).GetChild(0).GetComponent<ParticleSystem>();
+
+		fire.Stop();
+		glow.Stop();
+
+		gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+		StartCoroutine(TimedDestroy());
+	}
+
+	private IEnumerator TimedDestroy() {
+		yield return new WaitForSeconds(3.0f);
 		Destroy(gameObject);
 	}
 
