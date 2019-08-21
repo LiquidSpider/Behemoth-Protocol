@@ -15,6 +15,8 @@ public class NewWeaponController : MonoBehaviour {
 
 	public GameObject soundSrc;                 // The object that makes the sound
 	public AudioClip sFire;                     // Sound played when gun fires
+    public List<AudioClip> launchs = new List<AudioClip>();
+    private MakeSound makesound;
 
 	private float timeBetweenMissiles = 10f;
 	private float timeOfLastMissile;
@@ -52,6 +54,8 @@ public class NewWeaponController : MonoBehaviour {
 		timeOfLastFlare5 = -timeBetweenFlares;
 
 		wc = gameObject.GetComponent<NewWeaponController>();
+
+        makesound = GetComponent<MakeSound>();
 	}
 
 	void Update() {
@@ -238,7 +242,7 @@ public class NewWeaponController : MonoBehaviour {
 
 	private void LaunchMissile() {
 		GameObject newMissile = Instantiate(missile);
-		MakeSound(sFire, false);
+		makesound.Play(sFire);
 		newMissile.transform.position = missileSpawnLocation.transform.position;
 
 		newMissile.GetComponent<PlayerMissileBehaviour>().Initialise(hit);
@@ -263,19 +267,8 @@ public class NewWeaponController : MonoBehaviour {
 			newFlare.transform.position = spawnLocation;
 
 			newFlare.transform.GetChild(0).GetComponent<FlareBehaviour>().Initialise(transform.GetChild(0).right * Mathf.Pow(-1, i));
+            makesound.Play(launchs[Random.Range(0, launchs.Count)]);
 		}
 	}
 
-	void MakeSound(AudioClip sound, bool pitchRandom) {
-		GameObject oSound = Instantiate(soundSrc, missileSpawnLocation.transform.position, Quaternion.identity);
-		AudioSource source = oSound.GetComponent<AudioSource>();
-		source.clip = sFire;
-		source.volume = 0.75f;
-		source.rolloffMode = AudioRolloffMode.Logarithmic;
-		source.spatialBlend = 0;
-		if (pitchRandom) source.pitch = Random.Range(0.75f, 1.25f);
-		oSound.GetComponent<TimedDestroy>().maxTime = source.clip.length;
-		oSound.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-		source.Play();
-	}
 }
