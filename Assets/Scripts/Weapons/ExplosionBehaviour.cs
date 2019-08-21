@@ -9,7 +9,7 @@ public class ExplosionBehaviour : MonoBehaviour {
 	public GameObject sndsrc;
 	public AudioClip sExplosion;
 	private float fadeStartTime = -1;
-	private float fadeTime = 15f;
+	private float fadeTime = 1f;
 	public float sMinDist = 1f;     // Distance at which sound is loudest
 	public float sMaxDist = 500f;   // Distance at which sound is inaudible
 
@@ -20,23 +20,40 @@ public class ExplosionBehaviour : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Time.time > fadeStartTime + fadeTime) {
-			if (Time.time > timeOfExplosion + explosionTime) {
-				if (fadeStartTime == -1) {
-					fadeStartTime = Time.time;
-				}
+		if (timeOfExplosion + explosionTime > Time.time) {
+			float scaleFactor = (Time.time - timeOfExplosion) * Time.timeScale;
+			transform.localScale += new Vector3(scaleFactor, scaleFactor, scaleFactor);
+		} else  if (timeOfExplosion + fadeTime > Time.time) {
+			if (fadeStartTime == -1) fadeStartTime = Time.time;
 
-				Color old = GetComponent<MeshRenderer>().material.color;
-				old.a = 1 - (( Time.time - fadeStartTime) / fadeTime);
+			Color old = GetComponent<MeshRenderer>().material.color;
+			old.a = 1 - ( ( Time.time - fadeStartTime ) / (fadeTime - explosionTime) );
 
-				GetComponent<MeshRenderer>().material.color = old;
-			} else {
-				float scaleFactor = (Time.time - timeOfExplosion) * Time.timeScale;
-				transform.localScale += new Vector3(scaleFactor, scaleFactor, scaleFactor);
-			}
+			GetComponent<MeshRenderer>().material.color = old;
+
+			float scaleFactor = (Time.time - timeOfExplosion) * Time.timeScale;
+			transform.localScale += new Vector3(scaleFactor, scaleFactor, scaleFactor);
 		} else {
 			Destroy(gameObject);
 		}
+
+		//if (Time.time > fadeStartTime + fadeTime) {
+		//	if (Time.time > timeOfExplosion + explosionTime) {
+		//		if (fadeStartTime == -1) {
+		//			fadeStartTime = Time.time;
+		//		}
+
+		//		Color old = GetComponent<MeshRenderer>().material.color;
+		//		old.a = 1 - (( Time.time - fadeStartTime) / fadeTime);
+
+		//		GetComponent<MeshRenderer>().material.color = old;
+		//	} else {
+		//		float scaleFactor = (Time.time - timeOfExplosion) * Time.timeScale;
+		//		transform.localScale += new Vector3(scaleFactor, scaleFactor, scaleFactor);
+		//	}
+		//} else {
+		//	Destroy(gameObject);
+		//}
 	}
 
 	void MakeSound(AudioClip sound, bool pitchRandom) {

@@ -185,6 +185,30 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<PlayerHealth>().enabled = !swapTo;
 		player.GetComponent<PlayerController>().enabled = !swapTo;
 		player.transform.GetChild(0).GetComponent<Animator>().enabled = !swapTo;
+
+		GameObject missiles = GameObject.FindGameObjectWithTag("MissileParent");
+
+		for (int i = 0; i < missiles.transform.childCount; i++) {
+			GameObject missile = missiles.transform.GetChild(i).gameObject;
+
+			if (missile.GetComponent<PlayerMissileBehaviour>()) {
+				missile.GetComponent<PlayerMissileBehaviour>().enabled = !swapTo;
+			}
+
+			if (missile.GetComponent<EnemyMissileBehaviour>()) {
+				missile.GetComponent<EnemyMissileBehaviour>().enabled = !swapTo;
+
+			}
+
+			if (missile.GetComponentInChildren<AudioSource>()) {
+				if (!swapTo) missile.GetComponentInChildren<AudioSource>().Pause();
+				if (swapTo) missile.GetComponentInChildren<AudioSource>().UnPause();
+
+			}
+
+			//missiles.transform.GetChild(i).gameObject.SetActive(!swapTo);
+		}
+
 		//player.transform.GetChild(2).gameObject.SetActive(!swapTo);
 		//salamander.GetComponent<Sal>().enabled = !swapTo;
 

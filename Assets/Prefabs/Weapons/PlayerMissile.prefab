@@ -114,6 +114,7 @@ MonoBehaviour:
   explosion: {fileID: 3070066106699261732, guid: 7c6c7c0a25c368b43b59f7b0ee76312f,
     type: 3}
   playerSpeed: {x: 0, y: 0, z: 0}
+  hasExploded: 0
 --- !u!54 &8297192401572699112
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -140,8 +141,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 2.5
+  m_Radius: 0.75
+  m_Height: 3.5
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.4}
 --- !u!1 &2187276437120585243
@@ -9888,10 +9889,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2187276436918047062}
     m_Modifications:
-    - target: {fileID: 100004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Name
-      value: missile
-      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9948,6 +9945,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Name
+      value: missile
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
 --- !u!1 &6779550540439275264 stripped
@@ -9969,10 +9970,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2187276436918047062}
     m_Modifications:
-    - target: {fileID: 100004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
-      propertyPath: m_Name
-      value: PlayerAfterburner
-      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10032,6 +10029,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
+      propertyPath: m_Name
+      value: PlayerAfterburner
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar

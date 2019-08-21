@@ -37,42 +37,45 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 
 	private void Update() {
 
-		if (!playerReached && Vector3.Distance(targetPoint, transform.position) < 10) {
-			playerReached = true;
+		if (!hasExploded) {
 
-			if (Physics.Raycast(transform.position, transform.forward, out hit)) {
-				targetPoint = hit.point;
-			} else {
-				noTargetFound = true;
-				timer = Time.time + timer;
+			if (!playerReached && Vector3.Distance(targetPoint, transform.position) < 10) {
+				playerReached = true;
+
+				if (Physics.Raycast(transform.position, transform.forward, out hit)) {
+					targetPoint = hit.point;
+				} else {
+					noTargetFound = true;
+					timer = Time.time + timer;
+				}
+			} else if (!playerReached) {
+				targetPoint = playerObj.transform.position;
 			}
-		} else if (!playerReached) {
-			targetPoint = playerObj.transform.position;
+
+
+			if (noTargetFound && timer < Time.time) {
+				Explode();
+			}
+
+
+			projectileSpeed += 0.25f;
+
+			if (!parentAssigned) {
+				gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+				parentAssigned = true;
+			}
+
+			if (!launched && Time.time > launchTime) {
+				launched = true;
+			} else if (launched && !playerReached) {
+				targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+				transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+				rotationSpeed += Time.deltaTime * 10;
+			}
+
+			transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 		}
-
-
-		if (noTargetFound && timer < Time.time) {
-			Explode();
-		}
-
-
-		projectileSpeed += 0.25f;
-
-		if (!parentAssigned) {
-			gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-			parentAssigned = true;
-		}
-
-		if (!launched && Time.time > launchTime) {
-			launched = true;
-		} else if (launched && !playerReached) {
-			targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
-			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-			rotationSpeed += Time.deltaTime * 10;
-		}
-
-		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 
 		Debug.DrawLine(transform.position, targetPoint, Color.green);
 	}
@@ -81,21 +84,33 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 		if (other.gameObject.transform.root.tag != "Enemy") Explode();
 	}
 
+	//private void OnTriggerEnter(Collider other) {
+	//	if (other.gameObject.transform.root.tag != "Enemy") Explode();
+	//}
+
+	private bool hasExploded = false;
+
 	private void Explode() {
-		explosion = Instantiate(explosion);
-		explosion.tag = "Explosion - Enemy";
+		if (!hasExploded) {
+			hasExploded = true;
+			Destroy(gameObject.transform.GetChild(6).gameObject);
 
-		explosion.transform.position = transform.position;
+			explosion = Instantiate(explosion);
+			explosion.tag = "Explosion - Enemy";
 
-		ParticleSystem fire = gameObject.transform.GetChild(7).GetComponent<ParticleSystem>();
-		ParticleSystem glow = gameObject.transform.GetChild(7).GetChild(0).GetComponent<ParticleSystem>();
+			explosion.transform.position = transform.position;
 
-		fire.Stop();
-		glow.Stop();
+			gameObject.GetComponent<CapsuleCollider>().enabled = false;
+			gameObject.transform.GetChild(0).gameObject.SetActive(false);
 
-		gameObject.GetComponent<CapsuleCollider>().enabled = false;
+			ParticleSystem fire = gameObject.transform.GetChild(7).GetComponent<ParticleSystem>();
+			ParticleSystem glow = gameObject.transform.GetChild(7).GetChild(0).GetComponent<ParticleSystem>();
 
-		StartCoroutine(TimedDestroy());
+			fire.Stop();
+			glow.Stop();
+
+			StartCoroutine(TimedDestroy());
+		}
 	}
 
 	private IEnumerator TimedDestroy() {

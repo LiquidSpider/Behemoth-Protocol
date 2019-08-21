@@ -24,6 +24,9 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 
 	private float timer = 1f;
 	private RaycastHit hit;
+	private RaycastHit hitTarget;
+
+	public GameObject targetObject;
 
 	public void Initialise(RaycastHit inputHit) {
 		// Set time of launch
@@ -39,73 +42,89 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		// Find the current velocity of the missile (based on relative velocity of player)
 		playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.gameObject.GetComponent<Rigidbody>().velocity * Time.deltaTime;
 
-		if (inputHit.transform.root.tag == "DragonFly") {
-			targetObj = inputHit.transform.gameObject;
-		} else {
-			targetPoint = inputHit.point;
-		}
+		hitTarget = inputHit;
+		RecalculateTrajectory();
+
+		//if (inputHit.transform.root.tag == "DragonFly") {
+		//	targetObj = inputHit.transform.gameObject;
+		//} else {
+		//	targetPoint = inputHit.point;
+		//}
 	}
 
 	private void Update() {
-		if (targetObj) targetPoint = targetObj.transform.position;
+		if (!hasExploded) {
+			if (!targetReached && Vector3.Distance(targetPoint, transform.position) < 3f) {
+				targetReached = true;
 
-
-		if (!targetReached && Vector3.Distance(targetPoint, transform.position) < 3f) {
-			targetReached = true;
-
-			if (Physics.Raycast(transform.position, transform.forward, out hit)) {
-				targetPoint = hit.point;
-			} else {
-				noTargetFound = true;
-				timer = Time.time + timer;
+				if (Physics.Raycast(transform.position, transform.forward, out hitTarget)) {
+					RecalculateTrajectory();
+				} else {
+					noTargetFound = true;
+					timer = Time.time + timer;
+				}
+			} else if (!targetReached) {
+				targetPoint = targetObject.transform.position;
 			}
+
+			if (noTargetFound && Time.time > timer) {
+				Explode();
+			}
+
+
+			projectileSpeed += 0.75f;
+
+			if (!parentAssigned) {
+				gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
+				parentAssigned = true;
+			}
+
+			if (!launched && Time.time > launchTime) {
+				launched = true;
+
+				gameObject.GetComponent<CapsuleCollider>().enabled = true;
+			} else if (launched && !targetReached) {
+				targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+				transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+				rotationSpeed += Time.deltaTime * 10;
+			}
+
+			playerSpeed *= 0.99f;
+			transform.position += playerSpeed;
+
+			transform.position += Time.deltaTime * projectileSpeed * transform.forward;
+
+			Debug.DrawLine(transform.position, targetPoint, Color.green);
 		}
 
-		if (noTargetFound && Time.time > timer) {
-			Explode();
-		}
-
-
-		projectileSpeed += 0.75f;
-
-		if (!parentAssigned) {
-			gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
-			parentAssigned = true;
-		}
-
-		if (!launched && Time.time > launchTime) {
-			launched = true;
-
-			gameObject.GetComponent<CapsuleCollider>().enabled = true;
-		} else if (launched && !targetReached) {
-			targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
-			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-			rotationSpeed += Time.deltaTime * 10;
-		}
-
-		playerSpeed *= 0.99f;
-		transform.position += playerSpeed;
-
-		transform.position += Time.deltaTime * projectileSpeed * transform.forward;
-
-		Debug.DrawLine(transform.position, targetPoint, Color.green);
+		//if (hasExploded && !explosion) Destroy(gameObject);
 	}
 
+	public bool hasExploded = false;
+
 	private void Explode() {
-		explosion = Instantiate(explosion);
-		explosion.tag = "Explosion - Player";
-		explosion.transform.position = transform.position;
+		if (!hasExploded) {
+			hasExploded = true;
 
-		ParticleSystem fire = gameObject.transform.GetChild(6).GetComponent<ParticleSystem>();
-		ParticleSystem glow = gameObject.transform.GetChild(6).GetChild(0).GetComponent<ParticleSystem>();
+			Destroy(targetObject);
 
-		fire.Stop();
-		glow.Stop();
+			GameObject temp = Instantiate(explosion);
 
-		gameObject.GetComponent<CapsuleCollider>().enabled = false;
+			explosion = temp;
+			explosion.tag = "Explosion - Player";
+			explosion.transform.position = transform.position;
 
-		StartCoroutine(TimedDestroy());
+			ParticleSystem fire = gameObject.transform.GetChild(6).GetComponent<ParticleSystem>();
+			ParticleSystem glow = gameObject.transform.GetChild(6).GetChild(0).GetComponent<ParticleSystem>();
+
+			fire.Stop();
+			glow.Stop();
+
+			gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+			StartCoroutine(TimedDestroy());
+		}
 	}
 
 	private IEnumerator TimedDestroy() {
@@ -141,5 +160,16 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		//	//	Explode();
 		//	//}
 		//}
+	}
+
+	public void RecalculateTrajectory() {
+		targetObject = new GameObject();
+		targetObject.name = "Missile Track Location";
+		targetObject.transform.position = hitTarget.point;
+		targetObject.transform.parent = hitTarget.transform;
+		targetObject.transform.localScale = new Vector3(1, 1, 1);
+		targetObject.AddComponent<PlayerMissileTargetBehaviour>();
+		targetObject.AddComponent<SphereCollider>();
+		targetObject.GetComponent<PlayerMissileTargetBehaviour>().Initialise(gameObject);
 	}
 }
