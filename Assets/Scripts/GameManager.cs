@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour {
 	public Text framesCounter;
 
 	// List of dragon flies in the scene.
-	[System.NonSerialized]
+	//[System.NonSerialized]
 	public List<GameObject> dragonFlies = new List<GameObject>();
 
 	/// <summary>

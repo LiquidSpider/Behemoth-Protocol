@@ -5,23 +5,58 @@ using UnityEngine;
 public class giantBehaviour : MonoBehaviour
 {
 
+    /// <summary>
+    /// This objects rigidbody.
+    /// </summary>
     private Rigidbody body;
 
-    //Variables to track where the player is located easily
+    /// <summary>
+    /// The player object.
+    /// </summary>
     public GameObject player;
-    private GameManager gameManager;
-    public float distToFront = 0.0f;
-    public float distToBack = 0.0f;
 
+    /// <summary>
+    /// The gamemanger object.
+    /// </summary>
+    private GameManager gameManager;
+
+    /// <summary>
+    /// The dragonfly spawners
+    /// </summary>
     public GameObject[] DFspawners = new GameObject[4];
 
+    /// <summary>
+    /// The missile object to instantiate upon firing missile
+    /// </summary>
     public GameObject missile;
+
+    /// <summary>
+    /// A missile launcher objects.
+    /// </summary>
     public GameObject[] missileLaunchers = new GameObject[2];
+
+    /// <summary>
+    /// The active launchers to shoot from upon fire missile.
+    /// </summary>
     public List<GameObject> activeLaunchers = new List<GameObject>();
+
+    [Space(20)]
+    public GameObject RightHandCollider;
+    public GameObject RightHandMesh;
+    public GameObject LeftHandCollider;
+    public GameObject LeftHandMesh;
+
+    private GiantAnimator animator;
+
     private float launchTime = 0.0f;
 
+    [Space(20)]
+    public BaseHealth LegsHealth;
+    public BaseHealth LeftArmHealth;
+    public BaseHealth RightArmHealth;
+    public BaseHealth baseHealth;
+
     // Moving variables
-    private bool Moveable;
     public int currentMoveableIndex = 0;
     public float totalTimeTaken;
     private float maxVelocity;
@@ -30,8 +65,6 @@ public class giantBehaviour : MonoBehaviour
     private float pathingDistance;
     public GameObject pathwayParent;
     public GameObject[] pathways;
-
-    private bool reachedDam = false;
 
     // Lazer Variables
     public bool _shootLazer;
@@ -51,8 +84,51 @@ public class giantBehaviour : MonoBehaviour
     public float lazerCooldownTime;
     private float timerLazerShootStart;
     private float timerLazerStart;
+    
+    /// <summary>
+    /// The different states the enemy can be in.
+    /// </summary>
+    public enum EnemyState
+    {
+        idle,
+        moving,
+        attacking,
+        repairing,
+        destoryingDam
+    }
+    /// <summary>
+    /// The current state that the enemy is in.
+    /// </summary>
+    public EnemyState currentEnemyState;
 
+    public enum EnemyArmStates
+    {
+        both,
+        left,
+        right,
+        none
+    }
+    public EnemyArmStates armState;
 
+    private enum PlayerPosition
+    {
+        unknown,
+        infront,
+        infrontRight,
+        infrontLeft,
+        right,
+        left,
+        back,
+        backRight,
+        backLeft
+    }
+
+    private float attackTimer = 0;
+
+    /// <summary>
+    /// The last enemy attack.
+    /// </summary>
+    private GiantAnimator.Animation lastAnimation;
 
     // Start is called before the first frame update
     void Start()
@@ -78,48 +154,331 @@ public class giantBehaviour : MonoBehaviour
             }
         }
 
-        // allow movement
-        Moveable = true;
-
         // get the game manager.
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        Setup();
+
+    }
+
+    /// <summary>
+    /// Performs the initial setup of the giant.
+    /// </summary>
+    private void Setup()
+    {
+        // setup the rotation and speed.
+        rotationSpeed = 100.0f;
+        movementSpeed = 1.0f / 4.0f;
+        pathingDistance = 10.0f;
 
         // get this objects rigidbody.
         body = this.GetComponent<Rigidbody>();
 
-        // setup the rotation and speed.
-        rotationSpeed = 100.0f;
-        movementSpeed = 1.0f / 4.0f;
-        pathingDistance = 1.0f;
+        // Default state.
+        currentEnemyState = EnemyState.idle;
+
+        // Get the animator script
+        animator = this.GetComponent<GiantAnimator>();
+
+        // Setup the first attack timer
+        attackTimer = Random.Range(5, 10);
+
+        // Setup the arm state
+        armState = EnemyArmStates.both;
+        
+        // setup the health
+        BaseHealth[] healths = this.GetComponents<BaseHealth>();
+        foreach(BaseHealth health in healths)
+        {
+            Debug.Log(health.healthLayer.value);
+            if (health.healthLayer == 1 << 18)
+            {
+                baseHealth = health;
+            }else if (health.healthLayer == 1 << 14)
+            {
+                LegsHealth = health;
+            }else if (health.healthLayer == 1 << 16)    
+            {
+                LeftArmHealth = health;
+            }else if (health.healthLayer == 1 << 17)
+            {
+                RightArmHealth = health;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Check Path
-        CheckPath();
 
-        // Move
-        MoveOnPath();
-
-        if (reachedDam)
-            DestroyDam();
-
-        locatePlayer();
-        fireMissiles();
-
-        CheckWeaponConditions();
-
-        if (shootLazer)
-            ShootLazers();
+        CheckHealth();
+        
+        RunAIState();
     }
 
     /// <summary>
-    /// Enemy has reached the dam.
+    /// Performs the AI state.
     /// </summary>
-    private void DestroyDam()
+    private void RunAIState()
     {
-        gameManager.PlayerLose();
+        switch(currentEnemyState)
+        {
+            case EnemyState.idle:
+                currentEnemyState = EnemyState.moving;
+                break;
+            case EnemyState.moving:
+                // Run all the conditional statements for the movement step.
+                RunMovementChecks();
+                
+                // Move on the path.
+                MoveOnPath();
+
+                // Fire missiles at the player.
+                fireMissiles();
+                break;
+            case EnemyState.attacking:
+                // If the animation is complete.
+                if(animator.isComplete || animator.currentAnimation == GiantAnimator.Animation.idle)
+                {
+                    animator.isComplete = false;
+                    animator.currentAnimation = GiantAnimator.Animation.idle;
+                    currentEnemyState = EnemyState.idle;
+                    attackTimer = Time.time + Random.Range(5, 10);
+                }
+                // perform an attack.
+                break;
+            case EnemyState.repairing:
+                // perform the repair.
+                break;
+            case EnemyState.destoryingDam:
+                // Destroy the dam.
+                DestroyDam();
+                break;
+        }
+    }
+
+    #region Conditions
+
+    /// <summary>
+    /// Checks for the health of the objects
+    /// </summary>
+    private void CheckHealth()
+    { 
+        switch(armState)
+        {
+            case EnemyArmStates.both:
+                if (LeftArmHealth.isDead)
+                {
+                    armState = EnemyArmStates.right;
+                    DestroyHand(GiantAnimator.Hand.left);
+                }
+                if (RightArmHealth.isDead)
+                {
+                    armState = EnemyArmStates.left;
+                    DestroyHand(GiantAnimator.Hand.right);
+                }
+                break;
+            case EnemyArmStates.left:
+                if (LeftArmHealth.isDead)
+                {
+                    armState = EnemyArmStates.none;
+                    DestroyHand(GiantAnimator.Hand.left);
+                }
+                break;
+            case EnemyArmStates.right:
+                if (RightArmHealth.isDead)
+                {
+                    armState = EnemyArmStates.none;
+                    DestroyHand(GiantAnimator.Hand.right);
+                }
+                break;
+            case EnemyArmStates.none:
+                if (baseHealth.isDead)
+                {
+                    gameManager.PlayerWin();
+                }
+                break;
+        }
+
+        if(LegsHealth.isDead)
+        {
+            if(armState != EnemyArmStates.none)
+            {
+                LegsHealth.Revive();
+            }
+            else
+            {
+                gameManager.PlayerWin();
+            }
+        }
+
+        //if (baseHealth.isDead)
+        //{
+        //    gameManager.PlayerWin();
+        //}
+    }
+
+    /// <summary>
+    /// Runs the conditional checks on the movement step.
+    /// </summary>
+    private void RunMovementChecks()
+    {
+        // Check for current pathway.
+        CheckPath();
+
+        // Determine the position of the player
+        PlayerPosition playerPostion = CheckPlayerPosition();
+
+        // Determine if we should attack and which attack
+        AttackConditioner(playerPostion);
+    }
+
+    /// <summary>
+    /// Determines if we should attack and what attack.
+    /// </summary>
+    private void AttackConditioner(PlayerPosition playerPosition)
+    {
+        // if the player is in range.
+        if(playerPosition != PlayerPosition.unknown)
+        {
+            // Check if we can attack
+            if (Time.time >= attackTimer)
+            {
+                // decide an attack
+                switch (playerPosition)
+                {
+                    case PlayerPosition.infront:
+                        // Perform the infront attacks.
+                        if(armState != EnemyArmStates.both && armState != EnemyArmStates.none)
+                        {
+                            animator.currentAnimation = GiantAnimator.Animation.Laser;
+
+                            if(armState == EnemyArmStates.left)
+                            {
+                                animator.hand = GiantAnimator.Hand.left;
+                            }
+                            else
+                            {
+                                animator.hand = GiantAnimator.Hand.right;
+                            }
+
+                            // Update the state
+                            currentEnemyState = EnemyState.attacking;
+                        }
+                        else
+                        {
+                            if(Random.Range(0,2) == 0)
+                            {
+                                animator.currentAnimation = GiantAnimator.Animation.GiantClap;
+                            }else
+                            {
+                                animator.currentAnimation = GiantAnimator.Animation.Laser;
+                                if (Random.Range(0,2) == 0)
+                                {
+                                    animator.hand = GiantAnimator.Hand.left;
+                                }
+                                else
+                                {
+                                    animator.hand = GiantAnimator.Hand.right;
+                                }
+                            }
+                            // Update the state
+                            currentEnemyState = EnemyState.attacking;
+                        }
+                        break;
+                    case PlayerPosition.infrontLeft:
+                        // Perform the infront left attacks.
+                        if(armState != EnemyArmStates.none && armState != EnemyArmStates.right)
+                        {
+                            animator.hand = GiantAnimator.Hand.left;
+
+                            switch(Random.Range(0,3))
+                            {
+                                case 0:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    break;
+                                case 1:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    break;
+                                case 2:
+                                    animator.currentAnimation = GiantAnimator.Animation.Laser;
+                                    break;
+                            }
+                            // Update the state;
+                            currentEnemyState = EnemyState.attacking;
+                        }
+                        break;
+                    case PlayerPosition.left:
+                    case PlayerPosition.backLeft:
+                        // Perform the left attack.
+                        if (armState != EnemyArmStates.none && armState != EnemyArmStates.right)
+                        {
+                            animator.hand = GiantAnimator.Hand.left;
+
+                            switch (Random.Range(0, 2))
+                            {
+                                case 0:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    break;
+                                case 1:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    break;
+                            }
+                            // Update the state;
+                            currentEnemyState = EnemyState.attacking;
+                        }
+                        break;
+                    case PlayerPosition.infrontRight:
+                        // Perform the infront right attacks.
+                        if (armState != EnemyArmStates.none && armState != EnemyArmStates.left)
+                        {
+                            animator.hand = GiantAnimator.Hand.right;
+
+                            switch (Random.Range(0, 3))
+                            {
+                                case 0:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    break;
+                                case 1:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    break;
+                                case 2:
+                                    animator.currentAnimation = GiantAnimator.Animation.Laser;
+                                    break;
+                            }
+                            // Update the state;
+                            currentEnemyState = EnemyState.attacking;
+                        }
+                        break;
+                    case PlayerPosition.right:
+                    case PlayerPosition.backRight:
+                        // Perform the right attacks.
+                        // Perform the left attack.
+                        if (armState != EnemyArmStates.none && armState != EnemyArmStates.left)
+                        {
+                            animator.hand = GiantAnimator.Hand.right;
+
+                            switch (Random.Range(0, 2))
+                            {
+                                case 0:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    break;
+                                case 1:
+                                    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    break;
+                            }
+                            // Update the state;
+                            currentEnemyState = EnemyState.attacking;
+                        }
+                        break;
+                    case PlayerPosition.back:
+                        // Perform the back attacks.
+                        // Update the state
+                        currentEnemyState = EnemyState.attacking;
+                        break;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -140,32 +499,81 @@ public class giantBehaviour : MonoBehaviour
                 // reached the dam.
                 if (currentMoveableIndex > pathways.Length - 1)
                 {
-                    Moveable = false;
-                    reachedDam = true;
+                    currentEnemyState = EnemyState.destoryingDam;
                 }
             }
         }
     }
 
     /// <summary>
-    /// Moves the gaint along the path
+    /// Checks the position of the player.
     /// </summary>
-    private void MoveOnPath()
+    private PlayerPosition CheckPlayerPosition()
     {
-        // If we can move
-        if (Moveable)
+        PlayerPosition position;
+
+        // Check if the player is close enough to the Giant.
+        if(Vector3.Distance(player.transform.position, this.transform.position) < 500.0f)
         {
-            // Move towards current path index
-            // rotate towards target.
-            Vector3 lookAt = pathways[currentMoveableIndex].transform.position;
-            lookAt.y = 0;
-            Vector3 currentPostion = this.transform.position;
-            currentPostion.y = 0;
-            Quaternion lookRotation = Quaternion.LookRotation(lookAt - currentPostion);
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Mathf.Min(rotationSpeed * 20 * Time.deltaTime, 1));
-            // add forward momemtum.
-            this.body.MovePosition(this.transform.position + (this.transform.forward * movementSpeed));
+            Vector3 from = player.transform.position;
+            from.y = 0;
+            Vector3 to = this.transform.position;
+            to.y = 0;
+            Vector3 heading = (from - to).normalized;
+            // left
+            float angle = -Vector3.SignedAngle(heading, -this.transform.right, Vector3.up);
+
+            // infront
+            if (angle >= 60 && angle <= 120)
+            {
+                position = PlayerPosition.infront;
+            }
+            // infront-right
+            else if (angle >= 120 && angle <= 150)
+            {
+                position = PlayerPosition.infrontRight;
+            }
+            // right
+            else if((angle >= 150 && angle <= 180) || (angle >= -180 && angle <= -150))
+            {
+                position = PlayerPosition.right;
+            }
+            // back-right
+            else if(angle >= -150 && angle <= -120)
+            {
+                position = PlayerPosition.backRight;
+            }
+            // back
+            else if(angle >= -120 && angle <= -60)
+            {
+                position = PlayerPosition.back;
+            }
+            // back-left
+            else if(angle >= -60 && angle <= -30)
+            {
+                position = PlayerPosition.backLeft;
+            }
+            // left
+            else if((angle >= -30 && angle <= 0) || (angle >= 0 && angle <= 30))
+            {
+                position = PlayerPosition.left;
+            }
+            // infront-left
+            else if (angle >= 30 && angle <= 60)
+            {
+                position = PlayerPosition.infrontLeft;
+            }
+            else
+            {
+                position = PlayerPosition.unknown;
+            }
         }
+        else
+        {
+            position = PlayerPosition.unknown;
+        }
+
+        return position;
     }
 
     /// <summary>
@@ -179,6 +587,74 @@ public class giantBehaviour : MonoBehaviour
             shootLazer = true;
         }
     }
+    #endregion
+
+    #region ActionMethods
+
+    /// <summary>
+    /// Enemy has reached the dam.
+    /// </summary>
+    private void DestroyDam()
+    {
+        if (animator.currentAnimation != GiantAnimator.Animation.GiantDamPunch)
+            animator.currentAnimation = GiantAnimator.Animation.GiantDamPunch;
+
+        if(animator.isComplete)
+        {
+            gameManager.PlayerLose();
+        }
+    }
+
+    /// <summary>
+    /// Moves the gaint along the path
+    /// </summary>
+    private void MoveOnPath()
+    {
+        if(currentEnemyState == EnemyState.moving)
+        {
+            // Move towards current path index
+            // rotate towards target.
+            Vector3 lookAt = pathways[currentMoveableIndex].transform.position;
+            lookAt.y = 0;
+            Vector3 currentPostion = this.transform.position;
+            currentPostion.y = 0;
+            Quaternion lookRotation = Quaternion.LookRotation(lookAt - currentPostion);
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Mathf.Min(rotationSpeed * 20 * Time.deltaTime, 1));
+            // add forward momemtum.
+            this.body.MovePosition(this.transform.position + (this.transform.forward * movementSpeed));
+        }
+    }
+    
+    /// <summary>
+    /// Destroys the hand.
+    /// </summary>
+    /// <param name="hand"></param>
+    private void DestroyHand(GiantAnimator.Hand hand)
+    {
+        switch(hand)
+        {
+            case GiantAnimator.Hand.left:
+                LeftHandCollider.SetActive(false);
+                LeftHandMesh.SetActive(false);
+                Renderer[] Lrenderers = LeftHandMesh.GetComponentsInChildren<SkinnedMeshRenderer>();
+                foreach(Renderer renderer in Lrenderers)
+                {
+                    renderer.enabled = false;
+                }
+                break;
+            case GiantAnimator.Hand.right:
+                RightHandCollider.SetActive(false);
+                RightHandMesh.SetActive(false);
+                Renderer[] Rrenderers = RightHandMesh.GetComponentsInChildren<SkinnedMeshRenderer>();
+                foreach (Renderer renderer in Rrenderers)
+                {
+                    renderer.enabled = false;
+                }
+                break;
+        }
+    }
+
+    #endregion
 
     //// getPathLength retreives the total distance to Giant has to move, in order to calculate how much it needs to move each frame
     //void getPathLength()
@@ -273,42 +749,42 @@ public class giantBehaviour : MonoBehaviour
     //    }
     //}
 
-    void locatePlayer()
-    {
-        //Calc distance to determine which missiles to launch
-        distToFront = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[0].transform.position);
-        distToBack = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[1].transform.position);
-        //Debug.Log(distToFront + " " + distToBack);
+    //void locatePlayer()
+    //{
+    //    //Calc distance to determine which missiles to launch
+    //    distToFront = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[0].transform.position);
+    //    distToBack = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[1].transform.position);
+    //    //Debug.Log(distToFront + " " + distToBack);
 
 
-        //Assign missiles and turrents to be 'awake' based on where player is
-        //Missile launchers being assigned
-        if (Mathf.Sqrt((distToBack - distToFront) * (distToBack - distToFront)) < 15.0f)
-        {
-            //When the player is near the sides of the machine
-            activeLaunchers = new List<GameObject>();
-        }
-        else if (distToFront > distToBack)
-        {
-            //The player is behind the giant so make the front launchers active
-            int launchNum = missileLaunchers[0].transform.childCount;
-            activeLaunchers = new List<GameObject>();
-            for (int i = 0; i < launchNum; i++)
-            {
-                activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
-            }
-        }
-        else if (distToBack > distToFront)
-        {
-            //The player is in front of the giant so make the front launchers active
-            int launchNum = missileLaunchers[1].transform.childCount;
-            activeLaunchers = new List<GameObject>();
-            for (int i = 0; i < launchNum; i++)
-            {
-                activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
-            }
-        }
-    }
+    //    //Assign missiles and turrents to be 'awake' based on where player is
+    //    //Missile launchers being assigned
+    //    if (Mathf.Sqrt((distToBack - distToFront) * (distToBack - distToFront)) < 15.0f)
+    //    {
+    //        //When the player is near the sides of the machine
+    //        activeLaunchers = new List<GameObject>();
+    //    }
+    //    else if (distToFront > distToBack)
+    //    {
+    //        //The player is behind the giant so make the front launchers active
+    //        int launchNum = missileLaunchers[0].transform.childCount;
+    //        activeLaunchers = new List<GameObject>();
+    //        for (int i = 0; i < launchNum; i++)
+    //        {
+    //            activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
+    //        }
+    //    }
+    //    else if (distToBack > distToFront)
+    //    {
+    //        //The player is in front of the giant so make the front launchers active
+    //        int launchNum = missileLaunchers[1].transform.childCount;
+    //        activeLaunchers = new List<GameObject>();
+    //        for (int i = 0; i < launchNum; i++)
+    //        {
+    //            activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
+    //        }
+    //    }
+    //}
 
     //Put in the script for firing missiles here
     void fireMissiles()

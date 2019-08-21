@@ -137,30 +137,53 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter(Collision other) {
-		if (other.transform.root.tag != "Player") Explode();
+        if (other.transform.root.tag != "Player")
+        {
+            // If the object has base health
+            if (other.transform.root.GetComponent<BaseHealth>())
+            {
+                BaseHealth[] healths = other.transform.root.GetComponents<BaseHealth>();
+                if (healths.Length > 1)
+                {
+                    foreach (BaseHealth health in healths)
+                    {
+                        // If the health that has the same layer as the collided object
+                        if (health.healthLayer == 1 << other.collider.gameObject.layer)
+                        {
+                            health.TakeDamage(200);
+                        }
+                    }
+                }
+                else
+                {
+                    healths[0].TakeDamage(200);
+                }
+            }
 
-		//if (other.gameObject.tag == "Environment") {
-		//	Explode();
-		//} else {
-		//	//// Get the root parent
-		//	//Transform parent = other.gameObject.transform.root;
-		//	//// Get all the colliders in the object
-		//	//Collider[] colliders = parent.GetComponentsInChildren<Collider>();
+            Explode();
+        }
+        //if (other.gameObject.tag == "Environment") {
+        //	Explode();
+        //} else {
+        //	//// Get the root parent
+        //	//Transform parent = other.gameObject.transform.root;
+        //	//// Get all the colliders in the object
+        //	//Collider[] colliders = parent.GetComponentsInChildren<Collider>();
 
-		//	//// Get the index of the collider to see if it exists in the array
-		//	//int DoesContain = System.Array.IndexOf(colliders, other.collider);
+        //	//// Get the index of the collider to see if it exists in the array
+        //	//int DoesContain = System.Array.IndexOf(colliders, other.collider);
 
-		//	//if (DoesContain >= 0 || other.gameObject.layer == 9 || other.gameObject.name == this.gameObject.name) {
+        //	//if (DoesContain >= 0 || other.gameObject.layer == 9 || other.gameObject.name == this.gameObject.name) {
 
-		//	//} else {
-		//	//	Explode();
-		//	//}
+        //	//} else {
+        //	//	Explode();
+        //	//}
 
-		//	//if (other.gameObject.tag == "Bullet - Player") {
-		//	//	Explode();
-		//	//}
-		//}
-	}
+        //	//if (other.gameObject.tag == "Bullet - Player") {
+        //	//	Explode();
+        //	//}
+        //}
+    }
 
 	public void RecalculateTrajectory() {
 		targetObject = new GameObject();

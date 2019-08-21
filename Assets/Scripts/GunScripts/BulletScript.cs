@@ -79,6 +79,27 @@ public class BulletScript : MonoBehaviour {
 
             }
 
+            // If the object has base health
+            if (collision.transform.root.GetComponent<BaseHealth>())
+            {
+                BaseHealth[] healths = collision.transform.root.GetComponents<BaseHealth>();
+                if (healths.Length > 1)
+                {
+                    foreach (BaseHealth health in healths)
+                    {
+                        // If the health that has the same layer as the collided object
+                        if (health.healthLayer == 1 << collision.collider.gameObject.layer)
+                        {
+                            health.TakeDamage(this.damage);
+                        }
+                    }
+                }
+                else
+                {
+                    healths[0].TakeDamage(this.damage);
+                }
+            }
+
             // if the object has a parent
             if (collision.gameObject.transform.parent) {
 				// if that objects parent has the Cube script
