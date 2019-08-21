@@ -258,7 +258,9 @@ public class NewWeaponController : MonoBehaviour {
 	}
 
 	private void LaunchFlare() {
-		for (int i = 1; i <= 2; i++) {
+        var audio = GetComponent<AudioSource>();
+        audio.PlayOneShot(launchs[Random.Range(0, launchs.Count)]);
+        for (int i = 1; i <= 2; i++) {
 			GameObject newFlare = Instantiate(flare);
 
 			Vector3 spawnLocation = transform.GetChild(0).position;
@@ -267,7 +269,7 @@ public class NewWeaponController : MonoBehaviour {
 			newFlare.transform.position = spawnLocation;
 
 			newFlare.transform.GetChild(0).GetComponent<FlareBehaviour>().Initialise(transform.GetChild(0).right * Mathf.Pow(-1, i));
-            makesound.Play(launchs[Random.Range(0, launchs.Count)]);
+            
 		}
 	}
 
