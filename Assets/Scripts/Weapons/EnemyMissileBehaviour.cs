@@ -109,6 +109,8 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 			fire.Stop();
 			glow.Stop();
 
+			Exploder.explode(transform);
+
 			StartCoroutine(TimedDestroy());
 		}
 	}

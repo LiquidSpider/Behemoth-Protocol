@@ -339,8 +339,9 @@ public class DragonFly : MonoBehaviour
         if (currentDragonFlyBehaviour == DragonFlyBehaviour.Kamikaze)
         {
             // Blowup
-            if (collision.collider.gameObject.tag == "Player")
-                Destroy(this.gameObject);
+            if (collision.collider.gameObject.tag == "Player") {
+            	ToDie();
+            }
         }
 
         // damage section.
@@ -412,9 +413,6 @@ public class DragonFly : MonoBehaviour
     {
         if (!isQuitting)
         {
-            // create a rubbish pile.
-            Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
-            DeathSound();
 
             // remove self from the game manager
             if (gameManager.dragonFlies.Contains(this.gameObject))
@@ -428,5 +426,18 @@ public class DragonFly : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ToDie() {
+    	// create a rubbish pile.
+        Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);
+        DeathSound();
+
+        Exploder.explode(this.gameObject.transform);
+        Destroy(this.gameObject, 5);
+        this.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        this.gameObject.transform.GetChild(1).gameObject.SetActive(false);
+        this.gameObject.GetComponent<DragonFly>().enabled = false;
+        this.gameObject.GetComponent<EnemyHealth>().enabled = false;
     }
 }

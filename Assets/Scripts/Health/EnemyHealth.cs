@@ -6,11 +6,13 @@ public class EnemyHealth : MonoBehaviour {
 
 	public float HP = 250;
 	public float maxHP;
+	public GameObject smoke;
 
 	private List<GameObject> damageTakenFrom = new List<GameObject>();
 
 	private void Start() {
 		maxHP = HP;
+		smoke = transform.GetChild(4).gameObject;
 	}
 
 	public void TakeDamage(float damage) {
@@ -19,6 +21,8 @@ public class EnemyHealth : MonoBehaviour {
 		if (HP <= 0) {
 			Die();
 		}
+		
+		smoke.SetActive(true);
 	}
 
 	public void TakeDamage(float damage, GameObject explosion) {
@@ -30,10 +34,12 @@ public class EnemyHealth : MonoBehaviour {
 			if (HP <= 0) {
 				Die();
 			}
+
+			smoke.SetActive(true);
 		}
 	}
 
 	private void Die() {
-		Destroy(gameObject);
+		this.gameObject.GetComponent<DragonFly>().ToDie();
 	}
 }

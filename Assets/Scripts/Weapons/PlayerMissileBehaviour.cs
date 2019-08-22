@@ -53,7 +53,7 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (!hasExploded) {
+		if (!hasExploded && targetObject) {
 			if (!targetReached && Vector3.Distance(targetPoint, transform.position) < 3f) {
 				targetReached = true;
 
@@ -96,6 +96,8 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 			transform.position += Time.deltaTime * projectileSpeed * transform.forward;
 
 			Debug.DrawLine(transform.position, targetPoint, Color.green);
+		} else if (!targetObject){
+			RecalculateTrajectory();
 		}
 
 		//if (hasExploded && !explosion) Destroy(gameObject);
@@ -122,6 +124,8 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 			glow.Stop();
 
 			gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+			Exploder.explode(transform);
 
 			StartCoroutine(TimedDestroy());
 		}
@@ -189,8 +193,8 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		targetObject = new GameObject();
 		targetObject.name = "Missile Track Location";
 		targetObject.transform.position = hitTarget.point;
+		targetObject.transform.localScale = new Vector3(2, 2, 2);
 		targetObject.transform.parent = hitTarget.transform;
-		targetObject.transform.localScale = new Vector3(1, 1, 1);
 		targetObject.AddComponent<PlayerMissileTargetBehaviour>();
 		targetObject.AddComponent<SphereCollider>();
 		targetObject.GetComponent<PlayerMissileTargetBehaviour>().Initialise(gameObject);
