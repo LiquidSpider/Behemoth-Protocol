@@ -13,7 +13,7 @@ public class giantBehaviour : MonoBehaviour
     /// <summary>
     /// The player object.
     /// </summary>
-    public GameObject player;
+    private GameObject player;
 
     /// <summary>
     /// The gamemanger object.
@@ -27,7 +27,8 @@ public class giantBehaviour : MonoBehaviour
 
     /// <summary>
     /// The missile object to instantiate upon firing missile
-    /// </summary>
+    /// </summary>\
+    [Header("Missile Objects")]
     public GameObject missile;
 
     /// <summary>
@@ -35,12 +36,14 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     public GameObject[] missileLaunchers = new GameObject[2];
 
+    private float launchTime = 0.0f;
+
     /// <summary>
     /// The active launchers to shoot from upon fire missile.
     /// </summary>
     public List<GameObject> activeLaunchers = new List<GameObject>();
 
-    [Space(20)]
+    [Header("Hand collider and Mesh Parents")]
     public GameObject RightHandCollider;
     public GameObject RightHandMesh;
     public GameObject LeftHandCollider;
@@ -48,43 +51,38 @@ public class giantBehaviour : MonoBehaviour
 
     private GiantAnimator animator;
 
-    private float launchTime = 0.0f;
-
-    [Space(20)]
+    [System.NonSerialized]
     public BaseHealth LegsHealth;
+    [System.NonSerialized]
     public BaseHealth LeftArmHealth;
+    [System.NonSerialized]
     public BaseHealth RightArmHealth;
+    [System.NonSerialized]
     public BaseHealth baseHealth;
 
     // Moving variables
-    public int currentMoveableIndex = 0;
-    public float totalTimeTaken;
+    private int currentMoveableIndex = 0;
+    //public float totalTimeTaken;
     private float maxVelocity;
     private float movementSpeed;
     private float rotationSpeed;
     private float pathingDistance;
-    public GameObject pathwayParent;
-    public GameObject[] pathways;
+    private GameObject pathwayParent;
+    private GameObject[] pathways;
 
     // Lazer Variables
-    public bool _shootLazer;
-    private bool shootLazer
-    {
-        get { return _shootLazer; }
-        set { if (value == true && _shootLazer != value) { timerLazerStart = Time.time; } _shootLazer = value; }
-    }
-    public bool _shootingLazer;
-    private bool shootingLazer
-    {
-        get { return _shootingLazer; }
-        set { if (value == true && _shootingLazer != value) { timerLazerShootStart = Time.time; } _shootingLazer = value; }
-    }
+    [Header("Laser Variables")]
     public float lazerWindUpTime;
     public float lazerShootTime;
-    public float lazerCooldownTime;
-    private float timerLazerShootStart;
-    private float timerLazerStart;
-    
+    [System.NonSerialized]
+    public float LaserTimer;
+
+    [Header("Smoke Variables")]
+    public GameObject[] RightArmSmoke;
+    public GameObject[] LeftArmSmoke;
+    public GameObject[] LegSmoke;
+    public GameObject[] BodySmoke;
+
     /// <summary>
     /// The different states the enemy can be in.
     /// </summary>
@@ -99,6 +97,7 @@ public class giantBehaviour : MonoBehaviour
     /// <summary>
     /// The current state that the enemy is in.
     /// </summary>
+    [Header("Enemy State Variables")]
     public EnemyState currentEnemyState;
 
     public enum EnemyArmStates
@@ -140,6 +139,7 @@ public class giantBehaviour : MonoBehaviour
             if (!pathwayParent)
             {
                 Debug.Log("No gaint pathway exists.");
+                this.gameObject.SetActive(false);
             }
             else
             {
@@ -185,22 +185,35 @@ public class giantBehaviour : MonoBehaviour
 
         // Setup the arm state
         armState = EnemyArmStates.both;
-        
+
+        // Get the player
+        this.player = GameObject.FindGameObjectWithTag("Player").transform.root.gameObject;
+
+        // Debug
+        if (!player)
+        {
+            Debug.Log("No Object with 'Player' tag found. Giant Disabled");
+            this.gameObject.SetActive(false);
+        }
+
         // setup the health
         BaseHealth[] healths = this.GetComponents<BaseHealth>();
-        foreach(BaseHealth health in healths)
+        foreach (BaseHealth health in healths)
         {
             Debug.Log(health.healthLayer.value);
-            if (health.healthLayer == 1 << 18)
+            if (health.healthLayer == 1 << 14)
             {
                 baseHealth = health;
-            }else if (health.healthLayer == 1 << 14)
+            }
+            else if (health.healthLayer == 1 << 16)
             {
                 LegsHealth = health;
-            }else if (health.healthLayer == 1 << 16)    
+            }
+            else if (health.healthLayer == 1 << 17)
             {
                 LeftArmHealth = health;
-            }else if (health.healthLayer == 1 << 17)
+            }
+            else if (health.healthLayer == 1 << 18)
             {
                 RightArmHealth = health;
             }
@@ -212,7 +225,7 @@ public class giantBehaviour : MonoBehaviour
     {
 
         CheckHealth();
-        
+
         RunAIState();
     }
 
@@ -221,7 +234,7 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void RunAIState()
     {
-        switch(currentEnemyState)
+        switch (currentEnemyState)
         {
             case EnemyState.idle:
                 currentEnemyState = EnemyState.moving;
@@ -229,7 +242,7 @@ public class giantBehaviour : MonoBehaviour
             case EnemyState.moving:
                 // Run all the conditional statements for the movement step.
                 RunMovementChecks();
-                
+
                 // Move on the path.
                 MoveOnPath();
 
@@ -237,8 +250,16 @@ public class giantBehaviour : MonoBehaviour
                 fireMissiles();
                 break;
             case EnemyState.attacking:
+                // Shoot laser if laser animation is at correct state
+                if (animator.currentAnimation == GiantAnimator.Animation.Laser)
+                {
+                    if (animator.currentLaserState == GiantAnimator.LaserAnimationState.shoot)
+                    {
+                        ShootLaser();
+                    }
+                }
                 // If the animation is complete.
-                if(animator.isComplete || animator.currentAnimation == GiantAnimator.Animation.idle)
+                if (animator.isComplete || animator.currentAnimation == GiantAnimator.Animation.idle)
                 {
                     animator.isComplete = false;
                     animator.currentAnimation = GiantAnimator.Animation.idle;
@@ -263,8 +284,28 @@ public class giantBehaviour : MonoBehaviour
     /// Checks for the health of the objects
     /// </summary>
     private void CheckHealth()
-    { 
-        switch(armState)
+    {
+
+        // Check for smoke enabled
+        if (LegsHealth.health < LegsHealth.startingHealth * 0.8f)
+        {
+            SmokeActivity(true, LegSmoke);
+        }
+        if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.8f)
+        {
+            SmokeActivity(true, LeftArmSmoke);
+        }
+        if (RightArmHealth.health < RightArmHealth.startingHealth * 0.8f)
+        {
+            SmokeActivity(true, RightArmSmoke);
+        }
+        if (baseHealth.health < baseHealth.startingHealth * 0.8f)
+        {
+            SmokeActivity(true, BodySmoke);
+        }
+
+        // Check if arms should be disabled
+        switch (armState)
         {
             case EnemyArmStates.both:
                 if (LeftArmHealth.isDead)
@@ -300,18 +341,24 @@ public class giantBehaviour : MonoBehaviour
                 break;
         }
 
-        if(LegsHealth.isDead)
+        // Check if the leg has been killed.
+        if (LegsHealth.isDead)
         {
-            if(armState != EnemyArmStates.none)
+            if (armState != EnemyArmStates.none)
             {
+                // Reset the legs health.
                 LegsHealth.Revive();
+                // Reset the legs smoke
+                SmokeActivity(false, LegSmoke);
             }
             else
-            {
+            { 
+                // Enabled chest damage.
                 gameManager.PlayerWin();
             }
         }
 
+        // Check if the base is dead.
         //if (baseHealth.isDead)
         //{
         //    gameManager.PlayerWin();
@@ -339,7 +386,7 @@ public class giantBehaviour : MonoBehaviour
     private void AttackConditioner(PlayerPosition playerPosition)
     {
         // if the player is in range.
-        if(playerPosition != PlayerPosition.unknown)
+        if (playerPosition != PlayerPosition.unknown)
         {
             // Check if we can attack
             if (Time.time >= attackTimer)
@@ -349,11 +396,11 @@ public class giantBehaviour : MonoBehaviour
                 {
                     case PlayerPosition.infront:
                         // Perform the infront attacks.
-                        if(armState != EnemyArmStates.both && armState != EnemyArmStates.none)
+                        if (armState != EnemyArmStates.both && armState != EnemyArmStates.none)
                         {
                             animator.currentAnimation = GiantAnimator.Animation.Laser;
 
-                            if(armState == EnemyArmStates.left)
+                            if (armState == EnemyArmStates.left)
                             {
                                 animator.hand = GiantAnimator.Hand.left;
                             }
@@ -367,13 +414,14 @@ public class giantBehaviour : MonoBehaviour
                         }
                         else
                         {
-                            if(Random.Range(0,2) == 0)
+                            if (Random.Range(0, 2) == 0)
                             {
                                 animator.currentAnimation = GiantAnimator.Animation.GiantClap;
-                            }else
+                            }
+                            else
                             {
                                 animator.currentAnimation = GiantAnimator.Animation.Laser;
-                                if (Random.Range(0,2) == 0)
+                                if (Random.Range(0, 2) == 0)
                                 {
                                     animator.hand = GiantAnimator.Hand.left;
                                 }
@@ -388,11 +436,11 @@ public class giantBehaviour : MonoBehaviour
                         break;
                     case PlayerPosition.infrontLeft:
                         // Perform the infront left attacks.
-                        if(armState != EnemyArmStates.none && armState != EnemyArmStates.right)
+                        if (armState != EnemyArmStates.none && armState != EnemyArmStates.right)
                         {
                             animator.hand = GiantAnimator.Hand.left;
 
-                            switch(Random.Range(0,3))
+                            switch (Random.Range(0, 3))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
@@ -513,7 +561,7 @@ public class giantBehaviour : MonoBehaviour
         PlayerPosition position;
 
         // Check if the player is close enough to the Giant.
-        if(Vector3.Distance(player.transform.position, this.transform.position) < 500.0f)
+        if (Vector3.Distance(player.transform.position, this.transform.position) < 500.0f)
         {
             Vector3 from = player.transform.position;
             from.y = 0;
@@ -534,27 +582,27 @@ public class giantBehaviour : MonoBehaviour
                 position = PlayerPosition.infrontRight;
             }
             // right
-            else if((angle >= 150 && angle <= 180) || (angle >= -180 && angle <= -150))
+            else if ((angle >= 150 && angle <= 180) || (angle >= -180 && angle <= -150))
             {
                 position = PlayerPosition.right;
             }
             // back-right
-            else if(angle >= -150 && angle <= -120)
+            else if (angle >= -150 && angle <= -120)
             {
                 position = PlayerPosition.backRight;
             }
             // back
-            else if(angle >= -120 && angle <= -60)
+            else if (angle >= -120 && angle <= -60)
             {
                 position = PlayerPosition.back;
             }
             // back-left
-            else if(angle >= -60 && angle <= -30)
+            else if (angle >= -60 && angle <= -30)
             {
                 position = PlayerPosition.backLeft;
             }
             // left
-            else if((angle >= -30 && angle <= 0) || (angle >= 0 && angle <= 30))
+            else if ((angle >= -30 && angle <= 0) || (angle >= 0 && angle <= 30))
             {
                 position = PlayerPosition.left;
             }
@@ -575,18 +623,6 @@ public class giantBehaviour : MonoBehaviour
 
         return position;
     }
-
-    /// <summary>
-    /// Runs the conditions to determine which attack is being used.
-    /// </summary>
-    private void CheckWeaponConditions()
-    {
-        // Lazer
-        if (timerLazerStart <= Time.time - lazerCooldownTime)
-        {
-            shootLazer = true;
-        }
-    }
     #endregion
 
     #region ActionMethods
@@ -599,7 +635,7 @@ public class giantBehaviour : MonoBehaviour
         if (animator.currentAnimation != GiantAnimator.Animation.GiantDamPunch)
             animator.currentAnimation = GiantAnimator.Animation.GiantDamPunch;
 
-        if(animator.isComplete)
+        if (animator.isComplete)
         {
             gameManager.PlayerLose();
         }
@@ -610,7 +646,7 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void MoveOnPath()
     {
-        if(currentEnemyState == EnemyState.moving)
+        if (currentEnemyState == EnemyState.moving)
         {
             // Move towards current path index
             // rotate towards target.
@@ -624,23 +660,24 @@ public class giantBehaviour : MonoBehaviour
             this.body.MovePosition(this.transform.position + (this.transform.forward * movementSpeed));
         }
     }
-    
+
     /// <summary>
     /// Destroys the hand.
     /// </summary>
     /// <param name="hand"></param>
     private void DestroyHand(GiantAnimator.Hand hand)
     {
-        switch(hand)
+        switch (hand)
         {
             case GiantAnimator.Hand.left:
                 LeftHandCollider.SetActive(false);
                 LeftHandMesh.SetActive(false);
                 Renderer[] Lrenderers = LeftHandMesh.GetComponentsInChildren<SkinnedMeshRenderer>();
-                foreach(Renderer renderer in Lrenderers)
+                foreach (Renderer renderer in Lrenderers)
                 {
                     renderer.enabled = false;
                 }
+                SmokeActivity(false, LeftArmSmoke);
                 break;
             case GiantAnimator.Hand.right:
                 RightHandCollider.SetActive(false);
@@ -650,10 +687,61 @@ public class giantBehaviour : MonoBehaviour
                 {
                     renderer.enabled = false;
                 }
+                SmokeActivity(false, RightArmSmoke);
                 break;
         }
     }
 
+    /// <summary>
+    /// Handles the shooting of missiles.
+    /// </summary>
+    void fireMissiles()
+    {
+        launchTime += Time.deltaTime;
+
+        if (launchTime > 10.0f)
+        {
+            float r;
+
+            launchTime = 0.0f;
+            foreach (GameObject launcher in activeLaunchers)
+            {
+                r = Random.Range(0f, 1f);
+
+                if (r < 0.4f) launcher.GetComponent<missileLaunch>().fire();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Shoots lazers from the specified location.
+    /// </summary>
+    private void ShootLaser()
+    {
+        switch (animator.hand)
+        {
+            case GiantAnimator.Hand.left:
+                break;
+            case GiantAnimator.Hand.right:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Changes the active state of a list of smoke objects.
+    /// </summary>
+    /// <param name="state"></param>
+    /// <param name="smokeArray"></param>
+    private void SmokeActivity(bool state, GameObject[] smokeArray)
+    {
+        foreach (GameObject smoke in smokeArray)
+        {
+            if (smoke.activeSelf != state)
+            {
+                smoke.SetActive(state);
+            }
+        }
+    }
     #endregion
 
     //// getPathLength retreives the total distance to Giant has to move, in order to calculate how much it needs to move each frame
@@ -785,57 +873,4 @@ public class giantBehaviour : MonoBehaviour
     //        }
     //    }
     //}
-
-    //Put in the script for firing missiles here
-    void fireMissiles()
-    {
-        launchTime += Time.deltaTime;
-
-        if (launchTime > 10.0f)
-        {
-			float r;
-
-            launchTime = 0.0f;
-            foreach (GameObject launcher in activeLaunchers)
-            {
-				r = Random.Range(0f, 1f);
-
-				if (r < 0.4f) launcher.GetComponent<missileLaunch>().fire();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Shoots lazers from the specified location.
-    /// </summary>
-    private void ShootLazers()
-    {
-        // wait the 2 second windup
-        if (timerLazerStart <= Time.time - lazerWindUpTime)
-        {
-            // we can begin shooting
-            if (!shootingLazer)
-            {
-                shootingLazer = true;
-            }
-
-            if (timerLazerShootStart >= Time.time - lazerShootTime)
-            {
-                // shoot the lazer
-                //Debug.Log("Shooting Lazer");
-            }
-            else
-            {
-                // stop shooting
-                shootLazer = false;
-                shootingLazer = false;
-                timerLazerStart = Time.time;
-            }
-
-        }
-        else
-        {
-            // play windup sound
-        }
-    }
 }

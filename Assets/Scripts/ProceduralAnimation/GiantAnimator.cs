@@ -9,7 +9,9 @@ public class GiantAnimator : MonoBehaviour
 
     public GameObject[] Kinematics;
 
-    public GameObject Player;
+    private giantBehaviour giantBehaviour;
+
+    private GameObject Player;
     public bool isComplete;
 
     public enum Animation
@@ -179,6 +181,19 @@ public class GiantAnimator : MonoBehaviour
         SetupClapAnimation();
         SetupSwingAnimation();
         SetupSwipeAnimation();
+
+        // Get the giant behaviour
+        this.giantBehaviour = this.GetComponent<giantBehaviour>();
+
+        // Get the player
+        this.Player = GameObject.FindGameObjectWithTag("Player").transform.root.gameObject;
+
+        // Debug
+        if (!Player)
+        {
+            Debug.Log("No Object with 'Player' tag found. Giant Disabled");
+            this.gameObject.SetActive(false);
+        }
 
     }
 
@@ -794,9 +809,6 @@ public class GiantAnimator : MonoBehaviour
         {
             obj.GetComponent<InverseKinematics>().enabled = true;
         }
-
-        //currentAnimation = Animation.GiantDamPunch;
-
     }
 
     /// <summary>
@@ -804,12 +816,6 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        // Check if the player is close enough and infront of the giant.
-        //if(Vector3.Distance(new Vector3(0, 0, this.transform.position.z), new Vector3(0, 0, Player.transform.position.z)) <= 400.0f && this.transform.InverseTransformPoint(Player.transform.position).z > 0)
-        //{
-        //    if (currentAnimation == Animation.idle)
-        //        currentAnimation = Animation.GiantClap;
-        //}
     }
 
     /// <summary>
@@ -860,6 +866,7 @@ public class GiantAnimator : MonoBehaviour
                         {
                             // Increment the animation step.
                             currentLaserState = LaserAnimationState.shoot;
+                            giantBehaviour.LaserTimer = 0;
                         }
                         break;
                     case Hand.right:
@@ -867,12 +874,17 @@ public class GiantAnimator : MonoBehaviour
                         {
                             // Increment the animationstep.
                             currentLaserState = LaserAnimationState.shoot;
+                            giantBehaviour.LaserTimer = 0;
                         }
                         break;
                 }
                 break;
             case LaserAnimationState.shoot:
-                currentLaserState = LaserAnimationState.recover;
+                if (giantBehaviour.LaserTimer > giantBehaviour.lazerWindUpTime + giantBehaviour.lazerShootTime)
+                {
+                    currentLaserState = LaserAnimationState.recover;
+                }
+                giantBehaviour.LaserTimer += Time.deltaTime;
                 break;
             case LaserAnimationState.recover:
                 switch(hand)

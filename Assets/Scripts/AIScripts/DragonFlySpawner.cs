@@ -15,7 +15,7 @@ public class DragonFlySpawner : MonoBehaviour
 
     // dragon fly variables
     public GameObject dragonFly;
-    public GameObject dragonFlyParent;
+    private GameObject dragonFlyParent;
     public GameManager gameManager;
 
     private GameObject[] spawners;
@@ -41,13 +41,25 @@ public class DragonFlySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Get the player
+        this.dragonFlyParent = GameObject.FindGameObjectWithTag("DragonFlyParent");
+        // store the gameManager.
+        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
 
+        if (!dragonFlyParent)
+        {
+            Debug.Log("object with DragonFlyParent tag not found. Disabling DragonFlySpawner script.");
+            this.gameObject.SetActive(false);
+        }
+        if (!gameManager)
+        {
+            Debug.Log("object with gameManager tag not found. Disabling DragonFlySpawner script.");
+            this.gameObject.SetActive(false);
+        }
     }
 
     private void Awake()
     {
-        // store the gameManager.
-        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         // Get the spawners that are children of this object.
         List<GameObject> spawnerList = new List<GameObject>();
         Transform[] children = this.transform.GetComponentsInChildren<Transform>();

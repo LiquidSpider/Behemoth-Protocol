@@ -7,10 +7,15 @@ public class MusicZone : MonoBehaviour
     public MusicManager.Music song = MusicManager.Music.Combat;
     public float volume = 1f;
     private MusicManager music;
+
+    private GameObject giant;
     // Start is called before the first frame update
     void Start()
     {
         music = FindObjectOfType<MusicManager>();
+
+        // Get the giant.
+        giant = FindObjectOfType<giantBehaviour>().gameObject;
     }
 
     void OnTriggerEnter(Collider collision)
@@ -21,6 +26,8 @@ public class MusicZone : MonoBehaviour
             if (music.CurrentSong() != song)
             {
                 music.SetSong(song, volume);
+                // Enabled the giant script.
+                giant.GetComponent<giantBehaviour>().enabled = true;
             }
         }
     }

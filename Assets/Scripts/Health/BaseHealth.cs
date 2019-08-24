@@ -36,7 +36,6 @@ public class BaseHealth : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(float damage)
     {
-        this.gameObject.transform.GetComponent<GiantDamaged>().checkSmoking(this);
         this.health -= damage;
         if (health <= 0)
         {
@@ -58,7 +57,6 @@ public class BaseHealth : MonoBehaviour
     /// </summary>
     public void Revive()
     {
-        this.gameObject.transform.GetComponent<GiantDamaged>().stopSmoking(this);
         this.health = startingHealth * 0.8f;
         this.isDead = false;
     }
