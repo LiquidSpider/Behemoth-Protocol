@@ -172,6 +172,9 @@ public class GiantAnimator : MonoBehaviour
     void Start()
     {
         isComplete = false;
+               
+        // Get the player
+        this.Player = GameObject.FindGameObjectWithTag("Player");
 
         // Setup
         SetupKinematics();
@@ -184,9 +187,6 @@ public class GiantAnimator : MonoBehaviour
 
         // Get the giant behaviour
         this.giantBehaviour = this.GetComponent<giantBehaviour>();
-
-        // Get the player
-        this.Player = GameObject.FindGameObjectWithTag("Player").transform.root.gameObject;
 
         // Debug
         if (!Player)
