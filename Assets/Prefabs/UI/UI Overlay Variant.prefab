@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -341,7 +341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -528,7 +528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1996667405
 RectTransform:
   m_ObjectHideFlags: 0
@@ -649,7 +649,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -956,7 +956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 0.49019608}
+  m_Color: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -965,7 +965,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e545123eca212c442b51c7699c079b95, type: 3}
-    m_FontSize: 25
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -1828,7 +1828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9811321, g: 0.29156283, b: 0.29156283, a: 0.39215687}
+  m_Color: {r: 0.9811321, g: 0.29156283, b: 0.29156283, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1983,7 +1983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6862745}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3504,7 +3504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9811321, g: 0.29156283, b: 0.29156283, a: 0.39215687}
+  m_Color: {r: 0.9811321, g: 0.29156283, b: 0.29156283, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4200,6 +4200,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8484136392248505801, guid: ea0bb85ff51dec0438c364339c619f08,
+        type: 3}
+      propertyPath: m_Name
+      value: UI Overlay Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8484136392248505802, guid: ea0bb85ff51dec0438c364339c619f08,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 8484136392248505805, guid: ea0bb85ff51dec0438c364339c619f08,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4304,11 +4314,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8484136392248505801, guid: ea0bb85ff51dec0438c364339c619f08,
-        type: 3}
-      propertyPath: m_Name
-      value: UI Overlay Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7044185774691041786, guid: ea0bb85ff51dec0438c364339c619f08,
         type: 3}
@@ -4555,6 +4560,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 0438e042163c4ba48b27aec50dd442d3,
         type: 3}
+    - target: {fileID: 8556459303533824424, guid: ea0bb85ff51dec0438c364339c619f08,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.5882353
+      objectReference: {fileID: 0}
     - target: {fileID: 7546027727244314101, guid: ea0bb85ff51dec0438c364339c619f08,
         type: 3}
       propertyPath: notchU
@@ -4570,11 +4580,12 @@ PrefabInstance:
       propertyPath: notchBL
       value: 
       objectReference: {fileID: 2384658311257208927}
-    - target: {fileID: 934207834, guid: ea0bb85ff51dec0438c364339c619f08, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8304135046412884181, guid: ea0bb85ff51dec0438c364339c619f08,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.5882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 8542710607868536120, guid: ea0bb85ff51dec0438c364339c619f08,
         type: 3}
       propertyPath: m_Color.a
       value: 0.5882353
@@ -4585,6 +4596,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1e3b2316be8451c4bb5d154561d1e94c,
         type: 3}
+    - target: {fileID: 8484136393265244703, guid: ea0bb85ff51dec0438c364339c619f08,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.5882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 7680741835895131764, guid: ea0bb85ff51dec0438c364339c619f08,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.5882353
+      objectReference: {fileID: 0}
     - target: {fileID: 8029421787143063978, guid: ea0bb85ff51dec0438c364339c619f08,
         type: 3}
       propertyPath: m_Color.a
@@ -4615,10 +4636,9 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0.5882353
       objectReference: {fileID: 0}
-    - target: {fileID: 8484136392248505802, guid: ea0bb85ff51dec0438c364339c619f08,
-        type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
+    - target: {fileID: 934207834, guid: ea0bb85ff51dec0438c364339c619f08, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1015946155322959753, guid: ea0bb85ff51dec0438c364339c619f08, type: 3}

@@ -66,11 +66,12 @@ public class GameManager : MonoBehaviour {
 	/// Called every frame.
 	/// </summary>
 	void Update() {
-		//#if DEBUG
+#if DEBUG
 		// Display the frame counter.
 		if (!gamePaused && Time.time % 1 < 0.02f)
+			framesCounter.gameObject.SetActive(true);
 			framesCounter.text = Mathf.Round(1f / Time.deltaTime).ToString();
-		//#endif
+#endif
 
 		// Moved this check out here, so I can call CheckPause from the Pause Menu
 		if (!gameOver && ( Input.GetKeyDown(KeyCode.P) || Input.GetButtonDown("Pause") )) {

@@ -1772,6 +1772,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   song: 1
   volume: 1
+  promptText: {fileID: 832312607}
 --- !u!1001 &139854501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25510,6 +25511,10 @@ PrefabInstance:
         type: 3}
       propertyPath: spamLogs
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1282814966, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
+      propertyPath: appearTime
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
