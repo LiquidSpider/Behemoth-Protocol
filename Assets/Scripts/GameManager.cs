@@ -124,14 +124,14 @@ public class GameManager : MonoBehaviour {
 	/// When the player has lost.
 	/// </summary>
 	public void PlayerLose() {
-		StartCoroutine(COLose());
+		if (!gameOver) StartCoroutine(COLose());
 	}
 
 	private IEnumerator COLose() {
 		gameOver = true;
 		Debug.Log("Game Over");
 
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(3);
 
 		gamePaused = true;
 		loseMenu.SetActive(true);
@@ -153,14 +153,17 @@ public class GameManager : MonoBehaviour {
 	/// When the player has won.
 	/// </summary>
 	public void PlayerWin() {
-		StartCoroutine(COWin());
+		if (!gameOver) StartCoroutine(COWin());
 	}
 
 	private IEnumerator COWin() {
 		gameOver = true;
-		Debug.Log("Game Over");
+		//Debug.Log("Game Over");
 
-		yield return new WaitForSeconds(2);
+		promptText.text = "You did it! Excellent work today, you're clear to return to base.";
+		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+
+		yield return new WaitForSeconds(3);
 
 		gamePaused = false;
 		winMenu.SetActive(true);
@@ -219,4 +222,6 @@ public class GameManager : MonoBehaviour {
 
 		Cursor.visible = swapTo;
 	}
+
+	public Text promptText;
 }

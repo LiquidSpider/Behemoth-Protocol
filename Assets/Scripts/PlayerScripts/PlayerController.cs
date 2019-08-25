@@ -348,8 +348,11 @@ public class PlayerController : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider collider) {
 		if (collider.gameObject.tag == "OrangeZon") {
-			promptText.text = "Warning: Approaching 'No Fly' zone, reduce height.";
-			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+			if (!flightWarningShown) {
+				promptText.text = "Warning: Approaching 'No Fly' zone, reduce height.";
+				promptText.gameObject.transform.parent.gameObject.SetActive(true);
+				flightWarningShown = true;
+			}
 
 			Color yellow  = Color.yellow;
 			yellow.a = 100f / 255f;
@@ -368,6 +371,8 @@ public class PlayerController : MonoBehaviour {
 	private void OnTriggerExit(Collider collider) {
 		if (collider.gameObject.tag == "OrangeZon") hudFrame.GetComponent<Image>().color = hudMainColour;
 	}
+
+	private bool flightWarningShown = false;
 }
 
 

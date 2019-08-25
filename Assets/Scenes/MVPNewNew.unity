@@ -9072,6 +9072,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3714925193883129378, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: promptText
+      value: 
+      objectReference: {fileID: 832312607}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 585d15a8d94197c4bb1c119139da3a68, type: 3}
 --- !u!1 &808443154 stripped
@@ -9553,6 +9558,7 @@ MonoBehaviour:
   instructionsPanel: {fileID: 131502616}
   framesCounter: {fileID: 1996667406}
   dragonFlies: []
+  promptText: {fileID: 832312607}
 --- !u!4 &864901746
 Transform:
   m_ObjectHideFlags: 0

@@ -52,7 +52,8 @@ public class PlayerHealth : MonoBehaviour {
 		if (battery < 0.1f * maxB && !batteryLowIndication) {
 			batteryLowIndication = true;
 
-			promptText.text = "Your battery is low, abosorb some water using the vacuum (3) to replenish it";
+			// Low battery prompt
+			promptText.text = "Your suit is low on energy, use your vacuuum to recharge it.";
 			promptText.gameObject.transform.parent.gameObject.SetActive(true);
 		} 
 
