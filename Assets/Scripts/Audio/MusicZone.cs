@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MusicZone : MonoBehaviour
 {
@@ -29,6 +30,12 @@ public class MusicZone : MonoBehaviour
                 // Enabled the giant script.
                 giant.GetComponent<giantBehaviour>().enabled = true;
             }
-        }
+
+			// Navigator Prompt
+			promptText.text = "You need to stop it from reaching the wall! Destroy it's legs to stop it moving.";
+			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		}
     }
+
+	public Text promptText;
 }

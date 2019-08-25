@@ -93,8 +93,21 @@ public class PlayerController : MonoBehaviour {
         rotX = transform.rotation.eulerAngles.y;
 		
 		hudMainColour = hudFrame.GetComponent<Image>().color;
+
+		// Prompt for start of game
+		promptText.text = "You've arrived! Quickly, enter the dam, your target is there.";
+		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+
+		StartCoroutine(DelayedIntroPrompt());
 	}
 
+	private IEnumerator DelayedIntroPrompt() {
+		yield return new WaitForSeconds(3);
+
+		// Second prompt, action given
+		promptText.text = "The dam's under attack again. You have to make sure the wall stays intact.";
+		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+	}
 
 	void FixedUpdate() {
 		PlayerControls();
