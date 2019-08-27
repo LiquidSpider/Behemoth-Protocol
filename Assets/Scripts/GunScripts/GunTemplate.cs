@@ -27,6 +27,7 @@ public class GunTemplate : MonoBehaviour {
 
     [Tooltip("Element 0 = horizontal recoil. Element 1 = vertical recoi.")]
     public float[] recoilxy = new float[2] { 3, 10 }; //
+    private float[] storedRecoil = new float[2];
 
     //  Bullet Variables                        All variables must start with prefix 'p'
     public GameObject projectile;               // Bullet prefab, probably won't need to change   
@@ -59,6 +60,8 @@ public class GunTemplate : MonoBehaviour {
         animation = GetComponent<Animation>();
         makeSound = GetComponent<MakeSound>();
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        storedRecoil[0] = recoilxy[0];
+        storedRecoil[1] = recoilxy[1];
     }
     // Update is called once per frame
     void Update() {
@@ -73,14 +76,26 @@ public class GunTemplate : MonoBehaviour {
                 break;
         }
 
+        switch (FindObjectOfType<PlayerController>().isZoom)
+        {
+            case true:
+                recoilxy[0] = storedRecoil[0] / 2;
+                recoilxy[1] = storedRecoil[1] / 2;
+                break;
+            case false:
+                recoilxy[0] = storedRecoil[0];
+                recoilxy[1] = storedRecoil[1];
+                break;
+        }
         
     }
 
     void AimWeapon()
     {
         Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        //var layerMask = ~((1 << 9 | 1 << 10));
-        if (Physics.Raycast(ray, out RaycastHit aimPoint))// layerMask))
+        int layerMask = 1 << 10;
+        layerMask = ~layerMask;
+        if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask))
         {
             transform.LookAt(aimPoint.point);
         }

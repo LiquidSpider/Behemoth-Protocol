@@ -16272,7 +16272,7 @@ PrefabInstance:
     - target: {fileID: 336006383559377008, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
       propertyPath: recoilSpeed
-      value: 0.05
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 336006383559377008, guid: 4363798308be8c54eb2754fbf918be68,
         type: 3}
@@ -30630,11 +30630,26 @@ PrefabInstance:
       propertyPath: MaxDistance
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 7378313598245938060, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: DopplerLevel
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5796609801638167439, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
       propertyPath: volmultoffset
       value: 0.005
       objectReference: {fileID: 0}
+    - target: {fileID: 5796609801638167439, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: thrust
+      value: 
+      objectReference: {fileID: 8300000, guid: 8318600490c97bb4c9716a68a7b53bc5, type: 3}
+    - target: {fileID: 5796609801638167439, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: afterburning
+      value: 
+      objectReference: {fileID: 8300000, guid: 07c463657df977b439de756d6d8f431a, type: 3}
     - target: {fileID: 8135345400845436694, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
       propertyPath: maxAcc

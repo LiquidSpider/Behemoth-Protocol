@@ -194,7 +194,7 @@ MonoBehaviour:
   handling: 2
   recoilxy:
   - 3
-  - 20
+  - 120
   projectile: {fileID: 8170432168313451531, guid: 8ffa651664f091b4da719dbe2b3732ed,
     type: 3}
   pSpeed: 800
@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35455788975e9ef4990ca2a19b5f1272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  source: {fileID: 0}
 --- !u!1 &7814207385975018066
 GameObject:
   m_ObjectHideFlags: 0
