@@ -21,11 +21,16 @@ public class BaseHealth : MonoBehaviour
     public LayerMask healthLayer;
 
     /// <summary>
+    /// Determines if the object can take damage or not.
+    /// </summary>
+    public bool takeDamage;
+
+    /// <summary>
     /// Used to identify if the arm is dead.
     /// </summary>
     public bool isDead = false;
 
-    private void Awake()
+    private void Start()
     {
         this.startingHealth = health;
     }
@@ -36,11 +41,14 @@ public class BaseHealth : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(float damage)
     {
-        this.health -= damage;
-        if (health <= 0)
+        if(takeDamage)
         {
-            health = 0;
-            Die();
+            this.health -= damage;
+            if (health <= 0)
+            {
+                health = 0;
+                Die();
+            }
         }
     }
 
