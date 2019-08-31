@@ -44,6 +44,16 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     public List<GameObject> activeLaunchers = new List<GameObject>();
 
+    /// <summary>
+    /// The position of the chest.
+    /// </summary>
+    public Transform ChestPosition;
+
+    /// <summary>
+    /// The game object for the pulse attack.
+    /// </summary>
+    public GameObject PulseEmitter;
+
     [Header("Hand collider and Mesh Parents")]
     public GameObject RightHandCollider;
     public GameObject RightHandMesh;
@@ -78,6 +88,16 @@ public class giantBehaviour : MonoBehaviour
     [System.NonSerialized]
     public float LaserTimer;
 
+    // Final Laser Variables
+    private float FinalLaserWindUpTime = 15;
+    private float FinalLaserShootTime = 5;
+    private float FinalLaserTime = 0;
+
+    [Header("Laser Variables")]
+    public GameObject[] LLaserObjects;
+    public GameObject[] RLaserObjects;
+    public GameObject ChestLaser;
+
     [Header("Smoke Variables")]
     public GameObject[] RightArmSmoke;
     public GameObject[] LeftArmSmoke;
@@ -93,7 +113,8 @@ public class giantBehaviour : MonoBehaviour
         moving,
         attacking,
         repairing,
-        destoryingDam
+        destoryingDam,
+        lastStand
     }
     /// <summary>
     /// The current state that the enemy is in.
@@ -109,6 +130,20 @@ public class giantBehaviour : MonoBehaviour
         none
     }
     public EnemyArmStates armState;
+
+    public enum LastStandState
+    {
+        Idle,
+        Default,
+        FinalLaser,
+        Pulse,
+    }
+
+    /// <summary>
+    /// The state of the last stand.
+    /// </summary>
+    [Header("Last Stand Variables")]
+    public LastStandState lastStandState;
 
     private enum PlayerPosition
     {
@@ -129,6 +164,27 @@ public class giantBehaviour : MonoBehaviour
     /// The last enemy attack.
     /// </summary>
     private GiantAnimator.Animation lastAnimation;
+
+    /// <summary>
+    /// The duration of the last stand before losing.
+    /// </summary>
+    private float LastStandDuration;
+
+    /// <summary>
+    /// Final stand AOE emitter conditions.
+    /// </summary>
+    private bool FirstEmitterUsed = false;
+    private bool SecondEmitterUsed = false;
+
+    /// <summary>
+    /// The timer for the emitter timer.
+    /// </summary>
+    private float EmitterStartTime = 0;
+
+    /// <summary>
+    /// The delay timer to wind up the emitter.
+    /// </summary>
+    public float EmitterWindUp;
 
     // Start is called before the first frame update
     void Start()
@@ -172,11 +228,18 @@ public class giantBehaviour : MonoBehaviour
         movementSpeed = 1.0f / 4.0f;
         pathingDistance = 10.0f;
 
+        // Last Stand is 3 minutes (180 seconds).
+        LastStandDuration = 180.0f;
+
         // get this objects rigidbody.
         body = this.GetComponent<Rigidbody>();
 
         // Default state.
         currentEnemyState = EnemyState.idle;
+
+        // Emitter disable
+        FirstEmitterUsed = false;
+        SecondEmitterUsed = false;
 
         // Get the animator script
         animator = this.GetComponent<GiantAnimator>();
@@ -247,7 +310,9 @@ public class giantBehaviour : MonoBehaviour
                 // Move on the path.
                 MoveOnPath();
 
-                // Fire missiles at the player.
+                // Fire Turrets
+
+                // Fire Missiles
                 fireMissiles();
                 break;
             case EnemyState.attacking:
@@ -276,10 +341,40 @@ public class giantBehaviour : MonoBehaviour
                 // Destroy the dam.
                 DestroyDam();
                 break;
+            case EnemyState.lastStand:
+                // Perform the last stand stage
+                LastStand();
+                break;
         }
     }
 
     #region Conditions
+
+    /// <summary>
+    /// Runs the check conditions for the last stand state.
+    /// </summary>
+    private void LastStandCheckConditions()
+    {
+        // Second minute emittor
+        if (this.LastStandDuration <= 120 && !this.FirstEmitterUsed)
+        {
+            this.lastStandState = LastStandState.Pulse;
+            FirstEmitterUsed = true;
+        }
+
+        // 1 minute emittor.
+        if (this.LastStandDuration <= 60 && !this.SecondEmitterUsed)
+        {
+            this.lastStandState = LastStandState.Pulse;
+            SecondEmitterUsed = true;
+        }
+
+        // Final Stand
+        if (this.LastStandDuration <= 20 && this.lastStandState != LastStandState.FinalLaser)
+        {
+            this.lastStandState = LastStandState.FinalLaser;
+        }
+    }
 
     /// <summary>
     /// Checks for the health of the objects
@@ -645,6 +740,77 @@ public class giantBehaviour : MonoBehaviour
     #endregion
 
     #region ActionMethods
+
+    /// <summary>
+    /// Performs the last stand phase.
+    /// </summary>
+    private void LastStand()
+    {
+
+        switch (lastStandState)
+        {
+            case LastStandState.Idle:
+                this.lastStandState = LastStandState.Default;
+                break;
+
+            case LastStandState.Default:
+                LastStandCheckConditions();
+                // Fire Turrets
+
+                // Fire Missiles
+                break;
+
+            case LastStandState.Pulse:
+                Pulse();
+                break;
+
+            case LastStandState.FinalLaser:
+                FinalLaser();
+                break;
+        }
+
+        // Increment the last stand duration.
+        LastStandDuration -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Emits a pulse around the boss.
+    /// </summary>
+    private void Pulse()
+    {
+        if (EmitterStartTime > EmitterWindUp)
+        {
+            // Create the emitter object
+            Instantiate(PulseEmitter, ChestPosition.position, ChestPosition.rotation);
+            this.lastStandState = LastStandState.Default;
+        }
+
+        // Increment the timer.
+        EmitterStartTime += Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Performs the final state.
+    /// </summary>
+    private void FinalLaser()
+    {
+        
+        // If wind up is finished.
+        if(FinalLaserTime > FinalLaserWindUpTime)
+        {
+            // Enabled the laser and it's script.
+            //ChestLaser.SetActive(true);
+            //ChestLaser.GetComponent<Laser>().enabled = true;
+
+            if (FinalLaserTime > FinalLaserWindUpTime + FinalLaserTime)
+            {
+                gameManager.PlayerLose();
+            }
+        }
+
+        // Increment the final laser timer.
+        FinalLaserShootTime += Time.deltaTime;
+    }
 
     /// <summary>
     /// Enemy has reached the dam.
