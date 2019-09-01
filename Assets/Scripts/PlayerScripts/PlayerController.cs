@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb;                                               // Player body
 	public GameObject body;                                             // Player gameobject body
 	private Animator animator;                                          // Body animator
+
+	public GameObject trailObject;
+	private Animator trailAnimator;
 																		//private TrailRenderer trail;                                        // Trail renderer in player body
 																		//  Camera Vars
 	private GameObject cameraObj;                                       // The camera object
@@ -87,6 +90,8 @@ public class PlayerController : MonoBehaviour {
 		rb = GetComponent<Rigidbody>();
 		//trail = body.GetComponent<TrailRenderer>();
 		animator = body.GetComponent<Animator>();
+		trailAnimator = trailObject.GetComponent<Animator>();
+
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		SwapWeapon(0);
@@ -125,6 +130,7 @@ public class PlayerController : MonoBehaviour {
 		if (!Input.GetKey(KeyCode.LeftShift)) {
 			isCruising = false;
 			animator.SetBool("IsBoosting", false);
+			trailAnimator.SetBool("IsBoosting", false);
 		}
 
 		// Camera Movement based on cruising
@@ -232,6 +238,7 @@ public class PlayerController : MonoBehaviour {
 				if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
 					isCruising = true;
 					animator.SetBool("IsBoosting", true);
+					trailAnimator.SetBool("IsBoosting", true);
 				} else cHoldTime += Time.deltaTime;
 			}
 
@@ -242,6 +249,7 @@ public class PlayerController : MonoBehaviour {
 			} else if (( Input.GetButtonUp("Dodge") && isCruising ) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
 				isCruising = false;
 				animator.SetBool("IsBoosting", false);
+				trailAnimator.SetBool("IsBoosting", false);
 			}
 		}
 
@@ -310,16 +318,25 @@ public class PlayerController : MonoBehaviour {
 			isDodge = true;
             transform.GetComponentInChildren<PlayerThrust>().Dodge();
 			if (Input.GetAxis("LeftHorizontal") > 0) animator.SetTrigger("DodgeRight");
+			if (Input.GetAxis("LeftHorizontal") > 0) trailAnimator.SetTrigger("DodgeRight");
+
 			if (Input.GetAxis("LeftHorizontal") < 0) animator.SetTrigger("DodgeLeft");
+			if (Input.GetAxis("LeftHorizontal") < 0) trailAnimator.SetTrigger("DodgeLeft");
+
 			if (Input.GetAxis("LeftVertical") > 0) animator.SetTrigger("DodgeForward");
+			if (Input.GetAxis("LeftVertical") > 0) trailAnimator.SetTrigger("DodgeForward");
+
 			rb.AddForce(transform.forward * Input.GetAxis("LeftVertical") * dForce * 100);
 			rb.AddForce(transform.right * Input.GetAxis("LeftHorizontal") * dForce * 100);
 			rb.AddForce(transform.up * Input.GetAxis("AscDesc") * dForce * 100);
 			yield return new WaitForSeconds(dTime);
 			isDodge = false;
 			animator.ResetTrigger("DodgeRight");
+			trailAnimator.ResetTrigger("DodgeRight");
 			animator.ResetTrigger("DodgeLeft");
+			trailAnimator.ResetTrigger("DodgeLeft");
 			animator.ResetTrigger("DodgeForward");
+			trailAnimator.ResetTrigger("DodgeForward");
 		}
 	}
 
