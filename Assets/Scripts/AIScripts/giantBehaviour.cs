@@ -243,7 +243,7 @@ public class giantBehaviour : MonoBehaviour
     {
         // setup the rotation and speed.
         rotationSpeed = 100.0f;
-        movementSpeed = 1.0f / 4.0f;
+        movementSpeed = 1.0f / 10.0f;
         pathingDistance = 10.0f;
 
         // Last Stand is 3 minutes (180 seconds).
@@ -969,7 +969,7 @@ public class giantBehaviour : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(lookAt - currentPostion);
             transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Mathf.Min(rotationSpeed * 20 * Time.deltaTime, 1));
             // add forward momemtum.
-            this.body.MovePosition(this.transform.position + (this.transform.forward * movementSpeed));
+            this.body.position += (this.transform.forward * movementSpeed);
 
             // Enable animation.
             this.thisAnimator.SetBool("IsMoving", true);
