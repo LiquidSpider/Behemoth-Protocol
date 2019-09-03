@@ -253,11 +253,11 @@ public class GiantAnimator : MonoBehaviour
     {
         laserAnimationLPart0 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
+            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
         };
 
         laserAnimationLPart1 = new List<Step>()
@@ -268,19 +268,19 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LHPinkyTip, new List<StepPosition>()
             {
-                new StepPosition(LHPinkyTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(LHPinkyTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LHRingTip, new List<StepPosition>()
             {
-                new StepPosition(LHRingTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(LHRingTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LHMiddleTip, new List<StepPosition>()
             {
-                new StepPosition(LHMiddleTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(LHMiddleTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LHIndexTip, new List<StepPosition>()
             {
-                new StepPosition(LHIndexTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(LHIndexTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
         };
 
@@ -326,12 +326,11 @@ public class GiantAnimator : MonoBehaviour
         // Setup Left step 1
         swipeUpAnimationLPart0 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 20.0f, 3.0f),
+            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.5f),
             new Step(LeftElbow, new List<StepPosition>()
             {
                 new StepPosition(new Vector3(0.0f, 0.2f, -0.4f), 0.4f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 3.0f)
+            }, Step.DirectionType.position, Step.StepType.addition)
         };
        
         // Setup Left step 2
@@ -345,21 +344,16 @@ public class GiantAnimator : MonoBehaviour
             {
                 new StepPosition(LeftElbow.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(Chest.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.rotation, Step.StepType.position),
         };
 
         // Setup Right step 1
         swipeUpAnimationRPart0 = new List<Step>()
         {
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 20.0f, 3.0f),
+            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.5f),
             new Step(RightElbow, new List<StepPosition>()
             {
                 new StepPosition(new Vector3(0.0f, 0.2f, -0.4f), 0.4f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 3.0f)
+            }, Step.DirectionType.position, Step.StepType.addition)
         };
 
         // Setup Right step 2
@@ -372,11 +366,7 @@ public class GiantAnimator : MonoBehaviour
             new Step(RightElbow, new List<StepPosition>()
             {
                 new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(Chest.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.rotation, Step.StepType.position),
+            }, Step.DirectionType.position, Step.StepType.position)
         };
 }
 
@@ -423,8 +413,8 @@ public class GiantAnimator : MonoBehaviour
         // Setup Left step 2
         swingAnimationLPart1 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(LeftHand, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 1.0f),
+            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 1.0f),
+            new Step(LeftHand, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, 1.0f),
         };
 
         // Setup Left step 3
@@ -434,6 +424,10 @@ public class GiantAnimator : MonoBehaviour
             {
                 new StepPosition(LeftHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
+            new Step(LeftHand, new List<StepPosition>()
+            {
+                new StepPosition(LeftHand.startingLocalRotation, 0.01f)
+            }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LeftElbow, new List<StepPosition>()
             {
                 new StepPosition(LeftElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
@@ -500,7 +494,8 @@ public class GiantAnimator : MonoBehaviour
         // Setup Right step 2
         swingAnimationRPart1 = new List<Step>()
         {
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 20.0f, 3.0f),
+            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 1.0f),
+            new Step(RightHand, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, 1.0f),
         };
 
         // Setup Right step 3
@@ -510,6 +505,10 @@ public class GiantAnimator : MonoBehaviour
             {
                 new StepPosition(RightHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
+            new Step(RightHand, new List<StepPosition>()
+            {
+                new StepPosition(RightHand.startingLocalRotation, 0.01f)
+            }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RightElbow, new List<StepPosition>()
             {
                 new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
@@ -577,11 +576,11 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(Waist, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
+                new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 2.0f * ClapAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(Spine, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, -0.4f, -0.2f), 7.0f * ClapAnimSpeed)
+                new StepPosition(new Vector3(0.0f, -0.4f, -0.2f), 2.0f * ClapAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(Chest, new List<StepPosition>()
             {
@@ -589,7 +588,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(30.0f, 0.0f, 0.0f), 1.0f * ClapAnimSpeed)
+                new StepPosition(new Vector3(30.0f, 0.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             new Step(LeftElbow, new List<StepPosition>()
             {
@@ -601,7 +600,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(270.0f, 0.0f, 0.0f), 1.0f * ClapAnimSpeed)
+                new StepPosition(new Vector3(270.0f, 0.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             new Step(RightElbow, new List<StepPosition>()
             {
@@ -613,7 +612,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(270.0f, -0.0f, 0.0f), 1.0f * ClapAnimSpeed)
+                new StepPosition(new Vector3(270.0f, -0.0f, 0.0f), 2.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             new Step(LeftKnee, new List<StepPosition>()
             {
@@ -628,16 +627,16 @@ public class GiantAnimator : MonoBehaviour
         // setup step 2
         clapAnimationPart1 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.yz, 20.0f, 3.0f),
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.yz, 20.0f, 3.0f),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f)
+            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.yz, 5.0f, 1.0f),
+            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.yz, 5.0f, 1.0f),
+            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 1.0f)
         };
 
         // setup step 3
         clapAnimationPart2 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 2.0f),
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 5.0f,  2.0f)
+            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.25f),
+            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f,  0.25f)
         };
 
         // setup step 4
@@ -653,7 +652,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalRotation, 1.0f * SwingAnimSpeed)
+                new StepPosition(LeftHand.startingLocalRotation, 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RightElbow, new List<StepPosition>()
             {
@@ -665,7 +664,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalRotation, 1.0f * SwingAnimSpeed)
+                new StepPosition(RightHand.startingLocalRotation, 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(Spine, new List<StepPosition>()
             {
@@ -673,11 +672,11 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(Chest.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(Chest.startingLocalPosition, 2.0f * SwingAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(Chest.startingLocalRotation, 1.0f * SwingAnimSpeed)
+                new StepPosition(Chest.startingLocalRotation, 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(Waist, new List<StepPosition>()
             {
@@ -713,7 +712,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 290.0f, 90.0f), 2.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 290.0f, 90.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),            
             // RightHand
             new Step(RightElbow, new List<StepPosition>()
@@ -726,7 +725,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 20.0f, 270.0f), 2.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 20.0f, 270.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // LeftLeg
             new Step(LeftKnee, new List<StepPosition>()
@@ -746,7 +745,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightLeg, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.0f, 0.0f, 90.0f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(-0.0f, 0.0f, 90.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // Spine
             new Step(Spine, new List<StepPosition>()
@@ -764,7 +763,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 330.0f, 0.0f), 2.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 330.0f, 0.0f), 2.0f)
             }, Step.DirectionType.rotation, Step.StepType.position)
         };
 
@@ -782,7 +781,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(180.0f, 270.0f, 90.0f), 1.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(180.0f, 270.0f, 90.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // RightHand
             new Step(RightElbow, new List<StepPosition>()
@@ -795,12 +794,12 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 50.0f, 270.0f), 1.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 50.0f, 270.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // Chest
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 30.0f, 0.0f), 4.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 30.0f, 0.0f), 2.0f)
             }, Step.DirectionType.rotation, Step.StepType.position)
         };
 
@@ -811,11 +810,8 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        //// Enable all the kinematics
-        //foreach(GameObject obj in Kinematics)
-        //{
-        //    obj.GetComponent<InverseKinematics>().enabled = true;
-        //}
+        // Enable all the kinematics
+        EnableKinematics();
     }
 
     /// <summary>
@@ -1207,4 +1203,39 @@ public class GiantAnimator : MonoBehaviour
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }
     }
- }
+
+    /// <summary>
+    /// Enable all the kinematics.
+    /// </summary>
+    public void EnableKinematics()
+    {
+        foreach (GameObject kinematic in LeftHandKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = true;
+        }
+        foreach (GameObject kinematic in LeftArmKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = true;
+        }
+        foreach (GameObject kinematic in LeftLegKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = true;
+        }
+        foreach (GameObject kinematic in RightArmKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = true;
+        }
+        foreach (GameObject kinematic in RightHandKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = true;
+        }
+        foreach (GameObject kinematic in RightLegKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = true;
+        }
+        foreach (GameObject kinematic in ChestKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = true;
+        }
+    }
+}

@@ -1988,7 +1988,7 @@ MonoBehaviour:
   target: {fileID: 422084782882704715}
   startingJoint_OffsetRotation: {x: 90, y: -90, z: 0}
   middleJoint_OffsetRotation: {x: 180, y: -90, z: 0}
-  finishedJoint_OffsetRotation: {x: -90, y: 0, z: 0}
+  finishedJoint_OffsetRotation: {x: -90, y: -90, z: 0}
   finishedJointMatchesTargetRotation: 1
   debug: 0
 --- !u!1 &1249006110481526590
@@ -3438,22 +3438,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0713ac5a452771438cad2936fa09540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Kinematics:
-  - {fileID: 8837955097949808901}
-  - {fileID: 2002326270076833471}
-  - {fileID: 6817983689644223147}
-  - {fileID: 7155284384226788273}
-  - {fileID: 6242292958838929366}
-  - {fileID: 5601627791073374680}
-  - {fileID: 1125183966687262967}
-  - {fileID: 8638955790021836545}
-  - {fileID: 2898422949304939501}
-  - {fileID: 1737550989590287208}
-  - {fileID: 1654050773628203986}
-  - {fileID: 5933404697325231979}
-  - {fileID: 4617609088775504181}
-  - {fileID: 2671692489786114528}
-  - {fileID: 3663106775960928879}
   LeftHandKinematics:
   - {fileID: 8638955790021836545}
   - {fileID: 5601627791073374680}
@@ -4997,7 +4981,7 @@ MonoBehaviour:
   target: {fileID: 4532751886949917004}
   startingJoint_OffsetRotation: {x: 90, y: -90, z: 0}
   middleJoint_OffsetRotation: {x: 180, y: -90, z: 0}
-  finishedJoint_OffsetRotation: {x: -90, y: 0, z: 0}
+  finishedJoint_OffsetRotation: {x: -90, y: -90, z: 0}
   finishedJointMatchesTargetRotation: 1
   debug: 0
 --- !u!1 &2913632700252930470
@@ -8234,7 +8218,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5219475915782445830}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.043354034, y: -4.0122795, z: 0.15900001}
   m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.19999999}
   m_Children: []
@@ -9486,7 +9470,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5219475917032536359}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.34145415, y: -4.150226, z: 0.9672122}
   m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.19999999}
   m_Children: []
@@ -10025,7 +10009,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5219475917641855899}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.44590652, y: -4.1734533, z: 1.6380929}
   m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.19999999}
   m_Children: []
@@ -10243,7 +10227,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5219475917763153887}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.57962656, y: -3.8880038, z: 2.2508197}
   m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.19999999}
   m_Children: []
@@ -11124,7 +11108,7 @@ MonoBehaviour:
   target: {fileID: 5219475915782445831}
   startingJoint_OffsetRotation: {x: 90, y: -90, z: 0}
   middleJoint_OffsetRotation: {x: 180, y: -90, z: 0}
-  finishedJoint_OffsetRotation: {x: -90, y: 0, z: 0}
+  finishedJoint_OffsetRotation: {x: -90, y: -90, z: 0}
   finishedJointMatchesTargetRotation: 1
   debug: 0
 --- !u!1 &5616102811674929007
@@ -16003,7 +15987,7 @@ MonoBehaviour:
   target: {fileID: 5873480670564090079}
   startingJoint_OffsetRotation: {x: 90, y: -90, z: 0}
   middleJoint_OffsetRotation: {x: 180, y: -90, z: 0}
-  finishedJoint_OffsetRotation: {x: -90, y: 0, z: 0}
+  finishedJoint_OffsetRotation: {x: -90, y: -90, z: 0}
   finishedJointMatchesTargetRotation: 1
   debug: 0
 --- !u!1 &8819473187701405247

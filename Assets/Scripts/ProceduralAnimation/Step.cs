@@ -225,7 +225,7 @@ public class Step
         {
             float speed = GetSpeed(Positions[Counter].time);
             // Move object towards position.
-            joint.CurrentLocationPosition = Vector3.Lerp(joint.CurrentLocationPosition, Positions[Counter].position, speed);
+            joint.CurrentLocationPosition = Vector3.MoveTowards(joint.CurrentLocationPosition, Positions[Counter].position, speed);
         }
         else
         {
@@ -246,7 +246,7 @@ public class Step
             float speed = GetSpeed(Positions[Counter].time);
             Quaternion rotation = Quaternion.Euler(Positions[Counter].position);
             // Rotate towards position.
-            joint.CurrentLocationRotation = Quaternion.Lerp(joint.CurrentLocationRotation, rotation, speed);
+            joint.CurrentLocationRotation = Quaternion.RotateTowards(joint.CurrentLocationRotation, rotation, speed);
         }
         else
         {
@@ -272,7 +272,7 @@ public class Step
         {
             float speed = GetSpeed(Positions[Counter].time);
             // Move object towards position.
-            joint.CurrentLocationPosition = Vector3.Lerp(joint.CurrentLocationPosition, MoveToPosition, speed);
+            joint.CurrentLocationPosition = Vector3.MoveTowards(joint.CurrentLocationPosition, MoveToPosition, speed);
         }
         else
         {
@@ -300,7 +300,7 @@ public class Step
             float speed = GetSpeed(Positions[Counter].time);
             Quaternion rotation = Quaternion.Euler(MoveToPosition);
             // Rotate towards position.
-            joint.CurrentLocationRotation = Quaternion.Lerp(joint.CurrentLocationRotation, rotation, speed);
+            joint.CurrentLocationRotation = Quaternion.RotateTowards(joint.CurrentLocationRotation, rotation, speed);
         }
         else
         {
@@ -353,9 +353,9 @@ public class Step
         // Check the distance between the two objects.
         if (followDuration >= 0)
         {
-            float speed = GetSpeed(followSpeed);
+            //float speed = GetSpeed(followSpeed);
             // Move object towards position.
-            joint.CurrentPosition = Vector3.Lerp(joint.CurrentPosition, position, speed);
+            joint.CurrentPosition = Vector3.MoveTowards(joint.CurrentPosition, position, followSpeed);
         }
         else
         {
@@ -396,9 +396,9 @@ public class Step
         // Check the distance between the two objects.
         if (followDuration >= 0)
         {
-            float speed = GetSpeed(followSpeed);
+            //float speed = GetSpeed(followSpeed);
             // Move object towards position.
-            joint.CurrentRotation = Quaternion.RotateTowards(joint.CurrentRotation, rotation, speed);
+            joint.CurrentRotation = Quaternion.RotateTowards(joint.CurrentRotation, rotation, followSpeed);
         }
         else
         {
