@@ -236,8 +236,9 @@ public class PlayerController : MonoBehaviour {
 			if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
 			if (Input.GetButton("Dodge")) {
 				if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
-					isCruising = true;
-					animator.SetBool("IsBoosting", true);
+                    if (!isCruising) animator.SetTrigger("StartBoosting");
+                    isCruising = true;
+                    animator.SetBool("IsBoosting", true);
 					trailAnimator.SetBool("IsBoosting", true);
 				} else cHoldTime += Time.deltaTime;
 			}

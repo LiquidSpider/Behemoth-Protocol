@@ -5524,7 +5524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgm:
   - {fileID: 8300000, guid: a03f4b5d4b3199a4fbad131fb70164b0, type: 3}
-  - {fileID: 8300000, guid: 55879e419301bd041b1ffe59417ebcb4, type: 3}
+  - {fileID: 8300000, guid: 8866276f4b017624fb90f780f7b2e3a4, type: 3}
   musicVolume: 1
   fadeSpeed: 1
 --- !u!1 &379831296 stripped
@@ -29866,7 +29866,27 @@ PrefabInstance:
       propertyPath: promptText
       value: 
       objectReference: {fileID: 832312607}
-    m_RemovedComponents: []
+    - target: {fileID: 1118954450839422500, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118954450839422500, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118954450839422500, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2025249725, guid: 99fabe2e8e44bec458d595295b208bbd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2025249725, guid: 99fabe2e8e44bec458d595295b208bbd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 99fabe2e8e44bec458d595295b208bbd, type: 3}
 --- !u!1 &6441569745874691928 stripped
 GameObject:

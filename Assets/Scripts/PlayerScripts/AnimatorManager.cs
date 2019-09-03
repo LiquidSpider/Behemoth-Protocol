@@ -34,14 +34,14 @@ public class AnimatorManager : MonoBehaviour
         }
         inputVector.x = Input.GetAxis("LeftHorizontal");
         inputVector.y = Input.GetAxis("LeftVertical");
-        animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), inputVector.normalized.x, 0.1f));
-        animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), -inputVector.normalized.x, 0.1f));
+        animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), -inputVector.normalized.x, 0.1f));
+        animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), inputVector.normalized.x, 0.1f));
         animator.SetLayerWeight(3, Mathf.Lerp(animator.GetLayerWeight(3), -inputVector.normalized.y, 0.1f));
         animator.SetLayerWeight(4, Mathf.Lerp(animator.GetLayerWeight(4), inputVector.normalized.y, 0.1f));
         animator.SetBool("IsShielding", shield.shieldActive);
 
-        trailAnimator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), inputVector.normalized.x, 0.1f));
-        trailAnimator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), -inputVector.normalized.x, 0.1f));
+        trailAnimator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), -inputVector.normalized.x, 0.1f));
+        trailAnimator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), inputVector.normalized.x, 0.1f));
         trailAnimator.SetLayerWeight(3, Mathf.Lerp(animator.GetLayerWeight(3), -inputVector.normalized.y, 0.1f));
         trailAnimator.SetLayerWeight(4, Mathf.Lerp(animator.GetLayerWeight(4), inputVector.normalized.y, 0.1f));
         trailAnimator.SetBool("IsShielding", shield.shieldActive);

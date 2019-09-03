@@ -147,7 +147,6 @@ public class GunTemplate : MonoBehaviour {
         bStats.speed = pSpeed;
         bStats.damage = damage;
         bStats.grav = pGrav;
-        bStats.lightStr = pLightStr;
         bullet.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform;
         animation.Play("Fire", PlayMode.StopAll);
         cAcc += incAcc;
