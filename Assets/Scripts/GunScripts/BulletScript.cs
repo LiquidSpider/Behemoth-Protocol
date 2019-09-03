@@ -7,11 +7,6 @@ public class BulletScript : MonoBehaviour {
 	public float speed = 500f;      // How fast the projectile moves
 	public float weight = 0.01f;    // Weight of the projectile for impact force
 	public bool grav = false;       // Does this projectile use gravity? Take weight into consideration
-	public bool explosive = false;  // Does this projectile do splash damage and apply splash force?
-	public float expSize = 0f;      // How large the explosion is
-	public float expDamage = 0f;    // How much damage the explosion itself does. Will implement splash damage later
-	public float lightStr = 20f;    // How bright the light component is
-	public float prjSize = 0.1f;    // How large the collider is. Should be visually represented
 
 	public Collider[] creatorsColliders;
 

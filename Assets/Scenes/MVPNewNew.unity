@@ -29866,6 +29866,21 @@ PrefabInstance:
       propertyPath: promptText
       value: 
       objectReference: {fileID: 832312607}
+    - target: {fileID: 1118954450839422500, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118954450839422500, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118954450839422500, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99fabe2e8e44bec458d595295b208bbd, type: 3}
 --- !u!1 &6441569745874691928 stripped
