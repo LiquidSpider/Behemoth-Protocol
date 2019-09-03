@@ -86,7 +86,7 @@ public class Laser : MonoBehaviour
 
             // Stretch the object between the player and the giant.
             float Distance = Vector3.Distance(Target.transform.position, this.transform.position) / 12;
-            this.transform.localScale = new Vector3(1, 1, Distance);
+            this.transform.localScale = new Vector3(this.StartingLocalScale.x, this.StartingLocalScale.y, Distance);
 
             if (AnimationStartingTime > WindUpTiming + LaserShootTiming)
             {

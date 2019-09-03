@@ -93,4 +93,12 @@ public class InverseKinematics : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// Resets the target to the joint position
+    /// </summary>
+    public void Reset()
+    {
+        this.target.position = this.finishedJoint.position;
+    }
+
 }

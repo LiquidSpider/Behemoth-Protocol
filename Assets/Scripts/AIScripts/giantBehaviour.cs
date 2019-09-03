@@ -61,6 +61,7 @@ public class giantBehaviour : MonoBehaviour
     public GameObject LeftHandMesh;
 
     private GiantAnimator animator;
+    private Animator thisAnimator;
 
     [System.NonSerialized]
     public BaseHealth LegsHealth;
@@ -91,9 +92,10 @@ public class giantBehaviour : MonoBehaviour
     // Final Laser Variables
     private float FinalLaserWindUpTime = 15;
     private float FinalLaserShootTime = 5;
+    [SerializeField]
     private float FinalLaserTime = 0;
 
-    [Header("Laser Variables")]
+    [Header("Laser Time Variables")]
     public GameObject[] LLaserObjects;
     public GameObject[] RLaserObjects;
     public GameObject ChestLaser;
@@ -139,6 +141,17 @@ public class giantBehaviour : MonoBehaviour
         Pulse,
     }
 
+    private enum Kinematics
+    {
+        leftArm,
+        leftHand,
+        rightArm,
+        rightHand,
+        leftLeg,
+        rightLeg,
+        Chest
+    }
+
     /// <summary>
     /// The state of the last stand.
     /// </summary>
@@ -168,6 +181,7 @@ public class giantBehaviour : MonoBehaviour
     /// <summary>
     /// The duration of the last stand before losing.
     /// </summary>
+    [SerializeField]
     private float LastStandDuration;
 
     /// <summary>
@@ -185,6 +199,10 @@ public class giantBehaviour : MonoBehaviour
     /// The delay timer to wind up the emitter.
     /// </summary>
     public float EmitterWindUp;
+
+    public Text promptText;
+
+    private bool canMove;
 
     // Start is called before the first frame update
     void Start()
@@ -253,6 +271,12 @@ public class giantBehaviour : MonoBehaviour
         // Get the player
         this.player = GameObject.FindGameObjectWithTag("Player").transform.root.gameObject;
 
+        // get the objects animator
+        this.thisAnimator = this.GetComponent<Animator>();
+
+        // Disable movement
+        canMove = false;
+
         // Debug
         if (!player)
         {
@@ -264,7 +288,6 @@ public class giantBehaviour : MonoBehaviour
         BaseHealth[] healths = this.GetComponents<BaseHealth>();
         foreach (BaseHealth health in healths)
         {
-            Debug.Log(health.healthLayer.value);
             if (health.healthLayer == 1 << 14)
             {
                 baseHealth = health;
@@ -301,9 +324,11 @@ public class giantBehaviour : MonoBehaviour
         switch (currentEnemyState)
         {
             case EnemyState.idle:
+                canMove = false;
                 currentEnemyState = EnemyState.moving;
                 break;
             case EnemyState.moving:
+                canMove = true;
                 // Run all the conditional statements for the movement step.
                 RunMovementChecks();
 
@@ -316,12 +341,23 @@ public class giantBehaviour : MonoBehaviour
                 fireMissiles();
                 break;
             case EnemyState.attacking:
+                // Check the paths
+                CheckPath();
+
+                // Move on the path.
+                MoveOnPath();
+
                 // Shoot laser if laser animation is at correct state
                 if (animator.currentAnimation == GiantAnimator.Animation.Laser)
                 {
                     if (animator.currentLaserState == GiantAnimator.LaserAnimationState.shoot)
                     {
                         ShootLaser();
+                    }
+
+                    if (animator.currentLaserState == GiantAnimator.LaserAnimationState.recover)
+                    {
+                        DisableLaser();
                     }
                 }
                 // If the animation is complete.
@@ -335,15 +371,54 @@ public class giantBehaviour : MonoBehaviour
                 // perform an attack.
                 break;
             case EnemyState.repairing:
+                canMove = false;
                 // perform the repair.
+                if (this.thisAnimator.GetBool("IsMoving"))
+                {
+                    // Enable animation.
+                    this.thisAnimator.SetBool("IsMoving", false);
+                }
+
+                // Enable animation.
+                this.thisAnimator.SetBool("IsRepairing", true);
+                this.thisAnimator.SetBool("IsStanding", true);
+                this.thisAnimator.SetBool("IsFalling", true);
+
+                if (this.thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("Stand"))
+                {
+                    // Reset the legs health.
+                    LegsHealth.Revive();
+                    // Reset the legs smoke
+                    SmokeActivity(false, LegSmoke);
+                }
+
+                if(this.thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinishStand"))
+                {
+                    // Reset the legs health.
+                    LegsHealth.Revive();
+                    // Reset the legs smoke
+                    SmokeActivity(false, LegSmoke);
+                    // Disable animation.
+                    this.thisAnimator.SetBool("IsRepairing", false);
+                    this.thisAnimator.SetBool("IsStanding", false);
+                    this.thisAnimator.SetBool("IsFalling", false);
+                    this.currentEnemyState = EnemyState.moving;
+                }
                 break;
             case EnemyState.destoryingDam:
+                canMove = false;
                 // Destroy the dam.
                 DestroyDam();
                 break;
             case EnemyState.lastStand:
+                canMove = false;
                 // Perform the last stand stage
                 LastStand();
+                if (!this.thisAnimator.GetBool("IsFalling"))
+                {
+                    this.thisAnimator.SetBool("IsFalling", true);
+                }
+                this.thisAnimator.SetBool("IsMoving", false);
                 break;
         }
     }
@@ -459,24 +534,20 @@ public class giantBehaviour : MonoBehaviour
         {
             if (armState != EnemyArmStates.none)
             {
-                // Reset the legs health.
-                LegsHealth.Revive();
-                // Reset the legs smoke
-                SmokeActivity(false, LegSmoke);
+                currentEnemyState = EnemyState.repairing;
             }
             else
-            { 
-				// ------------------------------ Is this going to be tweaked for the Last Stand Mode? If so let Josh know cause I will need to add a navigator prompt, Thanks
-                // Enabled chest damage.
-                gameManager.PlayerWin();
+            {
+                this.currentEnemyState = EnemyState.lastStand;
+                baseHealth.takeDamage = true;
             }
         }
 
-        // Check if the base is dead.
-        //if (baseHealth.isDead)
-        //{
-        //    gameManager.PlayerWin();
-        //}
+        //Check if the base is dead.
+        if (baseHealth.isDead)
+        {
+            gameManager.PlayerWin();
+        }
     }
 
     /// <summary>
@@ -508,19 +579,27 @@ public class giantBehaviour : MonoBehaviour
                 // decide an attack
                 switch (playerPosition)
                 {
+                    case PlayerPosition.back:
                     case PlayerPosition.infront:
                         // Perform the infront attacks.
                         if (armState != EnemyArmStates.both && armState != EnemyArmStates.none)
                         {
+                            canMove = true;
                             animator.currentAnimation = GiantAnimator.Animation.Laser;
 
                             if (armState == EnemyArmStates.left)
                             {
                                 animator.hand = GiantAnimator.Hand.left;
+                                EnableKinematics(true, Kinematics.Chest);
+                                EnableKinematics(true, Kinematics.leftArm);
+                                EnableKinematics(true, Kinematics.leftHand);
                             }
                             else
                             {
                                 animator.hand = GiantAnimator.Hand.right;
+                                EnableKinematics(true, Kinematics.Chest);
+                                EnableKinematics(true, Kinematics.rightArm);
+                                EnableKinematics(true, Kinematics.rightHand);
                             }
 
                             // Update the state
@@ -531,17 +610,33 @@ public class giantBehaviour : MonoBehaviour
                             if (Random.Range(0, 2) == 0)
                             {
                                 animator.currentAnimation = GiantAnimator.Animation.GiantClap;
+                                
+                                canMove = false;
+                                EnableKinematics(true, Kinematics.Chest);
+                                EnableKinematics(true, Kinematics.rightArm);
+                                EnableKinematics(true, Kinematics.leftArm);
+                                EnableKinematics(true, Kinematics.rightHand);
+                                EnableKinematics(true, Kinematics.leftHand);
+                                EnableKinematics(true, Kinematics.leftLeg);
+                                EnableKinematics(true, Kinematics.rightLeg);
                             }
                             else
                             {
+                                canMove = true;
                                 animator.currentAnimation = GiantAnimator.Animation.Laser;
                                 if (Random.Range(0, 2) == 0)
                                 {
                                     animator.hand = GiantAnimator.Hand.left;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.leftHand);
                                 }
                                 else
                                 {
                                     animator.hand = GiantAnimator.Hand.right;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                 }
                             }
                             // Update the state
@@ -554,16 +649,26 @@ public class giantBehaviour : MonoBehaviour
                         {
                             animator.hand = GiantAnimator.Hand.left;
 
+                            canMove = true;
                             switch (Random.Range(0, 3))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.leftHand);
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.leftHand);
                                     break;
                                 case 2:
                                     animator.currentAnimation = GiantAnimator.Animation.Laser;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.leftHand);
                                     break;
                             }
                             // Update the state;
@@ -577,13 +682,20 @@ public class giantBehaviour : MonoBehaviour
                         {
                             animator.hand = GiantAnimator.Hand.left;
 
+                            canMove = true;
                             switch (Random.Range(0, 2))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.leftHand);
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.leftHand);
                                     break;
                             }
                             // Update the state;
@@ -596,16 +708,26 @@ public class giantBehaviour : MonoBehaviour
                         {
                             animator.hand = GiantAnimator.Hand.right;
 
+                            canMove = true;
                             switch (Random.Range(0, 3))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                     break;
                                 case 2:
                                     animator.currentAnimation = GiantAnimator.Animation.Laser;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                     break;
                             }
                             // Update the state;
@@ -620,23 +742,25 @@ public class giantBehaviour : MonoBehaviour
                         {
                             animator.hand = GiantAnimator.Hand.right;
 
+                            canMove = true;
                             switch (Random.Range(0, 2))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                     break;
                             }
                             // Update the state;
                             currentEnemyState = EnemyState.attacking;
                         }
-                        break;
-                    case PlayerPosition.back:
-                        // Perform the back attacks.
-                        // Update the state
-                        currentEnemyState = EnemyState.attacking;
                         break;
                 }
             }
@@ -765,6 +889,7 @@ public class giantBehaviour : MonoBehaviour
                 break;
 
             case LastStandState.FinalLaser:
+                Debug.Log("Final Lasering");
                 FinalLaser();
                 break;
         }
@@ -799,17 +924,19 @@ public class giantBehaviour : MonoBehaviour
         if(FinalLaserTime > FinalLaserWindUpTime)
         {
             // Enabled the laser and it's script.
-            //ChestLaser.SetActive(true);
-            //ChestLaser.GetComponent<Laser>().enabled = true;
+            ChestLaser.SetActive(true);
+            ChestLaser.GetComponent<Laser>().enabled = true;
 
-            if (FinalLaserTime > FinalLaserWindUpTime + FinalLaserTime)
+            if (FinalLaserTime > FinalLaserWindUpTime + FinalLaserShootTime)
             {
+                ChestLaser.SetActive(false);
+                ChestLaser.GetComponent<Laser>().enabled = false;
                 gameManager.PlayerLose();
             }
         }
 
         // Increment the final laser timer.
-        FinalLaserShootTime += Time.deltaTime;
+        FinalLaserTime += Time.deltaTime;
     }
 
     /// <summary>
@@ -831,7 +958,7 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void MoveOnPath()
     {
-        if (currentEnemyState == EnemyState.moving)
+        if (canMove)
         {
             // Move towards current path index
             // rotate towards target.
@@ -843,6 +970,9 @@ public class giantBehaviour : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Mathf.Min(rotationSpeed * 20 * Time.deltaTime, 1));
             // add forward momemtum.
             this.body.MovePosition(this.transform.position + (this.transform.forward * movementSpeed));
+
+            // Enable animation.
+            this.thisAnimator.SetBool("IsMoving", true);
         }
     }
 
@@ -906,9 +1036,46 @@ public class giantBehaviour : MonoBehaviour
         switch (animator.hand)
         {
             case GiantAnimator.Hand.left:
+                // Enabled the objects
+                foreach (GameObject laser in LLaserObjects)
+                {
+                    laser.SetActive(true);
+                    if (!laser.GetComponent<Laser>().enabled)
+                    {
+                        laser.GetComponent<Laser>().enabled = true;
+                    }
+                }
                 break;
             case GiantAnimator.Hand.right:
+                // Enabled the objects
+                foreach (GameObject laser in RLaserObjects)
+                {
+                    laser.SetActive(true);
+                    if (!laser.GetComponent<Laser>().enabled)
+                    {
+                        laser.GetComponent<Laser>().enabled = true;
+                    }
+                }
                 break;
+        }
+    }
+
+    /// <summary>
+    /// Disables the laser.
+    /// </summary>
+    private void DisableLaser()
+    {
+        // Disable the left
+        foreach (GameObject laser in LLaserObjects)
+        {
+            laser.SetActive(false);
+            laser.GetComponent<Laser>().enabled = false;
+        }
+        // Disable the right
+        foreach (GameObject laser in RLaserObjects)
+        {
+            laser.SetActive(false);
+            laser.GetComponent<Laser>().enabled = false;
         }
     }
 
@@ -925,6 +1092,65 @@ public class giantBehaviour : MonoBehaviour
             {
                 smoke.SetActive(state);
             }
+        }
+    }
+    
+    /// <summary>
+    /// Turns the kinematics on or off
+    /// </summary>
+    private void EnableKinematics(bool condition, Kinematics kinematics)
+    {
+        switch(kinematics)
+        {
+            case Kinematics.leftHand:
+                foreach (GameObject kinematic in animator.LeftHandKinematics)
+                {
+                    kinematic.GetComponent<InverseKinematics>().enabled = condition;
+                    kinematic.GetComponent<InverseKinematics>().Reset();
+                }
+                break;
+            case Kinematics.leftArm:
+                foreach (GameObject kinematic in animator.LeftArmKinematics)
+                {
+                    kinematic.GetComponent<InverseKinematics>().enabled = condition;
+                    kinematic.GetComponent<InverseKinematics>().Reset();
+                }
+                break;
+            case Kinematics.leftLeg:
+                foreach (GameObject kinematic in animator.LeftLegKinematics)
+                {
+                    kinematic.GetComponent<InverseKinematics>().enabled = condition;
+                    kinematic.GetComponent<InverseKinematics>().Reset();
+                }
+                break;
+            case Kinematics.rightArm:
+                foreach (GameObject kinematic in animator.RightArmKinematics)
+                {
+                    kinematic.GetComponent<InverseKinematics>().enabled = condition;
+                    kinematic.GetComponent<InverseKinematics>().Reset();
+                }
+                break;
+            case Kinematics.rightHand:
+                foreach (GameObject kinematic in animator.RightHandKinematics)
+                {
+                    kinematic.GetComponent<InverseKinematics>().enabled = condition;
+                    kinematic.GetComponent<InverseKinematics>().Reset();
+                }
+                break;
+            case Kinematics.rightLeg:
+                foreach (GameObject kinematic in animator.RightLegKinematics)
+                {
+                    kinematic.GetComponent<InverseKinematics>().enabled = condition;
+                    kinematic.GetComponent<InverseKinematics>().Reset();
+                }
+                break;
+            case Kinematics.Chest:
+                foreach (GameObject kinematic in animator.ChestKinematics)
+                {
+                    kinematic.GetComponent<InverseKinematics>().enabled = condition;
+                    kinematic.GetComponent<InverseKinematics>().Reset();
+                }
+                break;
         }
     }
 	#endregion
@@ -1058,6 +1284,4 @@ public class giantBehaviour : MonoBehaviour
 	//        }
 	//    }
 	//}
-
-	public Text promptText;
 }

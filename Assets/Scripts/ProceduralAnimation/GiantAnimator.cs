@@ -7,7 +7,14 @@ using System.Linq;
 public class GiantAnimator : MonoBehaviour
 {
 
-    public GameObject[] Kinematics;
+    //public GameObject[] Kinematics;
+    public GameObject[] LeftHandKinematics;
+    public GameObject[] LeftArmKinematics;
+    public GameObject[] RightHandKinematics;
+    public GameObject[] RightArmKinematics;
+    public GameObject[] LeftLegKinematics;
+    public GameObject[] RightLegKinematics;
+    public GameObject[] ChestKinematics;
 
     private giantBehaviour giantBehaviour;
 
@@ -804,11 +811,11 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        // Enable all the kinematics
-        foreach(GameObject obj in Kinematics)
-        {
-            obj.GetComponent<InverseKinematics>().enabled = true;
-        }
+        //// Enable all the kinematics
+        //foreach(GameObject obj in Kinematics)
+        //{
+        //    obj.GetComponent<InverseKinematics>().enabled = true;
+        //}
     }
 
     /// <summary>
@@ -895,6 +902,7 @@ public class GiantAnimator : MonoBehaviour
                             // Increment the Animation step.    
                             currentLaserState = LaserAnimationState.idle;
                             isComplete = true;
+                            DisableKinematics();
                         }
                         break;
                     case Hand.right:
@@ -903,6 +911,7 @@ public class GiantAnimator : MonoBehaviour
                             // Increment the Animation step.    
                             currentLaserState = LaserAnimationState.idle;
                             isComplete = true;
+                            DisableKinematics();
                         }
                         break;
                 }
@@ -949,6 +958,7 @@ public class GiantAnimator : MonoBehaviour
                             // Increment the Animation step.    
                             CurrentSwipeUpState = SwipeUpAnimationState.idle;
                             isComplete = true;
+                            DisableKinematics();
                         }
                         break;
                     case Hand.right:
@@ -957,6 +967,7 @@ public class GiantAnimator : MonoBehaviour
                             // Increment the Animation step.    
                             CurrentSwipeUpState = SwipeUpAnimationState.idle;
                             isComplete = true;
+                            DisableKinematics();
                         }
                         break;
                 }
@@ -1022,6 +1033,7 @@ public class GiantAnimator : MonoBehaviour
                             // Increment the Animation step.    
                             CurrentSwingState = SwingAnimationState.idle;
                             isComplete = true;
+                            DisableKinematics();
                         }
                         break;
                     case Hand.right:
@@ -1030,6 +1042,7 @@ public class GiantAnimator : MonoBehaviour
                             // Increment the Animation step.    
                             CurrentSwingState = SwingAnimationState.idle;
                             isComplete = true;
+                            DisableKinematics();
                         }
                         break;
                 }
@@ -1076,6 +1089,7 @@ public class GiantAnimator : MonoBehaviour
                     // Increment the Animation step.
                     currentClapAnimationState = ClapAnimationState.idle;
                     isComplete = true;
+                    DisableKinematics();
                 }
                 break;
         }
@@ -1111,8 +1125,9 @@ public class GiantAnimator : MonoBehaviour
                 break;
             case PunchAnimationState.Recover:
                     // Increment the Animation step.
-                    currentPunchState = PunchAnimationState.idle;
-                    isComplete = true;
+                currentPunchState = PunchAnimationState.idle;
+                isComplete = true;
+                DisableKinematics();
                 break;
         }
     }
@@ -1156,5 +1171,40 @@ public class GiantAnimator : MonoBehaviour
     private static bool IsComplete(Step s)
     {
         return s.isComplete;
+    }
+
+    /// <summary>
+    /// Disable all the kinematics.
+    /// </summary>
+    public void DisableKinematics()
+    {
+                foreach (GameObject kinematic in LeftHandKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = false;
+        }
+                foreach (GameObject kinematic in LeftArmKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = false;
+        }
+                foreach (GameObject kinematic in LeftLegKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = false;
+        }
+                foreach (GameObject kinematic in RightArmKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = false;
+        }
+                foreach (GameObject kinematic in RightHandKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = false;
+        }
+                foreach (GameObject kinematic in RightLegKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = false;
+        }
+                foreach (GameObject kinematic in ChestKinematics)
+        {
+            kinematic.GetComponent<InverseKinematics>().enabled = false;
+        }
     }
  }
