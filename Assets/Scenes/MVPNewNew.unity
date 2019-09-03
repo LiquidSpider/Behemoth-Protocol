@@ -10723,11 +10723,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1c0fbaf81c5b14d45bb68f058a63a901, type: 2}
-    - target: {fileID: 3908916397362033570, guid: 585d15a8d94197c4bb1c119139da3a68,
-        type: 3}
-      propertyPath: Target
-      value: 
-      objectReference: {fileID: 1388637568}
     - target: {fileID: 4757072880365567268, guid: 585d15a8d94197c4bb1c119139da3a68,
         type: 3}
       propertyPath: m_Controller
@@ -10788,6 +10783,11 @@ PrefabInstance:
       propertyPath: Target
       value: 
       objectReference: {fileID: 4498502439908761849}
+    - target: {fileID: 3908916397362033570, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 1388637568}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 585d15a8d94197c4bb1c119139da3a68, type: 3}
 --- !u!1 &808443154 stripped
@@ -29506,6 +29506,11 @@ PrefabInstance:
     - target: {fileID: 1282814966, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
       propertyPath: appearTime
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2623103620121835289, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfdb338600198294e8135cba8ddc7277, type: 3}
