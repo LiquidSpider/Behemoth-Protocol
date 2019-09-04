@@ -288,11 +288,11 @@ public class GiantAnimator : MonoBehaviour
 
         laserAnimationRPart0 = new List<Step>()
         {
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 20.0f, 3.0f),
+            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
         };
 
         laserAnimationRPart1 = new List<Step>()
@@ -303,19 +303,19 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RHPinkyTip, new List<StepPosition>()
             {
-                new StepPosition(RHPinkyTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(RHPinkyTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RHRingTip, new List<StepPosition>()
             {
-                new StepPosition(RHRingTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(RHRingTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RHMiddleTip, new List<StepPosition>()
             {
-                new StepPosition(RHMiddleTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(RHMiddleTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RHIndexTip, new List<StepPosition>()
             {
-                new StepPosition(RHIndexTip.startingLocalRotation, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(RHIndexTip.startingLocalRotation, 0.01f)
             }, Step.DirectionType.rotation, Step.StepType.position),
         };
     }

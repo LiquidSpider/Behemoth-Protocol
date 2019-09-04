@@ -377,8 +377,9 @@ public class giantBehaviour : MonoBehaviour
                 {
                     animator.isComplete = false;
                     animator.currentAnimation = GiantAnimator.Animation.idle;
+                    this.thisAnimator.enabled = true;
                     currentEnemyState = EnemyState.idle;
-                    attackTimer = Time.time + Random.Range(5, 10);
+                    attackTimer = Time.time + Random.Range(minimumTimeBetweenAttac, maximumTimeBetweenAttack);
                 }
                 // perform an attack.
                 break;
@@ -1013,6 +1014,10 @@ public class giantBehaviour : MonoBehaviour
             // Enable animation.
             this.thisAnimator.SetBool("IsMoving", true);
         }
+        else if(currentEnemyState == EnemyState.attacking)
+        {
+            this.thisAnimator.enabled = false;
+        }
     }
 
     /// <summary>
@@ -1145,49 +1150,49 @@ public class giantBehaviour : MonoBehaviour
                 foreach (GameObject kinematic in animator.LeftHandKinematics)
                 {
                     kinematic.GetComponent<InverseKinematics>().enabled = condition;
-                    kinematic.GetComponent<InverseKinematics>().Reset();
+                    //kinematic.GetComponent<InverseKinematics>().Reset();
                 }
                 break;
             case Kinematics.leftArm:
                 foreach (GameObject kinematic in animator.LeftArmKinematics)
                 {
                     kinematic.GetComponent<InverseKinematics>().enabled = condition;
-                    kinematic.GetComponent<InverseKinematics>().Reset();
+                    //kinematic.GetComponent<InverseKinematics>().Reset();
                 }
                 break;
             case Kinematics.leftLeg:
                 foreach (GameObject kinematic in animator.LeftLegKinematics)
                 {
                     kinematic.GetComponent<InverseKinematics>().enabled = condition;
-                    kinematic.GetComponent<InverseKinematics>().Reset();
+                    //kinematic.GetComponent<InverseKinematics>().Reset();
                 }
                 break;
             case Kinematics.rightArm:
                 foreach (GameObject kinematic in animator.RightArmKinematics)
                 {
                     kinematic.GetComponent<InverseKinematics>().enabled = condition;
-                    kinematic.GetComponent<InverseKinematics>().Reset();
+                    //kinematic.GetComponent<InverseKinematics>().Reset();
                 }
                 break;
             case Kinematics.rightHand:
                 foreach (GameObject kinematic in animator.RightHandKinematics)
                 {
                     kinematic.GetComponent<InverseKinematics>().enabled = condition;
-                    kinematic.GetComponent<InverseKinematics>().Reset();
+                    //kinematic.GetComponent<InverseKinematics>().Reset();
                 }
                 break;
             case Kinematics.rightLeg:
                 foreach (GameObject kinematic in animator.RightLegKinematics)
                 {
                     kinematic.GetComponent<InverseKinematics>().enabled = condition;
-                    kinematic.GetComponent<InverseKinematics>().Reset();
+                    //kinematic.GetComponent<InverseKinematics>().Reset();
                 }
                 break;
             case Kinematics.Chest:
                 foreach (GameObject kinematic in animator.ChestKinematics)
                 {
                     kinematic.GetComponent<InverseKinematics>().enabled = condition;
-                    kinematic.GetComponent<InverseKinematics>().Reset();
+                    //kinematic.GetComponent<InverseKinematics>().Reset();
                 }
                 break;
         }

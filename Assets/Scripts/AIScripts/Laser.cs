@@ -58,17 +58,16 @@ public class Laser : MonoBehaviour
 
     private void Awake()
     {
-        this.StartingLocalPosition = this.transform.localPosition;
-        this.StartingLocalScale = this.transform.localScale;
-        this.StartingLocalEuler = this.transform.localEulerAngles;
-        this.StartingPosition = this.transform.position;
-        this.StartingRotation = this.transform.eulerAngles;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.StartingLocalPosition = this.transform.localPosition;
+        this.StartingLocalScale = this.transform.localScale;
+        this.StartingLocalEuler = this.transform.localEulerAngles;
+        this.StartingPosition = this.transform.position;
+        this.StartingRotation = this.transform.eulerAngles;
     }
 
     // Update is called once per frame
@@ -122,6 +121,7 @@ public class Laser : MonoBehaviour
         transform.GetChild(0).gameObject.SetActive(false);
         this.transform.localPosition = this.StartingLocalPosition;
         this.transform.localScale = this.StartingLocalScale;
+        this.AnimationStartingTime = 0;
     }
 
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [ExecuteInEditMode]
 
@@ -38,42 +39,69 @@ public class InverseKinematics : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 		if(startingJoint != null && middleJoint != null && finishedJoint != null && middleTarget != null && target != null){
-			startingJoint.LookAt (target, middleTarget.position - startingJoint.position);
-			startingJoint.Rotate (startingJoint_OffsetRotation);
+            try
+            {
+                startingJoint.LookAt(target, middleTarget.position - startingJoint.position);
+                startingJoint.Rotate(startingJoint_OffsetRotation);
 
-			Vector3 cross = Vector3.Cross (middleTarget.position - startingJoint.position, middleJoint.position - startingJoint.position);
+                Vector3 cross = Vector3.Cross(middleTarget.position - startingJoint.position, middleJoint.position - startingJoint.position);
 
-            // find the length of the joints.
-			startingJoint_Length = Vector3.Distance (startingJoint.position, middleJoint.position);
-			middleJoint_Length =  Vector3.Distance (middleJoint.position, finishedJoint.position);
-			middleToStart_Length = startingJoint_Length + middleJoint_Length;
-            // calulate the distance from the joints to the targets
-			targetDistance = Vector3.Distance (startingJoint.position, target.position);
-			targetDistance = Mathf.Min (targetDistance, middleToStart_Length - middleToStart_Length * 0.001f);
+                // find the length of the joints.
+                startingJoint_Length = Vector3.Distance(startingJoint.position, middleJoint.position);
+                middleJoint_Length = Vector3.Distance(middleJoint.position, finishedJoint.position);
+                middleToStart_Length = startingJoint_Length + middleJoint_Length;
+                // calulate the distance from the joints to the targets
+                targetDistance = Vector3.Distance(startingJoint.position, target.position);
+                targetDistance = Mathf.Min(targetDistance, middleToStart_Length - middleToStart_Length * 0.001f);
 
-			adyacent = ((startingJoint_Length * startingJoint_Length) - (middleJoint_Length * middleJoint_Length) + (targetDistance * targetDistance)) / (2*targetDistance);
+                if (targetDistance == 0)
+                {
+                    Debug.Log("Target distance is 0 for: " + this.name);
+                    Debug.Log("Starting Joint position:" + this.startingJoint.position);
+                    Debug.Log("Middle Joint position:" + this.middleJoint.position);
+                    Debug.Log("Finish Joint position:" + this.finishedJoint.position);
+                }
 
-			angle = Mathf.Acos (adyacent / startingJoint_Length) * Mathf.Rad2Deg;
+                if (startingJoint_Length == 0)
+                {
+                    Debug.Log("Starting Joint Length is 0 for: " + this.name);
+                    Debug.Log("Starting Joint position:" + this.startingJoint.position);
+                    Debug.Log("Middle Joint position:" + this.middleJoint.position);
+                    Debug.Log("Finish Joint position:" + this.finishedJoint.position);
+                }
 
-			startingJoint.RotateAround (startingJoint.position, cross, -angle);
+                adyacent = ((startingJoint_Length * startingJoint_Length) - (middleJoint_Length * middleJoint_Length) + (targetDistance * targetDistance)) / (2 * targetDistance);
 
-			middleJoint.LookAt(target, cross);
-			middleJoint.Rotate (middleJoint_OffsetRotation);
+                angle = Mathf.Acos(adyacent / startingJoint_Length) * Mathf.Rad2Deg;
 
-			if(finishedJointMatchesTargetRotation){
-				finishedJoint.rotation = target.rotation;
-				finishedJoint.Rotate (finishedJoint_OffsetRotation);
-			}
-			
-			if(debug){
-				if (middleJoint != null && middleTarget != null) {
-					Debug.DrawLine (middleJoint.position, middleTarget.position, Color.blue);
-				}
+                startingJoint.RotateAround(startingJoint.position, cross, -angle);
 
-				if (startingJoint != null && target != null) {
-					Debug.DrawLine (startingJoint.position, target.position, Color.red);
-				}
-			}
+                middleJoint.LookAt(target, cross);
+                middleJoint.Rotate(middleJoint_OffsetRotation);
+
+                if (finishedJointMatchesTargetRotation)
+                {
+                    finishedJoint.rotation = target.rotation;
+                    finishedJoint.Rotate(finishedJoint_OffsetRotation);
+                }
+
+                if (debug)
+                {
+                    if (middleJoint != null && middleTarget != null)
+                    {
+                        Debug.DrawLine(middleJoint.position, middleTarget.position, Color.blue);
+                    }
+
+                    if (startingJoint != null && target != null)
+                    {
+                        Debug.DrawLine(startingJoint.position, target.position, Color.red);
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
 					
 		}
 		
