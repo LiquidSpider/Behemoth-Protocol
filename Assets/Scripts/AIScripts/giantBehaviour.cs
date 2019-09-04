@@ -830,6 +830,8 @@ public class giantBehaviour : MonoBehaviour
             // left
             float angle = -Vector3.SignedAngle(heading, -this.transform.right, Vector3.up);
 
+			// Jonathan's Code was here
+
             // infront
             if (angle >= 60 && angle <= 120)
             {
@@ -877,7 +879,7 @@ public class giantBehaviour : MonoBehaviour
         }
         else if(Vector3.Distance(player.transform.position, this.transform.position) < 2000.0f)
         {
-            Vector3 from = player.transform.position;
+			Vector3 from = player.transform.position;
             from.y = 0;
             Vector3 to = this.transform.position;
             to.y = 0;
@@ -885,7 +887,25 @@ public class giantBehaviour : MonoBehaviour
             // left
             float angle = -Vector3.SignedAngle(heading, -this.transform.right, Vector3.up);
 
-            if (angle >= 60 && angle <= 120)
+
+			// Call to activate the missile launchers
+			if (angle >= 0 && angle <= 180) {
+				activeLaunchers.Clear();
+				for (int i = 0; i < missileLaunchers[1].transform.childCount; i++) {
+					activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
+				}
+			} else if (angle < 0 && angle >= 180) {
+				activeLaunchers.Clear();
+				for (int i = 0; i < missileLaunchers[1].transform.childCount; i++) {
+					activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
+				}
+			}
+
+
+
+
+
+			if (angle >= 60 && angle <= 120)
             {
                 position = PlayerPosition.farinfront;
             }

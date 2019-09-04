@@ -194,7 +194,7 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		targetObject.name = "Missile Track Location";
 		targetObject.transform.position = hitTarget.point;
 		targetObject.transform.localScale = new Vector3(2, 2, 2);
-		targetObject.transform.parent = hitTarget.transform;
+		//targetObject.transform.parent = hitTarget.transform;
 		targetObject.AddComponent<PlayerMissileTargetBehaviour>();
 		targetObject.AddComponent<SphereCollider>();
 		targetObject.GetComponent<PlayerMissileTargetBehaviour>().Initialise(gameObject);

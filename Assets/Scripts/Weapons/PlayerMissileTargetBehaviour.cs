@@ -6,11 +6,15 @@ public class PlayerMissileTargetBehaviour : MonoBehaviour {
 
 	public GameObject associatedMissile;
 
+	private void Update() {
+		if (!associatedMissile) Destroy(gameObject);
+	}
+
 	public void Initialise(GameObject missile) {
 		associatedMissile = missile;
 	}
 
 	private void OnDestory() {
-		associatedMissile.GetComponent<PlayerMissileBehaviour>().RecalculateTrajectory();
+		if (associatedMissile) associatedMissile.GetComponent<PlayerMissileBehaviour>().RecalculateTrajectory();
 	}
 }
