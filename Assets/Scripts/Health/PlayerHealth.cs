@@ -60,8 +60,8 @@ public class PlayerHealth : MonoBehaviour {
 		// Stop battery from going into negative
 		if (battery < 0) battery = 0;
 
-		//if (HP < maxHP && battery > 0) {
-		if (HP / maxHP < battery / maxB && battery > 0) {
+		if (HP < maxHP && battery > 0) {
+		//if (HP / maxHP < battery / maxB && battery > 0) {
 			if (HP < maxHP * 0.1f) {
 				TakeDamage(-1f);
 				UseBattery(100 * Time.deltaTime);
@@ -150,7 +150,7 @@ public class PlayerHealth : MonoBehaviour {
 
 	}
 
-	private void TakeDamage(float damage) {
+	public void TakeDamage(float damage) {
 		if (!damageTakenIndication) {
 			damageTakenIndication = true;
 

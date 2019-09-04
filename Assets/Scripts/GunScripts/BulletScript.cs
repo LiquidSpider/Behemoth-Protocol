@@ -56,17 +56,17 @@ public class BulletScript : MonoBehaviour {
                 
             }
 
+            //// If the object is the player
+            //if(collision.gameObject.GetComponent<PlayerDamageableSection>() && collision.gameObject.layer != 10)
+            //{
+
+            //    //Debug.Log("Hit player");
+            //    collision.gameObject.GetComponent<PlayerDamageableSection>().TakeDamage(damage, this.gameObject);
+
+            //}
+
             // If the object is the player
-            if(collision.gameObject.GetComponent<PlayerDamageableSection>())
-            {
-
-                //Debug.Log("Hit player");
-                collision.gameObject.GetComponent<PlayerDamageableSection>().TakeDamage(damage, this.gameObject);
-
-            }
-
-            // If the object is the player
-            if (collision.gameObject.GetComponent<PlayerHealth>())
+            if (collision.gameObject.GetComponent<PlayerHealth>() && gameObject.layer != 9)
             {
 
                 Debug.Log("Hit player");

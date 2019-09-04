@@ -280,11 +280,13 @@ public class PlayerController : MonoBehaviour {
 		if (wIndex < weapons.Count) {
 			foreach (GameObject cWeapon in weapons) {
 				cWeapon.tag = "Untagged";
-				cWeapon.transform.GetComponent<Animator>().SetBool("active", false);
+				cWeapon.GetComponent<LightBehaviour>().LightsOff();
+				//cWeapon.transform.GetComponent<Animator>().SetBool("active", false);
 			}
 
 			weapons[wIndex].tag = "CurrentWeapon";
-			weapons[wIndex].GetComponent<Animator>().SetBool("active", true);
+			weapons[wIndex].GetComponent<LightBehaviour>().LightsOn();
+			//weapons[wIndex].GetComponent<Animator>().SetBool("active", true);
 		}
 
 
