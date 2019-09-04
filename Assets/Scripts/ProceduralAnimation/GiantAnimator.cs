@@ -18,6 +18,8 @@ public class GiantAnimator : MonoBehaviour
 
     private giantBehaviour giantBehaviour;
 
+    private GameManager gameManager;
+
     private GameObject Player;
     public bool isComplete;
 
@@ -810,8 +812,7 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        // Enable all the kinematics
-        //EnableKinematics();
+        gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
     /// <summary>
@@ -826,27 +827,35 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void LateUpdate()
     {
-        if(!isComplete)
+        // pause
+        if (gameManager.gamePaused)
         {
-            switch (currentAnimation)
+
+        }
+        else
+        {
+            if (!isComplete)
             {
-                case Animation.idle:
-                    break;
-                case Animation.GiantClap:
-                    GiantClap();
-                    break;
-                case Animation.GiantDamPunch:
-                    GiantDamPunch();
-                    break;
-                case Animation.GiantSwipeUp:
-                    GiantSwipeUp();
-                    break;
-                case Animation.GiantSwing:
-                    GiantSwing();
-                    break;
-                case Animation.Laser:
-                    Laser();
-                    break;
+                switch (currentAnimation)
+                {
+                    case Animation.idle:
+                        break;
+                    case Animation.GiantClap:
+                        GiantClap();
+                        break;
+                    case Animation.GiantDamPunch:
+                        GiantDamPunch();
+                        break;
+                    case Animation.GiantSwipeUp:
+                        GiantSwipeUp();
+                        break;
+                    case Animation.GiantSwing:
+                        GiantSwing();
+                        break;
+                    case Animation.Laser:
+                        Laser();
+                        break;
+                }
             }
         }
     }

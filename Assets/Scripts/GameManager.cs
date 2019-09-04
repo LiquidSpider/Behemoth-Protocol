@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour {
 
 	// pause menu variables.
 	public GameObject pauseMenu;
-	private bool gamePaused;
+    [System.NonSerialized]
+	public bool gamePaused;
 
 	public GameObject winMenu;
 	public GameObject loseMenu;

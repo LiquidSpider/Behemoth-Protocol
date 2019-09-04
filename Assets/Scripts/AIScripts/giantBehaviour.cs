@@ -172,7 +172,8 @@ public class giantBehaviour : MonoBehaviour
         left,
         back,
         backRight,
-        backLeft
+        backLeft,
+        farinfront
     }
 
     private float attackTimer = 0;
@@ -246,7 +247,7 @@ public class giantBehaviour : MonoBehaviour
     private void Setup()
     {
         // setup the rotation and speed.
-        rotationSpeed = 100.0f;
+        rotationSpeed = 1000.0f;
         movementSpeed = 1.0f / 10.0f;
         pathingDistance = 10.0f;
 
@@ -314,10 +315,17 @@ public class giantBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //pause
+        if(gameManager.gamePaused)
+        {
 
-        CheckHealth();
+        }
+        else
+        {
+            CheckHealth();
 
-        RunAIState();
+            RunAIState();
+        }
     }
 
     /// <summary>
@@ -766,6 +774,14 @@ public class giantBehaviour : MonoBehaviour
                             currentEnemyState = EnemyState.attacking;
                         }
                         break;
+                    case PlayerPosition.farinfront:
+                        animator.currentAnimation = GiantAnimator.Animation.Laser;
+                        EnableKinematics(true, Kinematics.Chest);
+                        EnableKinematics(true, Kinematics.leftArm);
+                        EnableKinematics(true, Kinematics.leftHand);
+                        // Update the state;
+                        currentEnemyState = EnemyState.attacking;
+                        break;
                 }
             }
         }
@@ -852,6 +868,25 @@ public class giantBehaviour : MonoBehaviour
             else if (angle >= 30 && angle <= 60)
             {
                 position = PlayerPosition.infrontLeft;
+            }
+            else
+            {
+                position = PlayerPosition.unknown;
+            }
+        }
+        else if(Vector3.Distance(player.transform.position, this.transform.position) < 2000.0f)
+        {
+            Vector3 from = player.transform.position;
+            from.y = 0;
+            Vector3 to = this.transform.position;
+            to.y = 0;
+            Vector3 heading = (from - to).normalized;
+            // left
+            float angle = -Vector3.SignedAngle(heading, -this.transform.right, Vector3.up);
+
+            if (angle >= 60 && angle <= 120)
+            {
+                position = PlayerPosition.farinfront;
             }
             else
             {
