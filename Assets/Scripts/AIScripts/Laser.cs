@@ -74,7 +74,10 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+
+        gameObject.GetComponent<particleControllerLaserCharge>().activate();
+
         // Once we're past the startup Timing
         if(AnimationStartingTime > WindUpTiming)
         {
@@ -85,6 +88,9 @@ public class Laser : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, rot, 1);
 
             // Stretch the object between the player and the giant.
+            transform.GetChild(0).gameObject.SetActive(true);
+            gameObject.GetComponent<particleControllerLaserCharge>().deactivate();
+
             float Distance = Vector3.Distance(Target.transform.position, this.transform.position) / 12;
             this.transform.localScale = new Vector3(this.StartingLocalScale.x, this.StartingLocalScale.y, Distance);
 
@@ -113,6 +119,7 @@ public class Laser : MonoBehaviour
     /// </summary>
     public void Reset()
     {
+        transform.GetChild(0).gameObject.SetActive(false);
         this.transform.localPosition = this.StartingLocalPosition;
         this.transform.localScale = this.StartingLocalScale;
     }
