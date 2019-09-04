@@ -457,18 +457,12 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.05f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.1f, -0.2f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.1f, -0.2f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.1f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.0f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.0f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.1f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.1f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.1f, 0.1f, -0.1f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightElbow, new List<StepPosition>()
             {
@@ -813,6 +807,7 @@ public class GiantAnimator : MonoBehaviour
     private void Awake()
     {
         gameManager = GameObject.FindObjectOfType<GameManager>();
+        //EnableKinematics();
     }
 
     /// <summary>

@@ -661,27 +661,33 @@ public class giantBehaviour : MonoBehaviour
                         if (armState != EnemyArmStates.none && armState != EnemyArmStates.right)
                         {
                             animator.hand = GiantAnimator.Hand.left;
-
-                            canMove = true;
+                            
                             switch (Random.Range(0, 3))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
                                     EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
                                     EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                     EnableKinematics(true, Kinematics.leftHand);
+                                    EnableKinematics(true, Kinematics.leftLeg);
+                                    EnableKinematics(true, Kinematics.rightLeg);
+                                    canMove = false;
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.leftArm);
                                     EnableKinematics(true, Kinematics.leftHand);
+                                    canMove = true;
                                     break;
                                 case 2:
                                     animator.currentAnimation = GiantAnimator.Animation.Laser;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.leftArm);
                                     EnableKinematics(true, Kinematics.leftHand);
+                                    canMove = true;
                                     break;
                             }
                             // Update the state;
@@ -694,21 +700,26 @@ public class giantBehaviour : MonoBehaviour
                         if (armState != EnemyArmStates.none && armState != EnemyArmStates.right)
                         {
                             animator.hand = GiantAnimator.Hand.left;
-
-                            canMove = true;
+                            
                             switch (Random.Range(0, 2))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
                                     EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
                                     EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
                                     EnableKinematics(true, Kinematics.leftHand);
+                                    EnableKinematics(true, Kinematics.leftLeg);
+                                    EnableKinematics(true, Kinematics.rightLeg);
+                                    canMove = false;
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.leftArm);
                                     EnableKinematics(true, Kinematics.leftHand);
+                                    canMove = true;
                                     break;
                             }
                             // Update the state;
@@ -721,26 +732,32 @@ public class giantBehaviour : MonoBehaviour
                         {
                             animator.hand = GiantAnimator.Hand.right;
 
-                            canMove = true;
                             switch (Random.Range(0, 3))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.leftArm);
                                     EnableKinematics(true, Kinematics.rightHand);
+                                    EnableKinematics(true, Kinematics.leftHand);
+                                    EnableKinematics(true, Kinematics.leftLeg);
+                                    EnableKinematics(true, Kinematics.rightLeg);
+                                    canMove = false;
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.rightArm);
                                     EnableKinematics(true, Kinematics.rightHand);
+                                    canMove = true;
                                     break;
                                 case 2:
                                     animator.currentAnimation = GiantAnimator.Animation.Laser;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.rightArm);
                                     EnableKinematics(true, Kinematics.rightHand);
+                                    canMove = true;
                                     break;
                             }
                             // Update the state;
@@ -754,21 +771,26 @@ public class giantBehaviour : MonoBehaviour
                         if (armState != EnemyArmStates.none && armState != EnemyArmStates.left)
                         {
                             animator.hand = GiantAnimator.Hand.right;
-
-                            canMove = true;
+                            
                             switch (Random.Range(0, 2))
                             {
                                 case 0:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwing;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.leftArm);
                                     EnableKinematics(true, Kinematics.rightHand);
+                                    EnableKinematics(true, Kinematics.leftHand);
+                                    EnableKinematics(true, Kinematics.leftLeg);
+                                    EnableKinematics(true, Kinematics.rightLeg);
+                                    canMove = false;
                                     break;
                                 case 1:
                                     animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
                                     EnableKinematics(true, Kinematics.Chest);
                                     EnableKinematics(true, Kinematics.rightArm);
                                     EnableKinematics(true, Kinematics.rightHand);
+                                    canMove = true;
                                     break;
                             }
                             // Update the state;
