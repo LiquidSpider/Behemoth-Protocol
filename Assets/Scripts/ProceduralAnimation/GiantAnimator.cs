@@ -811,7 +811,7 @@ public class GiantAnimator : MonoBehaviour
     private void Awake()
     {
         // Enable all the kinematics
-        EnableKinematics();
+        //EnableKinematics();
     }
 
     /// <summary>

@@ -3493,11 +3493,13 @@ MonoBehaviour:
   ChestPosition: {fileID: 634962211447587504}
   PulseEmitter: {fileID: 2481469221010237463, guid: 9a226df5a8240cb41ac113ee26f41351,
     type: 3}
+  minimumTimeBetweenAttac: 2
+  maximumTimeBetweenAttack: 5
   RightHandCollider: {fileID: 3367637696238524052}
   RightHandMesh: {fileID: 6242292958838929366}
   LeftHandCollider: {fileID: 828740703605313659}
   LeftHandMesh: {fileID: 7155284384226788273}
-  lazerWindUpTime: 3
+  lazerWindUpTime: 1
   lazerShootTime: 5
   FinalLaserTime: 0
   LLaserObjects:

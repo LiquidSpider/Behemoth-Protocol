@@ -54,6 +54,10 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     public GameObject PulseEmitter;
 
+    [Header("AttackTimer Variables")]
+    public float minimumTimeBetweenAttac;
+    public float maximumTimeBetweenAttack;
+
     [Header("Hand collider and Mesh Parents")]
     public GameObject RightHandCollider;
     public GameObject RightHandMesh;
@@ -263,7 +267,7 @@ public class giantBehaviour : MonoBehaviour
         animator = this.GetComponent<GiantAnimator>();
 
         // Setup the first attack timer
-        attackTimer = Random.Range(5, 10);
+        attackTimer = Random.Range(minimumTimeBetweenAttac, maximumTimeBetweenAttack);
 
         // Setup the arm state
         armState = EnemyArmStates.both;
