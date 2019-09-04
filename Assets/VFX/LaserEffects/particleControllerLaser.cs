@@ -40,7 +40,7 @@ public class particleControllerLaser : MonoBehaviour
         		findLocation();
         		size = Random.Range(sizeMin, sizeMax);
         		GameObject tempPart = Instantiate(particleBase, transform.position, transform.rotation);
-                tempPart.transform.parent = gameObject.transform;
+                //tempPart.transform.parent = gameObject.transform;
         		tempPart.GetComponent<particleBehaviourLaser>().setup(xSpawn, ySpawn, size, zVel);
         	}
         }

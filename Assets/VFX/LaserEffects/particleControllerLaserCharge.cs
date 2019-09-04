@@ -43,7 +43,8 @@ public class particleControllerLaserCharge : MonoBehaviour
         		findLocation();
         		size = Random.Range(sizeMin, sizeMax);
         		GameObject tempParticle = Instantiate(particleBase, transform.position, transform.rotation);
-                tempParticle.transform.parent = gameObject.transform;
+                //tempParticle.transform.parent = gameObject.transform;
+                size = size * 10.0f;
         		tempParticle.GetComponent<particleBehaviourCharge>().setup(xSpawn, ySpawn, size, zVel);
         	}
         }
