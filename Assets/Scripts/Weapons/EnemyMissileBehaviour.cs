@@ -9,10 +9,10 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 
 	private float flarDistractChance = 2.5f;
 
-	private float launchTime = 4f;
+	private float launchTime = 6f;
 	private bool launched = false;
 	private Quaternion targetRotation;
-	private float rotationSpeed = 1.0f;
+	private float rotationSpeed = 0.2f;
 	private float projectileSpeed = 10.0f;
 
 	private bool parentAssigned = false;
