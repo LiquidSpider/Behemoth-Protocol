@@ -470,23 +470,7 @@ public class giantBehaviour : MonoBehaviour
     private void CheckHealth()
     {
 
-        // Check for smoke enabled
-        if (LegsHealth.health < LegsHealth.startingHealth * 0.8f)
-        {
-            SmokeActivity(true, LegSmoke);
-        }
-        if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.8f)
-        {
-            SmokeActivity(true, LeftArmSmoke);
-        }
-        if (RightArmHealth.health < RightArmHealth.startingHealth * 0.8f)
-        {
-            SmokeActivity(true, RightArmSmoke);
-        }
-        if (baseHealth.health < baseHealth.startingHealth * 0.8f)
-        {
-            SmokeActivity(true, BodySmoke);
-        }
+    	CheckSmoke();
 
         // Check if arms should be disabled
         switch (armState)
@@ -1178,6 +1162,49 @@ public class giantBehaviour : MonoBehaviour
             {
                 smoke.SetActive(state);
             }
+        }
+    }
+
+    private void CheckSmoke() {
+		// Check for smoke enabled
+        if (LegsHealth.health < LegsHealth.startingHealth * 0.2f) {
+            LegSmoke[0].SetActive(true);
+        } else if (LegsHealth.health < LegsHealth.startingHealth * 0.4f) {
+        	LegSmoke[1].SetActive(true);
+        } else if (LegsHealth.health < LegsHealth.startingHealth * 0.6f) {
+        	LegSmoke[2].SetActive(true);
+        } else if (LegsHealth.health < LegsHealth.startingHealth * 0.8f) {
+        	LegSmoke[3].SetActive(true);
+        }
+
+        if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.2f) {
+            LeftArmSmoke[0].SetActive(true);
+        } else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.4f) {
+        	LeftArmSmoke[1].SetActive(true);
+        } else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.6f) {
+        	LeftArmSmoke[2].SetActive(true);
+        } else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.8f) {
+        	LeftArmSmoke[3].SetActive(true);
+        }
+
+        if (RightArmHealth.health < RightArmHealth.startingHealth * 0.2f) {
+            RightArmSmoke[0].SetActive(true);
+        } else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.4f) {
+        	RightArmSmoke[1].SetActive(true);
+        } else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.6f) {
+        	RightArmSmoke[2].SetActive(true);
+        } else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.8f) {
+        	RightArmSmoke[3].SetActive(true);
+        }
+
+        if (baseHealth.health < baseHealth.startingHealth * 0.2f) {
+            BodySmoke[0].SetActive(true);
+        } else if (baseHealth.health < baseHealth.startingHealth * 0.4f) {
+        	BodySmoke[1].SetActive(true);
+        } else if (baseHealth.health < baseHealth.startingHealth * 0.6f) {
+        	BodySmoke[2].SetActive(true);
+        } else if (baseHealth.health < baseHealth.startingHealth * 0.8f) {
+        	BodySmoke[3].SetActive(true);
         }
     }
     
