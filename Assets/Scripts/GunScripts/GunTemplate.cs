@@ -110,18 +110,15 @@ public class GunTemplate : MonoBehaviour {
 		}
 
 
-        //Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        //int layerMask = 1 << 10;
-        //layerMask = ~layerMask;
-        //if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask))
-        //{
-        //    transform.LookAt(aimPoint.point);
-        //}
-        //else
-        //{
-        //    transform.localEulerAngles = new Vector3(0, 0, 0);
-        //}
-    }
+		//Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+		//int layerMask = 1 << 10;
+		//layerMask = ~layerMask;
+		//if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask)) {
+		//	transform.LookAt(aimPoint.point);
+		//} else {
+		//	transform.localEulerAngles = new Vector3(0, 0, 0);
+		//}
+	}
 
     void PlayerControl() {
         fireTime += Time.deltaTime;

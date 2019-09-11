@@ -205,8 +205,6 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     public float EmitterWindUp;
 
-    public Text promptText;
-
     private bool canMove;
 
     // Start is called before the first frame update
@@ -482,9 +480,7 @@ public class giantBehaviour : MonoBehaviour
                     DestroyHand(GiantAnimator.Hand.left);
 
 					// Navigator Prompt
-					promptText.text = "Good job! Now you just have to destroy the other one.";
-					promptText.gameObject.transform.parent.gameObject.SetActive(true);
-
+					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedOne();
 				}
                 if (RightArmHealth.isDead)
                 {
@@ -492,8 +488,7 @@ public class giantBehaviour : MonoBehaviour
                     DestroyHand(GiantAnimator.Hand.right);
 
 					// Navigator Prompt
-					promptText.text = "Good job! Now you just have to destroy the other one.";
-					promptText.gameObject.transform.parent.gameObject.SetActive(true);
+					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedOne();
 				}
 				break;
             case EnemyArmStates.left:
@@ -503,8 +498,7 @@ public class giantBehaviour : MonoBehaviour
                     DestroyHand(GiantAnimator.Hand.left);
 
 					// Navigator Prompt
-					promptText.text = "Nice! Now destroy the legs and it won't be able to go anywhere.";
-					promptText.gameObject.transform.parent.gameObject.SetActive(true);
+					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedTwo();
 				}
 				break;
             case EnemyArmStates.right:
@@ -514,8 +508,7 @@ public class giantBehaviour : MonoBehaviour
                     DestroyHand(GiantAnimator.Hand.right);
 
 					// Navigator Prompt
-					promptText.text = "Nice! Now destroy the legs and it won't be able to go anywhere.";
-					promptText.gameObject.transform.parent.gameObject.SetActive(true);
+					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedTwo();
 				}
 				break;
             case EnemyArmStates.none:
@@ -532,12 +525,18 @@ public class giantBehaviour : MonoBehaviour
             if (armState != EnemyArmStates.none)
             {
                 currentEnemyState = EnemyState.repairing;
-            }
+
+				// Navigator Prompt
+				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallNoLegWithArms();
+			}
             else
             {
                 this.currentEnemyState = EnemyState.lastStand;
                 baseHealth.takeDamage = true;
-            }
+
+				// Navigator Prompt
+				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallEnterFinalPhase();
+			}
         }
 
         //Check if the base is dead.

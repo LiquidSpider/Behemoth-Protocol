@@ -53,8 +53,8 @@ public class PlayerHealth : MonoBehaviour {
 			batteryLowIndication = true;
 
 			// Low battery prompt
-			promptText.text = "Your suit is low on energy, use your vacuuum to recharge it.";
-			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+			GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallBatteryLow();
+			
 		} 
 
 		// Stop battery from going into negative
@@ -151,12 +151,6 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	public void TakeDamage(float damage) {
-		if (!damageTakenIndication) {
-			damageTakenIndication = true;
-
-			promptText.text = "Looks like it has some pretty heavy weapons of it's own, look out for them.";
-			promptText.gameObject.transform.parent.gameObject.SetActive(true);
-		}
 
 		if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
 			HP -= damage * 0.5f;
@@ -174,6 +168,13 @@ public class PlayerHealth : MonoBehaviour {
 
 		// Check if this object should only take damage once
 		if (explosion) {
+
+			if (!damageTakenIndication) {
+				damageTakenIndication = true;
+
+				// Nav prompt
+				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallTakingMissileDamage();
+			}
 
 			if (!TakenDamageFrom.Contains(explosion)) {
 				TakenDamageFrom.Add(explosion);

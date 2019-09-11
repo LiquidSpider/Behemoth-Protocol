@@ -161,8 +161,7 @@ public class GameManager : MonoBehaviour {
 		gameOver = true;
 		//Debug.Log("Game Over");
 
-		promptText.text = "You did it! Excellent work today, you're clear to return to base.";
-		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallWin();
 
 		yield return new WaitForSeconds(3);
 
@@ -223,6 +222,4 @@ public class GameManager : MonoBehaviour {
 
 		Cursor.visible = swapTo;
 	}
-
-	public Text promptText;
 }

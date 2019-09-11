@@ -59,22 +59,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject hudFrame;
 	private Color hudMainColour;
 
-	//private float startTimeHoldingW = -1;
-	//private float startTimeHoldingA = -1;
-	//private float startTimeHoldingS = -1;
-	//private float startTimeHoldingD = -1;
-	//private float startTimeHoldingCtrl = -1;
-	//private float startTimeHoldingSpace = -1;
-
-	//private float timeHoldingW = 0;
-	//private float timeHoldingA = 0;
-	//private float timeHoldingS = 0;
-	//private float timeHoldingD = 0;
-	//private float timeHoldingCtrl = 0;
-	//private float timeHoldingSpace = 0;
-
 	private float speedDecreaseRate;
-	public Text promptText;
 
 	//void Awake() {
 	//	weapons = new List<GameObject>() { gameObject.transform.GetChild(2).GetChild(0).gameObject, gameObject.transform.GetChild(6).gameObject, gameObject.transform.GetChild(7).gameObject };
@@ -96,9 +81,8 @@ public class PlayerController : MonoBehaviour {
 		
 		hudMainColour = hudFrame.GetComponent<Image>().color;
 
-		// Prompt for start of game
-		promptText.text = "You've arrived! Quickly, enter the dam, your target is there.";
-		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		// Nav Prompt
+		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallIntroLine();
 
 		StartCoroutine(DelayedIntroPrompt());
 	}
@@ -107,8 +91,7 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds(3);
 
 		// Second prompt, action given
-		promptText.text = "The dam's under attack again. You have to make sure the wall stays intact.";
-		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallFollowUpIntroLine();
 	}
 
 	void FixedUpdate() {
@@ -334,8 +317,7 @@ public class PlayerController : MonoBehaviour {
 	private IEnumerator stopFlying() {
 		flightStopped = true;
 
-		promptText.text = "Warning: Cutting engines to avoid detection. Prepare to fall.";
-		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallRedZone();
 
 		StartCoroutine(fall(Time.time));
 
@@ -357,8 +339,8 @@ public class PlayerController : MonoBehaviour {
 	private void OnTriggerEnter(Collider collider) {
 		if (collider.gameObject.tag == "OrangeZon") {
 			if (!flightWarningShown) {
-				promptText.text = "Warning: Approaching 'No Fly' zone, reduce height.";
-				promptText.gameObject.transform.parent.gameObject.SetActive(true);
+				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallYellowZone();
+				
 				flightWarningShown = true;
 			}
 
@@ -385,7 +367,19 @@ public class PlayerController : MonoBehaviour {
 
 
 
+//private float startTimeHoldingW = -1;
+//private float startTimeHoldingA = -1;
+//private float startTimeHoldingS = -1;
+//private float startTimeHoldingD = -1;
+//private float startTimeHoldingCtrl = -1;
+//private float startTimeHoldingSpace = -1;
 
+//private float timeHoldingW = 0;
+//private float timeHoldingA = 0;
+//private float timeHoldingS = 0;
+//private float timeHoldingD = 0;
+//private float timeHoldingCtrl = 0;
+//private float timeHoldingSpace = 0;
 
 // Removed Code from before the re-implementation of Sebastiens force movement
 // Feel free to ignore this
