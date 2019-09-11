@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 400000}
   - component: {fileID: 19900002}
   - component: {fileID: 19800002}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4621,7 +4621,7 @@ GameObject:
   - component: {fileID: 19800000}
   - component: {fileID: 13500000}
   - component: {fileID: 11400000}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EnemyAfterburner
   m_TagString: Untagged
   m_Icon: {fileID: 0}

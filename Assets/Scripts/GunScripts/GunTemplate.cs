@@ -92,17 +92,35 @@ public class GunTemplate : MonoBehaviour {
 
     void AimWeapon()
     {
-        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        int layerMask = 1 << 10;
-        layerMask = ~layerMask;
-        if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask))
-        {
-            transform.LookAt(aimPoint.point);
-        }
-        else
-        {
-            transform.localEulerAngles = new Vector3(0, 0, 0);
-        }
+
+		// Altered this to remove the jitteryness of the gatling gun, it works, probs could do it better
+		RaycastHit hit;
+
+		int layerMask = LayerMask.GetMask("Default", "Player"); //1 << 10;
+		layerMask = ~layerMask;
+
+		if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, layerMask)) {  //Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)), out hit)) { //Camera.main.transform.position, Camera.main.transform.forward, out hit)) {
+			transform.GetChild(0).LookAt(hit.point);
+
+			// Without this the gun is always pointed to the right slightly, not sure why, it is consistant though, so manually rotating it should fix it for now
+			Vector3 rot = transform.GetChild(0).localEulerAngles;
+			rot.y -= 8f;
+			rot.x -= 2.5f;
+			transform.GetChild(0).localEulerAngles = rot;
+		}
+
+
+        //Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        //int layerMask = 1 << 10;
+        //layerMask = ~layerMask;
+        //if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask))
+        //{
+        //    transform.LookAt(aimPoint.point);
+        //}
+        //else
+        //{
+        //    transform.localEulerAngles = new Vector3(0, 0, 0);
+        //}
     }
 
     void PlayerControl() {

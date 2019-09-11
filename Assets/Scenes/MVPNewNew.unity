@@ -1905,7 +1905,7 @@ GameObject:
   - component: {fileID: 126624185}
   - component: {fileID: 126624189}
   - component: {fileID: 126624190}
-  m_Layer: 15
+  m_Layer: 2
   m_Name: Water
   m_TagString: Water
   m_Icon: {fileID: 0}
@@ -29829,6 +29829,21 @@ PrefabInstance:
     - target: {fileID: 523590117566062811, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}
       propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135345402050664648, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135345402050664648, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135345402050664648, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

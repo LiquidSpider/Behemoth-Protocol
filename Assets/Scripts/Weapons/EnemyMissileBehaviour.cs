@@ -33,6 +33,8 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 		launchTime = Time.time + launchTime;
 
 		playerObj = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).gameObject;
+
+		StartCoroutine(AutoDestruct());
 	}
 
 	private void Update() {
@@ -134,5 +136,10 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 
 	private void OnTriggerLeave(Collider collider) {
 		if (collider.gameObject.tag == "Environment") Explode();
+	}
+
+	private IEnumerator AutoDestruct() {
+		yield return new WaitForSeconds(12.0f);
+		Explode();
 	}
 }

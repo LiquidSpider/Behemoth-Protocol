@@ -50,6 +50,8 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		//} else {
 		//	targetPoint = inputHit.point;
 		//}
+
+		StartCoroutine(AutoDestruct());
 	}
 
 	private void Update() {
@@ -198,5 +200,11 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		targetObject.AddComponent<PlayerMissileTargetBehaviour>();
 		targetObject.AddComponent<SphereCollider>();
 		targetObject.GetComponent<PlayerMissileTargetBehaviour>().Initialise(gameObject);
+	}
+
+
+	private IEnumerator AutoDestruct() {
+		yield return new WaitForSeconds(8.0f);
+		Explode();
 	}
 }
