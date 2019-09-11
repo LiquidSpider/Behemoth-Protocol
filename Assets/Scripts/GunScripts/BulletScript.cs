@@ -47,8 +47,8 @@ public class BulletScript : MonoBehaviour {
 			// if the object has the health script
 			if (collision.gameObject.GetComponent<Health>() != null) {
                 // take damage
-                GameObject ui = GameObject.FindGameObjectWithTag("UI");
-                ui.GetComponent<UISounds>().HitMarker();
+                //GameObject ui = GameObject.FindGameObjectWithTag("UI");
+                //ui.GetComponent<UISounds>().HitMarker();
                 //Debug.Log("Bullet hit enemy");
                 var health = collision.gameObject.GetComponent<Health>();
 				health.TakeDamage(damage);
@@ -69,8 +69,8 @@ public class BulletScript : MonoBehaviour {
             if (collision.gameObject.GetComponent<PlayerHealth>() && gameObject.layer != 9)
             {
 
-                Debug.Log("Hit player");
-                collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage, this.gameObject);
+                //Debug.Log("Hit player");
+                //collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(damage, this.gameObject);
 
             }
 
@@ -103,8 +103,8 @@ public class BulletScript : MonoBehaviour {
 					var Cube = collision.gameObject.transform.parent.gameObject.GetComponent<Cube>();
 					Cube.TakeDamage(damage);
                     // play hit sound
-                    var ui = GameObject.FindGameObjectWithTag("UI");
-                    ui.GetComponent<UISounds>().HitMarker();
+                    //var ui = GameObject.FindGameObjectWithTag("UI");
+                    //ui.GetComponent<UISounds>().HitMarker();
                 }
 			}
 

@@ -29,6 +29,13 @@ public class WaterBehaviour : MonoBehaviour {
 
 		position.y = yStartLocation - (( 1 - (resourceAvailable / maxResourceAvailable) ) * 10);
 		transform.position = position;
+
+        //Material mat = gameObject.GetComponent<MeshRenderer>().material;
+        //Color wat = mat.color;
+        //float alpha = (resourceAvailable / maxResourceAvailable) * 2;
+        //if (alpha > 1) alpha = 1;
+        //wat.a = alpha;
+        //mat.color = wat;
 	}
 
 	public bool TakeWater(float waterUsed) {

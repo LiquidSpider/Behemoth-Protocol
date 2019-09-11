@@ -43,6 +43,9 @@ public class BaseHealth : MonoBehaviour
     {
         if(takeDamage)
         {
+            //GameObject.FindGameObjectWithTag("UI").transform.GetChild(11).GetChild(0).gameObject.SetActive(true);
+            if (damage > 0) GameObject.FindGameObjectWithTag("UI").GetComponent<UISounds>().HitMarker();
+
             this.health -= damage;
             if (health <= 0)
             {
