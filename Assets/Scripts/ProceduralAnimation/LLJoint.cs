@@ -11,7 +11,7 @@ public class LLJoint
     /// <summary>
     /// The object for this joint.
     /// </summary> 
-    public GameObject gameObject;
+    public GameObject jointObject;
     /// <summary>
     /// The starting position of the object.
     /// </summary>
@@ -38,11 +38,11 @@ public class LLJoint
     {
         get
         {
-            return this.gameObject.transform.localEulerAngles;
+            return this.jointObject.transform.localEulerAngles;
         }
         set
         {
-            this.gameObject.transform.localEulerAngles = value;
+            this.jointObject.transform.localEulerAngles = value;
         }
     }
 
@@ -53,11 +53,11 @@ public class LLJoint
     {
         get
         {
-            return this.gameObject.transform.localRotation;
+            return this.jointObject.transform.localRotation;
         }
         set
         {
-            this.gameObject.transform.localRotation = value;
+            this.jointObject.transform.localRotation = value;
         }
     }
 
@@ -68,11 +68,11 @@ public class LLJoint
     {
         get
         {
-            return this.gameObject.transform.localPosition;
+            return this.jointObject.transform.localPosition;
         }
         set
         {
-            this.gameObject.transform.localPosition = value;
+            this.jointObject.transform.localPosition = value;
         }
     }
 
@@ -83,11 +83,11 @@ public class LLJoint
     {
         get
         {
-            return this.gameObject.transform.position;
+            return this.jointObject.transform.position;
         }
         set
         {
-            this.gameObject.transform.position = value;
+            this.jointObject.transform.position = value;
         }
     }
 
@@ -98,13 +98,18 @@ public class LLJoint
     {
         get
         {
-            return this.gameObject.transform.rotation;
+            return this.jointObject.transform.rotation;
         }
         set
         {
-            this.gameObject.transform.rotation = value;
+            this.jointObject.transform.rotation = value;
         }
     }
+
+    /// <summary>
+    /// The parent joint.
+    /// </summary>
+    public ParentJoint parentJoint;
 
     /// <summary>
     /// Initialise a new joint.
@@ -112,10 +117,32 @@ public class LLJoint
     /// <param name="gameObject"></param>
     public LLJoint(GameObject gameObject)
     {
-        this.gameObject = gameObject;
+        this.jointObject = gameObject;
         this.StartingPosition = gameObject.transform.position;
         this.StartingRotation = gameObject.transform.eulerAngles;
         this.startingLocalPosition = gameObject.transform.localPosition;
         this.startingLocalRotation = gameObject.transform.localEulerAngles;
+        parentJoint = null;
+    }
+
+    /// <summary>
+    /// Initialise a new joint.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <param name="parentJoint"></param>
+    public LLJoint(GameObject gameObject, ParentJoint parentJoint)
+    {
+        this.jointObject = gameObject;
+        this.StartingPosition = gameObject.transform.position;
+        this.StartingRotation = gameObject.transform.eulerAngles;
+        this.startingLocalPosition = gameObject.transform.localPosition;
+        this.startingLocalRotation = gameObject.transform.localEulerAngles;
+        this.parentJoint = parentJoint;
+
+        // set the parent joint maxdistance
+        if (parentJoint.GetDefault)
+        {
+            parentJoint.maxDistance = Vector3.Distance(parentJoint.Joint.transform.position, gameObject.transform.position);
+        }
     }
 }

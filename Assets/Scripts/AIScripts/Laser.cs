@@ -6,11 +6,6 @@ public class Laser : MonoBehaviour
 {
 
     /// <summary>
-    /// The player
-    /// </summary>
-    public GameObject Target;
-
-    /// <summary>
     /// The starting local Position of the object.
     /// </summary>
     private Vector3 StartingLocalPosition;
@@ -56,6 +51,17 @@ public class Laser : MonoBehaviour
     /// </summary>
     private float AnimationStartingTime;
 
+    /// <summary>
+    /// The max distance the ray can shoot.
+    /// </summary>
+    [System.NonSerialized]
+    public float MaxRayDistance = 10000.0f;
+
+    /// <summary>
+    /// The layer this object is on.
+    /// </summary>
+    private int LaserLayer;
+
     private void Awake()
     {
     }
@@ -63,6 +69,7 @@ public class Laser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.LaserLayer = LayerMask.GetMask("Player", "Environment", "Water", "Enemy");
         this.StartingLocalPosition = this.transform.localPosition;
         this.StartingLocalScale = this.transform.localScale;
         this.StartingLocalEuler = this.transform.localEulerAngles;
@@ -74,23 +81,35 @@ public class Laser : MonoBehaviour
     void Update()
     {
 
-
+        // Activate the particle effect for the laser.
         gameObject.GetComponent<particleControllerLaserCharge>().activate();
 
         // Once we're past the startup Timing
-        if(AnimationStartingTime > WindUpTiming)
+        if (AnimationStartingTime > WindUpTiming)
         {
-            // Debug rotate towards player.
-            Vector3 lookVector = Target.transform.position - transform.position;
-            //lookVector.y = transform.position.y;
-            Quaternion rot = Quaternion.LookRotation(lookVector);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rot, 1);
 
             // Stretch the object between the player and the giant.
             transform.GetChild(0).gameObject.SetActive(true);
             gameObject.GetComponent<particleControllerLaserCharge>().deactivate();
 
-            float Distance = Vector3.Distance(Target.transform.position, this.transform.position) / 12;
+            // Shoot a ray forward at max distance.
+            Ray ray = new Ray(this.transform.position, this.transform.forward);
+            RaycastHit hitInfo;
+            Physics.Raycast(ray, out hitInfo, MaxRayDistance, LaserLayer);
+
+            // The distance of the ray.
+            float Distance;
+
+            // If the ray hits something.
+            if (hitInfo.collider)
+            {
+                Distance = Vector3.Distance(hitInfo.collider.transform.position, this.transform.position) / 10;
+            }
+            else
+            {
+                Distance = MaxRayDistance / 10;
+            }
+
             this.transform.localScale = new Vector3(this.StartingLocalScale.x, this.StartingLocalScale.y, Distance);
 
             if (AnimationStartingTime > WindUpTiming + LaserShootTiming)

@@ -112,6 +112,9 @@ public class GiantAnimator : MonoBehaviour
     private List<Step> clapAnimationPart1;
     private List<Step> clapAnimationPart2;
     private List<Step> clapAnimationPart3;
+
+    public GameObject LeftHandClapTarget;
+    public GameObject RightHandClapTarget;
     #endregion
 
     #region SwipeUpVariables
@@ -173,15 +176,17 @@ public class GiantAnimator : MonoBehaviour
 
     private List<Step> laserAnimationLPart0;
     private List<Step> laserAnimationLPart1;
+    private List<Step> laserAnimationLPart2;
     private List<Step> laserAnimationRPart0;
     private List<Step> laserAnimationRPart1;
+    private List<Step> laserAnimationRPart2;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
         isComplete = false;
-               
+
         // Get the player
         this.Player = GameObject.FindGameObjectWithTag("Player");
 
@@ -212,39 +217,39 @@ public class GiantAnimator : MonoBehaviour
     private void SetupKinematics()
     {
         GameObject[] joints = GameObject.FindGameObjectsWithTag("Joints");
-        LeftHand = new LLJoint(joints.Where(x => x.name == "LHTarget").First());
+        LeftHand = new LLJoint(joints.Where(x => x.name == "LHTarget").First(), joints.Where(x => x.name == "LHTarget").First().GetComponent<ParentJoint>());
         LeftElbow = new LLJoint(joints.Where(x => x.name == "LHElbow").First());
-        RightHand = new LLJoint(joints.Where(x => x.name == "RHTarget").First());
+        RightHand = new LLJoint(joints.Where(x => x.name == "RHTarget").First(), joints.Where(x => x.name == "RHTarget").First().GetComponent<ParentJoint>());
         RightElbow = new LLJoint(joints.Where(x => x.name == "RHElbow").First());
-        LeftLeg = new LLJoint(joints.Where(x => x.name == "LLTarget").First());
+        LeftLeg = new LLJoint(joints.Where(x => x.name == "LLTarget").First(), joints.Where(x => x.name == "LLTarget").First().GetComponent<ParentJoint>());
         LeftKnee = new LLJoint(joints.Where(x => x.name == "LLKnee").First());
-        RightLeg = new LLJoint(joints.Where(x => x.name == "RLTarget").First());
+        RightLeg = new LLJoint(joints.Where(x => x.name == "RLTarget").First(), joints.Where(x => x.name == "RLTarget").First().GetComponent<ParentJoint>());
         RightKnee = new LLJoint(joints.Where(x => x.name == "RLKnee").First());
-        Chest = new LLJoint(joints.Where(x => x.name == "ChestTarget").First());
+        Chest = new LLJoint(joints.Where(x => x.name == "ChestTarget").First(), joints.Where(x => x.name == "ChestTarget").First().GetComponent<ParentJoint>());
         Waist = new LLJoint(joints.Where(x => x.name == "Waist").First());
         Spine = new LLJoint(joints.Where(x => x.name == "Root_M").First());
 
         // Fingers
-        LHPinkyTip = new LLJoint(joints.Where(x => x.name == "LHPinkyTarget").First());
+        LHPinkyTip = new LLJoint(joints.Where(x => x.name == "LHPinkyTarget").First(), joints.Where(x => x.name == "LHPinkyTarget").First().GetComponent<ParentJoint>());
         LHPinkyJoint = new LLJoint(joints.Where(x => x.name == "LHPinkyJoint").First());
-        LHRingTip = new LLJoint(joints.Where(x => x.name == "LHRingTarget").First());
+        LHRingTip = new LLJoint(joints.Where(x => x.name == "LHRingTarget").First(), joints.Where(x => x.name == "LHRingTarget").First().GetComponent<ParentJoint>());
         LHRingJoint = new LLJoint(joints.Where(x => x.name == "LHRingJoint").First());
-        LHMiddleTip = new LLJoint(joints.Where(x => x.name == "LHMiddleTarget").First());
+        LHMiddleTip = new LLJoint(joints.Where(x => x.name == "LHMiddleTarget").First(), joints.Where(x => x.name == "LHMiddleTarget").First().GetComponent<ParentJoint>());
         LHMiddleJoint = new LLJoint(joints.Where(x => x.name == "LHMiddleJoint").First());
-        LHIndexTip = new LLJoint(joints.Where(x => x.name == "LHIndexTarget").First());
+        LHIndexTip = new LLJoint(joints.Where(x => x.name == "LHIndexTarget").First(), joints.Where(x => x.name == "LHIndexTarget").First().GetComponent<ParentJoint>());
         LHIndexJoint = new LLJoint(joints.Where(x => x.name == "LHIndexJoint").First());
-        LHThumbTip = new LLJoint(joints.Where(x => x.name == "LHThumbTarget").First());
+        LHThumbTip = new LLJoint(joints.Where(x => x.name == "LHThumbTarget").First(), joints.Where(x => x.name == "LHThumbTarget").First().GetComponent<ParentJoint>());
         LHThumbJoint = new LLJoint(joints.Where(x => x.name == "LHThumbJoint").First());
 
-        RHPinkyTip = new LLJoint(joints.Where(x => x.name == "RHPinkyTarget").First());
+        RHPinkyTip = new LLJoint(joints.Where(x => x.name == "RHPinkyTarget").First(), joints.Where(x => x.name == "RHPinkyTarget").First().GetComponent<ParentJoint>());
         RHPinkyJoint = new LLJoint(joints.Where(x => x.name == "RHPinkyJoint").First());
-        RHRingTip = new LLJoint(joints.Where(x => x.name == "RHRingTarget").First());
+        RHRingTip = new LLJoint(joints.Where(x => x.name == "RHRingTarget").First(), joints.Where(x => x.name == "RHRingTarget").First().GetComponent<ParentJoint>());
         RHRingJoint = new LLJoint(joints.Where(x => x.name == "RHRingJoint").First());
-        RHMiddleTip = new LLJoint(joints.Where(x => x.name == "RHMiddleTarget").First());
+        RHMiddleTip = new LLJoint(joints.Where(x => x.name == "RHMiddleTarget").First(), joints.Where(x => x.name == "RHMiddleTarget").First().GetComponent<ParentJoint>());
         RHMiddleJoint = new LLJoint(joints.Where(x => x.name == "RHMiddleJoint").First());
-        RHIndexTip = new LLJoint(joints.Where(x => x.name == "RHIndexTarget").First());
+        RHIndexTip = new LLJoint(joints.Where(x => x.name == "RHIndexTarget").First(), joints.Where(x => x.name == "RHIndexTarget").First().GetComponent<ParentJoint>());
         RHIndexJoint = new LLJoint(joints.Where(x => x.name == "RHIndexJoint").First());
-        RHThumbTip = new LLJoint(joints.Where(x => x.name == "RHThumbTarget").First());
+        RHThumbTip = new LLJoint(joints.Where(x => x.name == "RHThumbTarget").First(), joints.Where(x => x.name == "RHThumbTarget").First().GetComponent<ParentJoint>());
         RHThumbJoint = new LLJoint(joints.Where(x => x.name == "RHThumbJoint").First());
     }
 
@@ -260,9 +265,19 @@ public class GiantAnimator : MonoBehaviour
             new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
             new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
             new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(LHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
         };
 
         laserAnimationLPart1 = new List<Step>()
+        {
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(LHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+        };
+
+        laserAnimationLPart2 = new List<Step>()
         {
             new Step(LeftHand, new List<StepPosition>()
             {
@@ -293,9 +308,19 @@ public class GiantAnimator : MonoBehaviour
             new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
             new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
             new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(RHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
         };
 
         laserAnimationRPart1 = new List<Step>()
+        {
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(RHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+        };
+
+        laserAnimationRPart2 = new List<Step>()
         {
             new Step(RightHand, new List<StepPosition>()
             {
@@ -334,7 +359,7 @@ public class GiantAnimator : MonoBehaviour
                 new StepPosition(new Vector3(0.0f, 0.2f, -0.4f), 0.4f * SwipeUpAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.addition)
         };
-       
+
         // Setup Left step 2
         swipeUpAnimationLPart1 = new List<Step>()
         {
@@ -370,7 +395,7 @@ public class GiantAnimator : MonoBehaviour
                 new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.position)
         };
-}
+    }
 
     /// <summary>
     /// Sets up the swing animation steps.
@@ -451,7 +476,7 @@ public class GiantAnimator : MonoBehaviour
                 new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
         };
-        
+
         // Setup Right step 1
         swingAnimationRPart0 = new List<Step>()
         {
@@ -582,33 +607,33 @@ public class GiantAnimator : MonoBehaviour
             {
                 new StepPosition(new Vector3(0.0f, -0.6f, 0.15f), 7.0f * ClapAnimSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(30.0f, 0.0f, 0.0f), 1.0f)
-            }, Step.DirectionType.rotation, Step.StepType.addition),
-            new Step(LeftElbow, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(LeftHand, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(Chest, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(30.0f, 0.0f, 0.0f), 1.0f)
+            //}, Step.DirectionType.rotation, Step.StepType.addition),
+            //new Step(LeftElbow, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(LeftHand, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
             new Step(LeftHand, new List<StepPosition>()
             {
                 new StepPosition(new Vector3(270.0f, 0.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
-            new Step(RightElbow, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(RightElbow, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(RightHand, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(RightHand, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(270.0f, -0.0f, 0.0f), 2.0f)
+                new StepPosition(new Vector3(270.0f, -0.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             new Step(LeftKnee, new List<StepPosition>()
             {
@@ -617,22 +642,23 @@ public class GiantAnimator : MonoBehaviour
             new Step(RightKnee, new List<StepPosition>()
             {
                 new StepPosition(new Vector3(0.0f, 0.0f, 0.2f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
+            }, Step.DirectionType.position, Step.StepType.addition)
         };
 
         // setup step 2
         clapAnimationPart1 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.yz, 5.0f, 1.0f),
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.yz, 5.0f, 1.0f),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 1.0f)
+            new Step(LeftHand, LeftHandClapTarget, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 1.2f),
+            new Step(RightHand, RightHandClapTarget, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 1.2f),
+            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 1.2f)
         };
 
         // setup step 3
         clapAnimationPart2 = new List<Step>()
         {
             new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.25f),
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f,  0.25f)
+            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f,  0.25f),
+            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 0.25f)
         };
 
         // setup step 4
@@ -860,16 +886,16 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void Laser()
     {
-        switch(currentLaserState)
+        switch (currentLaserState)
         {
             case LaserAnimationState.idle:
                 currentLaserState = LaserAnimationState.aim;
                 break;
             case LaserAnimationState.aim:
-                switch(hand)
+                switch (hand)
                 {
                     case Hand.left:
-                        if(PerformAnimationStep(laserAnimationLPart0))
+                        if (PerformAnimationStep(laserAnimationLPart0))
                         {
                             // Increment the animation step.
                             currentLaserState = LaserAnimationState.shoot;
@@ -877,7 +903,7 @@ public class GiantAnimator : MonoBehaviour
                         }
                         break;
                     case Hand.right:
-                        if(PerformAnimationStep(laserAnimationRPart0))
+                        if (PerformAnimationStep(laserAnimationRPart0))
                         {
                             // Increment the animationstep.
                             currentLaserState = LaserAnimationState.shoot;
@@ -887,17 +913,29 @@ public class GiantAnimator : MonoBehaviour
                 }
                 break;
             case LaserAnimationState.shoot:
-                if (giantBehaviour.LaserTimer > giantBehaviour.lazerWindUpTime + giantBehaviour.lazerShootTime)
-                {
-                    currentLaserState = LaserAnimationState.recover;
-                }
-                giantBehaviour.LaserTimer += Time.deltaTime;
-                break;
-            case LaserAnimationState.recover:
-                switch(hand)
+                switch (hand)
                 {
                     case Hand.left:
                         if (PerformAnimationStep(laserAnimationLPart1))
+                        {
+                            // Increment the Animation step.    
+                            currentLaserState = LaserAnimationState.recover;
+                        }
+                        break;
+                    case Hand.right:
+                        if (PerformAnimationStep(laserAnimationRPart1))
+                        {
+                            // Increment the Animation step.    
+                            currentLaserState = LaserAnimationState.recover;
+                        }
+                        break;
+                }
+                break;
+            case LaserAnimationState.recover:
+                switch (hand)
+                {
+                    case Hand.left:
+                        if (PerformAnimationStep(laserAnimationLPart2))
                         {
                             // Increment the Animation step.    
                             currentLaserState = LaserAnimationState.idle;
@@ -906,7 +944,7 @@ public class GiantAnimator : MonoBehaviour
                         }
                         break;
                     case Hand.right:
-                        if (PerformAnimationStep(laserAnimationRPart1))
+                        if (PerformAnimationStep(laserAnimationRPart2))
                         {
                             // Increment the Animation step.    
                             currentLaserState = LaserAnimationState.idle;
@@ -924,13 +962,13 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void GiantSwipeUp()
     {
-        switch(CurrentSwipeUpState)
+        switch (CurrentSwipeUpState)
         {
             case SwipeUpAnimationState.idle:
                 CurrentSwipeUpState = SwipeUpAnimationState.swipe;
                 break;
             case SwipeUpAnimationState.swipe:
-                switch(hand)
+                switch (hand)
                 {
                     case Hand.left:
                         if (PerformAnimationStep(swipeUpAnimationLPart0))
@@ -980,7 +1018,7 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void GiantSwing()
     {
-        switch(CurrentSwingState)
+        switch (CurrentSwingState)
         {
             case SwingAnimationState.idle:
                 CurrentSwingState = SwingAnimationState.DrawBack;
@@ -1124,7 +1162,7 @@ public class GiantAnimator : MonoBehaviour
                 }
                 break;
             case PunchAnimationState.Recover:
-                    // Increment the Animation step.
+                // Increment the Animation step.
                 currentPunchState = PunchAnimationState.idle;
                 isComplete = true;
                 DisableKinematics();
@@ -1178,31 +1216,31 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     public void DisableKinematics()
     {
-                foreach (GameObject kinematic in LeftHandKinematics)
+        foreach (GameObject kinematic in LeftHandKinematics)
         {
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }
-                foreach (GameObject kinematic in LeftArmKinematics)
+        foreach (GameObject kinematic in LeftArmKinematics)
         {
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }
-                foreach (GameObject kinematic in LeftLegKinematics)
+        foreach (GameObject kinematic in LeftLegKinematics)
         {
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }
-                foreach (GameObject kinematic in RightArmKinematics)
+        foreach (GameObject kinematic in RightArmKinematics)
         {
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }
-                foreach (GameObject kinematic in RightHandKinematics)
+        foreach (GameObject kinematic in RightHandKinematics)
         {
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }
-                foreach (GameObject kinematic in RightLegKinematics)
+        foreach (GameObject kinematic in RightLegKinematics)
         {
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }
-                foreach (GameObject kinematic in ChestKinematics)
+        foreach (GameObject kinematic in ChestKinematics)
         {
             kinematic.GetComponent<InverseKinematics>().enabled = false;
         }

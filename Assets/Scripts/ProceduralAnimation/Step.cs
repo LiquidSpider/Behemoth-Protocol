@@ -22,7 +22,7 @@ public class Step
     /// The joint to perform the this step on.
     /// </summary>
     public LLJoint joint;
-    
+
     /// <summary>
     /// If the step type is a follower, the object to follow.
     /// </summary>
@@ -40,9 +40,9 @@ public class Step
 
     private Vector3 followerPosition
     {
-        get 
+        get
         {
-            Transform transform = joint.gameObject.transform.parent.transform;
+            Transform transform = joint.jointObject.transform.parent.transform;
             return transform.InverseTransformPoint(follower.transform.position);
         }
     }
@@ -160,7 +160,7 @@ public class Step
     public void PerformStep()
     {
         // Depending on the step type
-        switch(stepType)
+        switch (stepType)
         {
             // If positional step
             case StepType.position:
@@ -183,9 +183,9 @@ public class Step
                 break;
             // If additional step
             case StepType.addition:
-                if(Counter < Positions.Count)
+                if (Counter < Positions.Count)
                 {
-                    switch(directionType)
+                    switch (directionType)
                     {
                         case DirectionType.position:
                             AddMovementTowards();
@@ -202,7 +202,7 @@ public class Step
                 break;
             // If follower step
             case StepType.follower:
-                switch(directionType)
+                switch (directionType)
                 {
                     case DirectionType.position:
                         FollowMovement();
@@ -262,7 +262,7 @@ public class Step
     private void AddMovementTowards()
     {
         // Set moveToPosition
-        if(!moveToHasBeenSet)
+        if (!moveToHasBeenSet)
         {
             nextMoveToPosition = joint.CurrentLocationPosition + Positions[Counter].position;
         }
@@ -317,45 +317,59 @@ public class Step
     private void FollowMovement()
     {
 
-        Vector3 position = Vector3.zero; 
+        Vector3 position = follower.transform.position;
 
         switch (followType)
         {
             case FollowType.xyz:
-                position = follower.transform.position;
                 break;
             case FollowType.zx:
-                Vector3 zx = follower.transform.position;
-                position = new Vector3(zx.x, joint.CurrentPosition.y, zx.z);
+                position = new Vector3(position.x, joint.CurrentPosition.y, position.z);
                 break;
             case FollowType.yz:
-                Vector3 yz = follower.transform.position;
-                position = new Vector3(joint.CurrentPosition.x, yz.y, yz.z);
+                position = new Vector3(joint.CurrentPosition.x, position.y, position.z);
                 break;
             case FollowType.xy:
-                Vector3 xy = follower.transform.position;
-                position = new Vector3(xy.x, xy.y, joint.CurrentPosition.z);
+                position = new Vector3(position.x, position.y, joint.CurrentPosition.z);
                 break;
             case FollowType.x:
-                Vector3 x = follower.transform.position;
-                position = new Vector3(x.x, joint.CurrentPosition.y, joint.CurrentPosition.z);
+                position = new Vector3(position.x, joint.CurrentPosition.y, joint.CurrentPosition.z);
                 break;
             case FollowType.y:
-                Vector3 y = follower.transform.position;
-                position = new Vector3(joint.CurrentPosition.x, y.y, joint.CurrentPosition.z);
+                position = new Vector3(joint.CurrentPosition.x, position.y, joint.CurrentPosition.z);
                 break;
             case FollowType.z:
-                Vector3 z = follower.transform.position;
-                position = new Vector3(joint.CurrentPosition.x, joint.CurrentPosition.y, z.z);
+                position = new Vector3(joint.CurrentPosition.x, joint.CurrentPosition.y, position.z);
                 break;
         }
 
         // Check the distance between the two objects.
         if (followDuration >= 0)
         {
-            //float speed = GetSpeed(followSpeed);
-            // Move object towards position.
-            joint.CurrentPosition = Vector3.MoveTowards(joint.CurrentPosition, position, followSpeed);
+            // If the joint has a parent.
+            if (joint.parentJoint)
+            {
+
+                // Get the new position
+                Vector3 movingPosition = Vector3.MoveTowards(joint.CurrentPosition, position, followSpeed);
+                Vector3 parentPosition = joint.parentJoint.Joint.transform.position;
+                // The distance between the new position and the parent joint.
+                float distance = Vector3.Distance(movingPosition, parentPosition);
+
+                // if we're greater than the distance then clamp it by the distance * normal between centre
+                if (distance > joint.parentJoint.maxDistance)
+                {
+                    Vector3 fromOrigin = (movingPosition - parentPosition).normalized * joint.parentJoint.maxDistance;
+                    movingPosition = parentPosition + fromOrigin;
+                }
+
+                joint.CurrentPosition = movingPosition;
+            }
+            else
+            {
+                // Move object towards position.
+                //joint.CurrentLocationPosition = Vector3.MoveTowards(joint.CurrentLocationPosition, position, followSpeed);
+            }
         }
         else
         {
@@ -373,25 +387,34 @@ public class Step
     /// </summary>
     private void FollowRotation()
     {
-        Quaternion rotation = Quaternion.LookRotation(follower.transform.position - joint.CurrentPosition);
+        Vector3 euler = Quaternion.LookRotation(follower.transform.position - joint.CurrentPosition).eulerAngles;
+        Vector3 currentEuler = joint.CurrentRotation.eulerAngles;
 
         switch (followType)
         {
             case FollowType.xyz:
                 break;
             case FollowType.zx:
+                euler = new Vector3(euler.x, currentEuler.y, euler.z);
                 break;
             case FollowType.yz:
+                euler = new Vector3(currentEuler.x, euler.y, euler.z);
                 break;
             case FollowType.xy:
+                euler = new Vector3(euler.x, euler.y, currentEuler.z);
                 break;
             case FollowType.x:
+                euler = new Vector3(euler.x, currentEuler.y, currentEuler.z);
                 break;
             case FollowType.y:
+                euler = new Vector3(currentEuler.x, euler.y, currentEuler.z);
                 break;
             case FollowType.z:
+                euler = new Vector3(currentEuler.x, currentEuler.y, euler.z);
                 break;
         }
+
+        Quaternion rotation = Quaternion.Euler(euler);
 
         // Check the distance between the two objects.
         if (followDuration >= 0)
@@ -409,6 +432,11 @@ public class Step
         }
 
         followDuration -= Time.deltaTime;
+    }
+
+    public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
+    {
+        return Quaternion.Euler(angles) * (point - pivot) + pivot;
     }
 
     /// <summary>
@@ -430,4 +458,5 @@ public class Step
         this.Counter = 0;
         this.time = 0;
     }
+
 }
