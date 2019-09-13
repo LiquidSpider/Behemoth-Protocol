@@ -16,12 +16,20 @@ public class WeaponSelect : MonoBehaviour {
 	public GameObject missile1;
 	public GameObject missile2;
 
+	public GameObject missile1Centre;
+	public GameObject missile2Centre;
+
+	public GameObject[] weaponsInactiveCircles = new GameObject[5];
+	GameObject playerForScript;
+
 	public int weaponNumber = 1;
 	public int previousWeaponNumber = 1;
 
 	private void Start() {
 		weapCirc1.GetComponent<Animator>().SetBool("Active", true);
 		weapBar1.GetComponent<Animator>().SetBool("Active", true);
+
+		playerForScript = GameObject.FindWithTag("Player");
 	}
 
 	// Update is called once per frame
@@ -40,6 +48,9 @@ public class WeaponSelect : MonoBehaviour {
 
 			missile1.GetComponent<Animator>().SetBool("Active", false);
 			missile2.GetComponent<Animator>().SetBool("Active", false);
+
+			missile1Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
+			missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
 		}
 
 		if (Input.GetButtonDown("Weapon2")) {
@@ -55,6 +66,9 @@ public class WeaponSelect : MonoBehaviour {
 
 			missile1.GetComponent<Animator>().SetBool("Active", true);
 			missile2.GetComponent<Animator>().SetBool("Active", true);
+
+			missile1Centre.GetComponent<Animator>().SetBool("MissileSelected", true);
+			missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", true);
 		}
 
 		if (Input.GetButtonDown("Weapon3")) {
@@ -70,6 +84,20 @@ public class WeaponSelect : MonoBehaviour {
 
 			missile1.GetComponent<Animator>().SetBool("Active", false);
 			missile2.GetComponent<Animator>().SetBool("Active", false);
+
+			missile1Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
+			missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
+		}
+
+		if (playerForScript.GetComponent<PlayerController>().isCruising) {
+			//set things to be true
+			foreach (GameObject thing in weaponsInactiveCircles) {
+				thing.GetComponent<Animator>().SetBool("IsBoosting", true);
+			}
+		} else {
+			foreach (GameObject thing in weaponsInactiveCircles) {
+				thing.GetComponent<Animator>().SetBool("IsBoosting", false);
+			}
 		}
 	}
 }

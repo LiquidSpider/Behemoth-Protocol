@@ -14,7 +14,7 @@ public class PlayerDamageableSection : MonoBehaviour {
 		if (other.gameObject.tag == "Bullet - Enemy") {
 			Transform parent = transform.root;
 
-			parent.GetComponent<PlayerHealth>().TakeDamage(1, other.gameObject);
+			parent.GetComponent<PlayerHealth>().TakeDamage(5, other.gameObject);
 		}
 		
 		if (other.gameObject.layer == 17 || other.gameObject.layer == 18) {
