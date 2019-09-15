@@ -101,11 +101,13 @@ public class NewWeaponController : MonoBehaviour {
 			// Take energy away from the battery if the missiles have been used (and recharge the missiles)
 			if (Time.time < timeOfLastMissile + timeBetweenMissiles) {
 				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(8).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 			}
 			if (Time.time < timeOfLastMissile2 + timeBetweenMissiles) {
 				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
 				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile2 + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(9).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile2 + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 			}
 
 			// Same as above (Missiles) But for Flares
