@@ -96,7 +96,6 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate() {
 		PlayerControls();
-		AimWeapon();
 		AvoidObstruction();
 	}
 
@@ -104,7 +103,12 @@ public class PlayerController : MonoBehaviour {
 		CameraMove();
 	}
 
-	void CameraMove() { // Camera controls and manipulation goes here
+    private void LateUpdate()
+    {
+        AimWeapon();
+    }
+
+    void CameraMove() { // Camera controls and manipulation goes here
 
 		// Deactivate Cruise Mod if button not pressed
 		if (!Input.GetKey(KeyCode.LeftShift)) {
@@ -250,9 +254,9 @@ public class PlayerController : MonoBehaviour {
 	//}
 
 	void AimWeapon() {
-		Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-		var layerMask = ~((1 << 9 | 1 << 10));
-		if (Physics.Raycast(ray, out RaycastHit aimPoint, layerMask)) {
+        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+        var layerMask = ((1 << 15 | 1 << 14 | 1 << 16 | 1 << 17 | 1 << 18));
+        if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask)) {
 			arm.transform.LookAt(aimPoint.point);
 		} else {
 			arm.transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -286,7 +290,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void AvoidObstruction() {
-		if (Physics.Linecast(transform.position, cameraObj.transform.position, out RaycastHit obstruction)) {
+        var layerMask = ((1 << 15 | 1 << 14 | 1 << 16 | 1 << 17 | 1 << 18));
+        if (Physics.Linecast(transform.position, cameraObj.transform.position, out RaycastHit obstruction, layerMask)) {
 			camera.transform.position = obstruction.point;
 		} else {
 			camera.transform.localPosition = Vector3.zero;

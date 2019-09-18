@@ -71,7 +71,7 @@ AnimatorController:
     m_Motions:
     - serializedVersion: 2
       m_State: {fileID: 1102566896850582192}
-      m_Motion: {fileID: 7400000, guid: 163f2800c009d9a41b556ef4c3052a0a, type: 3}
+      m_Motion: {fileID: 7400000, guid: d6cf33c19205e4746992dce0213f663c, type: 3}
     - serializedVersion: 2
       m_State: {fileID: 1102040907458853484}
       m_Motion: {fileID: 7400000, guid: 163f2800c009d9a41b556ef4c3052a0a, type: 3}
@@ -84,6 +84,12 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: 1102232005674965780}
       m_Motion: {fileID: 7400000, guid: abb1341df1c1c2044912e1041dbc4176, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1102427118942617224}
+      m_Motion: {fileID: 7400000, guid: da2e499eab160c0419a1bfd1e0708bd7, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1102807754717516414}
+      m_Motion: {fileID: 7400000, guid: c843ca29c024944449e888cd96ce70ea, type: 3}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: 0
@@ -111,6 +117,9 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: 1102232005674965780}
       m_Motion: {fileID: 7400000, guid: b74e73da8b44343428e64af502b51386, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1102743761952803622}
+      m_Motion: {fileID: 7400000, guid: 6c1d6bc200e12094ca72ea665403700c, type: 3}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: 0
@@ -138,6 +147,15 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: 1102232005674965780}
       m_Motion: {fileID: 7400000, guid: b74e73da8b44343428e64af502b51386, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1102427118942617224}
+      m_Motion: {fileID: 7400000, guid: da2e499eab160c0419a1bfd1e0708bd7, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1102743761952803622}
+      m_Motion: {fileID: 7400000, guid: 6c1d6bc200e12094ca72ea665403700c, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: 1102616760827846710}
+      m_Motion: {fileID: 7400000, guid: 7d385b5f7b3037b4eb677cdf4ad3c696, type: 3}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: 0
@@ -587,7 +605,7 @@ AnimatorStateTransition:
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.028596878
-  m_TransitionOffset: 0
+  m_TransitionOffset: 0.09
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 1
@@ -831,7 +849,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: dodgeLeft
-  m_Speed: 1.5
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101314470308334892}
@@ -969,7 +987,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: dodgeRight
-  m_Speed: 1.5
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101975215173548034}

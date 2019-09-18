@@ -7,6 +7,7 @@ public class TurretBehaviour : MonoBehaviour {
 
 	public GameObject bullet;
 	public GameObject shootPosition;
+    public AudioClip shootSound;
 
 	private float shootTimer;
 	private float shootTime = 0.25f;
@@ -38,6 +39,7 @@ public class TurretBehaviour : MonoBehaviour {
 			// Shoot
 			GameObject bulletNew = Instantiate(bullet, shootPosition.transform.position, gameObject.transform.GetChild(0).GetChild(1).rotation);
 			bulletNew.GetComponent<BulletScript>().speed = 500;
+            GetComponent<MakeSound>().Play(shootSound);
 			shootTimer = Time.time + shootTime;
 		}
 	}

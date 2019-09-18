@@ -8,16 +8,19 @@ public class MakeSound : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (gameObject.GetComponent<AudioSource>()) // Check for audio source
+        if (source == null)
         {
-            source = gameObject.GetComponent<AudioSource>();
-        }
-        else
+            if (gameObject.GetComponent<AudioSource>()) // Check for audio source
+            {
+                source = gameObject.GetComponent<AudioSource>();
+            }
+            else
         if (gameObject.GetComponentInChildren<AudioSource>()) // Check for audio source
-        {
-            source = gameObject.GetComponentInChildren<AudioSource>();
+            {
+                source = gameObject.GetComponentInChildren<AudioSource>();
+            }
+            else Debug.LogError("MakeSound given to object " + gameObject.name + " with no audio source. No sounds will be made.");
         }
-        else Debug.LogError("MakeSound given to object " + gameObject.name + " with no audio source. No sounds will be made.");
     }
 
     public void Play(AudioClip audio)

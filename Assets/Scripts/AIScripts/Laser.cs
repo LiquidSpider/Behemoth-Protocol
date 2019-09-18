@@ -90,6 +90,7 @@ public class Laser : MonoBehaviour
 
             // Stretch the object between the player and the giant.
             transform.GetChild(0).gameObject.SetActive(true);
+            transform.root.GetComponent<GiantSoundManager>().SetStage(1);
             gameObject.GetComponent<particleControllerLaserCharge>().deactivate();
 
             // Shoot a ray forward at max distance.

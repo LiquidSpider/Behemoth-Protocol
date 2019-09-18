@@ -20,6 +20,8 @@ public class GiantAnimator : MonoBehaviour
 
     private GameManager gameManager;
 
+    private GiantSoundManager gsm;
+
     private GameObject Player;
     public bool isComplete;
 
@@ -208,6 +210,8 @@ public class GiantAnimator : MonoBehaviour
             Debug.Log("No Object with 'Player' tag found. Giant Disabled");
             this.gameObject.SetActive(false);
         }
+
+        gsm = GetComponent<GiantSoundManager>();
 
     }
 
@@ -894,12 +898,14 @@ public class GiantAnimator : MonoBehaviour
             case LaserAnimationState.aim:
                 switch (hand)
                 {
+
                     case Hand.left:
                         if (PerformAnimationStep(laserAnimationLPart0))
                         {
                             // Increment the animation step.
                             currentLaserState = LaserAnimationState.shoot;
                             giantBehaviour.LaserTimer = 0;
+                            gsm.SetStage(0);
                         }
                         break;
                     case Hand.right:
@@ -908,6 +914,7 @@ public class GiantAnimator : MonoBehaviour
                             // Increment the animationstep.
                             currentLaserState = LaserAnimationState.shoot;
                             giantBehaviour.LaserTimer = 0;
+                            gsm.SetStage(0);
                         }
                         break;
                 }
@@ -918,14 +925,16 @@ public class GiantAnimator : MonoBehaviour
                     case Hand.left:
                         if (PerformAnimationStep(laserAnimationLPart1))
                         {
-                            // Increment the Animation step.    
+                            // Increment the Animation step.
+                            gsm.SetStage(2);
                             currentLaserState = LaserAnimationState.recover;
                         }
                         break;
                     case Hand.right:
                         if (PerformAnimationStep(laserAnimationRPart1))
                         {
-                            // Increment the Animation step.    
+                            // Increment the Animation step.
+                            gsm.SetStage(2);
                             currentLaserState = LaserAnimationState.recover;
                         }
                         break;
@@ -938,6 +947,7 @@ public class GiantAnimator : MonoBehaviour
                         if (PerformAnimationStep(laserAnimationLPart2))
                         {
                             // Increment the Animation step.    
+                            
                             currentLaserState = LaserAnimationState.idle;
                             isComplete = true;
                             DisableKinematics();
@@ -946,7 +956,8 @@ public class GiantAnimator : MonoBehaviour
                     case Hand.right:
                         if (PerformAnimationStep(laserAnimationRPart2))
                         {
-                            // Increment the Animation step.    
+                            // Increment the Animation step.
+                            
                             currentLaserState = LaserAnimationState.idle;
                             isComplete = true;
                             DisableKinematics();

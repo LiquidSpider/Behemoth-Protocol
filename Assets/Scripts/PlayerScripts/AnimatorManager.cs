@@ -8,12 +8,14 @@ public class AnimatorManager : MonoBehaviour
     Rigidbody rb;
     ShieldBehaviour shield;
     Vector2 inputVector;
+    Vector3 originalLocation;
     // Start is called before the first frame update
     void Start()
     {
         shield = FindObjectOfType<ShieldBehaviour>();
         rb = FindObjectOfType<PlayerController>().gameObject.GetComponent<Rigidbody>();
         animator = gameObject.GetComponent<Animator>();
+        originalLocation = transform.localPosition;
     }
 
     // Update is called once per frame
@@ -32,5 +34,10 @@ public class AnimatorManager : MonoBehaviour
         animator.SetLayerWeight(3, Mathf.Lerp(animator.GetLayerWeight(3), -inputVector.normalized.y, 0.1f));
         animator.SetLayerWeight(4, Mathf.Lerp(animator.GetLayerWeight(4), inputVector.normalized.y, 0.1f));
         animator.SetBool("IsShielding", shield.shieldActive);
+    }
+
+    private void LateUpdate()
+    {
+        transform.localPosition = originalLocation;
     }
 }
