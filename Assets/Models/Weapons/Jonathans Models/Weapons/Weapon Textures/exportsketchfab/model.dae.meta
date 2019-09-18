@@ -1,0 +1,192 @@
+fileFormatVersion: 2
+guid: e8c6b75fc0fb75f40833efb22f28b170
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Barrel1
+    100002: Barrel2
+    100004: Barrel3
+    100006: Barrel4
+    100008: Barrel5
+    100010: Barrel6
+    100012: Base
+    100014: Blade
+    100016: Body1
+    100018: Hilt
+    100020: HLight1
+    100022: HLight1 1
+    100024: HLight2
+    100026: HLight2 1
+    100028: Holder1
+    100030: Holder2
+    100032: Launcher
+    100034: Light
+    100036: //RootNode
+    400000: Barrel1
+    400002: Barrel2
+    400004: Barrel3
+    400006: Barrel4
+    400008: Barrel5
+    400010: Barrel6
+    400012: Base
+    400014: Blade
+    400016: Body1
+    400018: Hilt
+    400020: HLight1
+    400022: HLight1 1
+    400024: HLight2
+    400026: HLight2 1
+    400028: Holder1
+    400030: Holder2
+    400032: Launcher
+    400034: Light
+    400036: //RootNode
+    2100000: HolderMat1
+    2100002: BarrelMat1
+    2100004: GatBaseMat1
+    2100006: Glow2
+    2100008: LauncherMat1
+    2100010: Lights1
+    2100012: Glow3
+    2100014: SwordMat1
+    2100016: VacuumMat1
+    2300000: Barrel1
+    2300002: Barrel2
+    2300004: Barrel3
+    2300006: Barrel4
+    2300008: Barrel5
+    2300010: Barrel6
+    2300012: Base
+    2300014: Blade
+    2300016: Body1
+    2300018: Hilt
+    2300020: HLight1
+    2300022: HLight1 1
+    2300024: HLight2
+    2300026: HLight2 1
+    2300028: Holder1
+    2300030: Holder2
+    2300032: Launcher
+    2300034: Light
+    3300000: Barrel1
+    3300002: Barrel2
+    3300004: Barrel3
+    3300006: Barrel4
+    3300008: Barrel5
+    3300010: Barrel6
+    3300012: Base
+    3300014: Blade
+    3300016: Body1
+    3300018: Hilt
+    3300020: HLight1
+    3300022: HLight1 1
+    3300024: HLight2
+    3300026: HLight2 1
+    3300028: Holder1
+    3300030: Holder2
+    3300032: Launcher
+    3300034: Light
+    4300000: Holder1
+    4300002: Holder2
+    4300004: Barrel1
+    4300006: Barrel2
+    4300008: Barrel3
+    4300010: Barrel4
+    4300012: Barrel5
+    4300014: Barrel6
+    4300016: Base
+    4300018: Light
+    4300020: Launcher
+    4300022: HLight1
+    4300024: HLight1
+    4300026: HLight2
+    4300028: HLight2
+    4300030: Blade
+    4300032: Hilt
+    4300034: Body1
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
