@@ -37,7 +37,9 @@ public class particleBehaviourLaser : MonoBehaviour
     	//velocity = speed;
 
     	transform.localScale = new Vector3(size, size, size);
-    }
+
+		gameObject.transform.parent = GameObject.FindGameObjectWithTag("MissileParent").transform.GetChild(0);
+	}
 
     IEnumerator WaitAndDestroy(float waitTime) {
     	yield return new WaitForSeconds(waitTime);

@@ -13,7 +13,7 @@ public class WaterBehaviour : MonoBehaviour {
 	private Vector3 position;
 
 	void Start() {
-		resourceAvailable = 2500;
+		resourceAvailable = 5000;
 		maxResourceAvailable = resourceAvailable;
 
 		waterLevel = resourceAvailable / maxResourceAvailable;

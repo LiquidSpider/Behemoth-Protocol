@@ -34,7 +34,7 @@ public class EnemyMissileBehaviour : MonoBehaviour {
 
 		playerObj = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).gameObject;
 
-		StartCoroutine(AutoDestruct());
+		//StartCoroutine(AutoDestruct());
 	}
 
 	private void Update() {

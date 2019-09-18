@@ -27,7 +27,7 @@ public class PlayerHealth : MonoBehaviour {
 
     private UISounds ui;
 
-
+	public GameObject batteryLowMessage;
 
 	private void Start() {
 		maxHP = HP;
@@ -48,20 +48,28 @@ public class PlayerHealth : MonoBehaviour {
 		}
 	}
 
-	private void Update() {
-		if (battery < 0.1f * maxB && !batteryLowIndication) {
-			batteryLowIndication = true;
+	private void Update() { 
+		if (Input.GetKey(KeyCode.X) && battery > 0 && HP < maxHP) {
+			TakeDamage(-0.5f);
+			UseBattery(50 * Time.deltaTime);
+		}
 
-			// Low battery prompt
-			GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallBatteryLow();
-			
+		if (battery < 0.1f * maxB) {
+			batteryLowMessage.SetActive(true);
+
+			if (!batteryLowIndication) {
+				batteryLowIndication = true;
+
+				// Low battery prompt
+				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallBatteryLow();
+			}
 		} 
 
 		// Stop battery from going into negative
 		if (battery < 0) battery = 0;
 
-		if (HP < maxHP && battery > 0) {
-		//if (HP / maxHP < battery / maxB && battery > 0) {
+		//if (HP < maxHP && battery > 0) {
+		if (HP / maxHP < battery / maxB && battery > 0) {
 			if (HP < maxHP * 0.1f) {
 				TakeDamage(-1f);
 				UseBattery(100 * Time.deltaTime);

@@ -17,10 +17,18 @@ public class PlayerDamageableSection : MonoBehaviour {
 			parent.GetComponent<PlayerHealth>().TakeDamage(10, other.gameObject);
 		}
 
-		if (other.gameObject.layer == 17 || other.gameObject.layer == 18) {
+		//if (other.gameObject.layer == 19) {
+		//	Transform parent = transform.root;
+
+		//	parent.GetComponent<PlayerHealth>().TakeDamage(5 * Time.deltaTime);
+		//}
+	}
+
+	private void OnTriggerStay(Collider other) {
+		if (other.gameObject.layer == 19) {
 			Transform parent = transform.root;
 
-			parent.GetComponent<PlayerHealth>().TakeDamage(10);
+			parent.GetComponent<PlayerHealth>().TakeDamage(30 * Time.deltaTime);
 		}
 	}
 

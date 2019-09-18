@@ -24,6 +24,10 @@ public class BulletScript : MonoBehaviour {
 		rb.mass = weight;
 		rb.useGravity = grav;
 		rb.drag = weight * 0.01f;
+
+		if (gameObject.tag == "Bullet - Enemy") {
+			gameObject.transform.parent = GameObject.FindGameObjectWithTag("BombParent").transform;
+		}
 	}
 
 	/// <summary>
