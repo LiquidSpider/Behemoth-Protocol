@@ -190,6 +190,10 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<PlayerController>().enabled = !swapTo;
 		player.transform.GetChild(0).GetComponent<Animator>().enabled = !swapTo;
 
+		foreach (GameObject df in dragonFlies) {
+			df.GetComponent<DragonFly>().enabled = !swapTo;
+		}
+
 		GameObject missiles = GameObject.FindGameObjectWithTag("MissileParent");
 
 		for (int i = 0; i < missiles.transform.childCount; i++) {
