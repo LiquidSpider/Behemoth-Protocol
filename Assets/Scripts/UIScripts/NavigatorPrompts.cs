@@ -92,10 +92,14 @@ public class NavigatorPrompts : MonoBehaviour {
 		promptText.gameObject.transform.parent.gameObject.SetActive(true);
 	}
 
+	private bool boolEnterFinalPhaseShown = false;
 	public void CallEnterFinalPhase() {
 		// Called from giantBehaviour.CheckHealth()
-		promptText.text = "It's almost dead. now attack its core and destroy it for good!";
-		promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		if (!boolEnterFinalPhaseShown) {
+			boolEnterFinalPhaseShown = true;
+			promptText.text = "It's almost dead, now attack its core and destroy it for good!";
+			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+		}
 	}
 
 	private IEnumerator Call30SecondsIntoFinal() {

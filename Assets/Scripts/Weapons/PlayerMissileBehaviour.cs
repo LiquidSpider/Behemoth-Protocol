@@ -138,9 +138,9 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-	private void OnTriggerLeave(Collider collider) {
-		if (collider.gameObject.tag == "Environment") Explode();
-	}
+	//private void OnTriggerLeave(Collider collider) {
+	//	if (collider.gameObject.tag == "Environment") Explode();
+	//}
 
 	private void OnCollisionEnter(Collision other) {
         if (other.transform.root.tag != "Player")
