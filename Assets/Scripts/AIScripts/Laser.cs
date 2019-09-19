@@ -104,14 +104,15 @@ public class Laser : MonoBehaviour
             // If the ray hits something.
             if (hitInfo.collider)
             {
-                Distance = Vector3.Distance(hitInfo.collider.transform.position, this.transform.position) / 10;
+                Vector3 positionInLocal = this.transform.InverseTransformPoint(hitInfo.point);
+                Distance = Vector3.Distance(positionInLocal, this.transform.localPosition) / 2;
             }
             else
             {
-                Distance = MaxRayDistance / 10;
+                Distance = MaxRayDistance;
             }
 
-            this.transform.localScale = new Vector3(this.StartingLocalScale.x, this.StartingLocalScale.y, Distance);
+            this.transform.GetChild(0).localScale = new Vector3(this.transform.GetChild(0).localScale.x, this.transform.GetChild(0).localScale.y, Distance + 100);
 
             if (AnimationStartingTime > WindUpTiming + LaserShootTiming)
             {

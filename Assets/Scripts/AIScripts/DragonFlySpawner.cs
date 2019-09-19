@@ -79,34 +79,39 @@ public class DragonFlySpawner : MonoBehaviour
     void Update()
     {
 
-        // Check the spawn condition
-        SpawnCondition();
-
-        if (spawn)
+        if(!gameManager.gamePaused)
         {
-            // wait the cooldown timer
-            if (cooldownTimer <= Time.time)
+
+            // Check the spawn condition
+            SpawnCondition();
+
+            if (spawn)
             {
-                if (spawnRateTimer <= Time.time)
+                // wait the cooldown timer
+                if (cooldownTimer <= Time.time)
                 {
-                    // spawn the dragon flies on the rate.
-                    SpawnDragonFly();
-                    // set cooldown.
-                    spawnRateTimer = Time.time + spawnRate;
+                    if (spawnRateTimer <= Time.time)
+                    {
+                        // spawn the dragon flies on the rate.
+                        SpawnDragonFly();
+                        // set cooldown.
+                        spawnRateTimer = Time.time + spawnRate;
+                    }
+                }
+
+                // Check to stop spawning
+                if (gameManager.dragonFlies.Count >= numberOfDragonFlys)
+                {
+                    // activate the dragon flies.
+                    foreach (GameObject dragonFly in gameManager.dragonFlies)
+                    {
+                        dragonFly.GetComponent<DragonFly>().flyTowardsTarget = true;
+                        dragonFly.GetComponent<DragonFly>().currentDragonFlyBehaviour = DragonFly.DragonFlyBehaviour.Attacking;
+                    }
+                    spawn = false;
                 }
             }
 
-            // Check to stop spawning
-            if (gameManager.dragonFlies.Count >= numberOfDragonFlys)
-            {
-                // activate the dragon flies.
-                foreach (GameObject dragonFly in gameManager.dragonFlies)
-                {
-                    dragonFly.GetComponent<DragonFly>().flyTowardsTarget = true;
-                    dragonFly.GetComponent<DragonFly>().currentDragonFlyBehaviour = DragonFly.DragonFlyBehaviour.Attacking;
-                }
-                spawn = false;
-            }
         }
     }
 

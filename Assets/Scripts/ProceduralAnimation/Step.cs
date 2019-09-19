@@ -33,6 +33,8 @@ public class Step
     /// </summary>
     public float followDuration;
 
+    public float SetupDurection;
+
     /// <summary>
     /// The speed to follow the follower.
     /// </summary>
@@ -74,7 +76,8 @@ public class Step
     public enum DirectionType
     {
         position,
-        rotation
+        rotation,
+        matchRotation
     }
     /// <summary>
     /// The movement direction of this step.
@@ -152,6 +155,7 @@ public class Step
         this.followType = followType;
         this.followSpeed = followSpeed;
         this.followDuration = followDuration;
+        this.SetupDurection = followDuration;
     }
 
     /// <summary>
@@ -209,6 +213,9 @@ public class Step
                         break;
                     case DirectionType.rotation:
                         FollowRotation();
+                        break;
+                    case DirectionType.matchRotation:
+                        MatchRotation();
                         break;
                 }
                 break;
@@ -385,6 +392,58 @@ public class Step
     /// <summary>
     /// Follow the targeted players rotation.
     /// </summary>
+    private void MatchRotation()
+    {
+        Vector3 euler = follower.transform.eulerAngles;
+        Vector3 currentEuler = joint.CurrentRotation.eulerAngles;
+
+        switch (followType)
+        {
+            case FollowType.xyz:
+                break;
+            case FollowType.zx:
+                euler = new Vector3(euler.x, currentEuler.y, euler.z);
+                break;
+            case FollowType.yz:
+                euler = new Vector3(currentEuler.x, euler.y, euler.z);
+                break;
+            case FollowType.xy:
+                euler = new Vector3(euler.x, euler.y, currentEuler.z);
+                break;
+            case FollowType.x:
+                euler = new Vector3(euler.x, currentEuler.y, currentEuler.z);
+                break;
+            case FollowType.y:
+                euler = new Vector3(currentEuler.x, euler.y, currentEuler.z);
+                break;
+            case FollowType.z:
+                euler = new Vector3(currentEuler.x, currentEuler.y, euler.z);
+                break;
+        }
+
+        Quaternion rotation = Quaternion.Euler(euler);
+
+        // Check the distance between the two objects.
+        if (followDuration >= 0)
+        {
+            //float speed = GetSpeed(followSpeed);
+            // Move object towards position.
+            joint.CurrentRotation = Quaternion.RotateTowards(joint.CurrentRotation, rotation, followSpeed);
+        }
+        else
+        {
+            // Increment the step if distance is close enough.
+            time = 0;
+            followDuration = 0;
+            isComplete = true;
+        }
+
+        followDuration -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Follow the targeted players rotation.
+    /// </summary>
     private void FollowRotation()
     {
         Vector3 euler = Quaternion.LookRotation(follower.transform.position - joint.CurrentPosition).eulerAngles;
@@ -457,6 +516,7 @@ public class Step
         this.isComplete = false;
         this.Counter = 0;
         this.time = 0;
+        this.followDuration = SetupDurection;
     }
 
 }

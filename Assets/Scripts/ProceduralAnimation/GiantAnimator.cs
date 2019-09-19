@@ -30,7 +30,7 @@ public class GiantAnimator : MonoBehaviour
         idle,
         GiantDamPunch,
         GiantClap,
-        GiantSwipeUp,
+        //GiantSwipeUp,
         GiantSwing,
         Laser
     }
@@ -120,28 +120,28 @@ public class GiantAnimator : MonoBehaviour
     #endregion
 
     #region SwipeUpVariables
-    private float SwipeUpAnimSpeed = 50.0f;
+    //private float SwipeUpAnimSpeed = 50.0f;
 
-    public enum Hand
-    {
-        left,
-        right
-    }
-    public Hand hand;
+    //public enum Hand
+    //{
+    //    left,
+    //    right
+    //}
+    //public Hand hand;
 
-    public enum SwipeUpAnimationState
-    {
-        idle,
-        swipe,
-        recover,
-    }
-    [Space(10)]
-    public SwipeUpAnimationState CurrentSwipeUpState;
+    //public enum SwipeUpAnimationState
+    //{
+    //    idle,
+    //    swipe,
+    //    recover,
+    //}
+    //[Space(10)]
+    //public SwipeUpAnimationState CurrentSwipeUpState;
 
-    private List<Step> swipeUpAnimationLPart0;
-    private List<Step> swipeUpAnimationLPart1;
-    private List<Step> swipeUpAnimationRPart0;
-    private List<Step> swipeUpAnimationRPart1;
+    //private List<Step> swipeUpAnimationLPart0;
+    //private List<Step> swipeUpAnimationLPart1;
+    //private List<Step> swipeUpAnimationRPart0;
+    //private List<Step> swipeUpAnimationRPart1;
     #endregion
 
     #region SwingVariables
@@ -182,6 +182,18 @@ public class GiantAnimator : MonoBehaviour
     private List<Step> laserAnimationRPart0;
     private List<Step> laserAnimationRPart1;
     private List<Step> laserAnimationRPart2;
+
+    public GameObject LeftLaserTarget;
+    public GameObject RightLaserTarget;
+    public GameObject[] LFingerTargets;
+    public GameObject[] RFingerTargets;
+
+    public enum Hand
+    {
+        left,
+        right
+    }
+    public Hand hand;
     #endregion
 
     // Start is called before the first frame update
@@ -199,7 +211,7 @@ public class GiantAnimator : MonoBehaviour
         SetupDamPunchAnimation();
         SetupClapAnimation();
         SetupSwingAnimation();
-        SetupSwipeAnimation();
+        //SetupSwipeAnimation();
 
         // Get the giant behaviour
         this.giantBehaviour = this.GetComponent<giantBehaviour>();
@@ -264,28 +276,39 @@ public class GiantAnimator : MonoBehaviour
     {
         laserAnimationLPart0 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(LHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(LeftHand, new List<StepPosition>()
+            {
+                new StepPosition(new Vector3(0, 0.2f, 0.2f), 7.0f * 50.0f)
+            }, Step.DirectionType.position, Step.StepType.addition),
+            new Step(LeftHand, new List<StepPosition>()
+            {
+                new StepPosition(new Vector3(330, 30, 285), 0.1f)
+            }, Step.DirectionType.rotation, Step.StepType.position),
         };
 
         laserAnimationLPart1 = new List<Step>()
         {
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(LHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f),
+            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f),
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
         };
 
         laserAnimationLPart2 = new List<Step>()
         {
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(LeftHand.startingLocalRotation, 0.1f)
+            }, Step.DirectionType.rotation, Step.StepType.position),
+            new Step(LeftHand, new List<StepPosition>()
+            {
+                new StepPosition(LeftHand.startingLocalPosition, 7.0f * 50.0f)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LHPinkyTip, new List<StepPosition>()
             {
@@ -307,28 +330,39 @@ public class GiantAnimator : MonoBehaviour
 
         laserAnimationRPart0 = new List<Step>()
         {
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
-            new Step(RHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(RightHand, new List<StepPosition>()
+            {
+                new StepPosition(new Vector3(0, 0.2f, 0.2f), 7.0f * 50.0f)
+            }, Step.DirectionType.position, Step.StepType.addition),
+            new Step(RightHand, new List<StepPosition>()
+            {
+                new StepPosition(new Vector3(330, 30, 75), 0.1f)
+            }, Step.DirectionType.rotation, Step.StepType.position),
         };
 
         laserAnimationRPart1 = new List<Step>()
         {
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
-            new Step(RHThumbTip, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 0.1f, 6.0f),
+            new Step(RightHand, RightLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f),
+            new Step(RightHand, RightLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f),
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
         };
 
         laserAnimationRPart2 = new List<Step>()
         {
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
+                new StepPosition(RightHand.startingLocalRotation, 0.1f)
+            }, Step.DirectionType.rotation, Step.StepType.position),
+            new Step(RightHand, new List<StepPosition>()
+            {
+                new StepPosition(RightHand.startingLocalPosition, 7.0f * 50.0f)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RHPinkyTip, new List<StepPosition>()
             {
@@ -349,57 +383,57 @@ public class GiantAnimator : MonoBehaviour
         };
     }
 
-    /// <summary>
-    /// Sets up the swipe animation steps.
-    /// </summary>
-    private void SetupSwipeAnimation()
-    {
-        // Setup Left step 1
-        swipeUpAnimationLPart0 = new List<Step>()
-        {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.5f),
-            new Step(LeftElbow, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, 0.2f, -0.4f), 0.4f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition)
-        };
+    ///// <summary>
+    ///// Sets up the swipe animation steps.
+    ///// </summary>
+    //private void SetupSwipeAnimation()
+    //{
+    //    // Setup Left step 1
+    //    swipeUpAnimationLPart0 = new List<Step>()
+    //    {
+    //        new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.5f),
+    //        new Step(LeftElbow, new List<StepPosition>()
+    //        {
+    //            new StepPosition(new Vector3(0.0f, 0.2f, -0.4f), 0.4f * SwipeUpAnimSpeed)
+    //        }, Step.DirectionType.position, Step.StepType.addition)
+    //    };
 
-        // Setup Left step 2
-        swipeUpAnimationLPart1 = new List<Step>()
-        {
-            new Step(LeftHand, new List<StepPosition>()
-            {
-                new StepPosition(LeftHand.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(LeftElbow, new List<StepPosition>()
-            {
-                new StepPosition(LeftElbow.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-        };
+    //    // Setup Left step 2
+    //    swipeUpAnimationLPart1 = new List<Step>()
+    //    {
+    //        new Step(LeftHand, new List<StepPosition>()
+    //        {
+    //            new StepPosition(LeftHand.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
+    //        }, Step.DirectionType.position, Step.StepType.position),
+    //        new Step(LeftElbow, new List<StepPosition>()
+    //        {
+    //            new StepPosition(LeftElbow.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
+    //        }, Step.DirectionType.position, Step.StepType.position),
+    //    };
 
-        // Setup Right step 1
-        swipeUpAnimationRPart0 = new List<Step>()
-        {
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.5f),
-            new Step(RightElbow, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, 0.2f, -0.4f), 0.4f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition)
-        };
+    //    // Setup Right step 1
+    //    swipeUpAnimationRPart0 = new List<Step>()
+    //    {
+    //        new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.5f),
+    //        new Step(RightElbow, new List<StepPosition>()
+    //        {
+    //            new StepPosition(new Vector3(0.0f, 0.2f, -0.4f), 0.4f * SwipeUpAnimSpeed)
+    //        }, Step.DirectionType.position, Step.StepType.addition)
+    //    };
 
-        // Setup Right step 2
-        swipeUpAnimationRPart1 = new List<Step>()
-        {
-            new Step(RightHand, new List<StepPosition>()
-            {
-                new StepPosition(RightHand.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(RightElbow, new List<StepPosition>()
-            {
-                new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position)
-        };
-    }
+    //    // Setup Right step 2
+    //    swipeUpAnimationRPart1 = new List<Step>()
+    //    {
+    //        new Step(RightHand, new List<StepPosition>()
+    //        {
+    //            new StepPosition(RightHand.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
+    //        }, Step.DirectionType.position, Step.StepType.position),
+    //        new Step(RightElbow, new List<StepPosition>()
+    //        {
+    //            new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwipeUpAnimSpeed)
+    //        }, Step.DirectionType.position, Step.StepType.position)
+    //    };
+    //}
 
     /// <summary>
     /// Sets up the swing animation steps.
@@ -599,54 +633,54 @@ public class GiantAnimator : MonoBehaviour
         // setup step 1
         clapAnimationPart0 = new List<Step>()
         {
-            new Step(Waist, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 2.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Spine, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.4f, -0.2f), 2.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.6f, 0.15f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(Waist, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 2.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(Spine, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, -0.4f, -0.2f), 2.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(Chest, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.15f), 7.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
             //new Step(Chest, new List<StepPosition>()
             //{
             //    new StepPosition(new Vector3(30.0f, 0.0f, 0.0f), 1.0f)
             //}, Step.DirectionType.rotation, Step.StepType.addition),
             //new Step(LeftElbow, new List<StepPosition>()
             //{
-            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
+            //    new StepPosition(new Vector3(0.0f, 0.2f, 0.2f), 7.0f * ClapAnimSpeed)
             //}, Step.DirectionType.position, Step.StepType.addition),
-            //new Step(LeftHand, new List<StepPosition>()
-            //{
-            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
-            //}, Step.DirectionType.position, Step.StepType.addition),
+            new Step(LeftHand, new List<StepPosition>()
+            {
+                new StepPosition(new Vector3(0.0f, 0.2f, 0.2f), 7.0f * ClapAnimSpeed)
+            }, Step.DirectionType.position, Step.StepType.addition),
             new Step(LeftHand, new List<StepPosition>()
             {
                 new StepPosition(new Vector3(270.0f, 0.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             //new Step(RightElbow, new List<StepPosition>()
             //{
-            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
+            //    new StepPosition(new Vector3(0.0f, 0.0f, 0.2f), 7.0f * ClapAnimSpeed)
             //}, Step.DirectionType.position, Step.StepType.addition),
-            //new Step(RightHand, new List<StepPosition>()
-            //{
-            //    new StepPosition(new Vector3(0.0f, -0.6f, 0.0f), 7.0f * ClapAnimSpeed)
-            //}, Step.DirectionType.position, Step.StepType.addition),
+            new Step(RightHand, new List<StepPosition>()
+            {
+                new StepPosition(new Vector3(0.0f, 0.2f, 0.2f), 7.0f * ClapAnimSpeed)
+            }, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightHand, new List<StepPosition>()
             {
                 new StepPosition(new Vector3(270.0f, -0.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
-            new Step(LeftKnee, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, 0.0f, 0.2f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(RightKnee, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, 0.0f, 0.2f), 7.0f * ClapAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition)
+            //new Step(LeftKnee, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, 0.0f, 0.2f), 7.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition),
+            //new Step(RightKnee, new List<StepPosition>()
+            //{
+            //    new StepPosition(new Vector3(0.0f, 0.0f, 0.2f), 7.0f * ClapAnimSpeed)
+            //}, Step.DirectionType.position, Step.StepType.addition)
         };
 
         // setup step 2
@@ -845,6 +879,7 @@ public class GiantAnimator : MonoBehaviour
     /// </summary>
     private void Update()
     {
+
     }
 
     /// <summary>
@@ -871,9 +906,9 @@ public class GiantAnimator : MonoBehaviour
                     case Animation.GiantDamPunch:
                         GiantDamPunch();
                         break;
-                    case Animation.GiantSwipeUp:
-                        GiantSwipeUp();
-                        break;
+                    //case Animation.GiantSwipeUp:
+                    //    GiantSwipeUp();
+                    //    break;
                     case Animation.GiantSwing:
                         GiantSwing();
                         break;
@@ -968,61 +1003,61 @@ public class GiantAnimator : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Performs the animation for the swipe attack.
-    /// </summary>
-    private void GiantSwipeUp()
-    {
-        switch (CurrentSwipeUpState)
-        {
-            case SwipeUpAnimationState.idle:
-                CurrentSwipeUpState = SwipeUpAnimationState.swipe;
-                break;
-            case SwipeUpAnimationState.swipe:
-                switch (hand)
-                {
-                    case Hand.left:
-                        if (PerformAnimationStep(swipeUpAnimationLPart0))
-                        {
-                            // Increment the Animation step.    
-                            CurrentSwipeUpState = SwipeUpAnimationState.recover;
-                        }
-                        break;
-                    case Hand.right:
-                        if (PerformAnimationStep(swipeUpAnimationRPart0))
-                        {
-                            // Increment the Animation step.    
-                            CurrentSwipeUpState = SwipeUpAnimationState.recover;
-                        }
-                        break;
-                }
-                break;
-            case SwipeUpAnimationState.recover:
-                // reset
-                switch (hand)
-                {
-                    case Hand.left:
-                        if (PerformAnimationStep(swipeUpAnimationLPart1))
-                        {
-                            // Increment the Animation step.    
-                            CurrentSwipeUpState = SwipeUpAnimationState.idle;
-                            isComplete = true;
-                            DisableKinematics();
-                        }
-                        break;
-                    case Hand.right:
-                        if (PerformAnimationStep(swipeUpAnimationRPart1))
-                        {
-                            // Increment the Animation step.    
-                            CurrentSwipeUpState = SwipeUpAnimationState.idle;
-                            isComplete = true;
-                            DisableKinematics();
-                        }
-                        break;
-                }
-                break;
-        }
-    }
+    ///// <summary>
+    ///// Performs the animation for the swipe attack.
+    ///// </summary>
+    //private void GiantSwipeUp()
+    //{
+    //    switch (CurrentSwipeUpState)
+    //    {
+    //        case SwipeUpAnimationState.idle:
+    //            CurrentSwipeUpState = SwipeUpAnimationState.swipe;
+    //            break;
+    //        case SwipeUpAnimationState.swipe:
+    //            switch (hand)
+    //            {
+    //                case Hand.left:
+    //                    if (PerformAnimationStep(swipeUpAnimationLPart0))
+    //                    {
+    //                        // Increment the Animation step.    
+    //                        CurrentSwipeUpState = SwipeUpAnimationState.recover;
+    //                    }
+    //                    break;
+    //                case Hand.right:
+    //                    if (PerformAnimationStep(swipeUpAnimationRPart0))
+    //                    {
+    //                        // Increment the Animation step.    
+    //                        CurrentSwipeUpState = SwipeUpAnimationState.recover;
+    //                    }
+    //                    break;
+    //            }
+    //            break;
+    //        case SwipeUpAnimationState.recover:
+    //            // reset
+    //            switch (hand)
+    //            {
+    //                case Hand.left:
+    //                    if (PerformAnimationStep(swipeUpAnimationLPart1))
+    //                    {
+    //                        // Increment the Animation step.    
+    //                        CurrentSwipeUpState = SwipeUpAnimationState.idle;
+    //                        isComplete = true;
+    //                        DisableKinematics();
+    //                    }
+    //                    break;
+    //                case Hand.right:
+    //                    if (PerformAnimationStep(swipeUpAnimationRPart1))
+    //                    {
+    //                        // Increment the Animation step.    
+    //                        CurrentSwipeUpState = SwipeUpAnimationState.idle;
+    //                        isComplete = true;
+    //                        DisableKinematics();
+    //                    }
+    //                    break;
+    //            }
+    //            break;
+    //    }
+    //}
 
     /// <summary>
     /// Performs the animation for the swing attack.

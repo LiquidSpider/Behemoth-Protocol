@@ -12,6 +12,8 @@ public class DragonFly : MonoBehaviour
     private Collider[] colliders;
     public Rigidbody body;
 
+    public bool Pause;
+
     // on destory variables
     private bool isQuitting = false;
     public GameObject rubbishPile;
@@ -76,6 +78,7 @@ public class DragonFly : MonoBehaviour
             body = this.GetComponent<Rigidbody>();
         // Setup state
         this.currentDragonFlyBehaviour = DragonFlyBehaviour.idle;
+        Pause = false;
     }
 
     /// <summary>
@@ -89,23 +92,29 @@ public class DragonFly : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // maintain the boid behaviour;
-        if (currentDragonFlyBehaviour != DragonFlyBehaviour.Kamikaze)
-            BoidBehaviour();
 
-        switch (currentDragonFlyBehaviour)
+        if (!Pause)
         {
-            case DragonFlyBehaviour.idle:
-                Idle();
-                break;
-            case DragonFlyBehaviour.Attacking:
-                Attacking();
-                // check if we should kamikaze
-                BoidsLeft();
-                break;
-            case DragonFlyBehaviour.Kamikaze:
-                Kamikaze();
-                break;
+
+            // maintain the boid behaviour;
+            if (currentDragonFlyBehaviour != DragonFlyBehaviour.Kamikaze)
+                BoidBehaviour();
+
+            switch (currentDragonFlyBehaviour)
+            {
+                case DragonFlyBehaviour.idle:
+                    Idle();
+                    break;
+                case DragonFlyBehaviour.Attacking:
+                    Attacking();
+                    // check if we should kamikaze
+                    BoidsLeft();
+                    break;
+                case DragonFlyBehaviour.Kamikaze:
+                    Kamikaze();
+                    break;
+            }
+
         }
     }
 
