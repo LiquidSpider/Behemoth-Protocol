@@ -9,23 +9,32 @@ public class PlayerDamageableSection : MonoBehaviour {
 			Transform parent = transform.root;
 
 			parent.GetComponent<PlayerHealth>().TakeDamage(50, other.gameObject);
+
+			// Nav prompt
+			GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallTakingMissileDamage();
 		}
 
 		if (other.gameObject.tag == "Bullet - Enemy") {
 			Transform parent = transform.root;
 
 			parent.GetComponent<PlayerHealth>().TakeDamage(10, other.gameObject);
+
+			// Nav prompt
+			//GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallTakingMissileDamage();
 		}
 
-		//if (other.gameObject.layer == 19) {
-		//	Transform parent = transform.root;
+		if ((other.gameObject.layer == 17 || other.gameObject.layer == 18) && !other.gameObject.name.Contains("Laser")) {
+			Transform parent = transform.root;
 
-		//	parent.GetComponent<PlayerHealth>().TakeDamage(5 * Time.deltaTime);
-		//}
+			parent.GetComponent<PlayerHealth>().TakeDamage(100);
+
+			// Nav prompt
+			GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallTakingPhysicalDamage();
+		}
 	}
 
 	private void OnTriggerStay(Collider other) {
-		if (other.gameObject.layer == 19) {
+		if (other.gameObject.layer == 17 || other.gameObject.layer == 18) {
 			Transform parent = transform.root;
 
 			parent.GetComponent<PlayerHealth>().TakeDamage(30 * Time.deltaTime);

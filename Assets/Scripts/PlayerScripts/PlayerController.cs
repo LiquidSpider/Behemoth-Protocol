@@ -185,8 +185,8 @@ public class PlayerController : MonoBehaviour {
 		// Movement
 		// Check the inputs for which are being used
 		if (!flightStopped) {
-			if (isCruising) maxVelocity = 2500f;
-			else maxVelocity = 1000f;
+			if (isCruising) maxVelocity = 3500f;
+			else maxVelocity = 1500f;
 
 			float speedFactor = accSpeed;
 			if (isCruising) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50f * Time.deltaTime);

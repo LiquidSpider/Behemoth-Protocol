@@ -177,12 +177,12 @@ public class PlayerHealth : MonoBehaviour {
 		// Check if this object should only take damage once
 		if (explosion) {
 
-			if (!damageTakenIndication) {
-				damageTakenIndication = true;
+			//if (!damageTakenIndication) {
+			//	damageTakenIndication = true;
 
-				// Nav prompt
-				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallTakingMissileDamage();
-			}
+			//	// Nav prompt
+			//	GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallTakingMissileDamage();
+			//}
 
 			if (!TakenDamageFrom.Contains(explosion)) {
 				TakenDamageFrom.Add(explosion);

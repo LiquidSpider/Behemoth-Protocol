@@ -878,8 +878,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.1765511, y: 0.30430973, z: 0.7062934}
-  m_Center: {x: 0.004627622, y: -0.021955684, z: -0.026947223}
+  m_Size: {x: 2.5, y: 0.47, z: 3.25}
+  m_Center: {x: 0.4, y: -0.14, z: -0.026947223}
 --- !u!1 &4832405277999249878
 GameObject:
   m_ObjectHideFlags: 0
@@ -1571,6 +1571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   body: {fileID: 0}
+  Pause: 0
   rubbishPile: {fileID: 4565325564905723622, guid: 23e4b5c66fe421c4b89cddb9c797c52c,
     type: 3}
   shootPostion: {fileID: 8438298012593168861}
@@ -1655,16 +1656,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4832405278485248912}
     m_Modifications:
-    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
-        type: 3}
-      propertyPath: m_Name
-      value: SmokeWithSparks
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8681271298467635365, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1719,6 +1710,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 89.99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
+        type: 3}
+      propertyPath: m_Name
+      value: SmokeWithSparks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f7802438b4811f4cbc04d6b5908c7a6, type: 3}

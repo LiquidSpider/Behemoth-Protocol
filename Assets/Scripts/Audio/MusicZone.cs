@@ -32,10 +32,9 @@ public class MusicZone : MonoBehaviour
             }
 
 			// Navigator Prompt
-			promptText.text = "You need to stop it from reaching the wall! Destroy it's legs to stop it moving.";
-			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+			GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallSeeingBoss();
 		}
     }
 
-	public Text promptText;
+	//public Text promptText;
 }

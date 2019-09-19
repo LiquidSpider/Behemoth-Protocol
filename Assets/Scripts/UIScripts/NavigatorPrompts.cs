@@ -21,18 +21,25 @@ public class NavigatorPrompts : MonoBehaviour {
 	}
 
 	public void CallSeeingBoss() {
-
+		// Called from MusicZone.OnTriggerEnter()
+		promptText.text = "You need to stop it from reaching the wall! Destroy it's legs to stop it moving.";
+		promptText.gameObject.transform.parent.gameObject.SetActive(true);
 	}
 
 	public void CallTakingPhysicalDamage() {
+		// Called from PlayerDamageableSection.OnTriggerEnter()
 
+		promptText.text = "Be careful, your suit won't survive everything. Make sure to avoid its attacks.";
+		promptText.gameObject.transform.parent.gameObject.SetActive(true);
 	}
 
 	public void CallTakingMissileDamage() {
-		// Called from PlayerHealth.TakeDamage(float, GameObject)
-
-		promptText.text = "Be carful, those missiles will destroy your armour. use you shield to reduce the damage.";
+		// - Called from PlayerHealth.TakeDamage(float, GameObject)
 		//promptText.text = "Looks like it has some pretty heavy weapons of it's own, look out for them.";
+
+
+		// Called from PlayerDamageableSection.OnTriggerEnter()
+		promptText.text = "Be careful, those missiles will destroy your armour, use you shield to reduce the damage.";
 		promptText.gameObject.transform.parent.gameObject.SetActive(true);
 	}
 
@@ -63,6 +70,7 @@ public class NavigatorPrompts : MonoBehaviour {
 	private IEnumerator CallFollowUpNoLegWithArm() {
 		yield return new WaitForSeconds(4);
 		promptText.text = "You'll have to destroy those arms first.";
+		promptText.gameObject.transform.parent.gameObject.SetActive(true);
 	}
 
 	public void CallBatteryLow() {
