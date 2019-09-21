@@ -15,8 +15,8 @@ public class NewWeaponController : MonoBehaviour {
 
 	public GameObject soundSrc;                 // The object that makes the sound
 	public AudioClip sFire;                     // Sound played when gun fires
-    public List<AudioClip> launchs = new List<AudioClip>();
-    private MakeSound makesound;
+	public List<AudioClip> launchs = new List<AudioClip>();
+	private MakeSound makesound;
 
 	private float timeBetweenMissiles = 10f;
 	private float timeOfLastMissile;
@@ -55,7 +55,7 @@ public class NewWeaponController : MonoBehaviour {
 
 		wc = gameObject.GetComponent<NewWeaponController>();
 
-        makesound = GetComponent<MakeSound>();
+		makesound = GetComponent<MakeSound>();
 	}
 
 	void Update() {
@@ -95,66 +95,66 @@ public class NewWeaponController : MonoBehaviour {
 		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare5 + timeBetweenFlares - Time.time) / timeBetweenFlares;
 		//	}
 		//}
-		
+
 		//Things should not recharge if the battery is too low
-		if(gameObject.GetComponent<PlayerHealth>().battery > 500) {
+		if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 			// Take energy away from the battery if the missiles have been used (and recharge the missiles)
 			if (Time.time < timeOfLastMissile + timeBetweenMissiles) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 500 / timeBetweenMissiles ) * Time.deltaTime);
 				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(8).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 			}
 			if (Time.time < timeOfLastMissile2 + timeBetweenMissiles) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile2 + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 500 / timeBetweenMissiles ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile2 + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(9).GetComponent<Image>().fillAmount = 1 - ( timeOfLastMissile2 + timeBetweenMissiles - Time.time ) / timeBetweenMissiles;
 			}
 
 			// Same as above (Missiles) But for Flares
 			if (Time.time < timeOfLastFlare + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(2).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(2).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare2 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(3).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare2 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(3).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare2 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare3 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(4).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare3 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(4).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare3 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare4 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(5).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare4 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(5).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare4 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 			if (Time.time < timeOfLastFlare5 + timeBetweenFlares) {
-				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare5 + timeBetweenFlares - Time.time) / timeBetweenFlares;
+				gameObject.GetComponent<PlayerHealth>().UseBattery(( 200 / timeBetweenFlares ) * Time.deltaTime);
+				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - ( timeOfLastFlare5 + timeBetweenFlares - Time.time ) / timeBetweenFlares;
 			}
 		}
 
-        // If The shoot button is pressed.
-        if (Input.GetButtonDown("Attack"))
-        {
-            // if we're not cruising
-            if (!this.transform.GetComponentInChildren<PlayerController>().isCruising)
-            {
-                // If the current weapon is the vacumm
-                //if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3)
-                if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3)
-                {
-                    gameObject.GetComponent<PlayerHealth>().isVacuuming = true;
-                }
-            }
-        }
 
-        // When the shoot button is released.
-        if (Input.GetButtonUp("Attack"))
-        {
-            gameObject.GetComponent<PlayerHealth>().isVacuuming = false;
-        }
+		// Vacuum
+		// If The shoot button is pressed.
+		if (Input.GetButtonDown("Attack")) {
+			// if we're not cruising
+			if (!this.transform.GetComponentInChildren<PlayerController>().isCruising) {
+				// If the current weapon is the vacumm
+				//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3)
+				if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3) {
+					gameObject.GetComponent<PlayerHealth>().isVacuuming = true;
 
-        if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
+					//GameObject.FindGameObjectWithTag("Water").GetComponent<WaterBehaviour>();
+				}
+			}
+		}
+
+		// When the shoot button is released.
+		if (Input.GetButtonUp("Attack")) {
+			gameObject.GetComponent<PlayerHealth>().isVacuuming = false;
+		}
+
+		if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
 			//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 			if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
@@ -175,15 +175,15 @@ public class NewWeaponController : MonoBehaviour {
 					}
 				}
 			} else if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
-			//} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
+				//} else if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().previousWeaponNumber == 2) {
 				missileSpawnLocation = null;
 			}
 
-            // Launch Flares when player presses Q, each one keeps track of whether its been fired
-            if (Input.GetKeyDown(KeyCode.Q)) {
+			// Launch Flares when player presses Q, each one keeps track of whether its been fired
+			if (Input.GetKeyDown(KeyCode.Q)) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 					if (Time.time > timeOfLastFlare + timeBetweenFlares) {
-						
+
 						timeOfLastFlare = Time.time;
 						LaunchFlare();
 					} else if (Time.time > timeOfLastFlare2 + timeBetweenFlares) {
@@ -260,9 +260,9 @@ public class NewWeaponController : MonoBehaviour {
 	}
 
 	private void LaunchFlare() {
-        var audio = GetComponent<AudioSource>();
-        audio.PlayOneShot(launchs[Random.Range(0, launchs.Count)]);
-        for (int i = 1; i <= 2; i++) {
+		var audio = GetComponent<AudioSource>();
+		audio.PlayOneShot(launchs[Random.Range(0, launchs.Count)]);
+		for (int i = 1; i <= 2; i++) {
 			GameObject newFlare = Instantiate(flare);
 
 			Vector3 spawnLocation = transform.GetChild(0).position;
@@ -271,7 +271,7 @@ public class NewWeaponController : MonoBehaviour {
 			newFlare.transform.position = spawnLocation;
 
 			newFlare.transform.GetChild(0).GetComponent<FlareBehaviour>().Initialise(transform.GetChild(0).right * Mathf.Pow(-1, i));
-            
+
 		}
 	}
 
