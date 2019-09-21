@@ -2184,10 +2184,10 @@ MonoBehaviour:
   clipPlaneOffset: 0.07
   reflectLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 573239
   refractLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!1001 &128325265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15689,10 +15689,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400014, guid: 456c4d1401a9a2445ab7fe9e58264ed0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.001
-      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 456c4d1401a9a2445ab7fe9e58264ed0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -15725,6 +15721,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3799f65fc96474e4992a3b8dee704bb5, type: 2}
+    - target: {fileID: 400014, guid: 456c4d1401a9a2445ab7fe9e58264ed0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 456c4d1401a9a2445ab7fe9e58264ed0, type: 3}
 --- !u!4 &1102527527 stripped
