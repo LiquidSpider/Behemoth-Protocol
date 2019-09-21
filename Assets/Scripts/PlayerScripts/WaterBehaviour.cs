@@ -52,10 +52,15 @@ public class WaterBehaviour : MonoBehaviour {
 				if (numberOfParticles > 30) numberOfParticles = 30;
 				if (numberOfParticles < 1) numberOfParticles = 1;
 
-				for (int i = 0; i < numberOfParticles; i++) {
-					GameObject newParticle = Instantiate(particle);
-					particle.transform.position = ClosestPlayerPosition() + Variation();
-				}
+				timeBetweenParticles = 1.0f / numberOfParticles;
+
+				GameObject newParticle = Instantiate(particle);
+				particle.transform.position = ClosestPlayerPosition() + Variation();
+
+				//for (int i = 0; i < numberOfParticles; i++) {
+				//	GameObject newParticle = Instantiate(particle);
+				//	particle.transform.position = ClosestPlayerPosition() + Variation();
+				//}
 				timeOfLastParticle = Time.time;
 			}
 		}
