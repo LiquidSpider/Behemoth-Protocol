@@ -49,10 +49,10 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	private void Update() { 
-		if (Input.GetKey(KeyCode.X) && battery > 0 && HP < maxHP) {
-			TakeDamage(-0.5f);
-			UseBattery(50 * Time.deltaTime);
-		}
+		//if (Input.GetKey(KeyCode.X) && battery > 0 && HP < maxHP) {
+		//	TakeDamage(-0.5f);
+		//	UseBattery(50 * Time.deltaTime);
+		//}
 
 		if (battery < 0.1f * maxB) {
 			batteryLowMessage.SetActive(true);

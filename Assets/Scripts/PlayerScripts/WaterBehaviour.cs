@@ -39,11 +39,13 @@ public class WaterBehaviour : MonoBehaviour {
 	}
 
 	public bool TakeWater(float waterUsed) {
-		if (resourceAvailable > waterUsed) {
-			resourceAvailable -= waterUsed;
-			return true;
-		} else {
-			return false;
-		}
+		//if (resourceAvailable > waterUsed) {
+		//	resourceAvailable -= waterUsed;
+		//	return true;
+		//} else {
+		//	return false;
+		//}
+
+		return false;
 	}
 }

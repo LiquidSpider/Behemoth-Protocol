@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour {
 	private float flightSpeedScaleFactor = 6f;
 
 	private float maxVelocity = 1000f;
-	private bool flightStopped = false;
+	public bool flightStopped = false;
 
 
 	public GameObject hudFrame;
@@ -238,7 +238,7 @@ public class PlayerController : MonoBehaviour {
 		// Weapon Select
 		if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);
 		if (Input.GetButtonDown("Weapon2")) SwapWeapon(1);
-		if (Input.GetButtonDown("Weapon3")) SwapWeapon(2);
+		//if (Input.GetButtonDown("Weapon3")) SwapWeapon(2);
 	}
 
 

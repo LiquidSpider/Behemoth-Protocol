@@ -439,10 +439,10 @@ public class DragonFly : MonoBehaviour
 
     public void ToDie() {
 		// create a rubbish pile.
-		GameObject rp = Instantiate(rubbishPile);
-		rp.transform.parent = gameObject.transform;
-		rp.transform.localPosition = Vector3.zero;
-		rp.transform.parent = null;
+		//GameObject rp = Instantiate(rubbishPile);
+		//rp.transform.parent = gameObject.transform;
+		//rp.transform.localPosition = Vector3.zero;
+		//rp.transform.parent = null;
 
 
 		//Instantiate(rubbishPile, this.transform.localPosition, this.transform.localRotation);

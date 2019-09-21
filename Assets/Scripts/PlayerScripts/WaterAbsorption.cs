@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WaterAbsorption : MonoBehaviour {
-	public GameObject water;
+	//public GameObject water;
 
-	private void OnTriggerStay(Collider collider) {
-		// Vacuum
-		if (!GameObject.FindGameObjectWithTag("Player").transform.GetComponent<PlayerController>().isCruising) {
-			if (collider.gameObject.tag == "Water") {
-				//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
-				if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3) {
-					if (Input.GetButton("Attack")) {
-						if (transform.root.GetComponent<PlayerHealth>().battery < transform.root.GetComponent<PlayerHealth>().maxB * 0.95f) {
-							if (water.GetComponent<WaterBehaviour>().TakeWater(50 * Time.deltaTime)) {
-								transform.root.GetComponent<PlayerHealth>().AddBattery(250 * Time.deltaTime);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	//private void OnTriggerStay(Collider collider) {
+	//	// Vacuum
+	//	if (!GameObject.FindGameObjectWithTag("Player").transform.GetComponent<PlayerController>().isCruising) {
+	//		if (collider.gameObject.tag == "Water") {
+	//			//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3) {
+	//			if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3) {
+	//				if (Input.GetButton("Attack")) {
+	//					if (transform.root.GetComponent<PlayerHealth>().battery < transform.root.GetComponent<PlayerHealth>().maxB * 0.95f) {
+	//						if (water.GetComponent<WaterBehaviour>().TakeWater(50 * Time.deltaTime)) {
+	//							transform.root.GetComponent<PlayerHealth>().AddBattery(250 * Time.deltaTime);
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 }
