@@ -49,7 +49,7 @@ public class WaterBehaviour : MonoBehaviour {
 			if (timeOfLastParticle + timeBetweenParticles < Time.time) {
 				int numberOfParticles = (int) (2500f / Vector3.Distance(player.transform.position, ClosestPlayerPosition()));
 
-				if (numberOfParticles > 30) numberOfParticles = 30;
+				if (numberOfParticles > 50) numberOfParticles = 50;
 				if (numberOfParticles < 1) numberOfParticles = 1;
 
 				timeBetweenParticles = 1.0f / numberOfParticles;
@@ -67,7 +67,29 @@ public class WaterBehaviour : MonoBehaviour {
 	}
 
 	private Vector3 ClosestPlayerPosition() {
-		return gameObject.transform.position;
+        float dist = Mathf.Infinity;
+        float calcDist;
+        GameObject closest = player;
+        Transform closestTemp;
+
+        for (int i = 0; i < transform.GetChild(1).childCount; i++) {
+            closestTemp = transform.GetChild(1).GetChild(i);
+            calcDist = Vector3.Distance(closestTemp.position, player.transform.position);
+
+            if (calcDist < dist) {
+                dist = calcDist;
+                closest = closestTemp.gameObject;
+            } else if (calcDist > dist) {
+                Vector3 middle = Vector3.zero;
+
+                middle += closest.transform.position * (calcDist / (dist + calcDist));
+                middle += closestTemp.position * (dist / (dist + calcDist));
+
+                return closest.transform.position;
+            }
+        }
+
+		return closest.transform.position;
 	}
 
 	private Vector3 Variation() {
