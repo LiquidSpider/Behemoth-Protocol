@@ -878,7 +878,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 0.47, z: 3.25}
+  m_Size: {x: 2.5, y: 1.5, z: 3.25}
   m_Center: {x: 0.4, y: -0.14, z: -0.026947223}
 --- !u!1 &4832405277999249878
 GameObject:
@@ -1576,18 +1576,18 @@ MonoBehaviour:
     type: 3}
   shootPostion: {fileID: 8438298012593168861}
   bullet: {fileID: 8170432168313451531, guid: 763bca23454904d4a93fac67e2cd3bc9, type: 3}
-  shootTime: 0.5
+  shootTime: 0.25
   currentDragonFlyBehaviour: 0
-  defaultSpeed: 800
+  defaultSpeed: 2500
   defaultRotationSpeed: 4
   targetRadius: 50
-  maxVelocity: 2000
+  maxVelocity: 20000
   cohesionForce: 50
   cohesionDistance: 10000
   seperationDistance: 30
   seperationForce: 250
   alignmentStrength: 0
-  applyCohesion: 1
+  applyCohesion: 0
   applySeperation: 1
   applyAlignment: 0
   flyTowardsTarget: 1
@@ -1656,6 +1656,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4832405278485248912}
     m_Modifications:
+    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
+        type: 3}
+      propertyPath: m_Name
+      value: SmokeWithSparks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8681271298467635365, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1710,16 +1720,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 89.99999
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
-        type: 3}
-      propertyPath: m_Name
-      value: SmokeWithSparks
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795090318322263122, guid: 8f7802438b4811f4cbc04d6b5908c7a6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f7802438b4811f4cbc04d6b5908c7a6, type: 3}

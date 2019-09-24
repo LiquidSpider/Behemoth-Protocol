@@ -99,20 +99,20 @@ public class NewWeaponController : MonoBehaviour {
 		}
 
 		// Vacuum
-		if (Input.GetKeyDown(KeyCode.X)) {
+		if (Input.GetButton("Regen")) {
 			gameObject.GetComponent<PlayerController>().flightStopped = true;
 			isVacuuming = true;
 		}
 
-		if (Input.GetKey(KeyCode.X)) {
+		if (Input.GetButton("Regen")) {
 				PlayerHealth pb = gameObject.GetComponent<PlayerHealth>();
 
 				if (pb.battery < pb.maxB) {
-					pb.AddBattery(( 10000f / 10f ) * Time.deltaTime);
+					pb.AddBattery(500  * Time.deltaTime);
 				}
 		}
 
-		if (Input.GetKeyUp(KeyCode.X)) {
+		if (Input.GetButton("Regen")) {
 			gameObject.GetComponent<PlayerController>().flightStopped = false;
 			isVacuuming = false;
 		}

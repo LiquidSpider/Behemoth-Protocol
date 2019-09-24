@@ -65,7 +65,7 @@ public class GunTemplate : MonoBehaviour {
     }
     // Update is called once per frame
     void Update() {
-        AimWeapon();
+        //AimWeapon();
         // Depending on who is controlling the weapon stops the gun from shooting on the attack button
         switch (controller)
         {

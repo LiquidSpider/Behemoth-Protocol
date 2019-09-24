@@ -90,7 +90,7 @@ public class PlayerHealth : MonoBehaviour {
 		}
 
 		if (isScanning) {
-			if (battery < 500) isScanning = false;
+			if (battery < 60) isScanning = false;
 			else UseBattery(60 * Time.deltaTime);
 		}
 
@@ -161,12 +161,13 @@ public class PlayerHealth : MonoBehaviour {
 	public void TakeDamage(float damage) {
 
 		if (gameObject.transform.root.GetComponent<ShieldBehaviour>().shieldActive == true) {
-			HP -= damage * 0.5f;
-			UseBattery(damage * 0.5f);
+			HP -= damage * 0.25f;
+			UseBattery(damage * 0.75f);
             ui.ShieldHit();
 		} else {
 			HP -= damage;
-		}
+            GetComponentInChildren<AnimatorManager>().Flinch();
+        }
 
 
 		//GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
@@ -193,6 +194,7 @@ public class PlayerHealth : MonoBehaviour {
                     ui.ShieldHit();
                 } else {
 					HP -= damage;
+                    GetComponentInChildren<AnimatorManager>().Flinch();
 				}
 
 				if (HP < 0) HP = 0;
@@ -207,7 +209,8 @@ public class PlayerHealth : MonoBehaviour {
                 ui.ShieldHit();
             } else {
 				HP -= damage;
-			}
+                GetComponentInChildren<AnimatorManager>().Flinch();
+            }
 
 			if (HP < 0) HP = 0;
 

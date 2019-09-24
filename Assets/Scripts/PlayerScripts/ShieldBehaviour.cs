@@ -6,6 +6,7 @@ public class ShieldBehaviour : MonoBehaviour {
 
 	public GameObject shield;
 	public bool shieldActive;
+    public float drainAmount = 50;
 
     private UISounds ui;
 
@@ -20,7 +21,7 @@ public class ShieldBehaviour : MonoBehaviour {
 
         if (!FindObjectOfType<GameManager>().gameOver)
         {
-            if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 500 && !gameObject.transform.root.GetComponent<PlayerController>().isCruising)
+            if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > drainAmount && !gameObject.transform.root.GetComponent<PlayerController>().isCruising)
             {
                 if (Input.GetKey(KeyCode.Z) && shieldActive == false)
                 {
@@ -43,7 +44,7 @@ public class ShieldBehaviour : MonoBehaviour {
             }
 
 
-            if (shieldActive) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50f * Time.deltaTime);
+            if (shieldActive) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(drainAmount * Time.deltaTime);
         }
 	}
 }
