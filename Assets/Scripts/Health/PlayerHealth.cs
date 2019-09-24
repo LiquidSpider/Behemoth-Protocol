@@ -49,7 +49,7 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	private void Update() { 
-		if (Input.GetKey(KeyCode.X) && battery > 0 && HP < maxHP) {
+		if (Input.GetButton("Regen") && battery > 0 && HP < maxHP) {
 			TakeDamage(-0.5f);
 			UseBattery(50 * Time.deltaTime);
 		}

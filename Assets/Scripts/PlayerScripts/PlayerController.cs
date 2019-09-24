@@ -254,14 +254,21 @@ public class PlayerController : MonoBehaviour {
 	//}
 
 	void AimWeapon() {
-        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         var layerMask = ((1 << 15 | 1 << 14 | 1 << 16 | 1 << 17 | 1 << 18));
-        if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask)) {
-			arm.transform.LookAt(aimPoint.point);
-		} else {
-			arm.transform.localEulerAngles = new Vector3(0, 0, 0);
-		}
-	}
+        if (Physics.Raycast(ray, out RaycastHit aim, Mathf.Infinity, layerMask))
+        {
+            Vector3 dir = aim.point - arm.transform.position;
+            Quaternion lookDir = Quaternion.LookRotation(dir, Vector3.up);
+            arm.transform.rotation = Quaternion.Lerp(arm.transform.rotation, lookDir, 10 * Time.deltaTime);
+        }
+        else
+        {
+            Vector3 dir = ray.GetPoint(2000) - arm.transform.position;
+            Quaternion lookDir = Quaternion.LookRotation(dir, Vector3.up);
+            arm.transform.rotation = Quaternion.Lerp(arm.transform.rotation, lookDir, 10 * Time.deltaTime);
+        }
+    }
 
 	void SwapWeapon(int wIndex) {
 		if (wIndex < weapons.Count) {
