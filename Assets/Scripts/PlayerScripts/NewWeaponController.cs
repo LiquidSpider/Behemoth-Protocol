@@ -39,7 +39,7 @@ public class NewWeaponController : MonoBehaviour {
 	//	private float timeForUnlock = 2f;
 	//	private GameObject missileTarget;
 
-
+	private bool isVacuuming = false;
 
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
@@ -60,41 +60,6 @@ public class NewWeaponController : MonoBehaviour {
 
 	void Update() {
 		playerSpeed = transform.GetComponent<Rigidbody>().velocity * Time.deltaTime;
-
-		////Things should not recharge if the battery is too low
-		//if(gameObject.GetComponent<PlayerHealth>().battery > 500) {
-		//	// Take energy away from the battery if the missiles have been used (and recharge the missiles)
-		//	if (Time.time < timeOfLastMissile + timeBetweenMissiles) {
-		//		gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
-		//	}
-		//	if (Time.time < timeOfLastMissile2 + timeBetweenMissiles) {
-		//		gameObject.GetComponent<PlayerHealth>().UseBattery((500 / timeBetweenMissiles) * Time.deltaTime);
-		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(1).GetComponent<Image>().fillAmount = 1 - (timeOfLastMissile2 + timeBetweenMissiles - Time.time) / timeBetweenMissiles;
-		//	}
-
-		//	// Same as above (Missiles) But for Flares
-		//	if (Time.time < timeOfLastFlare + timeBetweenFlares) {
-		//		gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(2).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare + timeBetweenFlares - Time.time) / timeBetweenFlares;
-		//	}
-		//	if (Time.time < timeOfLastFlare2 + timeBetweenFlares) {
-		//		gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(3).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare2 + timeBetweenFlares - Time.time) / timeBetweenFlares;
-		//	}
-		//	if (Time.time < timeOfLastFlare3 + timeBetweenFlares) {
-		//		gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(4).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare3 + timeBetweenFlares - Time.time) / timeBetweenFlares;
-		//	}
-		//	if (Time.time < timeOfLastFlare4 + timeBetweenFlares) {
-		//		gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(5).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare4 + timeBetweenFlares - Time.time) / timeBetweenFlares;
-		//	}
-		//	if (Time.time < timeOfLastFlare5 + timeBetweenFlares) {
-		//		gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
-		//		GameObject.FindGameObjectWithTag("LeftSelect").transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare5 + timeBetweenFlares - Time.time) / timeBetweenFlares;
-		//	}
-		//}
 		
 		//Things should not recharge if the battery is too low
 		if(gameObject.GetComponent<PlayerHealth>().battery > 500) {
@@ -133,28 +98,49 @@ public class NewWeaponController : MonoBehaviour {
 			}
 		}
 
-        // If The shoot button is pressed.
-        if (Input.GetButtonDown("Attack"))
-        {
-            // if we're not cruising
-            if (!this.transform.GetComponentInChildren<PlayerController>().isCruising)
-            {
-                // If the current weapon is the vacumm
-                //if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3)
-                if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3)
-                {
-                    gameObject.GetComponent<PlayerHealth>().isVacuuming = true;
-                }
-            }
-        }
+		// Vacuum
+		if (Input.GetButton("Regen")) {
+			gameObject.GetComponent<PlayerController>().flightStopped = true;
+			isVacuuming = true;
+		}
 
-        // When the shoot button is released.
-        if (Input.GetButtonUp("Attack"))
-        {
-            gameObject.GetComponent<PlayerHealth>().isVacuuming = false;
-        }
+		if (Input.GetButton("Regen")) {
+				PlayerHealth pb = gameObject.GetComponent<PlayerHealth>();
 
-        if (!transform.GetComponentInChildren<PlayerController>().isCruising) {
+				if (pb.battery < pb.maxB) {
+					pb.AddBattery(500  * Time.deltaTime);
+				}
+		}
+
+		if (Input.GetButton("Regen")) {
+			gameObject.GetComponent<PlayerController>().flightStopped = false;
+			isVacuuming = false;
+		}
+
+
+
+        //// If The shoot button is pressed.
+        //if (Input.GetButtonDown("Attack"))
+        //{
+        //    // if we're not cruising
+        //    if (!this.transform.GetComponentInChildren<PlayerController>().isCruising)
+        //    {
+        //        // If the current weapon is the vacumm
+        //        //if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3)
+        //        if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3)
+        //        {
+        //            gameObject.GetComponent<PlayerHealth>().isVacuuming = true;
+        //        }
+        //    }
+        //}
+
+        //// When the shoot button is released.
+        //if (Input.GetButtonUp("Attack"))
+        //{
+        //    gameObject.GetComponent<PlayerHealth>().isVacuuming = false;
+        //}
+
+        if (!transform.GetComponentInChildren<PlayerController>().isCruising && !isVacuuming) {
 			//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 			if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
@@ -225,12 +211,12 @@ public class NewWeaponController : MonoBehaviour {
 		//	}
 		//}
 
-		if (swordInUse && timeSwordAttackStart + 1 < Time.time) {
+		if (swordInUse && timeSwordAttackStart + 1 < Time.time && !isVacuuming) {
 			gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", false);
 			swordInUse = false;
 		}
 
-		if (!gameObject.GetComponent<PlayerController>().isCruising) {
+		if (!gameObject.GetComponent<PlayerController>().isCruising && !isVacuuming) {
 			if (Input.GetKeyDown(KeyCode.F)) {
 				swordInUse = true;
 

@@ -40,4 +40,9 @@ public class AnimatorManager : MonoBehaviour
     {
         transform.localPosition = originalLocation;
     }
+
+    public void Flinch()
+    {
+        animator.SetTrigger("Flinch");
+    }
 }

@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour {
 
 	//  Weapon vars
 	public GameObject arm;                                              // Object that holds the gun
+    public GameObject barrel;
 	public List<GameObject> weapons = new List<GameObject>();           // Current inventory
 	public int cWweap = 0;                                              // Current weapon selected
 
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour {
 	private float flightSpeedScaleFactor = 6f;
 
 	private float maxVelocity = 1000f;
-	private bool flightStopped = false;
+	public bool flightStopped = false;
 
 
 	public GameObject hudFrame;
@@ -95,9 +96,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		PlayerControls();
+		//PlayerControls();
 		AvoidObstruction();
-	}
+        AimWeapon();
+    }
 
 	void Update() {
 		CameraMove();
@@ -105,7 +107,7 @@ public class PlayerController : MonoBehaviour {
 
     private void LateUpdate()
     {
-        AimWeapon();
+        PlayerControls();
     }
 
     void CameraMove() { // Camera controls and manipulation goes here
@@ -238,7 +240,7 @@ public class PlayerController : MonoBehaviour {
 		// Weapon Select
 		if (Input.GetButtonDown("Weapon1")) SwapWeapon(0);
 		if (Input.GetButtonDown("Weapon2")) SwapWeapon(1);
-		if (Input.GetButtonDown("Weapon3")) SwapWeapon(2);
+		//if (Input.GetButtonDown("Weapon3")) SwapWeapon(2);
 	}
 
 
@@ -254,13 +256,18 @@ public class PlayerController : MonoBehaviour {
 	//}
 
 	void AimWeapon() {
-        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+        //Ray ray = new Ray(camera.transform.root.transform.position, camera.transform.root.transform.forward);
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         var layerMask = ((1 << 15 | 1 << 14 | 1 << 16 | 1 << 17 | 1 << 18));
-        if (Physics.Raycast(ray, out RaycastHit aimPoint, Mathf.Infinity, layerMask)) {
-			arm.transform.LookAt(aimPoint.point);
+        if (Physics.Raycast(ray, out RaycastHit aim, Mathf.Infinity, layerMask)) {
+            Vector3 dir = aim.point - arm.transform.position;
+            Quaternion lookDir = Quaternion.LookRotation(dir, Vector3.up);
+            arm.transform.rotation = Quaternion.Lerp(arm.transform.rotation, lookDir, 10 * Time.deltaTime);
 		} else {
-			arm.transform.localEulerAngles = new Vector3(0, 0, 0);
-		}
+            Vector3 dir = ray.GetPoint(2000) - arm.transform.position;
+            Quaternion lookDir = Quaternion.LookRotation(dir, Vector3.up);
+            arm.transform.rotation = Quaternion.Lerp(arm.transform.rotation, lookDir, 10 * Time.deltaTime);
+        }
 	}
 
 	void SwapWeapon(int wIndex) {
