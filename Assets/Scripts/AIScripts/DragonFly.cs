@@ -12,8 +12,6 @@ public class DragonFly : MonoBehaviour
     private Collider[] colliders;
     public Rigidbody body;
 
-    public bool Pause;
-
     // on destory variables
     private bool isQuitting = false;
     public GameObject rubbishPile;
@@ -78,7 +76,6 @@ public class DragonFly : MonoBehaviour
             body = this.GetComponent<Rigidbody>();
         // Setup state
         this.currentDragonFlyBehaviour = DragonFlyBehaviour.idle;
-        Pause = false;
     }
 
     /// <summary>
@@ -93,7 +90,7 @@ public class DragonFly : MonoBehaviour
     void Update()
     {
 
-        if (!Pause)
+        if (!gameManager.gamePaused)
         {
 
             // maintain the boid behaviour;

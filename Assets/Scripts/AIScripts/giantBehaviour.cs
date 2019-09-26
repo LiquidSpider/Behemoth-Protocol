@@ -323,6 +323,57 @@ public class giantBehaviour : MonoBehaviour
             CheckHealth();
 
             RunAIState();
+
+            DevKey();
+        }
+    }
+
+    /// <summary>
+    /// Performs the dev key scenarios
+    /// </summary>
+    private void DevKey()
+    {
+        if(Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.K))
+        {
+            if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                // Destory the left hand
+                LeftArmHealth.TakeDamage(999999);
+            }
+
+            if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                // Destory the right hand
+                RightArmHealth.TakeDamage(999999);
+            }
+
+            if(Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                // Destory the legs
+                LegsHealth.TakeDamage(99999999);
+            }
+
+            if(Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                if(this.currentEnemyState == EnemyState.moving)
+                {
+                    if(this.armState == EnemyArmStates.both)
+                    {
+                        animator.currentAnimation = GiantAnimator.Animation.GiantClap;
+                                
+                        canMove = false;
+                        EnableKinematics(true, Kinematics.Chest);
+                        EnableKinematics(true, Kinematics.rightArm);
+                        EnableKinematics(true, Kinematics.leftArm);
+                        EnableKinematics(true, Kinematics.rightHand);
+                        EnableKinematics(true, Kinematics.leftHand);
+                        EnableKinematics(true, Kinematics.leftLeg);
+                        EnableKinematics(true, Kinematics.rightLeg);
+                        
+                        currentEnemyState = EnemyState.attacking;
+                    }
+                }
+            }
         }
     }
 
@@ -601,7 +652,7 @@ public class giantBehaviour : MonoBehaviour
                             // Update the state
                             currentEnemyState = EnemyState.attacking;
                         }
-                        else
+                        else if (armState != EnemyArmStates.none)
                         {
                             if (Random.Range(0, 2) == 0)
                             {
@@ -773,9 +824,21 @@ public class giantBehaviour : MonoBehaviour
                         break;
                     case PlayerPosition.farinfront:
                         animator.currentAnimation = GiantAnimator.Animation.Laser;
-                        EnableKinematics(true, Kinematics.Chest);
-                        EnableKinematics(true, Kinematics.leftArm);
-                        EnableKinematics(true, Kinematics.leftHand);
+                        if (armState == EnemyArmStates.left)
+                        {
+                            animator.hand = GiantAnimator.Hand.left;
+                            EnableKinematics(true, Kinematics.Chest);
+                            EnableKinematics(true, Kinematics.leftArm);
+                            EnableKinematics(true, Kinematics.leftHand);
+                        }
+                        else
+                        {
+                            animator.hand = GiantAnimator.Hand.right;
+                            EnableKinematics(true, Kinematics.Chest);
+                            EnableKinematics(true, Kinematics.rightArm);
+                            EnableKinematics(true, Kinematics.rightHand);
+                        }
+
                         // Update the state;
                         currentEnemyState = EnemyState.attacking;
                         break;

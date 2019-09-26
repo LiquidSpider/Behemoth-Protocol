@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
-
+using System.Data;
 public class GiantAnimator : MonoBehaviour
 {
-
     //public GameObject[] Kinematics;
     public GameObject[] LeftHandKinematics;
     public GameObject[] LeftArmKinematics;
@@ -117,6 +116,7 @@ public class GiantAnimator : MonoBehaviour
 
     public GameObject LeftHandClapTarget;
     public GameObject RightHandClapTarget;
+    public GameObject clapTarget;
     #endregion
 
     #region SwipeUpVariables
@@ -290,14 +290,14 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, LeftLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f),
             new Step(LeftHand, LeftLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
         };
 
         laserAnimationLPart2 = new List<Step>()
@@ -344,14 +344,14 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(RightHand, RightLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f),
             new Step(RightHand, RightLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.1f, 6.0f),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.15f, 6.0f),
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
         };
 
         laserAnimationRPart2 = new List<Step>()
@@ -694,8 +694,8 @@ public class GiantAnimator : MonoBehaviour
         // setup step 3
         clapAnimationPart2 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.25f),
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f,  0.25f),
+            new Step(LeftHand, clapTarget, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.25f),
+            new Step(RightHand, clapTarget, Step.DirectionType.position, Step.FollowType.xyz, 10.0f,  0.25f),
             new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 0.25f)
         };
 
