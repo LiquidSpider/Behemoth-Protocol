@@ -11,51 +11,58 @@ public class RobotScanning : MonoBehaviour {
 
 	private int materialMode = 0;
 
+	private BaseHealth bh;
+	private bool shouldShow = true;
+
 	void Start() {
 		player = GameObject.FindGameObjectWithTag("Player");
 
 		gameObject.GetComponent<MeshRenderer>().enabled = false;
 		gameObject.GetComponent<MeshRenderer>().material = new Material(gameObject.GetComponent<MeshRenderer>().material);
 
-		Material tempMat = gameObject.GetComponent<MeshRenderer>().material;
-		tempMat.SetFloat("Far fade", 1000);
-		gameObject.GetComponent<MeshRenderer>().material = tempMat;
+		foreach (BaseHealth tempBaseHealth in transform.root.GetComponents<BaseHealth>()) {
+			if (tempBaseHealth.healthLayer == healthLayer) {
+				bh = tempBaseHealth;
+			}
+		}
 
 		gameObject.GetComponent<MeshRenderer>().material.color = DetermineColour();
 	}
 
 	private void Update() {
-		if (player.GetComponent<PlayerHealth>().isScanning && materialMode == 0) {
-			timeOfScan = Time.time;
-			scanDistance = Vector3.Magnitude(transform.position - player.transform.position) / 2000f;
-			materialMode = 1;
+		if (bh.isDead == true) {
+			shouldShow = false;
+		} else if (shouldShow == false) {
+			shouldShow = true;
 		}
 
-		if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {
-			gameObject.GetComponent<MeshRenderer>().enabled = true;
-			materialMode = 2;
-		} else if (materialMode == 2) {
-			gameObject.GetComponent<MeshRenderer>().material.color = DetermineColour();
-
-			if (!player.GetComponent<PlayerHealth>().isScanning) {
-				gameObject.GetComponent<MeshRenderer>().enabled = false;
-				materialMode = 0;
+		if (shouldShow) {
+			if (player.GetComponent<PlayerHealth>().isScanning && materialMode == 0) {
+				timeOfScan = Time.time;
+				scanDistance = Vector3.Magnitude(transform.position - player.transform.position) / 2000f;
+				materialMode = 1;
 			}
+
+			if (materialMode == 1 && Time.time > timeOfScan + scanDistance) {
+				gameObject.GetComponent<MeshRenderer>().enabled = true;
+				materialMode = 2;
+			} else if (materialMode == 2) {
+				gameObject.GetComponent<MeshRenderer>().material.color = DetermineColour();
+
+				if (!player.GetComponent<PlayerHealth>().isScanning) {
+					gameObject.GetComponent<MeshRenderer>().enabled = false;
+					materialMode = 0;
+				}
+			}
+		} else if (gameObject.GetComponent<MeshRenderer>().enabled == true) {
+			gameObject.GetComponent<MeshRenderer>().enabled = false;
 		}
 	}
 
 	private Color DetermineColour() {
-		float HP = 1;
-		float maxHP = 1;
-
-		foreach (BaseHealth tempBaseHealth in transform.root.GetComponents<BaseHealth>()) {
-			if (tempBaseHealth.healthLayer == healthLayer) {
-				HP = tempBaseHealth.health;
-				maxHP = tempBaseHealth.startingHealth;
-			}
-
-		}
-
+		float HP = bh.health;
+		float maxHP = bh.startingHealth;
+		
 		float temp = HP / maxHP;
 		Color tempColour = new Color();
 

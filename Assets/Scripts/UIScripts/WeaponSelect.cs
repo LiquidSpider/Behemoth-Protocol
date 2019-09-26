@@ -71,23 +71,23 @@ public class WeaponSelect : MonoBehaviour {
 			missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", true);
 		}
 
-		//if (Input.GetButtonDown("Weapon3")) {
-		//	previousWeaponNumber = weaponNumber;
-		//	weaponNumber = 3;
-		//	//play animations here
-		//	weapCirc1.GetComponent<Animator>().SetBool("Active", false);
-		//	weapBar1.GetComponent<Animator>().SetBool("Active", false);
-		//	weapCirc2.GetComponent<Animator>().SetBool("Active", false);
-		//	weapBar2.GetComponent<Animator>().SetBool("Active", false);
-		//	weapCirc3.GetComponent<Animator>().SetBool("Active", true);
-		//	weapBar3.GetComponent<Animator>().SetBool("Active", true);
+		if (Input.GetButtonDown("Weapon3")) {
+			previousWeaponNumber = weaponNumber;
+			weaponNumber = 3;
+			//play animations here
+			weapCirc1.GetComponent<Animator>().SetBool("Active", false);
+			weapBar1.GetComponent<Animator>().SetBool("Active", false);
+			weapCirc2.GetComponent<Animator>().SetBool("Active", false);
+			weapBar2.GetComponent<Animator>().SetBool("Active", false);
+			weapCirc3.GetComponent<Animator>().SetBool("Active", true);
+			weapBar3.GetComponent<Animator>().SetBool("Active", true);
 
-		//	missile1.GetComponent<Animator>().SetBool("Active", false);
-		//	missile2.GetComponent<Animator>().SetBool("Active", false);
+			missile1.GetComponent<Animator>().SetBool("Active", false);
+			missile2.GetComponent<Animator>().SetBool("Active", false);
 
-		//	missile1Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
-		//	missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
-		//}
+			missile1Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
+			missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
+		}
 
 		if (playerForScript.GetComponent<PlayerController>().isCruising) {
 			//set things to be true

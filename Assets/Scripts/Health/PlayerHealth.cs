@@ -48,11 +48,18 @@ public class PlayerHealth : MonoBehaviour {
 		}
 	}
 
-	private void Update() { 
+	private void Update() {
 		//if (Input.GetKey(KeyCode.X) && battery > 0 && HP < maxHP) {
 		//	TakeDamage(-0.5f);
 		//	UseBattery(50 * Time.deltaTime);
 		//}
+
+		if (Input.GetButton("Regen")) {
+			if (HP < maxHP && battery > 0) {
+				TakeDamage(-1f);
+				UseBattery(50f * Time.deltaTime);
+			}
+		}
 
 		if (battery < 0.1f * maxB) {
 			batteryLowMessage.SetActive(true);

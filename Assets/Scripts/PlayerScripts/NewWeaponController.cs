@@ -99,48 +99,52 @@ public class NewWeaponController : MonoBehaviour {
 		}
 
 		// Vacuum
-		if (Input.GetButton("Regen")) {
-			gameObject.GetComponent<PlayerController>().flightStopped = true;
-			isVacuuming = true;
-		}
-
-		if (Input.GetButton("Regen")) {
-				PlayerHealth pb = gameObject.GetComponent<PlayerHealth>();
-
-				if (pb.battery < pb.maxB) {
-					pb.AddBattery(500  * Time.deltaTime);
+		if (!gameObject.GetComponent<PlayerController>().isCruising) {
+			if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3) {
+				if (Input.GetButtonDown("Attack")) {
+					gameObject.GetComponent<PlayerController>().isVacuuming = true;
+					isVacuuming = true;
 				}
+
+				if (Input.GetButton("Attack")) {
+					PlayerHealth pb = gameObject.GetComponent<PlayerHealth>();
+
+					if (pb.battery < pb.maxB) {
+						pb.AddBattery(350 * Time.deltaTime);
+					}
+				}
+
+				if (Input.GetButtonUp("Attack")) {
+					gameObject.GetComponent<PlayerController>().isVacuuming = false;
+					isVacuuming = false;
+				}
+			}
 		}
 
-		if (Input.GetButton("Regen")) {
-			gameObject.GetComponent<PlayerController>().flightStopped = false;
-			isVacuuming = false;
-		}
 
 
+		//// If The shoot button is pressed.
+		//if (Input.GetButtonDown("Attack"))
+		//{
+		//    // if we're not cruising
+		//    if (!this.transform.GetComponentInChildren<PlayerController>().isCruising)
+		//    {
+		//        // If the current weapon is the vacumm
+		//        //if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3)
+		//        if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3)
+		//        {
+		//            gameObject.GetComponent<PlayerHealth>().isVacuuming = true;
+		//        }
+		//    }
+		//}
 
-        //// If The shoot button is pressed.
-        //if (Input.GetButtonDown("Attack"))
-        //{
-        //    // if we're not cruising
-        //    if (!this.transform.GetComponentInChildren<PlayerController>().isCruising)
-        //    {
-        //        // If the current weapon is the vacumm
-        //        //if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 3)
-        //        if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3)
-        //        {
-        //            gameObject.GetComponent<PlayerHealth>().isVacuuming = true;
-        //        }
-        //    }
-        //}
+		//// When the shoot button is released.
+		//if (Input.GetButtonUp("Attack"))
+		//{
+		//    gameObject.GetComponent<PlayerHealth>().isVacuuming = false;
+		//}
 
-        //// When the shoot button is released.
-        //if (Input.GetButtonUp("Attack"))
-        //{
-        //    gameObject.GetComponent<PlayerHealth>().isVacuuming = false;
-        //}
-
-        if (!transform.GetComponentInChildren<PlayerController>().isCruising && !isVacuuming) {
+		if (!transform.GetComponentInChildren<PlayerController>().isCruising && !isVacuuming) {
 			//if (GameObject.FindGameObjectWithTag("LeftSelect").GetComponent<WeaponSelect>().weaponNumber == 2) {
 			if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 2) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
@@ -211,19 +215,19 @@ public class NewWeaponController : MonoBehaviour {
 		//	}
 		//}
 
-		if (swordInUse && timeSwordAttackStart + 1 < Time.time && !isVacuuming) {
-			gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", false);
-			swordInUse = false;
-		}
+		//if (swordInUse && timeSwordAttackStart + 1 < Time.time && !isVacuuming) {
+		//	gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", false);
+		//	swordInUse = false;
+		//}
 
-		if (!gameObject.GetComponent<PlayerController>().isCruising && !isVacuuming) {
-			if (Input.GetKeyDown(KeyCode.F)) {
-				swordInUse = true;
+		//if (!gameObject.GetComponent<PlayerController>().isCruising && !isVacuuming) {
+		//	if (Input.GetKeyDown(KeyCode.F)) {
+		//		swordInUse = true;
 
-				gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", true);
-				timeSwordAttackStart = Time.time;
-			}
-		}
+		//		gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", true);
+		//		timeSwordAttackStart = Time.time;
+		//	}
+		//}
 	}
 
 	private RaycastHit hit;
