@@ -120,7 +120,7 @@ public class DragonFly : MonoBehaviour
     /// </summary>
     private void BoidsLeft()
     {
-        if (gameManager.dragonFlies.Count <= 2)
+        if (gameManager.dragonFlies.Count <= -1)
         {
             currentDragonFlyBehaviour = DragonFlyBehaviour.Kamikaze;
         }

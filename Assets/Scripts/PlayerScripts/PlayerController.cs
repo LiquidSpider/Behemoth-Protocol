@@ -186,6 +186,7 @@ public class PlayerController : MonoBehaviour {
 
 		// Movement
 		// Check the inputs for which are being used
+		// These Bools are changed in NewWeaponController, because of corse they are, but that was me
 		if (!flightStopped) {
 			if (!isVacuuming) {
 				if (isCruising) maxVelocity = 3500f;

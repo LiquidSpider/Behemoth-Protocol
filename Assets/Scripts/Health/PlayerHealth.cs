@@ -7,7 +7,6 @@ public class PlayerHealth : MonoBehaviour {
 
 	public float HP = 2500;
 	private float maxHP;
-	private bool critDamageTaken = false;
 
 	public bool isScanning = false;
 
@@ -20,8 +19,7 @@ public class PlayerHealth : MonoBehaviour {
 	public float maxB;
 
 	private List<GameObject> TakenDamageFrom = new List<GameObject>();
-
-	public Text promptText;
+	
 	private bool batteryLowIndication = false;
 	private bool damageTakenIndication = false;
 
@@ -48,11 +46,24 @@ public class PlayerHealth : MonoBehaviour {
 		}
 	}
 
+	private bool healthBelow25p = false;
+	private bool healthBackUp = true;
+
 	private void Update() {
 		//if (Input.GetKey(KeyCode.X) && battery > 0 && HP < maxHP) {
 		//	TakeDamage(-0.5f);
 		//	UseBattery(50 * Time.deltaTime);
 		//}
+
+		if (HP < 0.25f * maxHP) {
+			if (healthBelow25p == false) {
+				healthBelow25p = true;
+
+				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallLowHealth();
+			}
+		} else {
+			if (healthBelow25p == true) healthBelow25p = false;
+		} 
 
 		if (Input.GetButton("Regen")) {
 			if (HP < maxHP && battery > 0) {
@@ -124,25 +135,25 @@ public class PlayerHealth : MonoBehaviour {
 	/// <summary>
 	/// Every fixed frame.
 	/// </summary>
-	public void FixedUpdate() {
-		// If the player is using the vacumm
-		if (isVacuuming)
-			PullAbsorbable();
-	}
+	//public void FixedUpdate() {
+	//	// If the player is using the vacumm
+	//	if (isVacuuming)
+	//		PullAbsorbable();
+	//}
 
 	/// <summary>
 	/// Checks for surrounding absorbable units and pulls them towards the player.
 	/// </summary>
-	public void PullAbsorbable() {
-		// Place a sphere around the player looking for the absorbables.
-		RaycastHit[] raycastHits = Physics.SphereCastAll(this.transform.position - (-this.transform.forward * (vacuumRadius / 2)), vacuumRadius, this.transform.forward, vacuumRadius, absorbableLayerMask);
+	//public void PullAbsorbable() {
+	//	// Place a sphere around the player looking for the absorbables.
+	//	RaycastHit[] raycastHits = Physics.SphereCastAll(this.transform.position - (-this.transform.forward * (vacuumRadius / 2)), vacuumRadius, this.transform.forward, vacuumRadius, absorbableLayerMask);
 
-		// Pull the objects towards the player.
-		foreach (RaycastHit absorbable in raycastHits) {
-			// Pull the absorable objects towards the player.
-			absorbable.collider.gameObject.GetComponent<Absorbable>().VacuumObject(this.transform.position, this.vacuumRadius);
-		}
-	}
+	//	// Pull the objects towards the player.
+	//	foreach (RaycastHit absorbable in raycastHits) {
+	//		// Pull the absorable objects towards the player.
+	//		absorbable.collider.gameObject.GetComponent<Absorbable>().VacuumObject(this.transform.position, this.vacuumRadius);
+	//	}
+	//}
 
 	public void UseBattery(float reduction) {
 		battery -= reduction;
@@ -174,9 +185,14 @@ public class PlayerHealth : MonoBehaviour {
 		} else {
 			HP -= damage;
             GetComponentInChildren<AnimatorManager>().Flinch();
-        }
+		}
 
-
+		if (HP < 0) HP = 0;
+		
+		// Check health and handle accordingly
+		if (HP <= 0) {
+			Die();
+		}
 		//GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;
 	}
 
@@ -224,13 +240,7 @@ public class PlayerHealth : MonoBehaviour {
 		}
 
 		// Check health and handle accordingly
-		if (HP <= 0 && !critDamageTaken) {
-			critDamageTaken = true;
-
-			promptText.text = "Critical damage taken, retreat and heal.";
-			promptText.gameObject.transform.parent.gameObject.SetActive(true);
-
-		} else if (HP <= 0 && critDamageTaken) {
+		if (HP <= 0) {
 			Die();
 		}
 

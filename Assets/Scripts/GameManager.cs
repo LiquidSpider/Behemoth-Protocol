@@ -226,4 +226,52 @@ public class GameManager : MonoBehaviour {
 
 		Cursor.visible = swapTo;
 	}
+
+	public void SpawnFakeArm(GameObject inputHandMesh) {
+		//GameObject test = Instantiate(inputHandMesh);
+
+		//foreach (SkinnedMeshRenderer temp in test.GetComponentsInChildren<SkinnedMeshRenderer>()) {
+		//	temp.enabled = true;
+		//	temp.gameObject.SetActive(true);
+
+		//	temp.gameObject.AddComponent<MeshCollider>();
+		//	temp.gameObject.GetComponent<MeshCollider>().sharedMesh = temp.sharedMesh;
+		//	temp.gameObject.GetComponent<MeshCollider>().convex = true;
+		//	temp.gameObject.GetComponent<MeshCollider>().isTrigger = true;
+
+		//	temp.gameObject.AddComponent<Rigidbody>();
+		//	temp.gameObject.GetComponent<Rigidbody>().mass = 1000;
+		//}
+
+		//foreach (SkinnedMeshRenderer sMR in inputHandMesh.GetComponentsInChildren<SkinnedMeshRenderer>()) {
+		//	GameObject newPart = new GameObject();
+		//	newPart.name = sMR.gameObject.name;
+
+		//	newPart.AddComponent<MeshFilter>();
+		//	newPart.GetComponent<MeshFilter>().mesh = sMR.sharedMesh;
+
+		//	newPart.AddComponent<MeshRenderer>();
+		//	newPart.GetComponent<MeshRenderer>().material = sMR.material;
+
+
+		//	//newPart.AddComponent<SkinnedMeshRenderer>();
+		//	//newPart.GetComponent<SkinnedMeshRenderer>().sharedMesh = sMR.sharedMesh;
+		//	//newPart.GetComponent<SkinnedMeshRenderer>().material = sMR.material;
+		//	//newPart.GetComponent<SkinnedMeshRenderer>().localBounds = sMR.bounds;
+
+		//	newPart.transform.position = sMR.gameObject.transform.position;
+		//	newPart.transform.rotation = sMR.gameObject.transform.rotation;
+		//	newPart.transform.localScale = sMR.gameObject.transform.lossyScale;
+
+		//	newPart.AddComponent<MeshCollider>();
+		//	newPart.GetComponent<MeshCollider>().sharedMesh = sMR.sharedMesh;
+		//	newPart.GetComponent<MeshCollider>().convex = true;
+		//	newPart.GetComponent<MeshCollider>().isTrigger = true;
+		//	newPart.GetComponent<MeshCollider>().sharedMesh = sMR.sharedMesh;
+
+		//	newPart.AddComponent<Rigidbody>();
+		//	newPart.GetComponent<Rigidbody>().mass = 100;
+		//	newPart.GetComponent<Rigidbody>().drag = 20;
+		//}
+	}
 }

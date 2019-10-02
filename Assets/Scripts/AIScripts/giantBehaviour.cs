@@ -1116,6 +1116,7 @@ public class giantBehaviour : MonoBehaviour
                     renderer.enabled = false;
                 }
                 SmokeActivity(false, LeftArmSmoke);
+				gameManager.SpawnFakeArm(LeftHandMesh);
                 break;
             case GiantAnimator.Hand.right:
                 RightHandCollider.SetActive(false);
@@ -1126,7 +1127,8 @@ public class giantBehaviour : MonoBehaviour
                     renderer.enabled = false;
                 }
                 SmokeActivity(false, RightArmSmoke);
-                break;
+				gameManager.SpawnFakeArm(RightHandMesh);
+				break;
         }
     }
 

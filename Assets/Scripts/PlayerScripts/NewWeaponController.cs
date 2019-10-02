@@ -98,12 +98,13 @@ public class NewWeaponController : MonoBehaviour {
 			}
 		}
 
-		// Vacuum
+		// Vacuum --------------------------------------------------------------------------------------------------------------------------------------------------------
 		if (!gameObject.GetComponent<PlayerController>().isCruising) {
 			if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().weaponNumber == 3) {
 				if (Input.GetButtonDown("Attack")) {
 					gameObject.GetComponent<PlayerController>().isVacuuming = true;
 					isVacuuming = true;
+					gameObject.GetComponent<PlayerController>().flightStopped = true;
 				}
 
 				if (Input.GetButton("Attack")) {
@@ -117,6 +118,7 @@ public class NewWeaponController : MonoBehaviour {
 				if (Input.GetButtonUp("Attack")) {
 					gameObject.GetComponent<PlayerController>().isVacuuming = false;
 					isVacuuming = false;
+					gameObject.GetComponent<PlayerController>().flightStopped = false;
 				}
 			}
 		}
