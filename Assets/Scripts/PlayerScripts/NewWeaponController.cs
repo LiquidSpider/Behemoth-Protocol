@@ -108,6 +108,10 @@ public class NewWeaponController : MonoBehaviour {
 				}
 
 				if (Input.GetButton("Attack")) {
+					gameObject.GetComponent<PlayerController>().isVacuuming = true;
+					isVacuuming = true;
+					gameObject.GetComponent<PlayerController>().flightStopped = true;
+
 					PlayerHealth pb = gameObject.GetComponent<PlayerHealth>();
 
 					if (pb.battery < pb.maxB) {
@@ -123,6 +127,11 @@ public class NewWeaponController : MonoBehaviour {
 			}
 		}
 
+		if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).GetComponent<WeaponSelect>().previousWeaponNumber == 3) {
+			gameObject.GetComponent<PlayerController>().isVacuuming = false;
+			isVacuuming = false;
+			gameObject.GetComponent<PlayerController>().flightStopped = false;
+		}
 
 
 		//// If The shoot button is pressed.
