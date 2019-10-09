@@ -63,12 +63,14 @@ public class PlayerHealth : MonoBehaviour {
 			}
 		} else {
 			if (healthBelow25p == true) healthBelow25p = false;
-		} 
+		}
 
-		if (Input.GetButton("Regen")) {
-			if (HP < maxHP && battery > 0) {
-				TakeDamage(-1f);
-				UseBattery(50f * Time.deltaTime);
+		if (!gameObject.GetComponent<NewWeaponController>().isVacuuming) {
+			if (Input.GetButton("Regen")) {
+				if (HP < maxHP && battery > 0) {
+					TakeDamage(-1f);
+					UseBattery(50f * Time.deltaTime);
+				}
 			}
 		}
 

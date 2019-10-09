@@ -132,7 +132,8 @@ public class GameManager : MonoBehaviour {
 		gameOver = true;
 		Debug.Log("Game Over");
 
-		yield return new WaitForSeconds(3);
+		//yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(0);
 
 		gamePaused = true;
 		loseMenu.SetActive(true);
@@ -163,7 +164,8 @@ public class GameManager : MonoBehaviour {
 
 		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallWin();
 
-		yield return new WaitForSeconds(3);
+		//yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(0);
 
 		gamePaused = false;
 		winMenu.SetActive(true);
@@ -230,48 +232,84 @@ public class GameManager : MonoBehaviour {
 	public void SpawnFakeArm(GameObject inputHandMesh) {
 		//GameObject test = Instantiate(inputHandMesh);
 
+		//test.transform.localScale = inputHandMesh.transform.root.localScale;
+		//test.transform.position = inputHandMesh.transform.position;
+
+		//if (inputHandMesh.name.Contains("Left")) {
+		//	Vector3 scale = test.transform.localScale;
+		//	scale.x *= -1;
+
+		//	test.transform.localScale = scale;
+		//}
+
 		//foreach (SkinnedMeshRenderer temp in test.GetComponentsInChildren<SkinnedMeshRenderer>()) {
 		//	temp.enabled = true;
 		//	temp.gameObject.SetActive(true);
 
+		//	temp.gameObject.AddComponent<MeshRenderer>();
+		//	temp.gameObject.GetComponent<MeshRenderer>().material = temp.material;
+
+		//	temp.gameObject.AddComponent<MeshFilter>();
+		//	temp.gameObject.GetComponent<MeshFilter>().mesh = temp.sharedMesh;
+
 		//	temp.gameObject.AddComponent<MeshCollider>();
 		//	temp.gameObject.GetComponent<MeshCollider>().sharedMesh = temp.sharedMesh;
 		//	temp.gameObject.GetComponent<MeshCollider>().convex = true;
-		//	temp.gameObject.GetComponent<MeshCollider>().isTrigger = true;
+		//	//temp.gameObject.GetComponent<MeshCollider>().isTrigger = true;
 
 		//	temp.gameObject.AddComponent<Rigidbody>();
-		//	temp.gameObject.GetComponent<Rigidbody>().mass = 1000;
+		//	temp.gameObject.GetComponent<Rigidbody>().mass = 100000;
+		//	temp.gameObject.GetComponent<Rigidbody>().drag = 0.5f;
+		//	temp.gameObject.GetComponent<Rigidbody>().angularDrag = 0.5f;
+		//	temp.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, -100000, 0));
+
+		//	temp.transform.parent = null;
+
+		//	Destroy(temp.gameObject.GetComponent<SkinnedMeshRenderer>());
 		//}
 
-		//foreach (SkinnedMeshRenderer sMR in inputHandMesh.GetComponentsInChildren<SkinnedMeshRenderer>()) {
-		//	GameObject newPart = new GameObject();
-		//	newPart.name = sMR.gameObject.name;
+		foreach (SkinnedMeshRenderer sMR in inputHandMesh.GetComponentsInChildren<SkinnedMeshRenderer>()) {
+			GameObject newPart = new GameObject();
+			newPart.name = sMR.gameObject.name;
 
-		//	newPart.AddComponent<MeshFilter>();
-		//	newPart.GetComponent<MeshFilter>().mesh = sMR.sharedMesh;
+			newPart.AddComponent<MeshFilter>();
+			newPart.GetComponent<MeshFilter>().mesh = sMR.sharedMesh;
 
-		//	newPart.AddComponent<MeshRenderer>();
-		//	newPart.GetComponent<MeshRenderer>().material = sMR.material;
+			newPart.AddComponent<MeshRenderer>();
+			newPart.GetComponent<MeshRenderer>().material = sMR.material;
 
 
-		//	//newPart.AddComponent<SkinnedMeshRenderer>();
-		//	//newPart.GetComponent<SkinnedMeshRenderer>().sharedMesh = sMR.sharedMesh;
-		//	//newPart.GetComponent<SkinnedMeshRenderer>().material = sMR.material;
-		//	//newPart.GetComponent<SkinnedMeshRenderer>().localBounds = sMR.bounds;
+			//newPart.AddComponent<SkinnedMeshRenderer>();
+			//newPart.GetComponent<SkinnedMeshRenderer>().sharedMesh = sMR.sharedMesh;
+			//newPart.GetComponent<SkinnedMeshRenderer>().material = sMR.material;
+			//newPart.GetComponent<SkinnedMeshRenderer>().localBounds = sMR.bounds;
 
-		//	newPart.transform.position = sMR.gameObject.transform.position;
-		//	newPart.transform.rotation = sMR.gameObject.transform.rotation;
-		//	newPart.transform.localScale = sMR.gameObject.transform.lossyScale;
+			newPart.transform.position = sMR.gameObject.transform.position;
 
-		//	newPart.AddComponent<MeshCollider>();
-		//	newPart.GetComponent<MeshCollider>().sharedMesh = sMR.sharedMesh;
-		//	newPart.GetComponent<MeshCollider>().convex = true;
-		//	newPart.GetComponent<MeshCollider>().isTrigger = true;
-		//	newPart.GetComponent<MeshCollider>().sharedMesh = sMR.sharedMesh;
+			//newPart.transform.position = sMR.transform.parent.position;
 
-		//	newPart.AddComponent<Rigidbody>();
-		//	newPart.GetComponent<Rigidbody>().mass = 100;
-		//	newPart.GetComponent<Rigidbody>().drag = 20;
-		//}
+			newPart.transform.rotation = sMR.gameObject.transform.rotation;
+			newPart.transform.localScale = sMR.gameObject.transform.lossyScale;
+
+			if (inputHandMesh.name.Contains("Right")) {
+				Vector3 temp = newPart.transform.localScale;
+				temp.x *= -1;
+				newPart.transform.localScale = temp;
+			}
+
+			newPart.AddComponent<MeshCollider>();
+			newPart.GetComponent<MeshCollider>().sharedMesh = sMR.sharedMesh;
+			newPart.GetComponent<MeshCollider>().convex = true;
+			//newPart.GetComponent<MeshCollider>().isTrigger = true;
+
+			newPart.AddComponent<Rigidbody>();
+			newPart.GetComponent<Rigidbody>().mass = 0.1f;
+			newPart.GetComponent<Rigidbody>().drag = 0.9f;
+			newPart.GetComponent<Rigidbody>().angularDrag = 0.2f;
+			newPart.GetComponent<Rigidbody>().useGravity = true;
+			newPart.GetComponent<Rigidbody>().AddForce(new Vector3(0, -1000, 0));
+
+			newPart.AddComponent<RobotPartFall>();
+		}
 	}
 }

@@ -39,7 +39,7 @@ public class NewWeaponController : MonoBehaviour {
 	//	private float timeForUnlock = 2f;
 	//	private GameObject missileTarget;
 
-	private bool isVacuuming = false;
+	public bool isVacuuming = false;
 
 	void Start() {
 		currentPosition = transform.GetChild(1).position;
@@ -96,6 +96,14 @@ public class NewWeaponController : MonoBehaviour {
 				gameObject.GetComponent<PlayerHealth>().UseBattery((200 / timeBetweenFlares) * Time.deltaTime);
 				GameObject.FindGameObjectWithTag("UI").transform.GetChild(2).transform.GetChild(6).GetComponent<Image>().fillAmount = 1 - (timeOfLastFlare5 + timeBetweenFlares - Time.time) / timeBetweenFlares;
 			}
+		} else { // So they refil after ?
+			timeOfLastMissile += Time.deltaTime;
+			timeOfLastMissile2 += Time.deltaTime;
+			timeOfLastFlare += Time.deltaTime;
+			timeOfLastFlare2 += Time.deltaTime;
+			timeOfLastFlare3 += Time.deltaTime;
+			timeOfLastFlare4 += Time.deltaTime;
+			timeOfLastFlare5 += Time.deltaTime;
 		}
 
 		// Vacuum --------------------------------------------------------------------------------------------------------------------------------------------------------
