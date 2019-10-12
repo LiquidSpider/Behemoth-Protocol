@@ -72,7 +72,7 @@ public class OldWeaponController : MonoBehaviour {
 		}
 
 		if (!gameObject.GetComponent<PlayerController>().isCruising) {
-			if (Input.GetKeyDown(KeyCode.F)) {
+			if (Input.GetButtonDown("Melee")) {
 				swordInUse = true;
 
 				gameObject.transform.GetChild(5).GetComponent<Animator>().SetBool("attack", true);
@@ -138,7 +138,7 @@ public class OldWeaponController : MonoBehaviour {
 			}
 
 			// Launch Flares when player presses Q, each one keeps track of whether its been fired
-			if (Input.GetKeyDown(KeyCode.Q)) {
+			if (Input.GetButtonDown("Flare")) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 					if (Time.time > timeOfLastFlare + timeBetweenFlares) {
 

@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour {
 #endif
 
 		// Moved this check out here, so I can call CheckPause from the Pause Menu
-		if (!gameOver && ( Input.GetKeyDown(KeyCode.P) || Input.GetButtonDown("Pause") )) {
+		if (!gameOver && (Input.GetButtonDown("Pause") )) {
 			CheckPause();
 		}
 

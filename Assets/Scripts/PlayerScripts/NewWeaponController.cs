@@ -189,7 +189,7 @@ public class NewWeaponController : MonoBehaviour {
 			}
 
             // Launch Flares when player presses Q, each one keeps track of whether its been fired
-            if (Input.GetKeyDown(KeyCode.Q)) {
+            if (Input.GetButtonDown("Flare")) {
 				if (gameObject.GetComponent<PlayerHealth>().battery > 500) {
 					if (Time.time > timeOfLastFlare + timeBetweenFlares) {
 						

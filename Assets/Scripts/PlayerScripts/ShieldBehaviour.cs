@@ -23,7 +23,7 @@ public class ShieldBehaviour : MonoBehaviour {
         {
             if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > drainAmount && !gameObject.transform.root.GetComponent<PlayerController>().isCruising)
             {
-                if (Input.GetKey(KeyCode.F) && shieldActive == false)
+                if (Input.GetButton("Shield") && shieldActive == false)
                 {
                     shieldActive = true;
                     shield.SetActive(true);
@@ -31,7 +31,7 @@ public class ShieldBehaviour : MonoBehaviour {
                     ui.ShieldActivate();
 
                 }
-                else if (Input.GetKeyUp(KeyCode.F))
+                else if (Input.GetButtonUp("Shield"))
                 {
                     shieldActive = false;
                     shield.SetActive(false);

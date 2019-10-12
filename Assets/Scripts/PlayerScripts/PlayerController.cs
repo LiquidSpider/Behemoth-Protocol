@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private IEnumerator DelayedIntroPrompt() {
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(5);
 
 		// Second prompt, action given
 		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallFollowUpIntroLine();

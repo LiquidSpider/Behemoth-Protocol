@@ -220,7 +220,7 @@ InputManager:
     negativeButton: 
     positiveButton: escape
     altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: p
     gravity: 0
     dead: 0.19
     sensitivity: 1
@@ -276,38 +276,6 @@ InputManager:
     invert: 0
     type: 0
     axis: 9
-    joyNum: 1
-  - serializedVersion: 3
-    m_Name: Cruise
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: left shift
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 0
-    dead: 0.19
-    sensitivity: 1
-    snap: 0
-    invert: 0
-    type: 2
-    axis: 8
-    joyNum: 1
-  - serializedVersion: 3
-    m_Name: Cruise
-    descriptiveName: 
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: q
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 2000
-    dead: 0.19
-    sensitivity: 1
-    snap: 1
-    invert: 0
-    type: 0
-    axis: 8
     joyNum: 1
   - serializedVersion: 3
     m_Name: Weapon1
@@ -391,6 +359,54 @@ InputManager:
     joyNum: 1
   - serializedVersion: 3
     m_Name: Regen
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: e
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 8
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: Flare
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: q
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 8
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: Shield
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: f
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 8
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: Melee
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
