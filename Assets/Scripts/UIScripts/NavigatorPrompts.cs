@@ -18,7 +18,7 @@ public class NavigatorPrompts : MonoBehaviour {
     bool isOff = true;
     bool[] flags = new bool[18]; // To stop certain voicelines from repeating. False = not yet played. Set to true to stop it from repeating.
 
-    private void Start()
+    private void Awake()
     {
         //ah = promptText.transform.parent.GetComponent<AutoHide>();
         audio = audioobject.GetComponent<AudioSource>();
@@ -47,7 +47,7 @@ public class NavigatorPrompts : MonoBehaviour {
         audioobject.GetComponent<AudioSource>().PlayOneShot(radioOn, 0.35f);
         audioobject.GetComponent<AudioSource>().clip = navLines[index];
         audioobject.GetComponent<AudioSource>().Play();
-        promptText.transform.parent.GetComponent<AutoHide>().appearTime = audio.clip.length;
+        promptText.transform.parent.GetComponent<AutoHide>().appearTime = navLines[index].length;
     }
 
 	public void CallIntroLine() {

@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour {
 		pauseMenu.SetActive(false);
 		Cursor.lockState = CursorLockMode.None;
 
-		Destroy(player.transform.GetChild(1).GetChild(3).gameObject);
+		//Destroy(player.transform.GetChild(1).GetChild(3).gameObject);
 		Destroy(player.transform.GetChild(1).GetChild(0).gameObject);
 		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = 0;
 	}
@@ -310,6 +310,8 @@ public class GameManager : MonoBehaviour {
 			newPart.GetComponent<Rigidbody>().AddForce(new Vector3(0, -1000, 0));
 
 			newPart.AddComponent<RobotPartFall>();
+
+			Exploder.explode(newPart.transform, sMR.transform.position);
 		}
 	}
 }

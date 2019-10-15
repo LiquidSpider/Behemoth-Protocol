@@ -8,6 +8,9 @@ using UnityEngine.UI;
 public class MenuControls : MonoBehaviour {
 
 	public GameObject instructions;
+	public GameObject settingsMenu;
+
+	public bool inMenu = false;
 
 	public void StartClicked() {
 		SceneManager.LoadScene(1);
@@ -22,14 +25,50 @@ public class MenuControls : MonoBehaviour {
 	}
 
 	public void ResumeClicked() {
+		instructions.SetActive(false);
+		settingsMenu.SetActive(false);
 		GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().CheckPause();
 	}
 
 	public void InstructionsClicked() {
-		instructions.SetActive(true);
+		if (!inMenu) {
+			instructions.SetActive(true);
+			inMenu = true; 
+		}
 	}
 
 	public void CloseInstructions() {
-		instructions.SetActive(false);
+		if (inMenu) {
+			instructions.SetActive(false);
+			inMenu = false;
+		}
+	}
+
+	public void SettingsClicked() {
+		if (!inMenu) {
+			settingsMenu.SetActive(true);
+			inMenu = true;
+		}
+	}
+
+	public void CloseSettings() {
+		if (inMenu) {
+			settingsMenu.SetActive(false);
+			inMenu = false;
+		}
+	}
+
+	public void CreditsClicked() {
+		//if (!inMenu) {
+		//	Debug.Log("Credits Clicked");
+		//	inMenu = true;
+		//}
+	}
+
+	public void CloseCredits() {
+		//if (inMenu) {
+		//	Debug.Log("Credits Clicked");
+		//	inMenu = false;
+		//}
 	}
 }
