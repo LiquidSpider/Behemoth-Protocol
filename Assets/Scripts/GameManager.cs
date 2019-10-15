@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour {
 
 	// pause menu variables.
 	public GameObject pauseMenu;
-    [System.NonSerialized]
+	public GameObject instructionsMenu;
+	public GameObject settingsMenu;
+	[System.NonSerialized]
 	public bool gamePaused;
 
 	public GameObject winMenu;
@@ -71,11 +73,11 @@ public class GameManager : MonoBehaviour {
 		// Display the frame counter.
 		if (!gamePaused && Time.time % 1 < 0.02f)
 			framesCounter.gameObject.SetActive(true);
-			framesCounter.text = Mathf.Round(1f / Time.deltaTime).ToString();
+		framesCounter.text = Mathf.Round(1f / Time.deltaTime).ToString();
 #endif
 
 		// Moved this check out here, so I can call CheckPause from the Pause Menu
-		if (!gameOver && (Input.GetButtonDown("Pause") )) {
+		if (!gameOver && ( Input.GetButtonDown("Pause") )) {
 			CheckPause();
 		}
 
@@ -186,6 +188,12 @@ public class GameManager : MonoBehaviour {
 	private void Pause(bool swapTo) {
 		gamePaused = swapTo;
 		pauseMenu.SetActive(swapTo);
+		if (!swapTo) {
+			instructionsMenu.SetActive(false);
+			settingsMenu.SetActive(false);
+
+			pauseMenu.GetComponent<MenuControls>().inMenu = false;
+		}
 
 		player.GetComponent<NewWeaponController>().enabled = !swapTo;
 		player.GetComponent<PlayerHealth>().enabled = !swapTo;
@@ -311,7 +319,7 @@ public class GameManager : MonoBehaviour {
 
 			newPart.AddComponent<RobotPartFall>();
 
-			Exploder.explode(newPart.transform, sMR.transform.position);
+			Exploder.explode(newPart.transform);
 		}
 	}
 }

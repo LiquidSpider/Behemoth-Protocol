@@ -12090,6 +12090,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 243832686142655308, guid: ca1be43bdbc4ded4c8a67202e2f8bd9d,
         type: 2}
+    - target: {fileID: 2594245785931568136, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 585d15a8d94197c4bb1c119139da3a68, type: 3}
 --- !u!1 &808443154 stripped
@@ -12635,6 +12640,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 4498502439908761849}
   pauseMenu: {fileID: 412896760}
+  instructionsMenu: {fileID: 131502616}
+  settingsMenu: {fileID: 1604488818}
   winMenu: {fileID: 2063105537100423377}
   loseMenu: {fileID: 2063105537100423378}
   gameOver: 0
@@ -23068,6 +23075,12 @@ Transform:
   m_Father: {fileID: 461916145}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1604488818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5362748643617006363, guid: cfdb338600198294e8135cba8ddc7277,
+    type: 3}
+  m_PrefabInstance: {fileID: 2063105537100423376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1607579035
 GameObject:
   m_ObjectHideFlags: 0
@@ -31741,6 +31754,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Overlay
       objectReference: {fileID: 0}
+    - target: {fileID: 449454778990464625, guid: cfdb338600198294e8135cba8ddc7277,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3048721473345249006, guid: cfdb338600198294e8135cba8ddc7277,
         type: 3}
       propertyPath: m_IsActive
@@ -32691,6 +32709,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474998873939633600, guid: 99fabe2e8e44bec458d595295b208bbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7803441808545743026, guid: 99fabe2e8e44bec458d595295b208bbd,
         type: 3}

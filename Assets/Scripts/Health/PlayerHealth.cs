@@ -110,8 +110,8 @@ public class PlayerHealth : MonoBehaviour {
 		}
 
 		if (isScanning) {
-			if (battery < 60) isScanning = false;
-			else UseBattery(60 * Time.deltaTime);
+			if (battery < 5) isScanning = false;
+			else UseBattery(25 * Time.deltaTime);
 		}
 
 		GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Image>().fillAmount = HP / maxHP;

@@ -12,7 +12,7 @@ public class particleBehaviourCharge : MonoBehaviour
     void Start()
     {   
         //Auto remove particles after a time
-        StartCoroutine(WaitAndDestroy(3.0f));
+        StartCoroutine(WaitAndDestroy(1f + Random.Range(-0.5f, 0.5f)));
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class particleBehaviourCharge : MonoBehaviour
 
     public void setup(float x, float y, float size, float speed) {
         //place object where it needs to be, give it speed and size it
-    	transform.position = new Vector3(transform.position.x, transform.position.y + y, transform.position.z + x);
+    	transform.position = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
     	velocity = speed;
 
     	transform.localScale = new Vector3(size, size, size);

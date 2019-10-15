@@ -7,8 +7,8 @@ public class particleControllerLaserCharge : MonoBehaviour
 
 	public GameObject particleBase;
 
-	public float xMax = -1;
-	public float yMax = -1;
+	private float xMax = -10;
+	private float yMax = -10;
 
 	public float zVelMin = -1;
 	public float zVelMax = -1;
@@ -23,7 +23,7 @@ public class particleControllerLaserCharge : MonoBehaviour
 	float zVel;
 	float size;
 
-	public float emitRate = 5;
+	public float emitRate = 25;
 
 	public bool active = false;
 	public float timer = 0.0f;
@@ -43,9 +43,9 @@ public class particleControllerLaserCharge : MonoBehaviour
         		findLocation();
         		size = Random.Range(sizeMin, sizeMax);
         		GameObject tempParticle = Instantiate(particleBase, transform.position, transform.rotation);
-                //tempParticle.transform.parent = gameObject.transform;
-                size = size * 10.0f;
-        		tempParticle.GetComponent<particleBehaviourCharge>().setup(xSpawn, ySpawn, size, zVel);
+				size = size * 7.5f;
+				tempParticle.GetComponent<particleBehaviourCharge>().setup(xSpawn, ySpawn, size, zVel);
+				//tempParticle.transform.parent = gameObject.transform;
         	}
         }
     }
@@ -72,7 +72,7 @@ public class particleControllerLaserCharge : MonoBehaviour
 	    	xRatio = xSpawn/xMax;
 	    	yRatio = ySpawn/yMax;
 
-	    	if(xRatio*xRatio + yRatio*yRatio <= 1) {
+	    	if(xRatio*xRatio + yRatio*yRatio <= 10) {
 	    		goodLoc = true;
 	    	} else {
 	    		goodLoc = false;

@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			float speedFactor = accSpeed;
-			if (isCruising) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(50f * Time.deltaTime);
+			if (isCruising) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(75 * Time.deltaTime);
 			if (isCruising) rb.AddForce(rb.velocity.normalized * speedFactor * cruiseFwd);
 			if (isCruising) gameObject.transform.GetChild(0).transform.rotation = Quaternion.LookRotation(rb.velocity.normalized);
 			else gameObject.transform.GetChild(0).transform.rotation = gameObject.transform.rotation;// = Quaternion.LookRotation(rb.velocity.normalized);

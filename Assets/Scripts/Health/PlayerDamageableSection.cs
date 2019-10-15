@@ -8,7 +8,7 @@ public class PlayerDamageableSection : MonoBehaviour {
 		if (other.gameObject.transform.tag == "Explosion - Enemy") {
 			Transform parent = transform.root;
 
-			parent.GetComponent<PlayerHealth>().TakeDamage(50, other.gameObject);
+			parent.GetComponent<PlayerHealth>().TakeDamage(450, other.gameObject);
 
 			// Nav prompt
 			GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallTakingMissileDamage();
@@ -37,7 +37,7 @@ public class PlayerDamageableSection : MonoBehaviour {
 		if (other.gameObject.layer == 17 || other.gameObject.layer == 18) {
 			Transform parent = transform.root;
 
-			parent.GetComponent<PlayerHealth>().TakeDamage(30 * Time.deltaTime);
+			parent.GetComponent<PlayerHealth>().TakeDamage(20 * Time.deltaTime);
 		}
 	}
 

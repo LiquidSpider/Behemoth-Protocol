@@ -30,12 +30,6 @@ public class Exploder : MonoBehaviour
         Destroy(expTemp, 4);
     }
 
-	public static void explode(Transform parent, Vector3 location) {
-		GameObject expTemp = Instantiate(explosionStat, parent);
-		expTemp.transform.localPosition = Vector3.zero;
-		Destroy(expTemp, 4);
-	}
-
 	public static void damagedSmoke(GameObject parentObject, Transform spawnLocation)
     {
         GameObject damageSmokeTemp = Instantiate(damageSmokeStat, spawnLocation);
