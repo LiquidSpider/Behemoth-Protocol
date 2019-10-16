@@ -14,7 +14,7 @@ public class giantBehaviour : MonoBehaviour
     /// <summary>
     /// The player object.
     /// </summary>
-    private GameObject player;
+    public GameObject player;
 
     /// <summary>
     /// The gamemanger object.
@@ -316,7 +316,7 @@ public class giantBehaviour : MonoBehaviour
         armState = EnemyArmStates.both;
 
         // Get the player
-        this.player = GameObject.FindGameObjectWithTag("Player").transform.root.gameObject;
+        //this.player = GameObject.FindGameObjectWithTag("Player").transform.root.gameObject;
 
         // get the objects animator
         this.thisAnimator = this.GetComponent<Animator>();
@@ -482,6 +482,7 @@ public class giantBehaviour : MonoBehaviour
                 // perform an attack.
                 break;
             case EnemyState.repairing:
+                this.thisAnimator.enabled = true;
                 canMove = false;
                 // perform the repair.
                 if (this.thisAnimator.GetBool("IsMoving"))
@@ -654,6 +655,26 @@ public class giantBehaviour : MonoBehaviour
         {
             if (armState != EnemyArmStates.none)
             {
+
+                // If currently attacking
+                if (currentEnemyState == EnemyState.attacking)
+                {
+                    animator.DisableKinematics();                    
+                    switch (animator.currentAnimation)
+                    {
+                        case GiantAnimator.Animation.Laser:
+                                animator.currentLaserState = GiantAnimator.LaserAnimationState.recover;
+                                DisableLaser();
+                            break;
+                        case GiantAnimator.Animation.GiantClap:
+                            animator.currentClapAnimationState = GiantAnimator.ClapAnimationState.Recover;
+                            break;
+                        case GiantAnimator.Animation.GiantSwing:
+                            animator.CurrentSwingState = GiantAnimator.SwingAnimationState.Recover;
+                            break;
+                    }
+                }
+
                 currentEnemyState = EnemyState.repairing;
 
                 // Navigator Prompt
@@ -949,7 +970,6 @@ public class giantBehaviour : MonoBehaviour
                         break;
                 }
             }
-            Debug.Log("ReachedEndOfDam");
             ReachedEndOfDam = true;
             currentEnemyState = EnemyState.idle;
             // Disable the movement
@@ -985,8 +1005,13 @@ public class giantBehaviour : MonoBehaviour
     {
         PlayerPosition position;
 
+        Vector3 playerPosition = new Vector3(player.transform.position.x, 0, player.transform.position.z);
+        Vector3 thisPosition = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+
+        Debug.Log(Vector3.Distance(playerPosition, thisPosition));
+
         // Check if the player is close enough to the Giant.
-        if (Vector3.Distance(player.transform.position, this.transform.position) < 500.0f)
+        if (Vector3.Distance(playerPosition, thisPosition) < 500.0f)
         {
             Vector3 from = player.transform.position;
             from.y = 0;
@@ -1043,7 +1068,7 @@ public class giantBehaviour : MonoBehaviour
                 position = PlayerPosition.unknown;
             }
         }
-        else if (Vector3.Distance(player.transform.position, this.transform.position) < 2000.0f)
+        else if (Vector3.Distance(playerPosition, thisPosition) < 2000.0f)
         {
             Vector3 from = player.transform.position;
             from.y = 0;
@@ -1085,6 +1110,8 @@ public class giantBehaviour : MonoBehaviour
         {
             position = PlayerPosition.unknown;
         }
+
+        Debug.Log(position);
 
         return position;
     }
@@ -1253,10 +1280,9 @@ public class giantBehaviour : MonoBehaviour
 
         // Blow up dam on specific points.
         if (animator.currentDamLaserState == GiantAnimator.DamLaserAnimationState.shoot)
+        {
             BlowUpDam();
-
-        if (animator.currentPunchState == GiantAnimator.PunchAnimationState.Recover)
-            BlowUpDam();
+        }
 
         // End the game.
         if (animator.isComplete)
@@ -1265,7 +1291,7 @@ public class giantBehaviour : MonoBehaviour
         }
     }
 
-    private void BlowUpDam()
+    public void BlowUpDam()
     {
         if (!damBlownUp)
         {
@@ -1288,6 +1314,10 @@ public class giantBehaviour : MonoBehaviour
                         body.AddForceAtPosition(new Vector3(20, -20, 0), forcePosition.transform.position, ForceMode.Force);
                     }
                 }
+            }
+            else
+            {
+                Debug.Log("Cannot find pieces to blowup");
             }
         }
     }

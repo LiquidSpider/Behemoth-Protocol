@@ -914,7 +914,7 @@ public class GiantAnimator : MonoBehaviour
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, -45.0f, -90.0f), 1.0f * DestructionAnimationRotationSpeed)
+                new StepPosition(new Vector3(0.0f, 315.0f, 270.0f), 1.0f * DestructionAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // RightHand
             new Step(RightElbow, new List<StepPosition>()
@@ -1378,10 +1378,6 @@ public class GiantAnimator : MonoBehaviour
             if (!step.isComplete)
             {
                 step.PerformStep();
-            }
-            else if (currentPunchState == PunchAnimationState.Release)
-            {
-                Debug.Log(step.joint.jointObject.transform.name + " is complete");
             }
         }
 
