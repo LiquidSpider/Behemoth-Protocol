@@ -20,6 +20,11 @@ public class Emitter : MonoBehaviour
     /// </summary>
     public float growthrate;
 
+    /// <summary>
+    /// The amount of damage to deal to the player.
+    /// </summary>
+    public float Damage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +59,8 @@ public class Emitter : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             // Take damage for the player
-            Debug.Log("Emitter Hit player");
+            if(other.gameObject.GetComponent<PlayerHealth>())
+                other.gameObject.GetComponent<PlayerHealth>().TakeDamage(Damage);
             // Disable the collider.
             this.GetComponent<Collider>().enabled = false;
         }

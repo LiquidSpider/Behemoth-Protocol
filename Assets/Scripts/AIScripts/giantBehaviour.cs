@@ -37,7 +37,7 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     public GameObject[] missileLaunchers = new GameObject[2];
 
-    private float launchTime = 0.0f;
+    private float launchTime;
 
     /// <summary>
     /// The active launchers to shoot from upon fire missile.
@@ -77,14 +77,25 @@ public class giantBehaviour : MonoBehaviour
     public BaseHealth baseHealth;
 
     // Moving variables
-    private int currentMoveableIndex = 0;
+    [Header("Movement Variables")]
+    private int currentMoveableIndex;
     //public float totalTimeTaken;
-    private float maxVelocity;
-    private float movementSpeed;
-    private float rotationSpeed;
+    // private float maxVelocity;
+    // private float movementSpeed;
+    public float timeToReachDam;
+    private float timeToReachCurrentNode;
+    private float currentMovementSpeed;
+    public float rotationSpeed;
+    private float movingStartTime;
+    private float movingJourneyLength;
+    private Vector3 startingPosition;
+    private Vector2 startingPosition2d;
     private float pathingDistance;
     private GameObject pathwayParent;
     private GameObject[] pathways;
+
+    // Dam Variables
+    private bool damBlownUp;
 
     // Lazer Variables
     [Header("Laser Variables")]
@@ -97,18 +108,25 @@ public class giantBehaviour : MonoBehaviour
     private float FinalLaserWindUpTime = 15;
     private float FinalLaserShootTime = 5;
     [SerializeField]
-    private float FinalLaserTime = 0;
+    private float FinalLaserTime;
 
     [Header("Laser Time Variables")]
     public GameObject[] LLaserObjects;
     public GameObject[] RLaserObjects;
     public GameObject ChestLaser;
+    public GameObject ChestAttackLaser;
 
     [Header("Smoke Variables")]
     public GameObject[] RightArmSmoke;
     public GameObject[] LeftArmSmoke;
     public GameObject[] LegSmoke;
     public GameObject[] BodySmoke;
+
+    private bool FirstLaserFired;
+    private bool SecondLaserFired;
+    private bool ThirdLaserFired;
+
+    private bool ReachedEndOfDam;
 
     /// <summary>
     /// The different states the enemy can be in.
@@ -141,6 +159,7 @@ public class giantBehaviour : MonoBehaviour
     {
         Idle,
         Default,
+        LaserAttack,
         FinalLaser,
         Pulse,
     }
@@ -176,7 +195,7 @@ public class giantBehaviour : MonoBehaviour
         farinfront
     }
 
-    private float attackTimer = 0;
+    private float attackTimer;
 
     /// <summary>
     /// The last enemy attack.
@@ -192,13 +211,13 @@ public class giantBehaviour : MonoBehaviour
     /// <summary>
     /// Final stand AOE emitter conditions.
     /// </summary>
-    private bool FirstEmitterUsed = false;
-    private bool SecondEmitterUsed = false;
+    private bool FirstEmitterUsed;
+    private bool SecondEmitterUsed;
 
     /// <summary>
     /// The timer for the emitter timer.
     /// </summary>
-    private float EmitterStartTime = 0;
+    private float EmitterStartTime;
 
     /// <summary>
     /// The delay timer to wind up the emitter.
@@ -236,7 +255,6 @@ public class giantBehaviour : MonoBehaviour
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         Setup();
-
     }
 
     /// <summary>
@@ -244,10 +262,36 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void Setup()
     {
-        // setup the rotation and speed.
-        rotationSpeed = 1000.0f;
-        movementSpeed = 1.0f / 5.0f;
+        damBlownUp = false;
+        FirstEmitterUsed = false;
+        SecondEmitterUsed = false;
+        currentMoveableIndex = 0;
+        EmitterStartTime = 0;
+        attackTimer = 0;
+        FinalLaserTime = 0;
+        launchTime = 0;
+        FirstLaserFired = false;
+        SecondLaserFired = false;
+        ThirdLaserFired = false;
+        ReachedEndOfDam = false;
+
+        // setup moving variables
+        startingPosition = this.transform.position;
+        startingPosition2d = new Vector2(this.transform.position.x, this.transform.position.z);
+        movingStartTime = Time.time;
         pathingDistance = 10.0f;
+        // Calculate the total journey length.
+        for (int i = 0; i < pathways.Length; i++)
+        {
+            if (i == 0)
+            {
+                movingJourneyLength += Vector2.Distance(startingPosition2d, new Vector2(pathways[i].transform.position.x, pathways[i].transform.position.z));
+            }
+            else
+            {
+                movingJourneyLength += Vector2.Distance(new Vector2(pathways[i - 1].transform.position.x, pathways[i - 1].transform.position.z), new Vector2(pathways[i].transform.position.x, pathways[i].transform.position.z));
+            }
+        }
 
         // Last Stand is 3 minutes (180 seconds).
         LastStandDuration = 180.0f;
@@ -314,7 +358,7 @@ public class giantBehaviour : MonoBehaviour
     void Update()
     {
         //pause
-        if(gameManager.gamePaused)
+        if (gameManager.gamePaused)
         {
 
         }
@@ -333,34 +377,34 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void DevKey()
     {
-        if(Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.K))
+        if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.K))
         {
-            if(Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 // Destory the left hand
                 LeftArmHealth.TakeDamage(999999);
             }
 
-            if(Input.GetKeyDown(KeyCode.Alpha2))
+            if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 // Destory the right hand
                 RightArmHealth.TakeDamage(999999);
             }
 
-            if(Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 // Destory the legs
                 LegsHealth.TakeDamage(99999999);
             }
 
-            if(Input.GetKeyDown(KeyCode.Alpha4))
+            if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                if(this.currentEnemyState == EnemyState.moving)
+                if (this.currentEnemyState == EnemyState.moving)
                 {
-                    if(this.armState == EnemyArmStates.both)
+                    if (this.armState == EnemyArmStates.both)
                     {
                         animator.currentAnimation = GiantAnimator.Animation.GiantClap;
-                                
+
                         canMove = false;
                         EnableKinematics(true, Kinematics.Chest);
                         EnableKinematics(true, Kinematics.rightArm);
@@ -369,7 +413,7 @@ public class giantBehaviour : MonoBehaviour
                         EnableKinematics(true, Kinematics.leftHand);
                         EnableKinematics(true, Kinematics.leftLeg);
                         EnableKinematics(true, Kinematics.rightLeg);
-                        
+
                         currentEnemyState = EnemyState.attacking;
                     }
                 }
@@ -386,10 +430,14 @@ public class giantBehaviour : MonoBehaviour
         {
             case EnemyState.idle:
                 canMove = false;
-                currentEnemyState = EnemyState.moving;
+                if (ReachedEndOfDam)
+                    currentEnemyState = EnemyState.destoryingDam;
+                else
+                    currentEnemyState = EnemyState.moving;
                 break;
             case EnemyState.moving:
                 canMove = true;
+
                 // Run all the conditional statements for the movement step.
                 RunMovementChecks();
 
@@ -400,6 +448,7 @@ public class giantBehaviour : MonoBehaviour
 
                 // Fire Missiles
                 fireMissiles();
+
                 break;
             case EnemyState.attacking:
                 // Check the paths
@@ -454,7 +503,7 @@ public class giantBehaviour : MonoBehaviour
                     SmokeActivity(false, LegSmoke);
                 }
 
-                if(this.thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinishStand"))
+                if (this.thisAnimator.GetCurrentAnimatorStateInfo(0).IsName("FinishStand"))
                 {
                     // Reset the legs health.
                     LegsHealth.Revive();
@@ -469,6 +518,14 @@ public class giantBehaviour : MonoBehaviour
                 break;
             case EnemyState.destoryingDam:
                 canMove = false;
+                // Enable Kinematics
+                EnableKinematics(true, Kinematics.Chest);
+                EnableKinematics(true, Kinematics.rightArm);
+                EnableKinematics(true, Kinematics.leftArm);
+                EnableKinematics(true, Kinematics.rightHand);
+                EnableKinematics(true, Kinematics.leftHand);
+                EnableKinematics(true, Kinematics.leftLeg);
+                EnableKinematics(true, Kinematics.rightLeg);
                 // Destroy the dam.
                 DestroyDam();
                 break;
@@ -492,6 +549,14 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void LastStandCheckConditions()
     {
+
+        // First Laser
+        if (this.LastStandDuration <= 160 && !this.FirstLaserFired)
+        {
+            this.lastStandState = LastStandState.LaserAttack;
+            FirstLaserFired = true;
+        }
+
         // Second minute emittor
         if (this.LastStandDuration <= 120 && !this.FirstEmitterUsed)
         {
@@ -499,11 +564,25 @@ public class giantBehaviour : MonoBehaviour
             FirstEmitterUsed = true;
         }
 
+        // Second Laser
+        if (this.LastStandDuration <= 90 && !this.SecondLaserFired)
+        {
+            this.lastStandState = LastStandState.LaserAttack;
+            SecondLaserFired = true;
+        }
+
         // 1 minute emittor.
         if (this.LastStandDuration <= 60 && !this.SecondEmitterUsed)
         {
             this.lastStandState = LastStandState.Pulse;
             SecondEmitterUsed = true;
+        }
+
+        // Third Laser
+        if (this.LastStandDuration <= 40 && !this.ThirdLaserFired)
+        {
+            this.lastStandState = LastStandState.LaserAttack;
+            ThirdLaserFired = true;
         }
 
         // Final Stand
@@ -519,7 +598,7 @@ public class giantBehaviour : MonoBehaviour
     private void CheckHealth()
     {
 
-    	CheckSmoke();
+        CheckSmoke();
 
         // Check if arms should be disabled
         switch (armState)
@@ -530,38 +609,38 @@ public class giantBehaviour : MonoBehaviour
                     armState = EnemyArmStates.right;
                     DestroyHand(GiantAnimator.Hand.left);
 
-					// Navigator Prompt
-					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedOne();
-				}
+                    // Navigator Prompt
+                    GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedOne();
+                }
                 if (RightArmHealth.isDead)
                 {
                     armState = EnemyArmStates.left;
                     DestroyHand(GiantAnimator.Hand.right);
 
-					// Navigator Prompt
-					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedOne();
-				}
-				break;
+                    // Navigator Prompt
+                    GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedOne();
+                }
+                break;
             case EnemyArmStates.left:
                 if (LeftArmHealth.isDead)
                 {
                     armState = EnemyArmStates.none;
                     DestroyHand(GiantAnimator.Hand.left);
 
-					// Navigator Prompt
-					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedTwo();
-				}
-				break;
+                    // Navigator Prompt
+                    GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedTwo();
+                }
+                break;
             case EnemyArmStates.right:
                 if (RightArmHealth.isDead)
                 {
                     armState = EnemyArmStates.none;
                     DestroyHand(GiantAnimator.Hand.right);
 
-					// Navigator Prompt
-					GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedTwo();
-				}
-				break;
+                    // Navigator Prompt
+                    GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallArmDestroyedTwo();
+                }
+                break;
             case EnemyArmStates.none:
                 if (baseHealth.isDead)
                 {
@@ -577,17 +656,17 @@ public class giantBehaviour : MonoBehaviour
             {
                 currentEnemyState = EnemyState.repairing;
 
-				// Navigator Prompt
-				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallNoLegWithArms();
-			}
+                // Navigator Prompt
+                GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallNoLegWithArms();
+            }
             else
             {
                 this.currentEnemyState = EnemyState.lastStand;
                 baseHealth.takeDamage = true;
 
-				// Navigator Prompt
-				GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallEnterFinalPhase();
-			}
+                // Navigator Prompt
+                GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallEnterFinalPhase();
+            }
         }
 
         //Check if the base is dead.
@@ -657,7 +736,7 @@ public class giantBehaviour : MonoBehaviour
                             if (Random.Range(0, 2) == 0)
                             {
                                 animator.currentAnimation = GiantAnimator.Animation.GiantClap;
-                                
+
                                 canMove = false;
                                 EnableKinematics(true, Kinematics.Chest);
                                 EnableKinematics(true, Kinematics.rightArm);
@@ -695,7 +774,7 @@ public class giantBehaviour : MonoBehaviour
                         if (armState != EnemyArmStates.none && armState != EnemyArmStates.right)
                         {
                             animator.hand = GiantAnimator.Hand.left;
-                            
+
                             switch (Random.Range(0, 2))
                             {
                                 case 0:
@@ -744,13 +823,13 @@ public class giantBehaviour : MonoBehaviour
                             EnableKinematics(true, Kinematics.leftLeg);
                             EnableKinematics(true, Kinematics.rightLeg);
                             canMove = false;
-                                //case 1:
-                                //    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
-                                //    EnableKinematics(true, Kinematics.Chest);
-                                //    EnableKinematics(true, Kinematics.leftArm);
-                                //    EnableKinematics(true, Kinematics.leftHand);
-                                //    canMove = true;
-                                //    break;
+                            //case 1:
+                            //    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                            //    EnableKinematics(true, Kinematics.Chest);
+                            //    EnableKinematics(true, Kinematics.leftArm);
+                            //    EnableKinematics(true, Kinematics.leftHand);
+                            //    canMove = true;
+                            //    break;
                             // Update the state;
                             currentEnemyState = EnemyState.attacking;
                         }
@@ -810,14 +889,14 @@ public class giantBehaviour : MonoBehaviour
                             EnableKinematics(true, Kinematics.leftLeg);
                             EnableKinematics(true, Kinematics.rightLeg);
                             canMove = false;
-                                    //break;
-                                //case 1:
-                                //    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
-                                //    EnableKinematics(true, Kinematics.Chest);
-                                //    EnableKinematics(true, Kinematics.rightArm);
-                                //    EnableKinematics(true, Kinematics.rightHand);
-                                //    canMove = true;
-                                //    break;
+                            //break;
+                            //case 1:
+                            //    animator.currentAnimation = GiantAnimator.Animation.GiantSwipeUp;
+                            //    EnableKinematics(true, Kinematics.Chest);
+                            //    EnableKinematics(true, Kinematics.rightArm);
+                            //    EnableKinematics(true, Kinematics.rightHand);
+                            //    canMove = true;
+                            //    break;
                             // Update the state;
                             currentEnemyState = EnemyState.attacking;
                         }
@@ -852,20 +931,48 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void CheckPath()
     {
-        // Check the distance from this object to the current pathing index excluding the Y axis
-        if (currentMoveableIndex <= pathways.Length - 1)
+        // reached the dam.
+        if (currentMoveableIndex == pathways.Length && !ReachedEndOfDam)
         {
-            Vector2 pathPos = new Vector2(pathways[currentMoveableIndex].transform.position.x, pathways[currentMoveableIndex].transform.position.z);
-            Vector2 currentPos = new Vector2(transform.position.x, transform.position.z);
-
-            // if this distance is within range increment path.
-            if (Vector2.Distance(pathPos, currentPos) < pathingDistance)
+            if (currentEnemyState == EnemyState.attacking)
             {
-                currentMoveableIndex++;
-                // reached the dam.
-                if (currentMoveableIndex > pathways.Length - 1)
+                switch (animator.currentAnimation)
                 {
-                    currentEnemyState = EnemyState.destoryingDam;
+                    case GiantAnimator.Animation.Laser:
+                        animator.currentLaserState = GiantAnimator.LaserAnimationState.recover;
+                        break;
+                    case GiantAnimator.Animation.GiantClap:
+                        animator.currentClapAnimationState = GiantAnimator.ClapAnimationState.Recover;
+                        break;
+                    case GiantAnimator.Animation.GiantSwing:
+                        animator.CurrentSwingState = GiantAnimator.SwingAnimationState.Recover;
+                        break;
+                }
+            }
+            Debug.Log("ReachedEndOfDam");
+            ReachedEndOfDam = true;
+            currentEnemyState = EnemyState.idle;
+            // Disable the movement
+            canMove = false;
+            this.GetComponent<Animator>().enabled = false;
+        }
+        else
+        {
+            if (currentMoveableIndex <= pathways.Length - 1)
+            {
+                // Check the distance from this object to the current pathing index excluding the Y axis
+                Vector2 pathPos = new Vector2(pathways[currentMoveableIndex].transform.position.x, pathways[currentMoveableIndex].transform.position.z);
+                Vector2 currentPos = new Vector2(transform.position.x, transform.position.z);
+
+                timeToReachCurrentNode = (Vector2.Distance(this.startingPosition2d, pathPos) / movingJourneyLength) * timeToReachDam;
+
+                // if this distance is within range increment path.
+                if (Vector2.Distance(pathPos, currentPos) < pathingDistance)
+                {
+                    currentMoveableIndex++;
+                    this.startingPosition = this.transform.position;
+                    this.startingPosition2d = new Vector2(this.transform.position.x, this.transform.position.z);
+                    currentMovementSpeed = 0;
                 }
             }
         }
@@ -889,7 +996,7 @@ public class giantBehaviour : MonoBehaviour
             // left
             float angle = -Vector3.SignedAngle(heading, -this.transform.right, Vector3.up);
 
-			// Jonathan's Code was here
+            // Jonathan's Code was here
 
             // infront
             if (angle >= 60 && angle <= 120)
@@ -936,9 +1043,9 @@ public class giantBehaviour : MonoBehaviour
                 position = PlayerPosition.unknown;
             }
         }
-        else if(Vector3.Distance(player.transform.position, this.transform.position) < 2000.0f)
+        else if (Vector3.Distance(player.transform.position, this.transform.position) < 2000.0f)
         {
-			Vector3 from = player.transform.position;
+            Vector3 from = player.transform.position;
             from.y = 0;
             Vector3 to = this.transform.position;
             to.y = 0;
@@ -947,24 +1054,25 @@ public class giantBehaviour : MonoBehaviour
             float angle = -Vector3.SignedAngle(heading, -this.transform.right, Vector3.up);
 
 
-			// Call to activate the missile launchers
-			if (angle >= 0 && angle <= 180) {
-				activeLaunchers.Clear();
-				for (int i = 0; i < missileLaunchers[1].transform.childCount; i++) {
-					activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
-				}
-			} else if (angle < 0 && angle >= 180) {
-				activeLaunchers.Clear();
-				for (int i = 0; i < missileLaunchers[1].transform.childCount; i++) {
-					activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
-				}
-			}
+            // Call to activate the missile launchers
+            if (angle >= 0 && angle <= 180)
+            {
+                activeLaunchers.Clear();
+                for (int i = 0; i < missileLaunchers[1].transform.childCount; i++)
+                {
+                    activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
+                }
+            }
+            else if (angle < 0 && angle >= 180)
+            {
+                activeLaunchers.Clear();
+                for (int i = 0; i < missileLaunchers[1].transform.childCount; i++)
+                {
+                    activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
+                }
+            }
 
-
-
-
-
-			if (angle >= 60 && angle <= 120)
+            if (angle >= 60 && angle <= 120)
             {
                 position = PlayerPosition.farinfront;
             }
@@ -1003,18 +1111,60 @@ public class giantBehaviour : MonoBehaviour
                 // Fire Missiles
                 break;
 
+            case LastStandState.LaserAttack:
+                LaserAttack();
+                break;
+
             case LastStandState.Pulse:
                 Pulse();
                 break;
 
             case LastStandState.FinalLaser:
-                Debug.Log("Final Lasering");
                 FinalLaser();
                 break;
         }
 
         // Increment the last stand duration.
         LastStandDuration -= Time.deltaTime;
+    }
+
+    private void LaserAttack()
+    {
+
+        if (animator.currentAnimation != GiantAnimator.Animation.FinalLaser)
+        {
+            animator.currentAnimation = GiantAnimator.Animation.FinalLaser;
+            EnableKinematics(true, Kinematics.Chest);
+        }
+
+        if (animator.currentAnimation == GiantAnimator.Animation.FinalLaser)
+        {
+            if (animator.currentFinalLaserState == GiantAnimator.FinalLaserAnimationState.shoot)
+            {
+                ChestAttackLaser.SetActive(true);
+                if (!ChestAttackLaser.GetComponent<Laser>().enabled)
+                {
+                    ChestAttackLaser.GetComponent<Laser>().enabled = true;
+                }
+            }
+
+            if (animator.currentLaserState == GiantAnimator.LaserAnimationState.recover || animator.isComplete)
+            {
+                ChestAttackLaser.SetActive(false);
+                if (!ChestAttackLaser.GetComponent<Laser>().enabled)
+                {
+                    ChestAttackLaser.GetComponent<Laser>().enabled = false;
+                }
+            }
+        }
+
+        // If the animation is complete.
+        if (animator.isComplete)
+        {
+            animator.isComplete = false;
+            animator.currentAnimation = GiantAnimator.Animation.idle;
+            lastStandState = LastStandState.Default;
+        }
     }
 
     /// <summary>
@@ -1038,13 +1188,15 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void FinalLaser()
     {
-        
+
         // If wind up is finished.
-        if(FinalLaserTime > FinalLaserWindUpTime)
+        if (FinalLaserTime > FinalLaserWindUpTime)
         {
             // Enabled the laser and it's script.
             ChestLaser.SetActive(true);
             ChestLaser.GetComponent<Laser>().enabled = true;
+
+            BlowUpDam();
 
             if (FinalLaserTime > FinalLaserWindUpTime + FinalLaserShootTime)
             {
@@ -1063,12 +1215,80 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void DestroyDam()
     {
-        if (animator.currentAnimation != GiantAnimator.Animation.GiantDamPunch)
-            animator.currentAnimation = GiantAnimator.Animation.GiantDamPunch;
+        // Enable the animation depending on leftover limbs
+        if (animator.currentAnimation != GiantAnimator.Animation.GiantDamPunch && animator.currentAnimation != GiantAnimator.Animation.DamLaser)
+        {
+            if (this.armState != EnemyArmStates.both)
+            {
+                animator.currentAnimation = GiantAnimator.Animation.DamLaser;
 
+            }
+            else
+            {
+                animator.currentAnimation = GiantAnimator.Animation.GiantDamPunch;
+            }
+        }
+
+        // If we're the laser and shooting then enable laser otherwise disable
+        if (animator.currentAnimation == GiantAnimator.Animation.DamLaser)
+        {
+            if (animator.currentDamLaserState == GiantAnimator.DamLaserAnimationState.shoot)
+            {
+                ChestAttackLaser.SetActive(true);
+                if (!ChestAttackLaser.GetComponent<Laser>().enabled)
+                {
+                    ChestAttackLaser.GetComponent<Laser>().enabled = true;
+                }
+            }
+
+            if (animator.currentDamLaserState == GiantAnimator.DamLaserAnimationState.recover || animator.isComplete)
+            {
+                ChestAttackLaser.SetActive(false);
+                if (!ChestAttackLaser.GetComponent<Laser>().enabled)
+                {
+                    ChestAttackLaser.GetComponent<Laser>().enabled = false;
+                }
+            }
+        }
+
+        // Blow up dam on specific points.
+        if (animator.currentDamLaserState == GiantAnimator.DamLaserAnimationState.shoot)
+            BlowUpDam();
+
+        if (animator.currentPunchState == GiantAnimator.PunchAnimationState.Recover)
+            BlowUpDam();
+
+        // End the game.
         if (animator.isComplete)
         {
             gameManager.PlayerLose();
+        }
+    }
+
+    private void BlowUpDam()
+    {
+        if (!damBlownUp)
+        {
+            damBlownUp = true;
+
+            // Find the dam objects and add force
+            GameObject damPieces = GameObject.Find("broken up");
+            GameObject forcePosition = GameObject.Find("Explosion Position");
+
+            if (damPieces && forcePosition)
+            {
+                for (int i = 0; i < damPieces.transform.childCount; i++)
+                {
+                    Rigidbody body = damPieces.transform.GetChild(i).GetComponent<Rigidbody>();
+                    if (body != null)
+                    {
+                        body.useGravity = true;
+                        body.isKinematic = false;
+                        body.constraints = RigidbodyConstraints.None;
+                        body.AddForceAtPosition(new Vector3(20, -20, 0), forcePosition.transform.position, ForceMode.Force);
+                    }
+                }
+            }
         }
     }
 
@@ -1077,7 +1297,7 @@ public class giantBehaviour : MonoBehaviour
     /// </summary>
     private void MoveOnPath()
     {
-        if (canMove)
+        if (canMove && currentMoveableIndex <= pathways.Length - 1)
         {
             // Move towards current path index
             // rotate towards target.
@@ -1085,15 +1305,20 @@ public class giantBehaviour : MonoBehaviour
             lookAt.y = 0;
             Vector3 currentPostion = this.transform.position;
             currentPostion.y = 0;
-            Quaternion lookRotation = Quaternion.LookRotation(lookAt - currentPostion);
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Mathf.Min(rotationSpeed * 20 * Time.deltaTime, 1));
-            // add forward momemtum.
-            this.body.position += (this.transform.forward * movementSpeed);
+            if ((lookAt - currentPostion) != Vector3.zero)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(lookAt - currentPostion);
+                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Mathf.Min(rotationSpeed * 20 * Time.deltaTime, 1));
+            }
+
+            currentMovementSpeed += Time.deltaTime / timeToReachCurrentNode;
+            Vector3 moveToPostion = Vector3.Lerp(this.startingPosition, pathways[currentMoveableIndex].transform.position, currentMovementSpeed);
+            this.transform.position = new Vector3(moveToPostion.x, this.transform.position.y, moveToPostion.z);
 
             // Enable animation.
             this.thisAnimator.SetBool("IsMoving", true);
         }
-        else if(currentEnemyState == EnemyState.attacking)
+        else if (currentEnemyState == EnemyState.attacking)
         {
             this.thisAnimator.enabled = false;
         }
@@ -1116,7 +1341,26 @@ public class giantBehaviour : MonoBehaviour
                     renderer.enabled = false;
                 }
                 SmokeActivity(false, LeftArmSmoke);
-				gameManager.SpawnFakeArm(LeftHandMesh);
+                gameManager.SpawnFakeArm(LeftHandMesh);
+                // Important Stops Attacks
+                if (currentEnemyState == EnemyState.attacking)
+                {
+                    switch (animator.currentAnimation)
+                    {
+                        case GiantAnimator.Animation.Laser:
+                            if (animator.hand == hand)
+                            {
+                                animator.currentLaserState = GiantAnimator.LaserAnimationState.recover;
+                            }
+                            break;
+                        case GiantAnimator.Animation.GiantClap:
+                            animator.currentClapAnimationState = GiantAnimator.ClapAnimationState.Recover;
+                            break;
+                        case GiantAnimator.Animation.GiantSwing:
+                            animator.CurrentSwingState = GiantAnimator.SwingAnimationState.Recover;
+                            break;
+                    }
+                }
                 break;
             case GiantAnimator.Hand.right:
                 RightHandCollider.SetActive(false);
@@ -1127,8 +1371,27 @@ public class giantBehaviour : MonoBehaviour
                     renderer.enabled = false;
                 }
                 SmokeActivity(false, RightArmSmoke);
-				gameManager.SpawnFakeArm(RightHandMesh);
-				break;
+                gameManager.SpawnFakeArm(RightHandMesh);
+                // Important Stops Attacks
+                if (currentEnemyState == EnemyState.attacking)
+                {
+                    switch (animator.currentAnimation)
+                    {
+                        case GiantAnimator.Animation.Laser:
+                            if (animator.hand == hand)
+                            {
+                                animator.currentLaserState = GiantAnimator.LaserAnimationState.recover;
+                            }
+                            break;
+                        case GiantAnimator.Animation.GiantClap:
+                            animator.currentClapAnimationState = GiantAnimator.ClapAnimationState.Recover;
+                            break;
+                        case GiantAnimator.Animation.GiantSwing:
+                            animator.CurrentSwingState = GiantAnimator.SwingAnimationState.Recover;
+                            break;
+                    }
+                }
+                break;
         }
     }
 
@@ -1220,55 +1483,84 @@ public class giantBehaviour : MonoBehaviour
         }
     }
 
-    private void CheckSmoke() {
-		// Check for smoke enabled
-        if (LegsHealth.health < LegsHealth.startingHealth * 0.2f) {
+    private void CheckSmoke()
+    {
+        // Check for smoke enabled
+        if (LegsHealth.health < LegsHealth.startingHealth * 0.2f)
+        {
             LegSmoke[0].SetActive(true);
-        } else if (LegsHealth.health < LegsHealth.startingHealth * 0.4f) {
-        	LegSmoke[1].SetActive(true);
-        } else if (LegsHealth.health < LegsHealth.startingHealth * 0.6f) {
-        	LegSmoke[2].SetActive(true);
-        } else if (LegsHealth.health < LegsHealth.startingHealth * 0.8f) {
-        	LegSmoke[3].SetActive(true);
+        }
+        else if (LegsHealth.health < LegsHealth.startingHealth * 0.4f)
+        {
+            LegSmoke[1].SetActive(true);
+        }
+        else if (LegsHealth.health < LegsHealth.startingHealth * 0.6f)
+        {
+            LegSmoke[2].SetActive(true);
+        }
+        else if (LegsHealth.health < LegsHealth.startingHealth * 0.8f)
+        {
+            LegSmoke[3].SetActive(true);
         }
 
-        if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.2f) {
+        if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.2f)
+        {
             LeftArmSmoke[0].SetActive(true);
-        } else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.4f) {
-        	LeftArmSmoke[1].SetActive(true);
-        } else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.6f) {
-        	LeftArmSmoke[2].SetActive(true);
-        } else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.8f) {
-        	LeftArmSmoke[3].SetActive(true);
+        }
+        else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.4f)
+        {
+            LeftArmSmoke[1].SetActive(true);
+        }
+        else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.6f)
+        {
+            LeftArmSmoke[2].SetActive(true);
+        }
+        else if (LeftArmHealth.health < LeftArmHealth.startingHealth * 0.8f)
+        {
+            LeftArmSmoke[3].SetActive(true);
         }
 
-        if (RightArmHealth.health < RightArmHealth.startingHealth * 0.2f) {
+        if (RightArmHealth.health < RightArmHealth.startingHealth * 0.2f)
+        {
             RightArmSmoke[0].SetActive(true);
-        } else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.4f) {
-        	RightArmSmoke[1].SetActive(true);
-        } else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.6f) {
-        	RightArmSmoke[2].SetActive(true);
-        } else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.8f) {
-        	RightArmSmoke[3].SetActive(true);
+        }
+        else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.4f)
+        {
+            RightArmSmoke[1].SetActive(true);
+        }
+        else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.6f)
+        {
+            RightArmSmoke[2].SetActive(true);
+        }
+        else if (RightArmHealth.health < RightArmHealth.startingHealth * 0.8f)
+        {
+            RightArmSmoke[3].SetActive(true);
         }
 
-        if (baseHealth.health < baseHealth.startingHealth * 0.2f) {
+        if (baseHealth.health < baseHealth.startingHealth * 0.2f)
+        {
             BodySmoke[0].SetActive(true);
-        } else if (baseHealth.health < baseHealth.startingHealth * 0.4f) {
-        	BodySmoke[1].SetActive(true);
-        } else if (baseHealth.health < baseHealth.startingHealth * 0.6f) {
-        	BodySmoke[2].SetActive(true);
-        } else if (baseHealth.health < baseHealth.startingHealth * 0.8f) {
-        	BodySmoke[3].SetActive(true);
+        }
+        else if (baseHealth.health < baseHealth.startingHealth * 0.4f)
+        {
+            BodySmoke[1].SetActive(true);
+        }
+        else if (baseHealth.health < baseHealth.startingHealth * 0.6f)
+        {
+            BodySmoke[2].SetActive(true);
+        }
+        else if (baseHealth.health < baseHealth.startingHealth * 0.8f)
+        {
+            BodySmoke[3].SetActive(true);
         }
     }
-    
+
     /// <summary>
     /// Turns the kinematics on or off
     /// </summary>
     private void EnableKinematics(bool condition, Kinematics kinematics)
     {
-        switch(kinematics)
+        switch (kinematics)
         {
             case Kinematics.leftHand:
                 foreach (GameObject kinematic in animator.LeftHandKinematics)
@@ -1321,135 +1613,6 @@ public class giantBehaviour : MonoBehaviour
                 break;
         }
     }
-	#endregion
+    #endregion
 
-	//// getPathLength retreives the total distance to Giant has to move, in order to calculate how much it needs to move each frame
-	//void getPathLength()
-	//{
-	//    float pathDisX = 0;
-	//    float pathDisZ = 0;
-	//    for (int i = 1; i < pathway.Length; i++)
-	//    {
-	//        pathDisX = pathway[i].transform.position.x - pathway[i - 1].transform.position.x;
-	//        pathDisZ = pathway[i].transform.position.z - pathway[i - 1].transform.position.z;
-
-	//        pathLength += Mathf.Sqrt(pathDisX * pathDisX + pathDisZ * pathDisZ);
-	//    }
-	//}
-
-	//// getMoveDistance finds the distance the Giant should travel each frame
-	//void getMoveDistance()
-	//{
-	//    // Total travel time should be 12min * 60
-	//    int travTime = 10 * 60; //actually going for 10 mins
-	//    moveDistance = pathLength / travTime;
-	//}
-
-	//// moveToTarget moves the Giant along its path to the dam wall
-	//void moveToTarget()
-	//{
-	//    myself.transform.LookAt(currentTarget.transform);
-
-	//    //Change target if giant has reached its current target
-	//    if (Vector3.Distance(currentTarget.transform.position, myself.transform.position) <= 0.5f)
-	//    {
-	//        targetIndex++;
-	//        currentTarget = pathway[targetIndex];
-	//    }
-	//    else
-	//    {
-	//        //Otherwise, head towards next target
-	//        myself.transform.Translate(Vector3.forward * moveDistance * Time.deltaTime);
-	//    }
-	//}
-
-	//// leftArmGone adjusts variables when the giant loses its arm
-	//public void leftArmGone()
-	//{
-	//    leftArmSafe = false;
-	//    LeftArm.SetActive(false);
-	//}
-
-	//// rightArmGone adjusts variables when the giant loses its arm
-	//public void rightArmGone()
-	//{
-	//    rightArmSafe = false;
-	//    RightArm.SetActive(false);
-	//}
-
-	//// legsGame adjusts variables when the giant loses its legs
-	//public void legsGone()
-	//{
-	//    legsSafe = false;
-	//    legDamagedTime = 0;
-	//}
-
-	//// fixLegs runs a timer that will return the giant to walking when the timer is up
-	//void fixLegs()
-	//{
-	//    //Increment Timer
-	//    legDamagedTime += Time.deltaTime;
-	//    //If both arms are still operational
-	//    if (rightArmSafe && leftArmSafe)
-	//    {
-	//        //Fix in 15 seconds
-	//        if (legDamagedTime > 15.0f)
-	//        {
-	//            legsSafe = true;
-	//            Legs.GetComponent<legsBehaviour>().legsFixed();
-	//        }
-	//        //If only 1 arm is operational - fix in 30 secs
-	//    }
-	//    else if (rightArmSafe && !leftArmSafe || leftArmSafe && !rightArmSafe)
-	//    {
-	//        if (legDamagedTime > 30.0f)
-	//        {
-	//            legsSafe = true;
-	//            Legs.GetComponent<legsBehaviour>().legsFixed();
-	//        }
-	//        //if no arms are operational, don't do anything here
-	//        //Although here it should do something else (in another script or later on)
-	//    }
-	//    else
-	//    {
-	//        return;
-	//    }
-	//}
-
-	//void locatePlayer()
-	//{
-	//    //Calc distance to determine which missiles to launch
-	//    distToFront = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[0].transform.position);
-	//    distToBack = Vector3.Distance(player.transform.GetChild(0).position, missileLaunchers[1].transform.position);
-	//    //Debug.Log(distToFront + " " + distToBack);
-
-
-	//    //Assign missiles and turrents to be 'awake' based on where player is
-	//    //Missile launchers being assigned
-	//    if (Mathf.Sqrt((distToBack - distToFront) * (distToBack - distToFront)) < 15.0f)
-	//    {
-	//        //When the player is near the sides of the machine
-	//        activeLaunchers = new List<GameObject>();
-	//    }
-	//    else if (distToFront > distToBack)
-	//    {
-	//        //The player is behind the giant so make the front launchers active
-	//        int launchNum = missileLaunchers[0].transform.childCount;
-	//        activeLaunchers = new List<GameObject>();
-	//        for (int i = 0; i < launchNum; i++)
-	//        {
-	//            activeLaunchers.Add(missileLaunchers[0].transform.GetChild(i).gameObject);
-	//        }
-	//    }
-	//    else if (distToBack > distToFront)
-	//    {
-	//        //The player is in front of the giant so make the front launchers active
-	//        int launchNum = missileLaunchers[1].transform.childCount;
-	//        activeLaunchers = new List<GameObject>();
-	//        for (int i = 0; i < launchNum; i++)
-	//        {
-	//            activeLaunchers.Add(missileLaunchers[1].transform.GetChild(i).gameObject);
-	//        }
-	//    }
-	//}
 }

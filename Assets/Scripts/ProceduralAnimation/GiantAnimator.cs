@@ -7,6 +7,7 @@ using System.Data;
 public class GiantAnimator : MonoBehaviour
 {
     //public GameObject[] Kinematics;
+    public GameObject ChestPiece;
     public GameObject[] LeftHandKinematics;
     public GameObject[] LeftArmKinematics;
     public GameObject[] RightHandKinematics;
@@ -31,7 +32,9 @@ public class GiantAnimator : MonoBehaviour
         GiantClap,
         //GiantSwipeUp,
         GiantSwing,
-        Laser
+        Laser,
+        FinalLaser,
+        DamLaser
     }
 
     [Header("Animation States")]
@@ -74,8 +77,25 @@ public class GiantAnimator : MonoBehaviour
     private LLJoint RHThumbJoint;
     #endregion
 
+    [Header("Animation Speed Variables")]
+    public float DestructionAnimationSpeed;
+    public float DestructionAnimationRotationSpeed;
+    public float LaserFirstStepSpeed;
+    public float LaserFirstStepRotationSpeed;
+    public float LaserHandFollowSpeed;
+    public float LaserFingerFollowSpeed;
+    public float LaserSecondStepSpeed;
+    public float LaserSecondStepRotationSpeed;
+    public float ClapAnimationSpeed;
+    public float ClapAnimationRotationSpeed;
+    public float PunchAnimationSpeed;
+    public float PunchAnimationRotationSpeed;
+    public float PunchReleaseAnimationSpeed;
+    public float ChestLaserFollowSpeed;
+
     #region PunchVariables
-    private float PunchAnimSpeed = 50.0f;
+    public GameObject PunchTargetL;
+    public GameObject PunchTargetR;
 
     public enum PunchAnimationState
     {
@@ -95,7 +115,6 @@ public class GiantAnimator : MonoBehaviour
     private ClenchFistAnimation fistAnimation;
 
     #region ClapVariables
-    private float ClapAnimSpeed = 50.0f;
 
     public enum ClapAnimationState
     {
@@ -145,7 +164,6 @@ public class GiantAnimator : MonoBehaviour
     #endregion
 
     #region SwingVariables
-    private float SwingAnimSpeed = 50.0f;
 
     public enum SwingAnimationState
     {
@@ -196,6 +214,38 @@ public class GiantAnimator : MonoBehaviour
     public Hand hand;
     #endregion
 
+    #region FinalLaserVariables
+    public enum FinalLaserAnimationState
+    {
+        idle,
+        shoot,
+        recover,
+    }
+
+    public FinalLaserAnimationState currentFinalLaserState;
+
+    public GameObject ChestLaserTarget;
+    private List<Step> finalLaserAnimationPart0;
+    private List<Step> finalLaserAnimationPart1;
+    #endregion
+
+    #region DamLaser
+    public enum DamLaserAnimationState
+    {
+        idle,
+        aim,
+        shoot,
+        recover,
+    }
+
+    public DamLaserAnimationState currentDamLaserState;
+
+    public GameObject DamLaserTarget;
+    private List<Step> DamLaserAnimationPart0;
+    private List<Step> DamLaserAnimationPart1;
+    private List<Step> DamLaserAnimationPart2;
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
@@ -211,6 +261,8 @@ public class GiantAnimator : MonoBehaviour
         SetupDamPunchAnimation();
         SetupClapAnimation();
         SetupSwingAnimation();
+        SetupFinalLaserAnimation();
+        SetupDamLaserAnimation();
         //SetupSwipeAnimation();
 
         // Get the giant behaviour
@@ -278,53 +330,53 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0, 0.2f, 0.2f), 7.0f * 50.0f)
+                new StepPosition(new Vector3(0, 0.2f, 0.2f), 350.0f * LaserFirstStepSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(330, 30, 285), 0.1f)
+                new StepPosition(new Vector3(330, 30, 285), 0.1f * LaserFirstStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
         };
 
         laserAnimationLPart1 = new List<Step>()
         {
-            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f),
-            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f * LaserHandFollowSpeed),
+            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f * LaserHandFollowSpeed),
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
         };
 
         laserAnimationLPart2 = new List<Step>()
         {
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalRotation, 0.1f)
+                new StepPosition(LeftHand.startingLocalRotation, 0.1f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalPosition, 7.0f * 50.0f)
+                new StepPosition(LeftHand.startingLocalPosition, 350.0f * LaserSecondStepSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LHPinkyTip, new List<StepPosition>()
             {
-                new StepPosition(LHPinkyTip.startingLocalRotation, 0.01f)
+                new StepPosition(LHPinkyTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LHRingTip, new List<StepPosition>()
             {
-                new StepPosition(LHRingTip.startingLocalRotation, 0.01f)
+                new StepPosition(LHRingTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LHMiddleTip, new List<StepPosition>()
             {
-                new StepPosition(LHMiddleTip.startingLocalRotation, 0.01f)
+                new StepPosition(LHMiddleTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LHIndexTip, new List<StepPosition>()
             {
-                new StepPosition(LHIndexTip.startingLocalRotation, 0.01f)
+                new StepPosition(LHIndexTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
         };
 
@@ -332,53 +384,74 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0, 0.2f, 0.2f), 7.0f * 50.0f)
+                new StepPosition(new Vector3(0, 0.2f, 0.2f), 350.0f * LaserFirstStepSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(330, 30, 75), 0.1f)
+                new StepPosition(new Vector3(330, 30, 75), 0.1f * LaserFirstStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
         };
 
         laserAnimationRPart1 = new List<Step>()
         {
-            new Step(RightHand, RightLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f),
-            new Step(RightHand, RightLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f),
+            new Step(RightHand, RightLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f * LaserHandFollowSpeed),
+            new Step(RightHand, RightLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f * LaserHandFollowSpeed),
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
         };
 
         laserAnimationRPart2 = new List<Step>()
         {
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalRotation, 0.1f)
+                new StepPosition(RightHand.startingLocalRotation, 0.1f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalPosition, 7.0f * 50.0f)
+                new StepPosition(RightHand.startingLocalPosition, 350.0f * LaserSecondStepSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RHPinkyTip, new List<StepPosition>()
             {
-                new StepPosition(RHPinkyTip.startingLocalRotation, 0.01f)
+                new StepPosition(RHPinkyTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RHRingTip, new List<StepPosition>()
             {
-                new StepPosition(RHRingTip.startingLocalRotation, 0.01f)
+                new StepPosition(RHRingTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RHMiddleTip, new List<StepPosition>()
             {
-                new StepPosition(RHMiddleTip.startingLocalRotation, 0.01f)
+                new StepPosition(RHMiddleTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RHIndexTip, new List<StepPosition>()
             {
-                new StepPosition(RHIndexTip.startingLocalRotation, 0.01f)
+                new StepPosition(RHIndexTip.startingLocalRotation, 0.01f * LaserSecondStepRotationSpeed)
+            }, Step.DirectionType.rotation, Step.StepType.position),
+        };
+    }
+
+    private void SetupDamLaserAnimation()
+    {
+        DamLaserAnimationPart0 = new List<Step>()
+        {
+            new Step(Chest, DamLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 1.0f, 3.0f),
+        };
+
+        DamLaserAnimationPart1 = new List<Step>()
+        {
+            new Step(Chest, DamLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+        };
+
+        DamLaserAnimationPart2 = new List<Step>()
+        {
+            new Step(Chest, new List<StepPosition>()
+            {
+                new StepPosition(Chest.startingLocalRotation, 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.position),
         };
     }
@@ -445,41 +518,41 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.1f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.1f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.1f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.05f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.05f), 20f * PunchAnimationSpeed),
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(LeftElbow, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 0.0f, -0.4f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.4f, 0.0f, -0.4f), 0.4f * SwingAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 0.0f, -0.4f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(0.4f, 0.0f, -0.4f), 20f * PunchAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Spine, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(RightHand, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(RightElbow, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(Chest, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(Spine, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(RightHand, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(RightElbow, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
         };
 
         // Setup Left step 2
         swingAnimationLPart1 = new List<Step>()
         {
-            new Step(LeftHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 1.0f),
-            new Step(LeftHand, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, 1.0f),
+            new Step(LeftHand, PunchTargetL, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
+            new Step(LeftHand, PunchTargetL, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
         };
 
         // Setup Left step 3
@@ -487,32 +560,32 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(LeftHand.startingLocalPosition, 350.0f * PunchAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalRotation, 0.01f)
+                new StepPosition(LeftHand.startingLocalRotation, 0.01f * PunchAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(LeftElbow, new List<StepPosition>()
             {
-                new StepPosition(LeftElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(LeftElbow.startingLocalPosition, 350.0f * PunchAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(Chest.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(Spine, new List<StepPosition>()
-            {
-                new StepPosition(Spine.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(RightHand, new List<StepPosition>()
-            {
-                new StepPosition(RightHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(RightElbow, new List<StepPosition>()
-            {
-                new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(Chest, new List<StepPosition>()
+            // {
+            //     new StepPosition(Chest.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(Spine, new List<StepPosition>()
+            // {
+            //     new StepPosition(Spine.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(RightHand, new List<StepPosition>()
+            // {
+            //     new StepPosition(RightHand.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(RightElbow, new List<StepPosition>()
+            // {
+            //     new StepPosition(RightElbow.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
         };
 
         // Setup Right step 1
@@ -520,41 +593,41 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 0.4f * SwingAnimSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.05f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(0.05f, 0.05f, -0.1f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(-0.05f, 0.05f, -0.05f), 20f * PunchAnimationSpeed),
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightElbow, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 0.0f, -0.4f), 0.4f * SwingAnimSpeed),
-                new StepPosition(new Vector3(0.4f, 0.0f, -0.4f), 0.4f * SwingAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 0.0f, -0.4f), 20f * PunchAnimationSpeed),
+                new StepPosition(new Vector3(0.4f, 0.0f, -0.4f), 20f * PunchAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(Spine, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(LeftHand, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
-            new Step(LeftElbow, new List<StepPosition>()
-            {
-                new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 0.4f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(Chest, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(Spine, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(LeftHand, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
+            // new Step(LeftElbow, new List<StepPosition>()
+            // {
+            //     new StepPosition(new Vector3(0.0f, -0.3f, 0.0f), 20f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.addition),
         };
 
         // Setup Right step 2
         swingAnimationRPart1 = new List<Step>()
         {
-            new Step(RightHand, Player, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 1.0f),
-            new Step(RightHand, Player, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, 1.0f),
+            new Step(RightHand, PunchTargetR, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
+            new Step(RightHand, PunchTargetR, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
         };
 
         // Setup Right step 3
@@ -562,32 +635,32 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(RightHand.startingLocalPosition, 350.0f * PunchAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalRotation, 0.01f)
+                new StepPosition(RightHand.startingLocalRotation, 0.01f * PunchAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RightElbow, new List<StepPosition>()
             {
-                new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(RightElbow.startingLocalPosition, 350.0f * PunchAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
-            new Step(Chest, new List<StepPosition>()
-            {
-                new StepPosition(Chest.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(Spine, new List<StepPosition>()
-            {
-                new StepPosition(Spine.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(LeftHand, new List<StepPosition>()
-            {
-                new StepPosition(LeftHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
-            new Step(LeftElbow, new List<StepPosition>()
-            {
-                new StepPosition(LeftElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
-            }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(Chest, new List<StepPosition>()
+            // {
+            //     new StepPosition(Chest.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(Spine, new List<StepPosition>()
+            // {
+            //     new StepPosition(Spine.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(LeftHand, new List<StepPosition>()
+            // {
+            //     new StepPosition(LeftHand.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
+            // new Step(LeftElbow, new List<StepPosition>()
+            // {
+            //     new StepPosition(LeftElbow.startingLocalPosition, 350.0f * PunchAnimationSpeed)
+            // }, Step.DirectionType.position, Step.StepType.position),
         };
     }
 
@@ -655,11 +728,11 @@ public class GiantAnimator : MonoBehaviour
             //}, Step.DirectionType.position, Step.StepType.addition),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 0.2f, 0.2f), 7.0f * ClapAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 0.2f, 0.2f), 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(270.0f, 0.0f, 0.0f), 1.0f)
+                new StepPosition(new Vector3(270.0f, 0.0f, 0.0f), 1.0f * ClapAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             //new Step(RightElbow, new List<StepPosition>()
             //{
@@ -667,11 +740,11 @@ public class GiantAnimator : MonoBehaviour
             //}, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 0.2f, 0.2f), 7.0f * ClapAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 0.2f, 0.2f), 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(270.0f, -0.0f, 0.0f), 1.0f)
+                new StepPosition(new Vector3(270.0f, -0.0f, 0.0f), 1.0f * ClapAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             //new Step(LeftKnee, new List<StepPosition>()
             //{
@@ -688,7 +761,7 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, LeftHandClapTarget, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 1.2f),
             new Step(RightHand, RightHandClapTarget, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 1.2f),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 1.2f)
+            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 1.2f * ClapAnimationRotationSpeed)
         };
 
         // setup step 3
@@ -696,7 +769,7 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, clapTarget, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.25f),
             new Step(RightHand, clapTarget, Step.DirectionType.position, Step.FollowType.xyz, 10.0f,  0.25f),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 0.25f)
+            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 0.25f * ClapAnimationRotationSpeed)
         };
 
         // setup step 4
@@ -704,51 +777,51 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftElbow, new List<StepPosition>()
             {
-                new StepPosition(LeftElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(LeftElbow.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(LeftHand.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(LeftHand.startingLocalRotation, 1.0f)
+                new StepPosition(LeftHand.startingLocalRotation, 1.0f * ClapAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(RightElbow, new List<StepPosition>()
             {
-                new StepPosition(RightElbow.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(RightElbow.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(RightHand.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(RightHand.startingLocalRotation, 1.0f)
+                new StepPosition(RightHand.startingLocalRotation, 1.0f * ClapAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(Spine, new List<StepPosition>()
             {
-                new StepPosition(Spine.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(Spine.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(Chest.startingLocalPosition, 2.0f * SwingAnimSpeed)
+                new StepPosition(Chest.startingLocalPosition, 2.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(Chest.startingLocalRotation, 1.0f)
+                new StepPosition(Chest.startingLocalRotation, 1.0f * ClapAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             new Step(Waist, new List<StepPosition>()
             {
-                new StepPosition(Waist.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(Waist.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftKnee, new List<StepPosition>()
             {
-                new StepPosition(LeftKnee.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(LeftKnee.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightKnee, new List<StepPosition>()
             {
-                new StepPosition(RightKnee.startingLocalPosition, 7.0f * SwingAnimSpeed)
+                new StepPosition(RightKnee.startingLocalPosition, 350.0f * ClapAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
         };
     }
@@ -764,66 +837,66 @@ public class GiantAnimator : MonoBehaviour
             // LeftHand
             new Step(LeftElbow, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.2f, 0.8f, 0.1f+0.2f), 7.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(-0.2f, 0.8f, 0.1f+0.2f), 350.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.2f, 0.8f, 0.4f), 8.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(-0.2f, 0.8f, 0.4f), 400.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 290.0f, 90.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, 30.0f, 90.0f), 1.0f * DestructionAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),            
             // RightHand
             new Step(RightElbow, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.7f, 0.7f, 0.3f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.7f, 0.7f, 0.3f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.1f, 0.7f, 0.6f), 8.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.1f, 0.5f, 0.4f), 400.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 20.0f, 270.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, 280.0f, 40.0f), 1.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // LeftLeg
             new Step(LeftKnee, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.1f, 0.5f, 0.5f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(-0.1f, 0.5f, 0.5f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             // RightLeg  
             new Step(RightKnee, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.1f, 0.5f, 1.0f - 0.2f), 6.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.1f, 0.5f, 1.0f - 0.2f), 300.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightLeg, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.1f, 0.2f, 0.2f- 0.2f), 2.0f * PunchAnimSpeed),
-                new StepPosition(new Vector3(0.1f, 0.15f, 0.6f- 0.2f), 1.0f * PunchAnimSpeed),
-                new StepPosition(new Vector3(0.1f, 0.1f, 0.8f- 0.2f), 1.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.1f, 0.2f, 0.2f- 0.2f), 100.0f * DestructionAnimationSpeed),
+                new StepPosition(new Vector3(0.1f, 0.15f, 0.6f- 0.2f), 50.0f * DestructionAnimationSpeed),
+                new StepPosition(new Vector3(0.1f, 0.1f, 0.8f- 0.2f), 50.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightLeg, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.0f, 0.0f, 90.0f), 1.0f)
+                new StepPosition(new Vector3(-0.0f, 0.0f, 90.0f), 1.0f * DestructionAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // Spine
             new Step(Spine, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 0.5f, 0.4f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 0.5f, 0.4f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(Waist, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 1.0f, 0.5f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 1.0f, 0.5f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             // Chest
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 1.3f, 0.4f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.0f, 1.3f, 0.4f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 330.0f, 0.0f), 2.0f)
+                new StepPosition(new Vector3(0.0f, 330.0f, 0.0f), 2.0f * DestructionAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position)
         };
 
@@ -833,36 +906,53 @@ public class GiantAnimator : MonoBehaviour
             // LeftHand
             new Step(LeftElbow, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.6f, 1.1f, -0.1f), 1.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(-0.6f, 1.1f, -0.1f), 1.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.3f, 0.8f, 1.035f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(-0.4f, 0.8f, 0.5f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(LeftHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(180.0f, 270.0f, 90.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, -45.0f, -90.0f), 1.0f * DestructionAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // RightHand
             new Step(RightElbow, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.2f, 0.7f, 0.0f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.2f, 0.7f, 0.0f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.3f, 0.7f, 0.3f), 10.0f * PunchAnimSpeed)
+                new StepPosition(new Vector3(0.3f, 0.7f, 0.3f), 500.0f * DestructionAnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.position),
             new Step(RightHand, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 50.0f, 270.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, 50.0f, 270.0f), 1.0f * DestructionAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position),
             // Chest
             new Step(Chest, new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 30.0f, 0.0f), 2.0f)
+                new StepPosition(new Vector3(0.0f, 30.0f, 0.0f), 2.0f * DestructionAnimationRotationSpeed)
             }, Step.DirectionType.rotation, Step.StepType.position)
         };
 
+    }
+
+    private void SetupFinalLaserAnimation()
+    {
+        finalLaserAnimationPart0 = new List<Step>()
+        {
+            new Step(Chest, ChestLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f * ChestLaserFollowSpeed),
+            new Step(Chest, ChestPiece, Step.DirectionType.position, Step.FollowType.xyz, 1000.0f, 1.0f)
+        };
+
+        finalLaserAnimationPart1 = new List<Step>()
+        {
+            new Step(Chest, new List<StepPosition>()
+            {
+                new StepPosition(Chest.startingLocalRotation, 1.0f)
+            }, Step.DirectionType.rotation, Step.StepType.position),
+        };
     }
 
     /// <summary>
@@ -915,8 +1005,68 @@ public class GiantAnimator : MonoBehaviour
                     case Animation.Laser:
                         Laser();
                         break;
+                    case Animation.FinalLaser:
+                        FinalLaser();
+                        break;
+                    case Animation.DamLaser:
+                        DamLaser();
+                        break;
                 }
             }
+        }
+    }
+
+    private void DamLaser()
+    {
+        switch(currentDamLaserState)
+        {
+            case DamLaserAnimationState.idle:
+                currentDamLaserState = DamLaserAnimationState.aim;
+                break;
+            case DamLaserAnimationState.aim:
+                if(PerformAnimationStep(DamLaserAnimationPart0))
+                {
+                    currentDamLaserState = DamLaserAnimationState.shoot;
+                }
+                break;
+            case DamLaserAnimationState.shoot:
+                if(PerformAnimationStep(DamLaserAnimationPart1))
+                {
+                    currentDamLaserState = DamLaserAnimationState.recover;
+                }
+                break;
+            case DamLaserAnimationState.recover:
+                if(PerformAnimationStep(DamLaserAnimationPart2))
+                {
+                    currentDamLaserState = DamLaserAnimationState.idle;
+                    isComplete = true;
+                    DisableKinematics();
+                }
+                break;
+        }
+    }
+
+    private void FinalLaser()
+    {
+        switch (currentFinalLaserState)
+        {
+            case FinalLaserAnimationState.idle:
+                currentFinalLaserState = FinalLaserAnimationState.shoot;
+                break;
+            case FinalLaserAnimationState.shoot:
+                if (PerformAnimationStep(finalLaserAnimationPart0))
+                {
+                    currentFinalLaserState = FinalLaserAnimationState.recover;
+                }
+                break;
+            case FinalLaserAnimationState.recover:
+                if (PerformAnimationStep(finalLaserAnimationPart1))
+                {
+                    currentFinalLaserState = FinalLaserAnimationState.idle;
+                    isComplete = true;
+                    DisableKinematics();
+                }
+                break;
         }
     }
 
@@ -982,7 +1132,7 @@ public class GiantAnimator : MonoBehaviour
                         if (PerformAnimationStep(laserAnimationLPart2))
                         {
                             // Increment the Animation step.    
-                            
+
                             currentLaserState = LaserAnimationState.idle;
                             isComplete = true;
                             DisableKinematics();
@@ -992,7 +1142,7 @@ public class GiantAnimator : MonoBehaviour
                         if (PerformAnimationStep(laserAnimationRPart2))
                         {
                             // Increment the Animation step.
-                            
+
                             currentLaserState = LaserAnimationState.idle;
                             isComplete = true;
                             DisableKinematics();
@@ -1228,6 +1378,10 @@ public class GiantAnimator : MonoBehaviour
             if (!step.isComplete)
             {
                 step.PerformStep();
+            }
+            else if (currentPunchState == PunchAnimationState.Release)
+            {
+                Debug.Log(step.joint.jointObject.transform.name + " is complete");
             }
         }
 

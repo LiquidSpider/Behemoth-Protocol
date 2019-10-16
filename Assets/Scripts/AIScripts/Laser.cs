@@ -106,13 +106,18 @@ public class Laser : MonoBehaviour
             {
                 Vector3 positionInLocal = this.transform.InverseTransformPoint(hitInfo.point);
                 Distance = Vector3.Distance(positionInLocal, this.transform.localPosition) / 2;
+
+                if (hitInfo.collider.gameObject.layer != LayerMask.NameToLayer("Environment"))
+                {
+                    Distance += 100;
+                }
             }
             else
             {
                 Distance = MaxRayDistance;
             }
 
-            this.transform.GetChild(0).localScale = new Vector3(this.transform.GetChild(0).localScale.x, this.transform.GetChild(0).localScale.y, Distance + 100);
+            this.transform.GetChild(0).localScale = new Vector3(this.transform.GetChild(0).localScale.x, this.transform.GetChild(0).localScale.y, Distance);
 
             if (AnimationStartingTime > WindUpTiming + LaserShootTiming)
             {

@@ -92,16 +92,16 @@ public class ClenchFistAnimation
             // Pinky Target
             new Step(FingerJoints[0], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.1f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.4f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.4f, 0.85f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(0.6f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.5f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.4f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.1f, 0.0f, -0.4f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.1f, 0.0f, -0.4f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[0], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 90.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 60.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Pinky Joint
             new Step(FingerJoints[1], new List<StepPosition>()
@@ -111,16 +111,16 @@ public class ClenchFistAnimation
             // Ring Target
             new Step(FingerJoints[2], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.2f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.4f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.4f, 0.9f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(0.6f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.5f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.4f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.2f, 0.0f, -0.4f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.2f, 0.0f, -0.4f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[2], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 90.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 60.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Ring Joint
             new Step(FingerJoints[3], new List<StepPosition>()
@@ -130,16 +130,16 @@ public class ClenchFistAnimation
             // Middle Target
             new Step(FingerJoints[4], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.25f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.5f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.4f, 0.95f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(0.6f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.5f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.6f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.4f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.2f, 0.0f, -0.5f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[4], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 90.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 60.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Middle Joint
             new Step(FingerJoints[5], new List<StepPosition>()
@@ -149,16 +149,16 @@ public class ClenchFistAnimation
             // Index Target
             new Step(FingerJoints[6], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.3f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.4f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(0.4f, 0.95f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(0.8f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.5f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.6f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.4f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.2f, 0.0f, -0.5f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[6], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 90.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 60.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, 45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Index Joint
             new Step(FingerJoints[7], new List<StepPosition>()
@@ -168,11 +168,11 @@ public class ClenchFistAnimation
             // Thumb Target
             new Step(FingerJoints[8], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 1.0f, -0.1f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(1.0f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[8], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0, 10.0f, 10.0f), 1.0f)
+                new StepPosition(new Vector3(90.0f, 45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Thumb Joint
             new Step(FingerJoints[9], new List<StepPosition>()
@@ -186,16 +186,16 @@ public class ClenchFistAnimation
             // Pinky Target
             new Step(FingerJoints[10], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.1f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.4f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.4f, 0.85f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(-0.6f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.5f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.4f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.1f, 0.0f, -0.2f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.1f, 0.0f, -0.2f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[10], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 270.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 300.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Pinky Joint
             new Step(FingerJoints[11], new List<StepPosition>()
@@ -205,16 +205,16 @@ public class ClenchFistAnimation
             // Ring Target
             new Step(FingerJoints[12], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.2f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.4f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.4f, 0.9f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(-0.6f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.5f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.4f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.2f, 0.0f, -0.4f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.2f, 0.0f, -0.4f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[12], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 270.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 300.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Ring Joint
             new Step(FingerJoints[13], new List<StepPosition>()
@@ -224,16 +224,16 @@ public class ClenchFistAnimation
             // Middle Target
             new Step(FingerJoints[14], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.25f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.5f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.4f, 0.95f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(-0.6f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.5f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.6f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.4f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.2f, 0.0f, -0.5f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[14], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 270.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 300.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Middle Joint
             new Step(FingerJoints[15], new List<StepPosition>()
@@ -243,16 +243,16 @@ public class ClenchFistAnimation
             // Index Target
             new Step(FingerJoints[16], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(-0.3f, 0.2f, -0.2f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.2f, 0.3f, -0.3f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.4f, -0.1f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.3f, 0.5f, 0.0f), 0.2f * AnimationSpeed),
-                new StepPosition(new Vector3(-0.4f, 0.95f, 0.0f), 0.2f * AnimationSpeed)
+                new StepPosition(new Vector3(-0.8f, 0.0f, -0.3f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.5f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-0.6f, 0.0f, -0.6f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.4f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(0.2f, 0.0f, -0.5f), 0.2f * AnimationSpeed)
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[16], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(340.0f, 0.0f, 270.0f), 1.0f),
-                new StepPosition(new Vector3(0.0f, 0.0f, 300.0f), 1.0f)
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f),
+                new StepPosition(new Vector3(0.0f, -45.0f, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Index Joint
             new Step(FingerJoints[17], new List<StepPosition>()
@@ -262,11 +262,11 @@ public class ClenchFistAnimation
             // Thumb Target
             new Step(FingerJoints[18], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0.0f, 1.0f, -0.1f), 0.2f * AnimationSpeed),
+                new StepPosition(new Vector3(-1.0f, 0.0f, -0.5f), 0.2f * AnimationSpeed),
             }, Step.DirectionType.position, Step.StepType.addition),
             new Step(FingerJoints[18], new List<StepPosition>()
             {
-                new StepPosition(new Vector3(0, 10.0f, 350.0f), 1.0f)
+                new StepPosition(new Vector3(90.0f+180, 45.0f+180, 0.0f), 1.0f)
             }, Step.DirectionType.rotation, Step.StepType.addition),
             // Thumb Joint
             new Step(FingerJoints[19], new List<StepPosition>()
