@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			float speedFactor = accSpeed;
-			if (isCruising) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(75 * Time.deltaTime);
+			if (isCruising) gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(70 * Time.deltaTime);
 			if (isCruising) rb.AddForce(rb.velocity.normalized * speedFactor * cruiseFwd);
 			if (isCruising) gameObject.transform.GetChild(0).transform.rotation = Quaternion.LookRotation(rb.velocity.normalized);
 			else gameObject.transform.GetChild(0).transform.rotation = gameObject.transform.rotation;// = Quaternion.LookRotation(rb.velocity.normalized);
@@ -235,6 +235,7 @@ public class PlayerController : MonoBehaviour {
 
 			// Dodge if boost button tapped instead of held
 			if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
+				gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(150);
 				StartCoroutine(Dodge());
 			} else if (( Input.GetButtonUp("Dodge") && isCruising ) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
 				isCruising = false;

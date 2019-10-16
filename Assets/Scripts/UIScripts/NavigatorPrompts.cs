@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class NavigatorPrompts : MonoBehaviour {
 	public Text promptText;
-	public TMPro.TextMeshPro tmpPrompt;
-    public GameObject audioobject;
+	public TMPro.TextMeshProUGUI tmpPrompt;
+	public GameObject audioobject;
     public AudioClip[] navLines = new AudioClip[18];
     public AudioClip radioOn;
     public AudioClip radioOff;
@@ -66,13 +66,18 @@ public class NavigatorPrompts : MonoBehaviour {
         VoiceLine(1);
     }
 
+	private bool seenLineSeeingBoss = false;
 	public void CallSeeingBoss() {
-		// Called from MusicZone.OnTriggerEnter()
-		promptText.text = "You need to stop it from reaching the wall! Destroy its legs to stop it moving.";
-		tmpPrompt.text = "You need to stop it from reaching the wall! Destroy its legs to stop it moving.";
-		promptText.gameObject.transform.parent.gameObject.SetActive(true);
-        VoiceLine(2);
-        flags[2] = true;
+		if (!seenLineSeeingBoss) {
+			seenLineSeeingBoss = true;
+
+			// Called from MusicZone.OnTriggerEnter()
+			promptText.text = "You need to stop it from reaching the wall! Destroy its legs to stop it moving.";
+			tmpPrompt.text = "You need to stop it from reaching the wall! Destroy its legs to stop it moving.";
+			promptText.gameObject.transform.parent.gameObject.SetActive(true);
+			VoiceLine(2);
+			flags[2] = true;
+		}
     }
 
 	public void CallTakingPhysicalDamage() {
