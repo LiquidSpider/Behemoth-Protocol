@@ -319,7 +319,7 @@ public class GameManager : MonoBehaviour {
 
 			newPart.AddComponent<RobotPartFall>();
 
-			Exploder.explode(newPart.transform);
+			//Exploder.explode(newPart.transform);
 		}
 	}
 }

@@ -9,6 +9,7 @@ public class MenuControls : MonoBehaviour {
 
 	public GameObject instructions;
 	public GameObject settingsMenu;
+	public GameObject credits;
 
 	public bool inMenu = false;
 
@@ -59,16 +60,16 @@ public class MenuControls : MonoBehaviour {
 	}
 
 	public void CreditsClicked() {
-		//if (!inMenu) {
-		//	Debug.Log("Credits Clicked");
-		//	inMenu = true;
-		//}
+		if (!inMenu) {
+			credits.SetActive(true);
+			inMenu = true;
+		}
 	}
 
 	public void CloseCredits() {
-		//if (inMenu) {
-		//	Debug.Log("Credits Clicked");
-		//	inMenu = false;
-		//}
+		if (inMenu) {
+			credits.SetActive(false);
+			inMenu = false;
+		}
 	}
 }

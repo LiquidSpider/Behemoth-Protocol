@@ -1008,7 +1008,7 @@ public class giantBehaviour : MonoBehaviour
         Vector3 playerPosition = new Vector3(player.transform.position.x, 0, player.transform.position.z);
         Vector3 thisPosition = new Vector3(this.transform.position.x, 0, this.transform.position.z);
 
-        Debug.Log(Vector3.Distance(playerPosition, thisPosition));
+        //Debug.Log(Vector3.Distance(playerPosition, thisPosition));
 
         // Check if the player is close enough to the Giant.
         if (Vector3.Distance(playerPosition, thisPosition) < 500.0f)
