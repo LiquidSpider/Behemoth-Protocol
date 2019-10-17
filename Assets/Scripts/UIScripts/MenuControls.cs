@@ -66,9 +66,16 @@ public class MenuControls : MonoBehaviour {
 		}
 	}
 
+	public void ContinueCredits() {
+		credits.transform.GetChild(0).gameObject.SetActive(false);
+		credits.transform.GetChild(1).gameObject.SetActive(true);
+	}
+
 	public void CloseCredits() {
 		if (inMenu) {
 			credits.SetActive(false);
+			credits.transform.GetChild(0).gameObject.SetActive(true);
+			credits.transform.GetChild(1).gameObject.SetActive(false);
 			inMenu = false;
 		}
 	}
