@@ -278,7 +278,8 @@ AudioSource:
   m_GameObject: {fileID: 5394107860593512678}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243832686142655308, guid: ca1be43bdbc4ded4c8a67202e2f8bd9d,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: eb170442085b6754a924bdc9d2ae3ced, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -9890,6 +9891,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2187276436918047062}
     m_Modifications:
+    - target: {fileID: 100004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Name
+      value: missile
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9946,34 +9975,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 100004, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Name
-      value: missile
-      objectReference: {fileID: 0}
-    - target: {fileID: 100006, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 100012, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 100008, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 100010, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3d4f06756a0b11428fc1c90883955ea, type: 3}
 --- !u!1 &6779550540439275264 stripped
@@ -9995,6 +9996,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2187276436918047062}
     m_Modifications:
+    - target: {fileID: 100004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
+      propertyPath: m_Name
+      value: PlayerAfterburner
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10054,14 +10063,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
-      propertyPath: m_Name
-      value: PlayerAfterburner
-      objectReference: {fileID: 0}
-    - target: {fileID: 100004, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
-      propertyPath: m_Layer
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 9041ddd0f8daa224eb66ed0a6288bfc7, type: 3}
       propertyPath: m_Layer

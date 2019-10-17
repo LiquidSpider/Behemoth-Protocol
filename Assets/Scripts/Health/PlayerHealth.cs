@@ -66,7 +66,7 @@ public class PlayerHealth : MonoBehaviour {
 		}
 
 		if (!gameObject.GetComponent<NewWeaponController>().isVacuuming) {
-			if (Input.GetButton("Regen")) {
+			if (Input.GetButton("Regen") || Input.GetAxis("DPadUD") < 0) {
 				if (HP < maxHP && battery > 0) {
 					TakeDamage(-1f);
 					UseBattery(50f * Time.deltaTime);

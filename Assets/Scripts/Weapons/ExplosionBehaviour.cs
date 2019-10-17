@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class ExplosionBehaviour : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class ExplosionBehaviour : MonoBehaviour {
 	private float fadeTime = 1f;
 	public float sMinDist = 1f;     // Distance at which sound is loudest
 	public float sMaxDist = 500f;   // Distance at which sound is inaudible
+    public AudioMixerGroup mixer;
 
 	void Start() {
 		transform.parent = GameObject.FindGameObjectWithTag("ExplosionParent").transform;
@@ -61,6 +63,7 @@ public class ExplosionBehaviour : MonoBehaviour {
 		GameObject oSound = Instantiate(sndsrc, pos, Quaternion.identity);
 		AudioSource source = oSound.GetComponent<AudioSource>();
 		source.clip = sExplosion;
+        source.outputAudioMixerGroup = mixer;
 		source.volume = 1;
 		source.minDistance = sMinDist;
 		source.maxDistance = sMaxDist;
