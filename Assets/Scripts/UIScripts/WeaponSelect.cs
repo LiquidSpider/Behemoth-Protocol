@@ -34,7 +34,7 @@ public class WeaponSelect : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (Input.GetButtonDown("Weapon1")) {
+		if (Input.GetButtonDown("Weapon1") || Input.GetAxis("DPadLR") < 0) {
 			previousWeaponNumber = weaponNumber;
 			weaponNumber = 1;
 			//GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<Image>().color = Color.green;
@@ -53,7 +53,7 @@ public class WeaponSelect : MonoBehaviour {
 			missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", false);
 		}
 
-		if (Input.GetButtonDown("Weapon2")) {
+		if (Input.GetButtonDown("Weapon2") || Input.GetAxis("DPadUD") > 0) {
 			previousWeaponNumber = weaponNumber;
 			weaponNumber = 2;
 			//play animations here
@@ -71,7 +71,7 @@ public class WeaponSelect : MonoBehaviour {
 			missile2Centre.GetComponent<Animator>().SetBool("MissileSelected", true);
 		}
 
-		if (Input.GetButtonDown("Weapon3")) {
+		if (Input.GetButtonDown("Weapon3") || Input.GetAxis("DPadLR") > 0) {
 			previousWeaponNumber = weaponNumber;
 			weaponNumber = 3;
 			//play animations here

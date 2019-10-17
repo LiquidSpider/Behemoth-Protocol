@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class DragonFly : MonoBehaviour
 {
@@ -54,6 +55,8 @@ public class DragonFly : MonoBehaviour
     public List<AudioClip> deathClips = new List<AudioClip>();
     public List<AudioClip> explosionClips = new List<AudioClip>();
     private AudioSource source;
+
+    public AudioMixerGroup mixer;
 
     private GameManager gameManager;
 
@@ -385,6 +388,7 @@ public class DragonFly : MonoBehaviour
         dSound.AddComponent<AudioSource>();
         dSound.AddComponent<TimedDestroy>();
         dSound.GetComponent<AudioSource>().clip = deathClips[UnityEngine.Random.Range(0, deathClips.Count)];
+        dSound.GetComponent<AudioSource>().outputAudioMixerGroup = mixer;
         dSound.GetComponent<AudioSource>().spatialBlend = 1;
         dSound.GetComponent<AudioSource>().dopplerLevel = 0;
         dSound.GetComponent<AudioSource>().rolloffMode = AudioRolloffMode.Logarithmic;
@@ -401,6 +405,7 @@ public class DragonFly : MonoBehaviour
         eSound.AddComponent<AudioSource>();
         eSound.AddComponent<TimedDestroy>();
         eSound.GetComponent<AudioSource>().clip = explosionClips[UnityEngine.Random.Range(0, explosionClips.Count)];
+        eSound.GetComponent<AudioSource>().outputAudioMixerGroup = mixer;
         eSound.GetComponent<AudioSource>().spatialBlend = 1;
         eSound.GetComponent<AudioSource>().dopplerLevel = 0;
         eSound.GetComponent<AudioSource>().rolloffMode = AudioRolloffMode.Logarithmic;

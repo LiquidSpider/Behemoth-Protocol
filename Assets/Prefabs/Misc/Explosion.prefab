@@ -96,6 +96,7 @@ MonoBehaviour:
   sExplosion: {fileID: 8300000, guid: a34658111f5cd8246b93da9384b19866, type: 3}
   sMinDist: 200
   sMaxDist: 2000
+  mixer: {fileID: 243832686142655308, guid: ca1be43bdbc4ded4c8a67202e2f8bd9d, type: 2}
 --- !u!135 &6127964963944004408
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour {
 		// Inputs - Dodge/Afterburners
 		if (!flightStopped) {
 			if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
-			if (Input.GetButton("Dodge")) {
+			if (Input.GetButton("Dodge") || Input.GetAxis("Afterburn") > 0) {
 				if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
                     if (!isCruising) animator.SetTrigger("StartBoosting");
                     isCruising = true;
