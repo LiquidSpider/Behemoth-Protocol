@@ -28,7 +28,9 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 
 	public GameObject targetObject;
 
-	public void Initialise(RaycastHit inputHit) {
+	private Vector3 cameraDirection;
+
+	public void Initialise(RaycastHit inputHit, Vector3 direction) {
 		// Set time of launch
 		launchTime = 0.5f;
 		launchTime = Time.time + launchTime;
@@ -43,6 +45,8 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 		playerSpeed = GameObject.FindGameObjectWithTag("Player").transform.gameObject.GetComponent<Rigidbody>().velocity * Time.deltaTime;
 
 		hitTarget = inputHit;
+		cameraDirection = direction;
+
 		RecalculateTrajectory();
 
 		//if (inputHit.transform.root.tag == "DragonFly") {
@@ -59,6 +63,15 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 			if (!targetReached && Vector3.Distance(targetPoint, transform.position) < 3f) {
 				targetReached = true;
 
+				//int layerMask = 1 << 14;
+				//layerMask = layerMask << 15;
+				//layerMask = layerMask << 16;
+				//layerMask = layerMask << 17;
+				//layerMask = layerMask << 18;
+
+				//layerMask = ~layerMask;
+
+				//if (Physics.Raycast(transform.position, transform.forward, out hitTarget, Mathf.Infinity, layerMask)) {
 				if (Physics.Raycast(transform.position, transform.forward, out hitTarget)) {
 					RecalculateTrajectory();
 				} else {
@@ -194,9 +207,9 @@ public class PlayerMissileBehaviour : MonoBehaviour {
 	public void RecalculateTrajectory() {
 		targetObject = new GameObject();
 		targetObject.name = "Missile Track Location";
-		targetObject.transform.position = hitTarget.point;
+		targetObject.transform.position = hitTarget.point + cameraDirection * 1000;
 		targetObject.transform.localScale = new Vector3(2, 2, 2);
-		targetObject.transform.parent = hitTarget.transform;
+		//targetObject.transform.parent = hitTarget.transform;
 		targetObject.AddComponent<PlayerMissileTargetBehaviour>();
 		targetObject.AddComponent<SphereCollider>();
 		targetObject.GetComponent<PlayerMissileTargetBehaviour>().Initialise(gameObject);

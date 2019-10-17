@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour {
 		if (!flightStopped) {
 			if (Input.GetButtonDown("Dodge")) cHoldTime = 0f;
 			if (Input.GetButton("Dodge") || Input.GetAxis("Afterburn") > 0) {
-				if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 500) {
+				if (cHoldTime > cHoldThreshold && gameObject.transform.root.GetComponent<PlayerHealth>().battery >= 250) {
                     if (!isCruising) animator.SetTrigger("StartBoosting");
                     isCruising = true;
                     animator.SetBool("IsBoosting", true);
@@ -235,9 +235,12 @@ public class PlayerController : MonoBehaviour {
 
 			// Dodge if boost button tapped instead of held
 			if (Input.GetButtonUp("Dodge") && cHoldTime < cHoldThreshold) {
-				gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(150);
-				StartCoroutine(Dodge());
-			} else if (( Input.GetButtonUp("Dodge") && isCruising ) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 500) {
+				if (gameObject.transform.root.GetComponent<PlayerHealth>().battery > 200 && !isDodging) {
+					isDodging = true;
+					gameObject.transform.root.GetComponent<PlayerHealth>().UseBattery(150);
+					StartCoroutine(Dodge());
+				}
+			} else if (( Input.GetButtonUp("Dodge") && isCruising ) || gameObject.transform.root.GetComponent<PlayerHealth>().battery < 250) {
 				isCruising = false;
 				animator.SetBool("IsBoosting", false);
 			}
@@ -249,6 +252,7 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetButtonDown("Weapon3")) SwapWeapon(2);
 	}
 
+	private bool isDodging = false;
 
 	//private bool CheckMovement(Vector3 movementDirection) {
 	//	RaycastHit hit;
@@ -330,6 +334,7 @@ public class PlayerController : MonoBehaviour {
 			animator.ResetTrigger("DodgeLeft");
 			animator.ResetTrigger("DodgeForward");
 		}
+		isDodging = false;
 	}
 
 	private IEnumerator stopFlying() {
