@@ -202,7 +202,9 @@ public class GiantAnimator : MonoBehaviour
     private List<Step> laserAnimationRPart2;
 
     public GameObject LeftLaserTarget;
+    public GameObject LeftFingerLaserTarget;
     public GameObject RightLaserTarget;
+    public GameObject RightFingerLaserTarget;
     public GameObject[] LFingerTargets;
     public GameObject[] RFingerTargets;
 
@@ -340,16 +342,12 @@ public class GiantAnimator : MonoBehaviour
 
         laserAnimationLPart1 = new List<Step>()
         {
-            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f * LaserHandFollowSpeed),
-            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f * LaserHandFollowSpeed),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(LHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
-            new Step(LHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
-            new Step(LHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
-            new Step(LHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(LeftHand, LeftLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f * LaserHandFollowSpeed, 6.0f),
+            new Step(LHPinkyTip, LeftFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(LHRingTip, LeftFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(LHMiddleTip, LeftFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(LHIndexTip, LeftFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f)
         };
 
         laserAnimationLPart2 = new List<Step>()
@@ -394,16 +392,12 @@ public class GiantAnimator : MonoBehaviour
 
         laserAnimationRPart1 = new List<Step>()
         {
-            new Step(RightHand, RightLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f, 6.0f * LaserHandFollowSpeed),
-            new Step(RightHand, RightLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f, 6.0f * LaserHandFollowSpeed),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.y, 0.06f, 6.0f * LaserFingerFollowSpeed),
-            new Step(RHPinkyTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
-            new Step(RHRingTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
-            new Step(RHMiddleTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
-            new Step(RHIndexTip, Player, Step.DirectionType.rotation, Step.FollowType.x, 0.5f, 6.0f * LaserFingerFollowSpeed),
+            new Step(RightHand, RightLaserTarget, Step.DirectionType.position, Step.FollowType.xyz, 3.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(RightHand, RightLaserTarget, Step.DirectionType.matchRotation, Step.FollowType.y, 0.3f * LaserHandFollowSpeed, 6.0f),
+            new Step(RHPinkyTip, RightFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(RHRingTip, RightFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(RHMiddleTip, RightFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f),
+            new Step(RHIndexTip, RightFingerLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 2.0f * LaserHandFollowSpeed, 6.0f),
         };
 
         laserAnimationRPart2 = new List<Step>()
@@ -439,12 +433,12 @@ public class GiantAnimator : MonoBehaviour
     {
         DamLaserAnimationPart0 = new List<Step>()
         {
-            new Step(Chest, DamLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 1.0f, 3.0f),
+            new Step(Chest, DamLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 3.0f, 1.0f),
         };
 
         DamLaserAnimationPart1 = new List<Step>()
         {
-            new Step(Chest, DamLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f),
+            new Step(Chest, DamLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 3.0f, 5.0f),
         };
 
         DamLaserAnimationPart2 = new List<Step>()
@@ -551,8 +545,8 @@ public class GiantAnimator : MonoBehaviour
         // Setup Left step 2
         swingAnimationLPart1 = new List<Step>()
         {
-            new Step(LeftHand, PunchTargetL, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
-            new Step(LeftHand, PunchTargetL, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
+            new Step(LeftHand, PunchTargetL, Step.DirectionType.position, Step.FollowType.xyz, 10.0f * PunchReleaseAnimationSpeed, 1.0f),
+            new Step(LeftHand, PunchTargetL, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f * PunchReleaseAnimationSpeed, 1.0f),
         };
 
         // Setup Left step 3
@@ -626,8 +620,8 @@ public class GiantAnimator : MonoBehaviour
         // Setup Right step 2
         swingAnimationRPart1 = new List<Step>()
         {
-            new Step(RightHand, PunchTargetR, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
-            new Step(RightHand, PunchTargetR, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f, PunchReleaseAnimationSpeed),
+            new Step(RightHand, PunchTargetR, Step.DirectionType.position, Step.FollowType.xyz, 10.0f * PunchReleaseAnimationSpeed, 1.0f),
+            new Step(RightHand, PunchTargetR, Step.DirectionType.rotation, Step.FollowType.xyz, 10.0f * PunchReleaseAnimationSpeed, 1.0f),
         };
 
         // Setup Right step 3
@@ -761,7 +755,7 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, LeftHandClapTarget, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 1.2f),
             new Step(RightHand, RightHandClapTarget, Step.DirectionType.position, Step.FollowType.xyz, 5.0f, 1.2f),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 1.2f * ClapAnimationRotationSpeed)
+            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f * ClapAnimationRotationSpeed, 1.2f)
         };
 
         // setup step 3
@@ -769,7 +763,7 @@ public class GiantAnimator : MonoBehaviour
         {
             new Step(LeftHand, clapTarget, Step.DirectionType.position, Step.FollowType.xyz, 10.0f, 0.25f),
             new Step(RightHand, clapTarget, Step.DirectionType.position, Step.FollowType.xyz, 10.0f,  0.25f),
-            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f, 0.25f * ClapAnimationRotationSpeed)
+            new Step(Chest, Player, Step.DirectionType.rotation, Step.FollowType.y, 5.0f * ClapAnimationRotationSpeed, 0.25f)
         };
 
         // setup step 4
@@ -942,7 +936,7 @@ public class GiantAnimator : MonoBehaviour
     {
         finalLaserAnimationPart0 = new List<Step>()
         {
-            new Step(Chest, ChestLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f, 3.0f * ChestLaserFollowSpeed),
+            new Step(Chest, ChestLaserTarget, Step.DirectionType.rotation, Step.FollowType.xyz, 5.0f * ChestLaserFollowSpeed, 5.0f, new Vector3(0, -83.72638f, 0)),
             new Step(Chest, ChestPiece, Step.DirectionType.position, Step.FollowType.xyz, 1000.0f, 1.0f)
         };
 
@@ -1018,25 +1012,25 @@ public class GiantAnimator : MonoBehaviour
 
     private void DamLaser()
     {
-        switch(currentDamLaserState)
+        switch (currentDamLaserState)
         {
             case DamLaserAnimationState.idle:
                 currentDamLaserState = DamLaserAnimationState.aim;
                 break;
             case DamLaserAnimationState.aim:
-                if(PerformAnimationStep(DamLaserAnimationPart0))
+                if (PerformAnimationStep(DamLaserAnimationPart0))
                 {
                     currentDamLaserState = DamLaserAnimationState.shoot;
                 }
                 break;
             case DamLaserAnimationState.shoot:
-                if(PerformAnimationStep(DamLaserAnimationPart1))
+                if (PerformAnimationStep(DamLaserAnimationPart1))
                 {
                     currentDamLaserState = DamLaserAnimationState.recover;
                 }
                 break;
             case DamLaserAnimationState.recover:
-                if(PerformAnimationStep(DamLaserAnimationPart2))
+                if (PerformAnimationStep(DamLaserAnimationPart2))
                 {
                     currentDamLaserState = DamLaserAnimationState.idle;
                     isComplete = true;

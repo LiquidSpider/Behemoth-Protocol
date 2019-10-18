@@ -55,6 +55,8 @@ public class ChestLaserTargetScript : MonoBehaviour
 
     private void FollowPlayer()
     {
+        Vector3 position = Player.transform.position;
+        //position.y += 83.72638f;
         Vector3 newPosition = Vector3.MoveTowards(this.transform.position, Player.transform.position, Time.deltaTime * speed);
         newPosition.y = Mathf.Clamp(newPosition.y, minHeight, maxHeight);
         this.transform.position = newPosition;

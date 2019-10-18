@@ -40,6 +40,8 @@ public class Step
     /// </summary>
     public float followSpeed;
 
+    public Vector3 Offset;
+
     private Vector3 followerPosition
     {
         get
@@ -156,6 +158,24 @@ public class Step
         this.followSpeed = followSpeed;
         this.followDuration = followDuration;
         this.SetupDurection = followDuration;
+    }
+
+        /// <summary>
+    /// Initialise a new follower type step.
+    /// </summary>
+    /// <param name="follower"></param>
+    public Step(LLJoint joint, GameObject follower, DirectionType directionType, FollowType followType, float followSpeed, float followDuration, Vector3 Offset)
+    {
+        this.joint = joint;
+        this.follower = follower;
+        this.stepType = StepType.follower;
+        this.directionType = directionType;
+        this.time = 0;
+        this.followType = followType;
+        this.followSpeed = followSpeed;
+        this.followDuration = followDuration;
+        this.SetupDurection = followDuration;
+        this.Offset = Offset;
     }
 
     /// <summary>
@@ -446,7 +466,10 @@ public class Step
     /// </summary>
     private void FollowRotation()
     {
-        Vector3 euler = Quaternion.LookRotation(follower.transform.position - joint.CurrentPosition).eulerAngles;
+        Vector3 currentPosition = joint.CurrentPosition;
+        if(Offset != Vector3.zero)
+            currentPosition += Offset;
+        Vector3 euler = Quaternion.LookRotation(follower.transform.position - currentPosition).eulerAngles;
         Vector3 currentEuler = joint.CurrentRotation.eulerAngles;
 
         switch (followType)

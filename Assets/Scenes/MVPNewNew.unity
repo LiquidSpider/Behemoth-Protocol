@@ -2608,6 +2608,52 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 2a14fb47ab7298a4e87be2ba63bfa4fa, type: 3}
+--- !u!1 &170104845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 170104847}
+  - component: {fileID: 170104846}
+  m_Layer: 14
+  m_Name: LaserFingerYTargetR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &170104846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170104845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e005d89bbdfa667468097f4cc44d0a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsLeft: 0
+  Hand: {fileID: 1163310495}
+  Player: {fileID: 4498502439908761849}
+--- !u!4 &170104847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170104845}
+  m_LocalRotation: {x: -0.027915895, y: 0.7065556, z: 0.027915895, w: -0.7065556}
+  m_LocalPosition: {x: -359.1294, y: 551.627, z: -1216.9042}
+  m_LocalScale: {x: 700.101, y: 700.10004, z: 700.1011}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &170602261 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: d0c20e875ea913d4486b8a7fd3628173,
@@ -9808,6 +9854,52 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 283d98ee6eee9ca48a5c74c69046a76f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c64997ffde0f359419447a13d61fd645, type: 3}
+--- !u!1 &688489844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 688489846}
+  - component: {fileID: 688489845}
+  m_Layer: 14
+  m_Name: LaserFingerYTargetL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &688489845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688489844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e005d89bbdfa667468097f4cc44d0a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsLeft: 1
+  Hand: {fileID: 1581167164}
+  Player: {fileID: 4498502439908761849}
+--- !u!4 &688489846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688489844}
+  m_LocalRotation: {x: -0.027915835, y: 0.7065556, z: 0.027915835, w: -0.7065556}
+  m_LocalPosition: {x: -359.12933, y: 551.627, z: -1216.9042}
+  m_LocalScale: {x: 700.1002, y: 700.10004, z: 700.1002}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &691927714 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8681271298467635365, guid: f2376df85db42974582437d65a79229c,
@@ -11471,6 +11563,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4813895329646497595, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: Hand
+      value: 
+      objectReference: {fileID: 1163310495}
+    - target: {fileID: 4813895329646497595, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 4498502439908761849}
+    - target: {fileID: 5573559201505978124, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: Hand
+      value: 
+      objectReference: {fileID: 1993449461}
+    - target: {fileID: 5573559201505978124, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 4498502439908761849}
     - target: {fileID: 2225948470451000820, guid: 585d15a8d94197c4bb1c119139da3a68,
         type: 3}
       propertyPath: m_Name
@@ -11716,6 +11828,16 @@ PrefabInstance:
       propertyPath: DamLaserTarget
       value: 
       objectReference: {fileID: 1388637568}
+    - target: {fileID: 9008261969164082592, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: LeftFingerLaserTarget
+      value: 
+      objectReference: {fileID: 688489844}
+    - target: {fileID: 9008261969164082592, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: RightFingerLaserTarget
+      value: 
+      objectReference: {fileID: 170104845}
     - target: {fileID: 6474392801348510180, guid: 585d15a8d94197c4bb1c119139da3a68,
         type: 3}
       propertyPath: m_IsActive
@@ -11866,11 +11988,21 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 4498502439908761849}
+    - target: {fileID: 5846413393893369699, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7996121309313535696, guid: 585d15a8d94197c4bb1c119139da3a68,
         type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 4498502439908761849}
+    - target: {fileID: 7996121309313535696, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8481940592109969562, guid: 585d15a8d94197c4bb1c119139da3a68,
         type: 3}
       propertyPath: m_Enabled
@@ -12169,6 +12301,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5806054051471295624, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5806054051471295624, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -123.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5806054051471295624, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 81.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315452953038853150, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: m_Name
+      value: LaserParentR
+      objectReference: {fileID: 0}
+    - target: {fileID: 36334712498098219, guid: 585d15a8d94197c4bb1c119139da3a68,
+        type: 3}
+      propertyPath: m_Name
+      value: LaserParentL
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5211014748051548843, guid: 585d15a8d94197c4bb1c119139da3a68, type: 3}
@@ -17852,6 +18009,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 0bb96c2a439d41044871768f713c1346, type: 3}
+--- !u!1 &1163310495 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 56532222775092400, guid: 585d15a8d94197c4bb1c119139da3a68,
+    type: 3}
+  m_PrefabInstance: {fileID: 805796283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1166878941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22861,6 +23024,25 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 6924f0416cd184c4ab934e1dcacfcb33, type: 3}
+--- !u!1 &1524767926 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6230238717860729786, guid: 585d15a8d94197c4bb1c119139da3a68,
+    type: 3}
+  m_PrefabInstance: {fileID: 805796283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1524767929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524767926}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04b45ec957d36114e8aa4d26ff4961c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laser: {fileID: 1630112863}
 --- !u!1 &1532166131 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1475886236, guid: e95770180dae200499cd0731ddef90b8,
@@ -23301,6 +23483,12 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1581167164 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4761795521901736914, guid: 585d15a8d94197c4bb1c119139da3a68,
+    type: 3}
+  m_PrefabInstance: {fileID: 805796283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1583255632 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 97aa6252753d9d04bbdbc9e59fdb8f69,
@@ -24043,6 +24231,12 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1630112863 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6406417539337156001, guid: 585d15a8d94197c4bb1c119139da3a68,
+    type: 3}
+  m_PrefabInstance: {fileID: 805796283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1639588318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29934,6 +30128,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 3963d20bb182ed04d8fd43e52ce5d9bc,
     type: 3}
   m_PrefabInstance: {fileID: 1986622022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1993449461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5219475916881246986, guid: 585d15a8d94197c4bb1c119139da3a68,
+    type: 3}
+  m_PrefabInstance: {fileID: 805796283}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1995128297 stripped
 GameObject:

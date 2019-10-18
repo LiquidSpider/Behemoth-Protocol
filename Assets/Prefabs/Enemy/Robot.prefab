@@ -3853,7 +3853,7 @@ MonoBehaviour:
   PunchAnimationSpeed: 1
   PunchAnimationRotationSpeed: 1
   PunchReleaseAnimationSpeed: 1
-  ChestLaserFollowSpeed: 1
+  ChestLaserFollowSpeed: 0.025
   PunchTargetL: {fileID: 5757000253794690383}
   PunchTargetR: {fileID: 2913819280794965647}
   currentPunchState: 0
@@ -3864,7 +3864,9 @@ MonoBehaviour:
   CurrentSwingState: 0
   currentLaserState: 0
   LeftLaserTarget: {fileID: 4761795521901736914}
+  LeftFingerLaserTarget: {fileID: 0}
   RightLaserTarget: {fileID: 56532222775092400}
+  RightFingerLaserTarget: {fileID: 0}
   LFingerTargets: []
   RFingerTargets: []
   hand: 0
@@ -21949,6 +21951,16 @@ PrefabInstance:
       propertyPath: minYRotation
       value: -40
       objectReference: {fileID: 0}
+    - target: {fileID: 7954304709240102228, guid: 9cc33ab16e1086547bc6a062fd7eb027,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5887913405497488615, guid: 9cc33ab16e1086547bc6a062fd7eb027,
+        type: 3}
+      propertyPath: RotationSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3469609344335062433, guid: 9cc33ab16e1086547bc6a062fd7eb027,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -22600,22 +22612,22 @@ PrefabInstance:
     - target: {fileID: 2173271881046330004, guid: 2a9cb3e1ae9d08c41ac25e5c16cd0ee3,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.61522174
+      value: -0.6671755
       objectReference: {fileID: 0}
     - target: {fileID: 2173271881046330004, guid: 2a9cb3e1ae9d08c41ac25e5c16cd0ee3,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.34857187
+      value: 0.3092149
       objectReference: {fileID: 0}
     - target: {fileID: 2173271881046330004, guid: 2a9cb3e1ae9d08c41ac25e5c16cd0ee3,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.6152215
+      value: 0.5748751
       objectReference: {fileID: 0}
     - target: {fileID: 2173271881046330004, guid: 2a9cb3e1ae9d08c41ac25e5c16cd0ee3,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.34857202
+      value: 0.35886157
       objectReference: {fileID: 0}
     - target: {fileID: 2173271881046330004, guid: 2a9cb3e1ae9d08c41ac25e5c16cd0ee3,
         type: 3}

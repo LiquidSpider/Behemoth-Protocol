@@ -368,7 +368,7 @@ public class giantBehaviour : MonoBehaviour
 
             RunAIState();
 
-            DevKey();
+            //DevKey();
         }
     }
 
@@ -531,6 +531,7 @@ public class giantBehaviour : MonoBehaviour
                 DestroyDam();
                 break;
             case EnemyState.lastStand:
+                this.thisAnimator.enabled = true;
                 canMove = false;
                 // Perform the last stand stage
                 LastStand();
@@ -659,12 +660,12 @@ public class giantBehaviour : MonoBehaviour
                 // If currently attacking
                 if (currentEnemyState == EnemyState.attacking)
                 {
-                    animator.DisableKinematics();                    
+                    animator.DisableKinematics();
                     switch (animator.currentAnimation)
                     {
                         case GiantAnimator.Animation.Laser:
-                                animator.currentLaserState = GiantAnimator.LaserAnimationState.recover;
-                                DisableLaser();
+                            animator.currentLaserState = GiantAnimator.LaserAnimationState.recover;
+                            DisableLaser();
                             break;
                         case GiantAnimator.Animation.GiantClap:
                             animator.currentClapAnimationState = GiantAnimator.ClapAnimationState.Recover;
@@ -923,24 +924,44 @@ public class giantBehaviour : MonoBehaviour
                         }
                         break;
                     case PlayerPosition.farinfront:
-                        animator.currentAnimation = GiantAnimator.Animation.Laser;
-                        if (armState == EnemyArmStates.left)
+                        if (armState != EnemyArmStates.none)
                         {
-                            animator.hand = GiantAnimator.Hand.left;
-                            EnableKinematics(true, Kinematics.Chest);
-                            EnableKinematics(true, Kinematics.leftArm);
-                            EnableKinematics(true, Kinematics.leftHand);
-                        }
-                        else
-                        {
-                            animator.hand = GiantAnimator.Hand.right;
-                            EnableKinematics(true, Kinematics.Chest);
-                            EnableKinematics(true, Kinematics.rightArm);
-                            EnableKinematics(true, Kinematics.rightHand);
+                            animator.currentAnimation = GiantAnimator.Animation.Laser;
+                            if (armState == EnemyArmStates.both)
+                            {
+                                if (Random.Range(0, 2) == 0)
+                                {
+                                    animator.hand = GiantAnimator.Hand.left;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.leftArm);
+                                    EnableKinematics(true, Kinematics.leftHand);
+                                }
+                                else
+                                {
+                                    animator.hand = GiantAnimator.Hand.right;
+                                    EnableKinematics(true, Kinematics.Chest);
+                                    EnableKinematics(true, Kinematics.rightArm);
+                                    EnableKinematics(true, Kinematics.rightHand);
+                                }
+                            }
+                            else if (armState == EnemyArmStates.right)
+                            {
+                                animator.hand = GiantAnimator.Hand.right;
+                                EnableKinematics(true, Kinematics.Chest);
+                                EnableKinematics(true, Kinematics.rightArm);
+                                EnableKinematics(true, Kinematics.rightHand);
+                            }
+                            else if (armState == EnemyArmStates.left)
+                            {
+                                animator.hand = GiantAnimator.Hand.left;
+                                EnableKinematics(true, Kinematics.Chest);
+                                EnableKinematics(true, Kinematics.leftArm);
+                                EnableKinematics(true, Kinematics.leftHand);
+                            }
+                            // Update the state;
+                            currentEnemyState = EnemyState.attacking;
                         }
 
-                        // Update the state;
-                        currentEnemyState = EnemyState.attacking;
                         break;
                 }
             }

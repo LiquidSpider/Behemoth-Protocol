@@ -9,6 +9,7 @@ public class LaserTarget : MonoBehaviour
     public GameObject player;
     public float maxYRotation;
     public float minYRotation;
+    public float RotationSpeed;
 
     public enum HandTarget
     {
@@ -59,8 +60,11 @@ public class LaserTarget : MonoBehaviour
         // Clamp the angle between the max and min
         angle = Mathf.Clamp(angle, minYRotation, maxYRotation);
 
+        Vector3 LookRotation = new Vector3(0, angle, 0);
+
+        parent.transform.rotation = Quaternion.RotateTowards(parent.transform.rotation, Quaternion.Euler(LookRotation), RotationSpeed * Time.deltaTime);
         // set the angle
-        parent.transform.eulerAngles = new Vector3(0, angle, 0);
+        //parent.transform.eulerAngles = new Vector3(0, angle, 0);
     }
 
     private void LookAtPlayer()
@@ -92,7 +96,10 @@ public class LaserTarget : MonoBehaviour
             angle2 = Mathf.Clamp(angle2, 0, 80);
         }
 
-        this.transform.eulerAngles = new Vector3(0, angle2, 0);
+        Vector3 LookRotation = new Vector3(0, angle2, 0);
+        this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, Quaternion.Euler(LookRotation), RotationSpeed * Time.deltaTime);
+
+        //this.transform.eulerAngles = new Vector3(0, angle2, 0);
 
     }
 
