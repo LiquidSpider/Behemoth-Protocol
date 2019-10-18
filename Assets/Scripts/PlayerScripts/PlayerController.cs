@@ -83,13 +83,18 @@ public class PlayerController : MonoBehaviour {
 		hudMainColour = hudFrame.GetComponent<Image>().color;
 
 		// Nav Prompt
-		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallIntroLine();
+		StartCoroutine(FirstLine());
 
 		StartCoroutine(DelayedIntroPrompt());
 	}
 
+	private IEnumerator FirstLine() {
+		yield return new WaitForSeconds(0.5f);
+		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallIntroLine();
+	}
+
 	private IEnumerator DelayedIntroPrompt() {
-		yield return new WaitForSeconds(5);
+		yield return new WaitForSeconds(5.5f);
 
 		// Second prompt, action given
 		GameObject.FindGameObjectWithTag("UI").GetComponent<NavigatorPrompts>().CallFollowUpIntroLine();
